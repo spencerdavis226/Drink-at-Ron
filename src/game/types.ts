@@ -15,6 +15,7 @@ export interface PackDefinition {
   title: string;
   description: string;
   cardIds: string[];
+  artwork?: string;
 }
 export interface GameConfig {
   version: 1;

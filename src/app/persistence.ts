@@ -6,12 +6,16 @@ export const SETTINGS_KEY = "drink-at-ron.settings.v1";
 export interface Preferences {
   config: GameConfig;
   sound: boolean;
+  ambience: boolean;
+  atmosphere: boolean;
   choice: string;
   customSize: string;
 }
 export const defaults: Preferences = {
   config: { version: 1, packIds: ["core"], limit: 40 },
   sound: false,
+  ambience: false,
+  atmosphere: true,
   choice: "40",
   customSize: "40",
 };
@@ -96,6 +100,8 @@ export function loadPreferences(): Preferences {
     )
       return {
         ...p,
+        ambience: typeof p.ambience === "boolean" ? p.ambience : false,
+        atmosphere: typeof p.atmosphere === "boolean" ? p.atmosphere : true,
         customSize:
           typeof p.customSize === "string"
             ? p.customSize
