@@ -18,7 +18,7 @@ npm run build
 npm run preview
 ```
 
-The Vite development server does not install a service worker. Offline play requires the production build over HTTPS, or localhost during development. The app reports readiness only after its service worker finishes precaching.
+The Vite development server does not install a service worker. Offline play requires the production build over HTTPS, or localhost during development. The Install app dialog reports offline readiness after the service worker finishes precaching.
 
 ## Verify
 
@@ -46,10 +46,10 @@ Saves snapshot card content and order. Invalid/unsupported saves require explici
 
 ## Add content
 
-See [the pack authoring guide](docs/AUTHORING.md). The 12-card house collection is development content, not the final collaboratively authored collection. Every card currently uses one original placeholder illustration. Art direction and production card content are deliberately reserved for later sessions.
+See [the pack authoring guide](docs/AUTHORING.md). The 12-card house collection is development content, not the final collaboratively authored collection. The sample cards share a painted tankard illustration. This visual pass adds original weathered card skins, a walnut tabletop, and a two-sided lift/flip/discard animation. Production card-specific illustrations and the full content collection remain for a later session.
 
 ## Static deployment
 
 A GitHub Pages workflow is included, but no repository or public site is created by this implementation. After pushing to your chosen repository, set Settings → Pages → Source to GitHub Actions. The workflow builds with the repository path, runs unit tests, and deploys `dist`. Root user/organization Pages sites use `/`; repository sites use `/<repository>/`. For another static host, deploy `dist` and set `BASE_PATH` at build time if it uses a subdirectory. HTTPS is required for offline support outside localhost.
 
-Regenerate app icons after editing the source in `scripts/icons.ts` with `npx tsx scripts/icons.ts`. All bundled SVG art was created for this foundation. No external fonts, stock assets, analytics, or artwork services are used.
+Regenerate app icons after editing the source in `scripts/icons.ts` with `npx tsx scripts/icons.ts`. The original SVG remains for compatibility. Painted artwork was generated using the built-in image-generation tool; source PNGs and optimized WebPs are included. See [art direction and prompts](docs/ART_DIRECTION.md). No external fonts, stock assets, analytics, or runtime artwork services are used.

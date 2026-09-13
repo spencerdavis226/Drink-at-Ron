@@ -7,10 +7,14 @@ export function CardFace({ card }: { card: CardDefinition }) {
       <span className="card-category">{card.category}</span>
       <img
         className="card-art"
-        src={asset(card.artwork)}
+        src={asset(
+          card.artwork === "art/tankard.svg"
+            ? "art/tankard.webp"
+            : card.artwork,
+        )}
         onError={(e) => {
           e.currentTarget.onerror = null;
-          e.currentTarget.src = asset("art/tankard.svg");
+          e.currentTarget.src = asset("art/tankard.webp");
         }}
         alt=""
       />
@@ -19,7 +23,6 @@ export function CardFace({ card }: { card: CardDefinition }) {
         <span className="divider">✦</span>
         <p>{card.rules}</p>
       </div>
-      <span className="card-footer">DRINK AT RON · GOOD COMPANY</span>
     </>
   );
 }

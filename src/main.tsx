@@ -98,7 +98,11 @@ function App() {
         setMotion(null);
         lock.current = false;
       },
-      matchMedia("(prefers-reduced-motion: reduce)").matches ? 100 : 420,
+      matchMedia("(prefers-reduced-motion: reduce)").matches
+        ? 100
+        : kind === "flip"
+          ? 680
+          : 460,
     );
   };
   const active = !!session && session.phase !== "complete";
@@ -111,20 +115,40 @@ function App() {
   return (
     <main className={active ? "app playing" : "app"}>
       <header className="topbar">
-        <span className="wordmark">
-          DRINK AT RON<span className="tiny-star">✦</span>
-        </span>
         {active ? (
-          <button
-            className="icon-button menu-button"
-            aria-label="Open game menu"
-            disabled={!!motion}
-            onClick={() => setModal("menu")}
-          >
-            ☰
-          </button>
+          <>
+            <span className="wordmark">Drink at Ron</span>
+            <button
+              className="icon-button menu-button"
+              aria-label="Open game menu"
+              disabled={!!motion}
+              onClick={() => setModal("menu")}
+            >
+              <span className="menu-icon" aria-hidden="true">
+                <i />
+                <i />
+                <i />
+              </span>
+            </button>
+          </>
         ) : (
-          <span className="edition">THE TAVERN EDITION</span>
+          <button
+            className="icon-button install-button"
+            aria-label="Install app"
+            onClick={() => setModal("install")}
+          >
+            <svg
+              viewBox="0 0 24 24"
+              width="25"
+              height="25"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.7"
+              aria-hidden="true"
+            >
+              <path d="M12 3v12m-4-4 4 4 4-4M5 15v5h14v-5" />
+            </svg>
+          </button>
         )}
       </header>
       {notice && (
@@ -135,7 +159,6 @@ function App() {
       )}
       {corrupt ? (
         <section className="setup">
-          <span className="eyebrow">LET’S START FRESH</span>
           <h1>
             This save lost
             <br />
@@ -158,18 +181,15 @@ function App() {
       ) : !session ? (
         <section className="setup">
           <div className="intro">
-            <span className="eyebrow">GOOD COMPANY. A LITTLE CHAOS.</span>
             <h1>
-              One more
+              Drink
               <br />
-              <em>card?</em>
+              <em>at Ron</em>
             </h1>
-            <p>Gather your people. Shuffle things up.</p>
           </div>
           <div className="setup-section">
             <div className="section-label">
-              <h2>Your deck</h2>
-              <span>MAKE A NIGHT OF IT</span>
+              <h2>Deck size</h2>
             </div>
             <div className="lengths">
               {[
@@ -195,13 +215,6 @@ function App() {
                 </button>
               ))}
             </div>
-            <p className="helper">
-              {prefs.choice === "endless"
-                ? "Keep the cards coming. End whenever you like."
-                : prefs.choice === "custom"
-                  ? "Pick your own pace. Between 1 and 500 cards."
-                  : `${prefs.choice} cards, shuffled fresh. Repeats only after a full cycle.`}
-            </p>
             {prefs.choice === "custom" && (
               <label className="custom-label">
                 Number of cards
@@ -224,8 +237,7 @@ function App() {
           </div>
           <div className="setup-section">
             <div className="section-label">
-              <h2>On the house</h2>
-              <span>CHOOSE YOUR PACKS</span>
+              <h2>Packs</h2>
             </div>
             {packs.map((p) => (
               <button
@@ -245,12 +257,10 @@ function App() {
                 }
               >
                 <span className="pack-art">
-                  <img src={asset("art/tankard.svg")} alt="" />
+                  <img src={asset("art/tankard.webp")} alt="" />
                 </span>
                 <span className="pack-copy">
                   <strong>{p.title}</strong>
-                  <span>{p.description}</span>
-                  <small>{p.cardIds.length} CARDS</small>
                 </span>
                 <span className="checkbox" aria-hidden="true">
                   {selected.includes(p.id) ? "✓" : "+"}
@@ -265,40 +275,28 @@ function App() {
             }
             onClick={start}
           >
-            Shuffle & play <span>↗</span>
+            Play
           </button>
           {!selected.length && (
-            <p className="helper" role="status">
+            <p className="notice" role="status">
               Choose at least one pack to play.
             </p>
           )}
-          <p className="footnote">
-            One device. Everyone’s invited. Play at your own pace.
-          </p>
-          <button className="text-button" onClick={() => setModal("install")}>
-            Add a little tavern to your Home Screen
-          </button>
-          <p className="offline" role="status">
-            {offlineReady || cachedReady
-              ? "✓ Ready for offline play"
-              : "Offline play becomes available after the first complete load."}
-          </p>
         </section>
       ) : session.phase === "complete" ? (
         <section className="complete">
-          <span className="eyebrow">THAT’S A GOOD DECK.</span>
-          <img src={asset("art/tankard.svg")} alt="" />
+          <img src={asset("art/tankard.webp")} alt="" />
           <h1>
             To good
             <br />
             <em>company.</em>
           </h1>
-          <p>{session.discarded} cards. A story or two to keep.</p>
+          <p>{session.discarded} cards played</p>
           <button
             className="primary"
             onClick={() => commit(replaySession(session))}
           >
-            Play again <span>↗</span>
+            Play again
           </button>
           <button className="text-button" onClick={() => commit(null)}>
             Change deck
@@ -306,16 +304,17 @@ function App() {
         </section>
       ) : (
         <section className="table">
-          <div className="progress">
-            <span>
-              {session.phase === "revealed" ? "ON THE TABLE" : "IN THE DECK"}
-            </span>
+          <div
+            className="progress"
+            aria-label={`Card ${session.discarded + 1} of ${session.config.limit ?? "endless"}`}
+          >
             <span>
               {session.discarded + 1}{" "}
               <span className="muted">/ {session.config.limit ?? "∞"}</span>
             </span>
           </div>
           <div className={`card-stage ${motion ?? ""}`}>
+            <div className="deck-under" aria-hidden="true" />
             <button
               className={`game-card ${session.phase === "revealed" ? "face" : "back"}`}
               onClick={tap}
@@ -326,34 +325,20 @@ function App() {
                   : `${card!.title}. ${card!.rules} Tap to put this card aside.`
               }
             >
-              {session.phase === "hidden" ? (
-                <>
-                  <span className="back-top">THE TAVERN COLLECTION</span>
-                  <div className="back-mark">
-                    <span>✦</span>
-                    <img src={asset("art/tankard.svg")} alt="" />
-                    <h2>
-                      Drink
-                      <br />
-                      <em>at Ron</em>
-                    </h2>
-                  </div>
-                  <span className="back-bottom">
-                    GOOD FORTUNE · GREAT COMPANY
-                  </span>
-                </>
-              ) : (
-                <CardFace card={card!} />
-              )}
+              <span
+                className="card-rotator"
+                key={`${session.cycle}-${session.position}`}
+              >
+                <span className="card-surface card-back" aria-hidden="true" />
+                <span
+                  className="card-surface card-front"
+                  aria-hidden={session.phase !== "revealed"}
+                >
+                  <CardFace card={card!} />
+                </span>
+              </span>
             </button>
           </div>
-          <p className="tap-hint" aria-live="polite">
-            {session.phase === "hidden"
-              ? "Tap to turn your luck"
-              : session.discarded + 1 === session.config.limit
-                ? "Tap to finish the deck"
-                : "Tap to put this card aside"}
-          </p>
         </section>
       )}
       {!active && needRefresh && (
@@ -361,19 +346,20 @@ function App() {
           className="update"
           onClick={() => void updateServiceWorker(true)}
         >
-          A fresh version is ready · Update
+          Update game
         </button>
       )}
       {modal === "install" && (
-        <Modal title="Your pocket tavern" onClose={() => setModal(null)}>
+        <Modal title="Install app" onClose={() => setModal(null)}>
           <p>
             In Safari, open the Share menu, choose{" "}
             <strong>Add to Home Screen</strong>, then tap <strong>Add</strong>.
             If offered, leave Open as Web App enabled.
           </p>
-          <p>
-            Open it once while connected and wait for “Ready for offline play”
-            before heading offline.
+          <p role="status">
+            {offlineReady || cachedReady
+              ? "Ready for offline play"
+              : "Preparing offline play…"}
           </p>
           <button className="primary" onClick={() => setModal(null)}>
             Got it
@@ -381,7 +367,7 @@ function App() {
         </Modal>
       )}
       {modal === "menu" && (
-        <Modal title="Take a breather" onClose={() => setModal(null)}>
+        <Modal title="Paused" onClose={() => setModal(null)}>
           <button className="primary" onClick={() => setModal(null)}>
             Resume game
           </button>
@@ -390,7 +376,7 @@ function App() {
             disabled={!session?.previousId}
             onClick={() => setModal("previous")}
           >
-            Previous card <span>↗</span>
+            Previous card
           </button>
           <button
             className="menu-row"
@@ -399,9 +385,6 @@ function App() {
           >
             Card sounds <span>{prefs.sound ? "On" : "Off"}</span>
           </button>
-          <p className="helper">
-            The group keeps track of turns and ongoing rules.
-          </p>
           <button className="menu-row danger" onClick={() => setModal("end")}>
             End game
           </button>
@@ -414,7 +397,6 @@ function App() {
               card={session.cards.find((c) => c.id === session.previousId)!}
             />
           </article>
-          <p className="helper">Just a look back. Your deck hasn’t moved.</p>
           <button className="primary" onClick={() => setModal(null)}>
             Back to game
           </button>
@@ -422,10 +404,6 @@ function App() {
       )}
       {modal === "end" && (
         <Modal title="Call it a night?" onClose={() => setModal("menu")}>
-          <p>
-            This ends your current game. Your pack and deck settings will be
-            kept.
-          </p>
           <button
             className="primary"
             onClick={() => {

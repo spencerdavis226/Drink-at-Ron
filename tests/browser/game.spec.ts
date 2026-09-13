@@ -11,7 +11,7 @@ test("full custom game, rapid taps, restore, previous card, replay and settings"
   await page.goto("/");
   await page.getByRole("button", { name: "Custom deck size" }).click();
   await page.getByLabel("Number of cards").fill("2");
-  await page.getByRole("button", { name: "Shuffle & play" }).click();
+  await page.getByRole("button", { name: "Play", exact: true }).click();
   await page.getByRole("button", { name: "Reveal card" }).click();
   await page.locator(".game-card").evaluate((el) => {
     for (let i = 0; i < 8; i++) (el as HTMLElement).click();
@@ -30,7 +30,7 @@ test("full custom game, rapid taps, restore, previous card, replay and settings"
   await expect(page.locator(".progress")).toContainText("2 / 2");
   await page.getByRole("button", { name: "Reveal card" }).click();
   await ready(page);
-  await expect(page.getByText("Tap to finish the deck")).toBeVisible();
+  await expect(page.locator(".game-card")).toHaveClass(/face/);
   await page.locator(".game-card").click();
   await expect(page.getByRole("button", { name: "Play again" })).toBeVisible();
   await page.reload();
@@ -48,14 +48,14 @@ test("empty pack and invalid custom size prevent play", async ({ page }) => {
   await page.goto("/");
   await page.getByRole("button", { name: /The house collection/ }).click();
   await expect(
-    page.getByRole("button", { name: "Shuffle & play" }),
+    page.getByRole("button", { name: "Play", exact: true }),
   ).toBeDisabled();
   await page.getByRole("button", { name: /The house collection/ }).click();
   await page.getByRole("button", { name: "Custom deck size" }).click();
   for (const value of ["0", "501", "1.5"]) {
     await page.getByLabel("Number of cards").fill(value);
     await expect(
-      page.getByRole("button", { name: "Shuffle & play" }),
+      page.getByRole("button", { name: "Play", exact: true }),
     ).toBeDisabled();
   }
 });
@@ -66,7 +66,7 @@ test("corrupt save recovery", async ({ page }) => {
   await expect(page.getByText("This save lost")).toBeVisible();
   await page.getByRole("button", { name: "Return to setup" }).click();
   await expect(
-    page.getByRole("button", { name: "Shuffle & play" }),
+    page.getByRole("button", { name: "Play", exact: true }),
   ).toBeVisible();
 });
 test("storage failure still allows play", async ({ page }) => {
@@ -77,7 +77,7 @@ test("storage failure still allows play", async ({ page }) => {
   });
   await page.goto("/");
   await expect(page.getByText(/Saving is unavailable/)).toBeVisible();
-  await page.getByRole("button", { name: "Shuffle & play" }).click();
+  await page.getByRole("button", { name: "Play", exact: true }).click();
   await page.getByRole("button", { name: "Reveal card" }).click();
   await expect(page.locator(".card-copy h2")).toBeVisible();
 });
@@ -85,7 +85,7 @@ test("portrait, landscape, iPad and large text retain readable rules", async ({
   page,
 }) => {
   await page.goto("/");
-  await page.getByRole("button", { name: "Shuffle & play" }).click();
+  await page.getByRole("button", { name: "Play", exact: true }).click();
   for (const viewport of [
     { width: 375, height: 667 },
     { width: 390, height: 844 },
@@ -116,7 +116,7 @@ test("portrait, landscape, iPad and large text retain readable rules", async ({
 test("reduced motion and keyboard play", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/");
-  await page.getByRole("button", { name: "Shuffle & play" }).click();
+  await page.getByRole("button", { name: "Play", exact: true }).click();
   await page.getByRole("button", { name: "Reveal card" }).focus();
   await page.keyboard.press("Enter");
   await ready(page);
@@ -137,7 +137,7 @@ test("offline reload keeps the same revealed card", async ({
   await page.goto("/");
   await page.evaluate(() => navigator.serviceWorker.ready);
   await page.reload();
-  await page.getByRole("button", { name: "Shuffle & play" }).click();
+  await page.getByRole("button", { name: "Play", exact: true }).click();
   await page.getByRole("button", { name: "Reveal card" }).click();
   await ready(page);
   const title = await page.locator(".card-copy h2").innerText();
@@ -156,7 +156,7 @@ test("every sample card fits at enlarged text on a small phone", async ({
 }) => {
   await page.setViewportSize({ width: 320, height: 700 });
   await page.goto("/");
-  await page.getByRole("button", { name: "Shuffle & play" }).click();
+  await page.getByRole("button", { name: "Play", exact: true }).click();
   const original = await page.evaluate(
     (k) => JSON.parse(localStorage.getItem(k)!),
     key,
@@ -198,7 +198,7 @@ test("custom size persists before starting and interruption restores a stable ca
   await page.getByLabel("Number of cards").fill("37");
   await page.reload();
   await expect(page.getByLabel("Number of cards")).toHaveValue("37");
-  await page.getByRole("button", { name: "Shuffle & play" }).click();
+  await page.getByRole("button", { name: "Play", exact: true }).click();
   await page.getByRole("button", { name: "Reveal card" }).click();
   await page.reload();
   await expect(page.locator(".game-card")).toHaveClass(/face/);
@@ -208,4 +208,34 @@ test("custom size persists before starting and interruption restores a stable ca
   await page.reload();
   await expect(page.locator(".card-stage")).not.toHaveClass(/flip|discard/);
   await expect(page.locator(".game-card")).toBeVisible();
+});
+
+test("minimal interface and a real two-sided flip", async ({ page }) => {
+  await page.goto("/");
+  await expect(
+    page.locator(".helper, .footnote, .eyebrow, .tap-hint"),
+  ).toHaveCount(0);
+  await page.getByRole("button", { name: "Play", exact: true }).click();
+  await expect(page.locator(".card-front")).toHaveAttribute(
+    "aria-hidden",
+    "true",
+  );
+  await page.getByRole("button", { name: "Reveal card" }).click();
+  await ready(page);
+  await expect(page.locator(".card-front")).toHaveAttribute(
+    "aria-hidden",
+    "false",
+  );
+  const rotation = await page
+    .locator(".card-rotator")
+    .evaluate((el) => getComputedStyle(el).transform);
+  expect(rotation).toContain("matrix3d(-1");
+  await page.locator(".game-card").click();
+  await ready(page);
+  await expect(page.getByRole("button", { name: "Reveal card" })).toBeVisible();
+  await expect(page.locator(".card-front")).toHaveAttribute(
+    "aria-hidden",
+    "true",
+  );
+  await expect(page.locator(".progress")).toContainText("2 / 40");
 });

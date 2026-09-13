@@ -12,7 +12,7 @@ const card = (
   category,
   rules,
   illustrationBrief,
-  artwork: "art/tankard.svg",
+  artwork: "art/tankard.webp",
 });
 export const cards: CardDefinition[] = [
   card(
