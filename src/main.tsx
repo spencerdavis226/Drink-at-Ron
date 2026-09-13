@@ -1,14 +1,8 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState, type CSSProperties } from "react";
 import { createRoot } from "react-dom/client";
 import { useRegisterSW } from "virtual:pwa-register/react";
 import { cards, packs } from "./content/catalog";
-import {
-  advance,
-  createSession,
-  currentCard,
-  replaySession,
-} from "./game/engine";
-import type { SessionState } from "./game/types";
+import { createSession, replaySession } from "./game/engine";
 import {
   loadPreferences,
   loadSession,
@@ -16,59 +10,73 @@ import {
   SAVE_KEY,
   SETTINGS_KEY,
 } from "./app/persistence";
-import { playSound } from "./app/sound";
+import { tavernAudio } from "./app/sound";
+import { PresentationController } from "./presentation/controller";
+import { usePresentation } from "./presentation/usePresentation";
+import { theme, preloadArt } from "./presentation/theme";
+import { Button, IconButton, Notice } from "./components/UI";
+import { Atmosphere } from "./components/Atmosphere";
+import { Setup } from "./screens/Setup";
+import { Play } from "./screens/Play";
+import { Completion } from "./screens/Completion";
+import { GameDialogs, type DialogName } from "./screens/GameDialogs";
 import "./style.css";
-import { CardFace, Modal } from "./components/Cards";
-const asset = (path: string) => `${import.meta.env.BASE_URL}${path}`;
+import "./presentation/theme.css";
 function App() {
   const [loaded] = useState(loadSession),
-    [session, setSession] = useState<SessionState | null>(loaded.session),
     [corrupt, setCorrupt] = useState(loaded.corrupt),
     [notice, setNotice] = useState(loaded.unavailable),
     [prefs, setPrefs] = useState(loadPreferences),
-    [cachedReady, setCachedReady] = useState(false);
-  const custom = prefs.customSize;
-  const [modal, setModal] = useState<
-      "menu" | "previous" | "end" | "install" | null
-    >(null),
-    [motion, setMotion] = useState<"flip" | "discard" | null>(null);
-  const lock = useRef(false),
-    timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+    [cachedReady, setCachedReady] = useState(false),
+    [modal, setModal] = useState<DialogName>(null),
+    [hidden, setHidden] = useState(document.hidden);
+  const { controller, session, outgoing, motion, transition } = usePresentation(
+    () =>
+      new PresentationController(
+        loaded.session,
+        (next) => {
+          if (!save(SAVE_KEY, next)) setNotice(true);
+        },
+        (event) => tavernAudio.play(event),
+      ),
+  );
+  const display = outgoing ?? session;
+  const active = !!display && display.phase !== "complete";
   const {
     offlineReady: [offlineReady],
     needRefresh: [needRefresh],
     updateServiceWorker,
   } = useRegisterSW({
     onRegisteredSW(_url, registration) {
-      // An active worker completed installation and its atomic precache.
       if (registration?.active) setCachedReady(true);
     },
   });
-  useEffect(
-    () => () => {
-      if (timer.current) clearTimeout(timer.current);
-    },
-    [],
-  );
   useEffect(() => {
     if (!save(SETTINGS_KEY, prefs)) setNotice(true);
+    tavernAudio.configure(prefs.sound, prefs.ambience);
   }, [prefs]);
   useEffect(() => {
-    if (session) {
-      const next = session.cards.find(
-        (c) =>
-          c.id === session.order[(session.position + 1) % session.order.length],
-      );
-      if (next) {
-        const img = new Image();
-        img.src = asset(next.artwork);
-      }
+    Object.values(theme.assets).forEach((path) => void preloadArt(path));
+    const onVisibility = () => {
+      setHidden(document.hidden);
+      tavernAudio.setHidden(document.hidden);
+    };
+    document.addEventListener("visibilitychange", onVisibility);
+    return () => {
+      document.removeEventListener("visibilitychange", onVisibility);
+      tavernAudio.dispose();
+    };
+  }, []);
+  useEffect(() => {
+    if (!session) return;
+    for (const index of [
+      session.position,
+      (session.position + 1) % session.order.length,
+    ]) {
+      const card = session.cards.find((c) => c.id === session.order[index]);
+      if (card) void preloadArt(card.artwork);
     }
   }, [session]);
-  const commit = (next: SessionState | null) => {
-    if (!save(SAVE_KEY, next)) setNotice(true);
-    setSession(next);
-  };
   const start = () => {
     const config = {
       ...prefs.config,
@@ -79,346 +87,123 @@ function App() {
         prefs.choice === "endless"
           ? null
           : prefs.choice === "custom"
-            ? Number(custom)
+            ? Number(prefs.customSize)
             : Number(prefs.choice),
     };
     setPrefs({ ...prefs, config });
-    commit(createSession(config, cards, packs));
+    controller.start(createSession(config, cards, packs));
   };
-  const tap = () => {
-    if (!session || lock.current || session.phase === "complete") return;
-    lock.current = true;
-    const kind = session.phase === "hidden" ? "flip" : "discard";
-    playSound(kind === "flip" ? "reveal" : "discard", prefs.sound);
-    setMotion(kind);
-    if (kind === "flip") commit(advance(session));
-    timer.current = setTimeout(
-      () => {
-        if (kind === "discard") commit(advance(session));
-        setMotion(null);
-        lock.current = false;
-      },
-      matchMedia("(prefers-reduced-motion: reduce)").matches
-        ? 100
-        : kind === "flip"
-          ? 680
-          : 460,
-    );
-  };
-  const active = !!session && session.phase !== "complete";
-  const validCustom =
-    /^\d+$/.test(custom) && Number(custom) >= 1 && Number(custom) <= 500;
-  const selected = prefs.config.packIds.filter((id) =>
-    packs.some((p) => p.id === id),
-  );
-  const card = session ? currentCard(session) : null;
+  const finish = (id: number) => controller.finish(id);
+  const styles = Object.fromEntries(
+    Object.entries(theme.motion).map(([key, value]) => [
+      `--motion-${key}`,
+      `${value}ms`,
+    ]),
+  ) as CSSProperties;
   return (
-    <main className={active ? "app playing" : "app"}>
-      <header className="topbar">
-        {active ? (
-          <>
-            <span className="wordmark">Drink at Ron</span>
-            <button
-              className="icon-button menu-button"
-              aria-label="Open game menu"
-              disabled={!!motion}
-              onClick={() => setModal("menu")}
-            >
-              <span className="menu-icon" aria-hidden="true">
-                <i />
-                <i />
-                <i />
-              </span>
-            </button>
-          </>
-        ) : (
-          <button
-            className="icon-button install-button"
-            aria-label="Install app"
-            onClick={() => setModal("install")}
-          >
-            <svg
-              viewBox="0 0 24 24"
-              width="25"
-              height="25"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.7"
-              aria-hidden="true"
-            >
-              <path d="M12 3v12m-4-4 4 4 4-4M5 15v5h14v-5" />
-            </svg>
-          </button>
-        )}
-      </header>
-      {notice && (
-        <p className="notice" role="status">
-          Saving is unavailable. You can still play, but this game may not
-          survive closing the app.
-        </p>
-      )}
-      {corrupt ? (
-        <section className="setup">
-          <h1>
-            This save lost
-            <br />
-            its place.
-          </h1>
-          <p>
-            We couldn’t restore the previous game. Your deck settings are still
-            here.
-          </p>
-          <button
-            className="primary"
-            onClick={() => {
-              commit(null);
-              setCorrupt(false);
-            }}
-          >
-            Return to setup
-          </button>
-        </section>
-      ) : !session ? (
-        <section className="setup">
-          <div className="intro">
-            <h1>
-              Drink
-              <br />
-              <em>at Ron</em>
-            </h1>
-          </div>
-          <div className="setup-section">
-            <div className="section-label">
-              <h2>Deck size</h2>
-            </div>
-            <div className="lengths">
-              {[
-                ["20", "20"],
-                ["40", "40"],
-                ["60", "60"],
-                ["custom", "Custom"],
-                ["endless", "∞"],
-              ].map(([value, label]) => (
-                <button
-                  key={value}
-                  aria-label={
-                    value === "endless"
-                      ? "Endless"
-                      : value === "custom"
-                        ? "Custom deck size"
-                        : `${value} cards`
-                  }
-                  aria-pressed={prefs.choice === value}
-                  onClick={() => setPrefs({ ...prefs, choice: value })}
-                >
-                  {label}
-                </button>
-              ))}
-            </div>
-            {prefs.choice === "custom" && (
-              <label className="custom-label">
-                Number of cards
-                <input
-                  type="number"
-                  inputMode="numeric"
-                  min="1"
-                  max="500"
-                  value={custom}
-                  onChange={(e) =>
-                    setPrefs({ ...prefs, customSize: e.target.value })
-                  }
-                  aria-invalid={!validCustom}
-                />
-                {!validCustom && (
-                  <span role="alert">Enter a whole number from 1 to 500.</span>
-                )}
-              </label>
-            )}
-          </div>
-          <div className="setup-section">
-            <div className="section-label">
-              <h2>Packs</h2>
-            </div>
-            {packs.map((p) => (
-              <button
-                key={p.id}
-                className="pack"
-                aria-pressed={selected.includes(p.id)}
-                onClick={() =>
-                  setPrefs({
-                    ...prefs,
-                    config: {
-                      ...prefs.config,
-                      packIds: selected.includes(p.id)
-                        ? selected.filter((id) => id !== p.id)
-                        : [...selected, p.id],
-                    },
-                  })
-                }
+    <>
+      <Atmosphere enabled={prefs.atmosphere} hidden={hidden} />
+      <main
+        className={`${active ? "app playing" : "app"} ${prefs.atmosphere ? "atmosphere-on" : ""} ${hidden ? "suspended" : ""}`}
+        style={styles}
+        onPointerDownCapture={() => tavernAudio.unlock()}
+        onKeyDownCapture={() => tavernAudio.unlock()}
+      >
+        <header className="topbar">
+          {active ? (
+            <>
+              <span className="wordmark">Drink at Ron</span>
+              <IconButton
+                label="Open game menu"
+                disabled={!!motion}
+                onClick={() => setModal("menu")}
               >
-                <span className="pack-art">
-                  <img src={asset("art/tankard.webp")} alt="" />
+                <span className="menu-icon" aria-hidden="true">
+                  <i />
+                  <i />
+                  <i />
                 </span>
-                <span className="pack-copy">
-                  <strong>{p.title}</strong>
-                </span>
-                <span className="checkbox" aria-hidden="true">
-                  {selected.includes(p.id) ? "✓" : "+"}
-                </span>
-              </button>
-            ))}
-          </div>
-          <button
-            className="primary"
-            disabled={
-              !selected.length || (prefs.choice === "custom" && !validCustom)
-            }
-            onClick={start}
-          >
-            Play
-          </button>
-          {!selected.length && (
-            <p className="notice" role="status">
-              Choose at least one pack to play.
-            </p>
+              </IconButton>
+            </>
+          ) : (
+            <IconButton
+              className="install-button"
+              label="Install app"
+              onClick={() => setModal("install")}
+            >
+              <span aria-hidden="true">↓</span>
+            </IconButton>
           )}
-        </section>
-      ) : session.phase === "complete" ? (
-        <section className="complete">
-          <img src={asset("art/tankard.webp")} alt="" />
-          <h1>
-            To good
-            <br />
-            <em>company.</em>
-          </h1>
-          <p>{session.discarded} cards played</p>
-          <button
-            className="primary"
-            onClick={() => commit(replaySession(session))}
-          >
-            Play again
-          </button>
-          <button className="text-button" onClick={() => commit(null)}>
-            Change deck
-          </button>
-        </section>
-      ) : (
-        <section className="table">
-          <div
-            className="progress"
-            aria-label={`Card ${session.discarded + 1} of ${session.config.limit ?? "endless"}`}
-          >
-            <span>
-              {session.discarded + 1}{" "}
-              <span className="muted">/ {session.config.limit ?? "∞"}</span>
-            </span>
-          </div>
-          <div className={`card-stage ${motion ?? ""}`}>
-            <div className="deck-under" aria-hidden="true" />
-            <button
-              className={`game-card ${session.phase === "revealed" ? "face" : "back"}`}
-              onClick={tap}
-              aria-disabled={!!motion}
-              aria-label={
-                session.phase === "hidden"
-                  ? "Reveal card"
-                  : `${card!.title}. ${card!.rules} Tap to put this card aside.`
-              }
+        </header>
+        {notice && (
+          <Notice>
+            Saving is unavailable. This game may not survive closing the app.
+          </Notice>
+        )}
+        {corrupt ? (
+          <section className="recovery">
+            <h1>
+              This save lost
+              <br />
+              its place.
+            </h1>
+            <p>We couldn’t restore the previous game.</p>
+            <Button
+              onClick={() => {
+                controller.clear();
+                setCorrupt(false);
+              }}
             >
-              <span
-                className="card-rotator"
-                key={`${session.cycle}-${session.position}`}
-              >
-                <span className="card-surface card-back" aria-hidden="true" />
-                <span
-                  className="card-surface card-front"
-                  aria-hidden={session.phase !== "revealed"}
-                >
-                  <CardFace card={card!} />
-                </span>
-              </span>
-            </button>
-          </div>
-        </section>
-      )}
-      {!active && needRefresh && (
-        <button
-          className="update"
-          onClick={() => void updateServiceWorker(true)}
-        >
-          Update game
-        </button>
-      )}
-      {modal === "install" && (
-        <Modal title="Install app" onClose={() => setModal(null)}>
-          <p>
-            In Safari, open the Share menu, choose{" "}
-            <strong>Add to Home Screen</strong>, then tap <strong>Add</strong>.
-            If offered, leave Open as Web App enabled.
-          </p>
-          <p role="status">
-            {offlineReady || cachedReady
-              ? "Ready for offline play"
-              : "Preparing offline play…"}
-          </p>
-          <button className="primary" onClick={() => setModal(null)}>
-            Got it
-          </button>
-        </Modal>
-      )}
-      {modal === "menu" && (
-        <Modal title="Paused" onClose={() => setModal(null)}>
-          <button className="primary" onClick={() => setModal(null)}>
-            Resume game
-          </button>
-          <button
-            className="menu-row"
-            disabled={!session?.previousId}
-            onClick={() => setModal("previous")}
+              Return to setup
+            </Button>
+          </section>
+        ) : !display ? (
+          <Setup
+            prefs={prefs}
+            packs={packs}
+            onChange={setPrefs}
+            onStart={start}
+          />
+        ) : display.phase === "complete" ? (
+          <Completion
+            count={display.discarded}
+            celebrate={motion === "complete"}
+            onReplay={() => controller.start(replaySession(display))}
+            onSetup={() => controller.clear()}
+            onFinish={() => finish(transition)}
+          />
+        ) : (
+          <Play
+            session={display}
+            motion={motion}
+            transition={transition}
+            onTap={() => controller.tap()}
+            onFinish={finish}
+          />
+        )}
+        {!active && !motion && needRefresh && (
+          <Button
+            variant="text-button"
+            className="update"
+            onClick={() => void updateServiceWorker(true)}
           >
-            Previous card
-          </button>
-          <button
-            className="menu-row"
-            aria-pressed={prefs.sound}
-            onClick={() => setPrefs({ ...prefs, sound: !prefs.sound })}
-          >
-            Card sounds <span>{prefs.sound ? "On" : "Off"}</span>
-          </button>
-          <button className="menu-row danger" onClick={() => setModal("end")}>
-            End game
-          </button>
-        </Modal>
-      )}
-      {modal === "previous" && session && (
-        <Modal title="Previous card" onClose={() => setModal("menu")}>
-          <article className="previous-card">
-            <CardFace
-              card={session.cards.find((c) => c.id === session.previousId)!}
-            />
-          </article>
-          <button className="primary" onClick={() => setModal(null)}>
-            Back to game
-          </button>
-        </Modal>
-      )}
-      {modal === "end" && (
-        <Modal title="Call it a night?" onClose={() => setModal("menu")}>
-          <button
-            className="primary"
-            onClick={() => {
-              commit(null);
-              setModal(null);
-            }}
-          >
-            End game
-          </button>
-          <button className="text-button" onClick={() => setModal(null)}>
-            Keep playing
-          </button>
-        </Modal>
-      )}
-    </main>
+            Update game
+          </Button>
+        )}
+        <GameDialogs
+          modal={modal}
+          setModal={setModal}
+          session={session}
+          prefs={prefs}
+          setPrefs={setPrefs}
+          offlineReady={offlineReady || cachedReady}
+          onEnd={() => {
+            controller.clear();
+            setModal(null);
+          }}
+        />
+      </main>
+    </>
   );
 }
 createRoot(document.getElementById("root")!).render(

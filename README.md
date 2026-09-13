@@ -37,7 +37,9 @@ Browser tests exercise Chromium and WebKit. Installed Safari Home Screen behavio
 - `src/content`: card and pack catalog plus validation.
 - `src/app`: validated save/resume, preferences, optional sound.
 - `src/components`: replaceable card rendering and accessible native dialogs.
-- `src/main.tsx`: setup, game presentation, menu, and PWA lifecycle.
+- `src/presentation`: theme manifest, animation controller, interruption handling, and local asset decoding.
+- `src/screens`: setup, play, completion, and dialogs.
+- `src/main.tsx`: saved preferences, audio/visibility, and PWA orchestration.
 - `public/art`: bundled original placeholder artwork; no remote asset dependency.
 
 Finite decks contain 1–500 draws. Every shuffle cycle exhausts the selected unique cards before repeating, including when a finite deck is longer than the catalog. Endless cycles have bounded storage. The group handles turns and ongoing rules. All cards have equal frequency per cycle.
@@ -52,4 +54,13 @@ See [the pack authoring guide](docs/AUTHORING.md). The 12-card house collection 
 
 A GitHub Pages workflow is included, but no repository or public site is created by this implementation. After pushing to your chosen repository, set Settings → Pages → Source to GitHub Actions. The workflow builds with the repository path, runs unit tests, and deploys `dist`. Root user/organization Pages sites use `/`; repository sites use `/<repository>/`. For another static host, deploy `dist` and set `BASE_PATH` at build time if it uses a subdirectory. HTTPS is required for offline support outside localhost.
 
-Regenerate app icons after editing the source in `scripts/icons.ts` with `npx tsx scripts/icons.ts`. The original SVG remains for compatibility. Painted artwork was generated using the built-in image-generation tool; source PNGs and optimized WebPs are included. See [art direction and prompts](docs/ART_DIRECTION.md). No external fonts, stock assets, analytics, or runtime artwork services are used.
+Regenerate app icons after editing the source in `scripts/icons.ts` with `npx tsx scripts/icons.ts`. The original SVG remains for compatibility. Painted artwork was generated using the built-in image-generation tool; source PNGs and optimized WebPs are included. See [art direction and prompts](docs/ART_DIRECTION.md). Grenze is bundled locally from Omnibus-Type with its SIL Open Font License. No remote font requests, stock assets, analytics, or runtime artwork services are used.
+
+
+## Presentation and sound
+
+Game actions save immediately and exactly once; animations display an outgoing snapshot independently. End/cancel events settle transitions, with a bounded timeout fallback. Backgrounding clears unfinished visual transitions without drawing again. Existing version-1 sessions restore without effects or replays.
+
+The pause menu includes Effects, Ambience, and Atmosphere. Existing sound settings migrate; ambience defaults off, atmosphere on. Foley and fireplace ambience are synthesized locally, begin after interaction, stop when hidden, and tolerate unavailable audio. Reduce Motion disables continuous decoration and transitions.
+
+Re-export the generated UI sheet with `npx tsx scripts/chrome.ts`; regenerate icons with `npm run generate:icons`. The full runtime remains offline-capable. Physical-device frame-rate, audio balance, and installed iOS checks are still required before claiming native-level polish.

@@ -150,6 +150,12 @@ export function validateCatalog(cs: CardDefinition[], ps: PackDefinition[]) {
       !p.description?.trim()
     )
       fail("Invalid or duplicate pack");
+    if (
+      p.artwork !== undefined &&
+      (typeof p.artwork !== "string" ||
+        !/^art\/[a-zA-Z0-9/_-]+\.(svg|png|webp|avif)$/.test(p.artwork))
+    )
+      fail(`Invalid pack artwork: ${p.id}`);
     packIds.add(p.id);
     if (
       !Array.isArray(p.cardIds) ||

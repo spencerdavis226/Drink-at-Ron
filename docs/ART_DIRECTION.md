@@ -18,3 +18,27 @@ Production game UI asset: a full-bleed portrait 2:3 empty fantasy card FRONT sur
 
 Single game card illustration, square format with genuinely transparent background and alpha. A charming chunky wooden fantasy tavern tankard filled with soft overflowing cream foam, battered hammered brass bands and a small round turquoise enamel ornament, sitting at a playful slight tilt. Original handpainted Hearthstone-style premium fantasy game art, rich brushstrokes, chiseled stylized forms, warm amber highlights, sculpted shadows, worn wood grain and nicked metal, beautiful painterly edges. Three tiny floating amber sparks and subtle grounding shadow only. Centered entire tankard visible with generous transparent margin. No text, no letters, no frame, no scene, no vector outlines, not photorealistic. This replaces a flat vector mug with expensive-looking original painted game art.
 
+
+## Unified design system
+
+The approved card back, parchment, tankard, and tabletop remain the permanent reference. Extend weathered walnut, dark teal leather, nicked bronze, and warm cream parchment; use the same upper-left lighting, restrained contact shadows, and worn edges. Functional labels stay plain and large. Keep background decoration away from the central card text.
+
+- Shared asset, color, and motion definitions: `src/presentation/theme.ts`; shared CSS: `src/presentation/theme.css`.
+- Grenze throughout: variable upright and italic WOFF2 files from the official Omnibus-Type repository, bundled locally with `public/fonts/OFL.txt`. Titles use 700–800, controls 500–700, and rules 400. Rule text is 20–24 px at normal scale and grows with text enlargement.
+- Nine-slice borders preserve the painted frame corners on buttons, choice tiles, pack tiles, dialogs, recovery panels, and card fronts. Do not stretch a whole panel image around long content.
+- Primary controls use worn gold. Secondary surfaces use quiet teal leather. Functional icon symbols sit inside the generated bezel and retain accessible names.
+- Motion durations: deal 620 ms, flip 680 ms, discard 460 ms, settle 140 ms, completion 650 ms. CSS consumes the manifest values. Reduced Motion disables animation; browser cancellation and visibility changes settle to saved state.
+- Effects and Ambience default off (existing effects preferences survive); Atmosphere defaults on. Atmospheric movement is sparse: warm edge lighting, six small embers at the outer edges, and a short reveal glint. Suspend when hidden.
+- Audio is original procedural Web Audio foley and fireplace ambience, with no sampled recordings, music, speech, licensing service, or network dependency. On-device listening remains part of release QA.
+
+## Reusable control artwork
+
+Built-in image-generation tool, using the approved card back and front as reference inputs. `assets/source/ui-chrome.png` preserves the first generation; `assets/source/ui-chrome-final.png` preserves the final dark-background sheet. `scripts/chrome.ts` exports the observed button, panel, and bezel rectangles to `public/art/button.webp`, `panel.webp`, and `bezel.webp`. `scripts/icons.ts` composites the painted tankard inside the bezel and exports optimized PNG Home Screen icons.
+
+Generation prompt:
+
+> Create a SINGLE production UI asset sheet for the fantasy tavern game using the attached approved card materials as strict art-direction references. Original handpainted bronze walnut teal leather, chipped and rubbed, same lighting and colors, never clean vector lines. Transparent background. Canvas 1024x1024. Arrange THREE distinct isolated usable components with generous blank transparent gutters: TOP HALF a wide horizontal rectangular gold/brass primary button plate with rounded chipped corners, raised bronze edging, luminous worn gold interior completely blank for live text. LOWER LEFT a square dark walnut panel with bronze corner brackets and flat quiet dark teal leather center, for a scalable nine-slice dialog panel. LOWER RIGHT a small square hammered bronze icon-button bezel, dark center completely blank for an overlaid functional symbol. Orthographic front view, all aligned, no perspective, no cast shadow outside component. NO words, NO letters, NO icons, NO text, NO mockup. All shapes self contained and not touching. This is reusable game chrome, not cards.
+
+Correction prompt (the first output rendered a checkerboard instead of alpha):
+
+> Edit this UI asset sheet only: replace ALL gray-and-white checkerboard background with a uniform solid very dark warm brown #17100c. Keep the three painted components exactly unchanged, at exactly the same positions and dimensions, with identical artwork, edges and colors. No checkerboard anywhere, no transparency needed. Do not add or remove or move anything.

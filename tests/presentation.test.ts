@@ -1,0 +1,118 @@
+import { describe, it, expect, vi, afterEach } from "vitest";
+import { PresentationController } from "../src/presentation/controller";
+import { createSession } from "../src/game/engine";
+import { cards, packs } from "../src/content/catalog";
+import {
+  defaults,
+  loadPreferences,
+  parseSession,
+} from "../src/app/persistence";
+const initial = (limit = 3) =>
+  createSession(
+    { version: 1, packIds: ["core"], limit },
+    cards,
+    packs,
+    () => 0.5,
+  );
+const settle = (c: PresentationController) => {
+  while (c.getSnapshot().motion) c.finish(c.getSnapshot().transition);
+};
+afterEach(() => vi.unstubAllGlobals());
+describe("presentation transactions", () => {
+  it("commits each action once and holds the outgoing visual until discard ends", () => {
+    const persist = vi.fn(),
+      c = new PresentationController(initial(), persist);
+    c.tap();
+    c.tap();
+    expect(persist).toHaveBeenCalledTimes(1);
+    settle(c);
+    const revealed = c.getSnapshot().session;
+    c.tap();
+    for (let i = 0; i < 20; i++) c.tap();
+    expect(persist).toHaveBeenCalledTimes(2);
+    expect(c.getSnapshot().outgoing).toBe(revealed);
+    expect(c.getSnapshot().session?.discarded).toBe(1);
+    expect(c.getSnapshot().session?.phase).toBe("hidden");
+    settle(c);
+    expect(c.getSnapshot().outgoing).toBeNull();
+    expect(persist).toHaveBeenCalledTimes(2);
+  });
+  it("restores committed discard without replaying animation or effects", () => {
+    const persist = vi.fn(),
+      effect = vi.fn(),
+      c = new PresentationController(initial(), persist, effect);
+    c.tap();
+    settle(c);
+    c.tap();
+    const saved = parseSession(JSON.stringify(persist.mock.calls.at(-1)![0]));
+    const restored = new PresentationController(saved, persist, effect);
+    expect(restored.getSnapshot().motion).toBeNull();
+    expect(restored.getSnapshot().session?.discarded).toBe(1);
+    expect(restored.getSnapshot().session?.phase).toBe("hidden");
+  });
+  it("ignores stale completions and cancellation never advances a deck", () => {
+    const persist = vi.fn(),
+      c = new PresentationController(initial(), persist);
+    c.tap();
+    const id = c.getSnapshot().transition;
+    c.finish(id);
+    const settling = c.getSnapshot();
+    c.finish(id);
+    expect(c.getSnapshot()).toBe(settling);
+    c.settleAll();
+    expect(persist).toHaveBeenCalledTimes(1);
+    expect(c.getSnapshot().motion).toBeNull();
+  });
+  it("keeps final card visible during discard, then celebrates once", () => {
+    const persist = vi.fn(),
+      effect = vi.fn(),
+      c = new PresentationController(initial(1), persist, effect);
+    c.tap();
+    settle(c);
+    c.tap();
+    expect(c.getSnapshot().session?.phase).toBe("complete");
+    expect(c.getSnapshot().outgoing?.phase).toBe("revealed");
+    c.finish(c.getSnapshot().transition);
+    expect(c.getSnapshot().motion).toBe("complete");
+    settle(c);
+    expect(effect.mock.calls.filter(([e]) => e === "complete")).toHaveLength(1);
+    c.tap();
+    expect(persist).toHaveBeenCalledTimes(2);
+  });
+  it("guards deal and clearing during animation", () => {
+    const persist = vi.fn(),
+      c = new PresentationController(null, persist);
+    c.start(initial());
+    c.start(initial());
+    c.clear();
+    c.tap();
+    expect(persist).toHaveBeenCalledTimes(1);
+    c.settleAll();
+    c.clear();
+    expect(c.getSnapshot().session).toBeNull();
+  });
+});
+describe("preferences compatibility", () => {
+  it("preserves existing game choices and sound, while adding atmosphere defaults", () => {
+    const old = {
+      config: defaults.config,
+      sound: true,
+      choice: "custom",
+      customSize: "37",
+    };
+    vi.stubGlobal("localStorage", { getItem: () => JSON.stringify(old) });
+    expect(loadPreferences()).toEqual({
+      ...old,
+      ambience: false,
+      atmosphere: true,
+    });
+  });
+  it("restores explicit toggles", () => {
+    vi.stubGlobal("localStorage", {
+      getItem: () =>
+        JSON.stringify({ ...defaults, ambience: true, atmosphere: false }),
+    });
+    expect(loadPreferences().ambience).toBe(true);
+    expect(loadPreferences().atmosphere).toBe(false);
+  });
+});
