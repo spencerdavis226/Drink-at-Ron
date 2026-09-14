@@ -19,3 +19,12 @@ for (const path of [
 ])
   if (!existsSync(`public/${path}`))
     throw Error(`Missing theme asset: ${path}`);
+
+const logos = new Set<string>();
+for (const pack of packs) {
+  if (!pack.logo || !existsSync(`public/${pack.logo}`))
+    throw Error(`Missing pack logo: ${pack.id}`);
+  if (logos.has(pack.logo))
+    throw Error(`Packs must have distinct logos: ${pack.id}`);
+  logos.add(pack.logo);
+}

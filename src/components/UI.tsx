@@ -5,6 +5,7 @@ import {
   type ImgHTMLAttributes,
   type ReactNode,
 } from "react";
+import { PackLogo } from "./PackMarks";
 import { asset, theme } from "../presentation/theme";
 import { tavernAudio } from "../app/sound";
 import type { PackDefinition } from "../game/types";
@@ -90,6 +91,7 @@ export function PackTile({
       </span>
       <span className="pack-copy">
         <strong>{pack.title}</strong>
+        <PackLogo pack={pack} decorative />
       </span>
       <span className="checkbox" aria-hidden="true">
         {selected ? "✓" : "+"}

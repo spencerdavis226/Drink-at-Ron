@@ -42,3 +42,29 @@ Generation prompt:
 Correction prompt (the first output rendered a checkerboard instead of alpha):
 
 > Edit this UI asset sheet only: replace ALL gray-and-white checkerboard background with a uniform solid very dark warm brown #17100c. Keep the three painted components exactly unchanged, at exactly the same positions and dimensions, with identical artwork, edges and colors. No checkerboard anywhere, no transparency needed. Do not add or remove or move anything.
+
+## Richer front study — pending approval
+
+The study is isolated in the developer workshop. It is not yet the shipping card frame. Review `core.cheers`, `core.animals`, and `core.left` at Small phone and iPad sizes, then try enlarged text and Replay reveal. Approval is required before promoting this front into gameplay and Previous Card.
+
+Composition: upper painted scene, raised teal title plaque, pale parchment instruction panel. Bronze hop-leaf corners, walnut rails, and contact shadows tie the front to the approved back. Nine-slice borders retain corner craftsmanship; rules remain real Grenze text and the card grows for long content. Categories stay in authoring metadata; the card footer carries the pack logo. Scene art is separate from frame and text.
+
+New source artwork was generated with the built-in image generation tool, using `assets/source/card-back.png` and `assets/source/card-front.png` as references. Original PNGs are retained; optimized slices and the illustration live under `src/workshop/art` until approval.
+
+### Frame sheet prompt
+
+Create a production UI asset sheet for an original painted fantasy tavern card game. References establish exact weathered bronze, carved walnut, teal leather, warm parchment painterly craftsmanship. Output ONE square sheet with FOUR separate rectangular pieces arranged 2x2, gutters plain dark charcoal. Top left: ornate empty illustration surround, rectangular with arched ornamental top, dark teal blank interior, carved walnut outer rails and bronze hop-leaf corner hardware. Top right: wide blank teal leather title plaque with bronze beveled edge, no text. Bottom left: parchment rules panel, pale luminous blank readable center, intricate bronze and walnut edges, subtle hops corner carving. Bottom right: detailed small bronze hop-leaf ornament on dark teal. All front-facing orthographic flat assets, no perspective, no words, letters, numbers, stats, gems or logos. Each piece fully inside its quadrant with margins. Rich hand painted not vector. UI pieces for slicing, illustration goes into upper frame later. Match reference materials.
+
+Saved source: `assets/source/front-study-sheet.png`. Extracted rectangles in source pixels: surround (8,8,610,589), plaque (638,137,603,326), parchment (8,619,610,589). WebP quality 85. The bottom-right ornament is retained in source for potential later use.
+
+### A little cheers — revised original illustration
+
+The dwarf study was rejected for excessive detail, franchise resemblance, and poor crop safety. It is no longer used. `ILLUSTRATION_GUIDELINES.md` is now the governing image-creation document. Categories remain metadata only; the action area shows rules and a pack logo. Core's four-point diamond matches setup and the pause legend.
+
+Normal-size study cards share a common silhouette at each viewport. The art window is approximately 1.4:1; the scene never drives layout dimensions. Enlarged text may extend the frame instead of clipping or shrinking the rules.
+
+Generated with the built-in image generation tool using the approved card back as a palette/material reference. New source: `assets/source/cheers-mouse-v2.png`; 768px-wide WebP: `src/workshop/art/cheers-mouse-v2.webp`.
+
+#### Exact replacement prompt
+
+Create an ORIGINAL whimsical storybook fantasy card illustration, landscape 3:2 composition, no border or text. 'A little cheers': one cheerful round field-mouse traveler in a simple moss-green cape raising a small bronze cup in a toast. Large readable rounded shapes, gentle expression, oversized round ears, simple silhouette. Mouse and raised cup form ONE compact centrally grouped subject entirely inside the middle 60 percent of the canvas horizontally and vertically. Show whole head and both ears with generous empty space ABOVE them; show complete cup. Main subject modest scale occupying only central 60 percent, never close-up cropped. Quiet soft warm ochre backdrop suggesting a tavern alcove through just one broad arch shape, no other characters, no tiny objects, no shelves, no candles, no particles, no crowd, no intricate costume. Three main color groups: warm chestnut fur, muted moss-teal cape, warm parchment-colored backdrop. Hand-painted gouache/oil storybook surface with broad brushwork, soft edge hierarchy, strong subject/background value separation. Readable at 120 pixels and at arm's length. Use supplied card-back ONLY as a palette and hand-crafted material reference, NOT composition or character style. Independently designed woodland fantasy character, no dwarf, no recognizable franchise characters, no Warcraft/Hearthstone character proportions, armor, logos, symbols, motifs or imitation. Friendly small adventure-book spirit, not photoreal, not vector. Essential subject safely centered so a small arched window can crop all four outer edges without losing ears, face or cup.

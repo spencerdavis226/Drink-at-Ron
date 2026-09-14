@@ -1,0 +1,31 @@
+# GitHub Pages release
+
+Repository: `spencerdavis226/Drink-at-Ron`.
+Expected URL: https://spencerdavis226.github.io/Drink-at-Ron/
+Publishing and remote settings have not been changed in this milestone.
+
+In repository Settings → Pages, select GitHub Actions as the build source. The workflow checks pull requests and main. Only main can publish, and only after all checks succeed. No backend, environment secrets, remote fonts, or paid services are needed. Enable required status checks for the build job in repository branch protection if desired.
+
+## Local release checks
+
+Use Node 22.12 or later:
+
+```sh
+npm ci
+npx playwright install chromium webkit
+npm test
+BASE_PATH=/Drink-at-Ron/ npm run build
+BASE_PATH=/Drink-at-Ron/ CI=1 npm run test:e2e
+BASE_PATH=/Drink-at-Ron/ npm run test:update
+npm run test:workshop
+```
+
+`TEST_PORT=4183` can select an unused production-test port. CI never attaches to an existing server. Local development uses `/`; production uses `/Drink-at-Ron/`. All public screens remain at that base URL. Changing the repository name or adding a custom domain requires updating the workflow base path and retesting manifest scope and installation identity.
+
+The deployment uploads the exact `dist` artifact tested by browser checks. The two-build update test builds its second release in a temporary directory and never modifies that artifact. `VITE_RELEASE_ID` uses the commit SHA in CI and is exposed only as an HTML data attribute for diagnostics.
+
+Build budgets: at most 3 MiB total runtime files (a conservative precache upper bound), 500 KiB per image, and 120 KiB gzip total app JavaScript. The build rejects workshop code in shipped JavaScript. Workshop assets live outside public and are not shipped. Future illustrated packs require reviewing these budgets and caching strategy deliberately.
+
+The service worker caches local fonts and artwork. Updates remain pending during gameplay and are offered between games. Saved sessions and preferences are retained. GitHub Pages cannot supply custom cache headers; rely on Vite's hashed bundles and the service-worker release lifecycle.
+
+After first publishing, verify the live URL on physical iPhone/iPad using DEVICE_CHECKLIST.md. Local tests do not prove live repository configuration or installed iOS behavior.

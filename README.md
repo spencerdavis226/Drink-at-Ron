@@ -64,3 +64,11 @@ Game actions save immediately and exactly once; animations display an outgoing s
 The pause menu includes Effects, Ambience, and Atmosphere. Existing sound settings migrate; ambience defaults off, atmosphere on. Foley and fireplace ambience are synthesized locally, begin after interaction, stop when hidden, and tolerate unavailable audio. Reduce Motion disables continuous decoration and transitions.
 
 Re-export the generated UI sheet with `npx tsx scripts/chrome.ts`; regenerate icons with `npm run generate:icons`. The full runtime remains offline-capable. Physical-device frame-rate, audio balance, and installed iOS checks are still required before claiming native-level polish.
+
+## Production workshop and release
+
+Open `/?workshop=1` on the development server for isolated card previews, seeded sessions, and the pending richer-front study. This route and its artwork are excluded from production. The Core deck now contains 30 production-candidate cards; group balance remains untested.
+
+See [Game design](docs/GAME_DESIGN.md), [Playtest record](docs/PLAYTEST.md), and [GitHub Pages release](docs/GITHUB_PAGES.md). The new front remains workshop-only until visual approval; shipping and milestone commit follow approval and checks.
+
+Illustrations follow [Image creation guidelines](docs/ILLUSTRATION_GUIDELINES.md): centered, crop-safe, simple, original fantasy. Pack logos are registered separately and appear consistently in selection, pause, and card footers.

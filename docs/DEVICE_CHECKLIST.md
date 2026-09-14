@@ -29,3 +29,12 @@ Automated browser emulation is not evidence of actual iOS Home Screen behavior. 
 - [ ] Verify Atmosphere off removes edge lighting, embers, and glints. Reduce Motion removes continuous effects regardless of the saved toggle.
 - [ ] Ensure all rules remain clear in Grenze at larger text sizes. Check actual iPad split view and VoiceOver.
 - [ ] Interrupt a discard: the save already contains the next card, and reopening must not repeat the discarded card or celebration.
+
+## Core workshop milestone
+
+Automated evidence is recorded in `docs/studies/README.md`. Keep the following pending until observed on physical hardware:
+
+- [ ] Approve the short, long, and temporary-rule front studies on an iPhone and iPad.
+- [ ] Play the new 30-card Core collection using the playtest record.
+- [ ] Verify the published `/Drink-at-Ron/` URL, Home Screen installation, offline relaunch, and updates on iOS.
+- [ ] Evaluate full-frame illustration sharpness, scrolling with enlarged text, and flip smoothness on physical devices.

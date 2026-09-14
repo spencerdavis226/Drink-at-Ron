@@ -1,7 +1,8 @@
-import { useEffect, useRef } from "react";
-import type { SessionState } from "../game/types";
+import { useEffect, useRef, type ReactNode } from "react";
+import type { SessionState, CardDefinition } from "../game/types";
 import { currentCard } from "../game/engine";
 import type { Motion } from "../presentation/controller";
+import { cardPacks } from "../presentation/packs";
 import { CardFace } from "../components/Cards";
 export function Play({
   session,
@@ -9,12 +10,14 @@ export function Play({
   transition,
   onTap,
   onFinish,
+  renderFace,
 }: {
   session: SessionState;
   motion: Motion | null;
   transition: number;
   onTap: () => void;
   onFinish: (id: number) => void;
+  renderFace?: (card: CardDefinition) => ReactNode;
 }) {
   const card = currentCard(session),
     ref = useRef<HTMLButtonElement>(null);
@@ -65,7 +68,12 @@ export function Play({
           aria-label={
             session.phase === "hidden"
               ? "Reveal card"
-              : `${card.title}. ${card.rules} Tap to put this card aside.`
+              : `${card.title}. ${card.rules} ${cardPacks(
+                  card.id,
+                  session.config.packIds,
+                )
+                  .map((pack) => pack.title)
+                  .join(", ")}. Tap to put this card aside.`
           }
         >
           <span
@@ -77,7 +85,11 @@ export function Play({
               className="card-surface card-front"
               aria-hidden={session.phase !== "revealed"}
             >
-              <CardFace card={card} />
+              {renderFace ? (
+                renderFace(card)
+              ) : (
+                <CardFace card={card} packIds={session.config.packIds} />
+              )}
             </span>
           </span>
         </button>

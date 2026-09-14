@@ -16,6 +16,7 @@ export interface PackDefinition {
   description: string;
   cardIds: string[];
   artwork?: string;
+  logo?: string;
 }
 export interface GameConfig {
   version: 1;

@@ -482,3 +482,61 @@ dialog {
 .previous-card {
   text-align: center;
 }
+
+/* Pack identity is shared by setup tiles, the pause legend, and card footers. */
+.pack-logo {
+  display: inline-grid;
+  position: relative;
+  width: 28px;
+  height: 28px;
+  flex: none;
+  vertical-align: middle;
+}
+.pack-logo > * {
+  grid-area: 1/1;
+  width: 100%;
+  height: 100%;
+}
+.pack-logo img {
+  position: relative;
+  object-fit: contain;
+  background: var(--parchment);
+  border-radius: 50%;
+}
+.pack-logo-fallback {
+  display: grid;
+  place-items: center;
+  font: 600 20px/1 var(--font-tavern);
+  color: #926329;
+}
+.pack-logo:has(img:not([style*="none"])) .pack-logo-fallback {
+  visibility: hidden;
+}
+.card-pack-marks {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  min-height: 28px;
+}
+.card-pack-marks .pack-logo img {
+  background: none;
+  border-radius: 0;
+}
+.pack-copy .pack-logo {
+  margin-top: 8px;
+}
+.pack-copy .pack-logo img,
+.active-pack-list .pack-logo img {
+  background: none;
+}
+.active-pack-list {
+  display: grid;
+  gap: 10px;
+  padding: 12px 0;
+  font-size: 22px;
+}
+.active-pack-list > div {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}

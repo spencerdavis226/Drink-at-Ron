@@ -22,6 +22,7 @@ export const exampleCards: CardDefinition[] = [{
 export const examplePack: PackDefinition = {
   version: 1,
   id: 'fireside',
+  logo: 'art/packs/fireside.svg', // Create a distinct small pack mark.
   title: 'By the fireside',
   description: 'Stories and gentle mischief for a cozy table.',
   cardIds: exampleCards.map(card => card.id),
@@ -35,3 +36,17 @@ Overlapping packs share a card by ID; it enters the shuffle pool only once. New 
 Before the production content session: review variety, repetition, category stopping conditions, and ongoing-rule duration. Agree on final copy and stable IDs before commissioning or generating artwork.
 
 Packs can optionally specify `artwork: 'art/your-pack.webp'`. The file must exist and follow the same local path rules as card artwork. Omit it to use the painted tankard. Shared pack controls and card frames are automatic; packs do not carry UI components, animation logic, or fonts.
+
+## Card workshop
+
+Run `npm run dev`, then open `http://127.0.0.1:5173/?workshop=1`. Search and filter the catalog, pick a card, adjust preview width or enlarged text, and tap the card to exercise the actual flip/discard controller. Replay reveal deals the selected card facedown. The seed reproduces shuffle order; the chosen card is moved to the front without changing pool membership. No workshop actions write game saves or preferences.
+
+The new front study is on by default here only. Turn it off to compare the current shipping frame. The study uses one finished illustration for `core.cheers`; remaining cards keep placeholder artwork. Study assets and code are removed from production builds. See GAME_DESIGN.md for the editorial rubric and PLAYTEST.md before commissioning the full collection.
+
+## Illustration and pack identity
+
+Follow `ILLUSTRATION_GUIDELINES.md` before generating any new art. The old dwarf direction is rejected. Use original, centered, simple fantasy subjects and test the illustration in the real small frame.
+
+Each registered pack now needs a distinct `logo`, such as `logo: 'art/packs/core.svg'`. Keep logo paths stable and add the file under public/art/packs; the build rejects missing files and reused logo paths. The same mark appears in setup, the pause legend, and card footers. The Core diamond is reserved for Core. Optional typing keeps older pack fixtures compatible, but release validation requires explicit logos for all registered packs.
+
+A shared card shows marks for selected packs containing it, in catalog order. Marks follow the installed catalog as cosmetic metadata; they do not alter or rewrite a saved session. Stable namespaced IDs preserve the known origin's mark for retired cards in older saves. Unknown removed packs do not acquire an invented Core mark. Keep old pack metadata and logo assets available across releases when possible. Gameplay, snapshots, and shuffled order are unchanged.

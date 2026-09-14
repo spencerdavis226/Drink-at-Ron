@@ -1,15 +1,17 @@
-name: Deploy static game
+name: Check and deploy game
 on:
+  pull_request:
   push:
     branches: [main]
   workflow_dispatch:
 permissions:
   contents: read
-  pages: write
-  id-token: write
 concurrency:
-  group: pages
+  group: pages-${{ github.ref }}
   cancel-in-progress: true
+env:
+  BASE_PATH: /Drink-at-Ron/
+  VITE_RELEASE_ID: ${{ github.sha }}
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -20,28 +22,35 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      - run: npx playwright install --with-deps chromium webkit
       - run: npm test
-      - name: Build for repository path
+      - run: npm run build
+      - run: npm run test:e2e
+      - run: npm run test:update
+      - run: npm run test:workshop
         env:
-          REPOSITORY: ${{ github.event.repository.name }}
-        run: |
-          if [[ "$REPOSITORY" == *.github.io ]]; then
-            export BASE_PATH=/
-          else
-            export BASE_PATH="/$REPOSITORY/"
-          fi
-          npm run build
-      - uses: actions/configure-pages@v5
+          BASE_PATH: /
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: browser-failures
+          path: test-results/
       - uses: actions/upload-pages-artifact@v3
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
         with:
           path: dist
   deploy:
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
     needs: build
     runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
+      - uses: actions/configure-pages@v5
       - name: Deploy
         id: deployment
         uses: actions/deploy-pages@v4

@@ -41,7 +41,7 @@ describe("deck engine", () => {
       }
       expect(seen.size).toBe(cards.length);
     }
-    expect(s.discarded).toBe(1200);
+    expect(s.discarded).toBe(100 * cards.length);
   });
   it("handles one-card endless pools", () => {
     let s = createSession(

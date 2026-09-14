@@ -10,7 +10,7 @@ test("full custom game, rapid taps, restore, previous card, replay and settings"
 }) => {
   const errors: string[] = [];
   page.on("pageerror", (error) => errors.push(error.message));
-  await page.goto("/");
+  await page.goto("./");
   await page.getByRole("button", { name: "Custom deck size" }).click();
   await page.getByLabel("Number of cards").fill("2");
   await page.getByRole("button", { name: "Play", exact: true }).click();
@@ -47,7 +47,7 @@ test("full custom game, rapid taps, restore, previous card, replay and settings"
   expect(errors).toEqual([]);
 });
 test("empty pack and invalid custom size prevent play", async ({ page }) => {
-  await page.goto("/");
+  await page.goto("./");
   await page.getByRole("button", { name: /The house collection/ }).click();
   await expect(
     page.getByRole("button", { name: "Play", exact: true }),
@@ -62,7 +62,7 @@ test("empty pack and invalid custom size prevent play", async ({ page }) => {
   }
 });
 test("corrupt save recovery", async ({ page }) => {
-  await page.goto("/");
+  await page.goto("./");
   await page.evaluate((k) => localStorage.setItem(k, '{"bad":true}'), key);
   await page.reload();
   await expect(page.getByText("This save lost")).toBeVisible();
@@ -77,7 +77,7 @@ test("storage failure still allows play", async ({ page }) => {
       throw Error("blocked");
     };
   });
-  await page.goto("/");
+  await page.goto("./");
   await expect(page.getByText(/Saving is unavailable/)).toBeVisible();
   await page.getByRole("button", { name: "Play", exact: true }).click();
   await page.getByRole("button", { name: "Reveal card" }).click();
@@ -86,7 +86,7 @@ test("storage failure still allows play", async ({ page }) => {
 test("portrait, landscape, iPad and large text retain readable rules", async ({
   page,
 }) => {
-  await page.goto("/");
+  await page.goto("./");
   await page.getByRole("button", { name: "Play", exact: true }).click();
   for (const viewport of [
     { width: 375, height: 667 },
@@ -117,7 +117,7 @@ test("portrait, landscape, iPad and large text retain readable rules", async ({
 });
 test("reduced motion and keyboard play", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
-  await page.goto("/");
+  await page.goto("./");
   await page.getByRole("button", { name: "Play", exact: true }).click();
   await page.getByRole("button", { name: "Reveal card" }).focus();
   await page.keyboard.press("Enter");
@@ -136,7 +136,7 @@ test("offline reload keeps the same revealed card", async ({
     browserName !== "chromium",
     "Playwright WebKit does not expose service worker control; verify installed iOS manually.",
   );
-  await page.goto("/");
+  await page.goto("./");
   await page.evaluate(() => navigator.serviceWorker.ready);
   await page.reload();
   await page.getByRole("button", { name: "Play", exact: true }).click();
@@ -157,7 +157,7 @@ test("every sample card fits at enlarged text on a small phone", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 320, height: 700 });
-  await page.goto("/");
+  await page.goto("./");
   await page.getByRole("button", { name: "Play", exact: true }).click();
   const original = await page.evaluate(
     (k) => JSON.parse(localStorage.getItem(k)!),
@@ -195,7 +195,7 @@ test("every sample card fits at enlarged text on a small phone", async ({
 test("custom size persists before starting and interruption restores a stable card", async ({
   page,
 }) => {
-  await page.goto("/");
+  await page.goto("./");
   await page.getByRole("button", { name: "Custom deck size" }).click();
   await page.getByLabel("Number of cards").fill("37");
   await page.reload();
@@ -217,7 +217,7 @@ test("custom size persists before starting and interruption restores a stable ca
 });
 
 test("minimal interface and a real two-sided flip", async ({ page }) => {
-  await page.goto("/");
+  await page.goto("./");
   await expect(
     page.locator(".helper, .footnote, .eyebrow, .tap-hint"),
   ).toHaveCount(0);
@@ -249,7 +249,7 @@ test("minimal interface and a real two-sided flip", async ({ page }) => {
 test("legacy sound preferences migrate and tavern switches persist", async ({
   page,
 }) => {
-  await page.goto("/");
+  await page.goto("./");
   await page.evaluate(() =>
     localStorage.setItem(
       "drink-at-ron.settings.v1",
@@ -290,7 +290,7 @@ test("unavailable or rejected audio never blocks gameplay", async ({
       }
     } as unknown as typeof AudioContext;
   });
-  await page.goto("/");
+  await page.goto("./");
   await page.getByRole("button", { name: "Play", exact: true }).click();
   await page.getByRole("button", { name: "Open game menu" }).click();
   await page.getByRole("switch", { name: /Effects/ }).click();
@@ -304,7 +304,7 @@ test("unavailable or rejected audio never blocks gameplay", async ({
 test("canceled animations and backgrounding settle without additional draws", async ({
   page,
 }) => {
-  await page.goto("/");
+  await page.goto("./");
   await page.getByRole("button", { name: "Play", exact: true }).click();
   await page.getByRole("button", { name: "Reveal card" }).click();
   await page
@@ -344,7 +344,7 @@ test("offline uses local Grenze and painted controls", async ({
     browserName !== "chromium",
     "Installed Safari offline remains a physical-device check",
   );
-  await page.goto("/");
+  await page.goto("./");
   await page.evaluate(() => navigator.serviceWorker.ready);
   await page.reload();
   await context.setOffline(true);
@@ -358,6 +358,11 @@ test("offline uses local Grenze and painted controls", async ({
       .locator(".primary")
       .evaluate((el) => getComputedStyle(el).borderImageSource),
   ).toContain("button.webp");
+  expect(
+    await page
+      .locator(".pack-copy .pack-logo img")
+      .evaluate((el) => (el as HTMLImageElement).naturalWidth),
+  ).toBeGreaterThan(0);
   await page.getByRole("button", { name: "Install app" }).click();
   await expect(page.getByText("Ready for offline play")).toBeVisible();
 });
@@ -365,7 +370,7 @@ test("readable fallback when artwork fails and keyboard focus returns", async ({
   page,
 }) => {
   await page.route("**/art/tankard.webp", (route) => route.abort());
-  await page.goto("/");
+  await page.goto("./");
   await page.getByRole("button", { name: "Play", exact: true }).click();
   await page.getByRole("button", { name: "Reveal card" }).click();
   await ready(page);
@@ -386,7 +391,7 @@ test("rejected audio resume stays silent without an unhandled error", async ({
     AudioContext.prototype.resume = () =>
       Promise.reject(Error("NotAllowedError"));
   });
-  await page.goto("/");
+  await page.goto("./");
   await page.getByRole("button", { name: "Play", exact: true }).click();
   await page.getByRole("button", { name: "Open game menu" }).click();
   await page.getByRole("switch", { name: /Ambience/ }).click();

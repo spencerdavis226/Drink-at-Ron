@@ -5,12 +5,14 @@
   "type": "module",
   "scripts": {
     "dev": "vite --host 127.0.0.1",
-    "build": "tsx scripts/validate-content.ts && tsc -b && vite build",
+    "build": "tsx scripts/validate-content.ts && tsc -b && vite build && tsx scripts/check-budget.ts",
     "preview": "vite preview --host 127.0.0.1",
     "test": "vitest run",
     "test:e2e": "playwright test",
     "format": "prettier --write src scripts tests *.ts *.json index.html",
-    "generate:icons": "tsx scripts/icons.ts"
+    "generate:icons": "tsx scripts/icons.ts",
+    "test:workshop": "playwright test --config playwright.workshop.config.ts",
+    "test:update": "tsx scripts/check-update.ts"
   },
   "dependencies": {
     "react": "^19.1.0",

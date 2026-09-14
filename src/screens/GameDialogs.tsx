@@ -1,6 +1,8 @@
 import type { SessionState } from "../game/types";
 import type { Preferences } from "../app/persistence";
 import { Button, Modal, Toggle } from "../components/UI";
+import { PackLogo } from "../components/PackMarks";
+import { selectedPacks } from "../presentation/packs";
 import { CardFrame } from "../components/Cards";
 export type DialogName = "menu" | "previous" | "end" | "install" | null;
 export function GameDialogs({
@@ -48,6 +50,16 @@ export function GameDialogs({
         >
           Previous card
         </Button>
+        {session && (
+          <div className="active-pack-list" aria-label="Packs in this game">
+            {selectedPacks(session.config.packIds).map((pack) => (
+              <div key={pack.id}>
+                <PackLogo pack={pack} decorative />
+                <span>{pack.title}</span>
+              </div>
+            ))}
+          </div>
+        )}
         <Toggle
           label="Effects"
           enabled={prefs.sound}
@@ -76,6 +88,7 @@ export function GameDialogs({
     return (
       <Modal title="Previous card" onClose={() => setModal("menu")}>
         <CardFrame
+          packIds={session.config.packIds}
           card={session.cards.find((c) => c.id === session.previousId)!}
         />
         <Button onClick={() => setModal(null)}>Back to game</Button>
