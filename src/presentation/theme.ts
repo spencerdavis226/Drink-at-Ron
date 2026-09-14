@@ -17,7 +17,8 @@ export const theme = {
   },
   motion: { deal: 620, flip: 680, discard: 460, settle: 140, complete: 650 },
 } as const;
-export const asset = (path: string) => `${import.meta.env.BASE_URL}${path}`;
+export const asset = (path: string) =>
+  path.startsWith("/") ? path : `${import.meta.env.BASE_URL}${path}`;
 export const cardArt = (path: string) =>
   path === "art/tankard.svg" ? theme.assets.tankard : path;
 const decoded = new Map<string, Promise<void>>();

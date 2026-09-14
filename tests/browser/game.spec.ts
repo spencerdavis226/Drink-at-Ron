@@ -19,15 +19,24 @@ test("full custom game, rapid taps, restore, previous card, replay and settings"
     for (let i = 0; i < 8; i++) (el as HTMLElement).click();
   });
   await ready(page);
-  const title = await page.locator(".card-copy h2").innerText();
+  await expect(page.locator(".card-front")).toHaveCSS(
+    "border-top-width",
+    "0px",
+  );
+  const title = await page.locator(".study-title h2").innerText();
   await page.reload();
-  await expect(page.locator(".card-copy h2")).toHaveText(title);
+  await expect(page.locator(".study-title h2")).toHaveText(title);
   await expect(page.locator(".progress")).toContainText("1 / 2");
   await page.locator(".game-card").click();
   await ready(page);
   await page.getByRole("button", { name: "Open game menu" }).click();
   await page.getByRole("button", { name: "Previous card" }).click();
   await expect(page.locator(".previous-card h2")).toHaveText(title);
+  await expect(page.locator(".previous-card .study-face")).toBeVisible();
+  await expect(page.locator(".previous-card")).toHaveCSS(
+    "border-top-width",
+    "0px",
+  );
   await page.getByRole("button", { name: "Back to game" }).click();
   await expect(page.locator(".progress")).toContainText("2 / 2");
   await page.getByRole("button", { name: "Reveal card" }).click();
@@ -81,7 +90,7 @@ test("storage failure still allows play", async ({ page }) => {
   await expect(page.getByText(/Saving is unavailable/)).toBeVisible();
   await page.getByRole("button", { name: "Play", exact: true }).click();
   await page.getByRole("button", { name: "Reveal card" }).click();
-  await expect(page.locator(".card-copy h2")).toBeVisible();
+  await expect(page.locator(".study-title h2")).toBeVisible();
 });
 test("portrait, landscape, iPad and large text retain readable rules", async ({
   page,
@@ -98,7 +107,7 @@ test("portrait, landscape, iPad and large text retain readable rules", async ({
     await page.setViewportSize(viewport);
     await page.getByRole("button", { name: "Reveal card" }).click();
     await ready(page);
-    await expect(page.locator(".card-copy p")).toBeVisible();
+    await expect(page.locator(".study-rules p")).toBeVisible();
     expect(
       await page.evaluate(
         () => document.documentElement.scrollWidth <= innerWidth,
@@ -122,7 +131,7 @@ test("reduced motion and keyboard play", async ({ page }) => {
   await page.getByRole("button", { name: "Reveal card" }).focus();
   await page.keyboard.press("Enter");
   await ready(page);
-  await expect(page.locator(".card-copy h2")).toBeVisible();
+  await expect(page.locator(".study-title h2")).toBeVisible();
   await page.getByRole("button", { name: "Open game menu" }).click();
   await page.keyboard.press("Escape");
   await expect(page.getByRole("dialog")).not.toBeVisible();
@@ -142,13 +151,13 @@ test("offline reload keeps the same revealed card", async ({
   await page.getByRole("button", { name: "Play", exact: true }).click();
   await page.getByRole("button", { name: "Reveal card" }).click();
   await ready(page);
-  const title = await page.locator(".card-copy h2").innerText();
+  const title = await page.locator(".study-title h2").innerText();
   await context.setOffline(true);
   await page.reload();
-  await expect(page.locator(".card-copy h2")).toHaveText(title);
+  await expect(page.locator(".study-title h2")).toHaveText(title);
   expect(
     await page
-      .locator(".card-art")
+      .locator(".study-illustration img")
       .evaluate((el) => (el as HTMLImageElement).naturalWidth),
   ).toBeGreaterThan(0);
 });
@@ -178,10 +187,10 @@ test("every sample card fits at enlarged text on a small phone", async ({
     );
     await page.reload();
     await page.addStyleTag({ content: ":root {font-size:24px}" });
-    await expect(page.locator(".card-copy h2")).toHaveText(card.title);
+    await expect(page.locator(".study-title h2")).toHaveText(card.title);
     const fits = await page.locator(".game-card").evaluate((el) => {
       const box = el.getBoundingClientRect();
-      const text = el.querySelector(".card-copy")!.getBoundingClientRect();
+      const text = el.querySelector(".study-rules")!.getBoundingClientRect();
       return (
         text.left >= box.left &&
         text.right <= box.right &&
@@ -298,7 +307,7 @@ test("unavailable or rejected audio never blocks gameplay", async ({
   await page.getByRole("button", { name: "Resume game" }).click();
   await page.getByRole("button", { name: "Reveal card" }).click();
   await ready(page);
-  await expect(page.locator(".card-copy h2")).toBeVisible();
+  await expect(page.locator(".study-title h2")).toBeVisible();
   expect(errors).toEqual([]);
 });
 test("canceled animations and backgrounding settle without additional draws", async ({
@@ -374,7 +383,7 @@ test("readable fallback when artwork fails and keyboard focus returns", async ({
   await page.getByRole("button", { name: "Play", exact: true }).click();
   await page.getByRole("button", { name: "Reveal card" }).click();
   await ready(page);
-  await expect(page.locator(".card-copy p")).toBeVisible();
+  await expect(page.locator(".study-rules p")).toBeVisible();
   await page.getByRole("button", { name: "Open game menu" }).click();
   await page.keyboard.press("Escape");
   await expect(

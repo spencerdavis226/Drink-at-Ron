@@ -22,6 +22,12 @@ import { Completion } from "./screens/Completion";
 import { GameDialogs, type DialogName } from "./screens/GameDialogs";
 import "./style.css";
 import "./presentation/theme.css";
+import "./presentation/card-front.css";
+const frontSurfaces = import.meta.glob<string>("./presentation/art/*.webp", {
+  eager: true,
+  query: "?url",
+  import: "default",
+});
 function App() {
   const [loaded] = useState(loadSession),
     [corrupt, setCorrupt] = useState(loaded.corrupt),
@@ -56,7 +62,9 @@ function App() {
     tavernAudio.configure(prefs.sound, prefs.ambience);
   }, [prefs]);
   useEffect(() => {
-    Object.values(theme.assets).forEach((path) => void preloadArt(path));
+    Object.values({ ...theme.assets, ...frontSurfaces }).forEach(
+      (path) => void preloadArt(path),
+    );
     const onVisibility = () => {
       setHidden(document.hidden);
       tavernAudio.setHidden(document.hidden);

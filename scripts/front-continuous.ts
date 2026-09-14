@@ -12,8 +12,8 @@ for (const [name, left, top, width, height] of pieces)
   await sharp(source)
     .extract({ left, top, width, height })
     .webp({ quality: 85 })
-    .toFile(`src/workshop/art/continuous-${name}.webp`);
+    .toFile(`src/presentation/art/continuous-${name}.webp`);
 await sharp("assets/source/cheers-armor-v3.png")
   .resize(768)
   .webp({ quality: 84 })
-  .toFile("src/workshop/art/cheers-armor-v3.webp");
+  .toFile("src/presentation/art/cheers-armor-v3.webp");

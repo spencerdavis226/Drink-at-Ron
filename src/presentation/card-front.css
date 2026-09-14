@@ -1,0 +1,197 @@
+/* Approved continuous front: shared by play, previous card, and workshop. */
+.card-front {
+  padding: 0;
+  background: none;
+  border: 0;
+  gap: 0;
+  justify-content: stretch;
+  overflow: hidden;
+  border-radius: 15px;
+}
+
+.study-face {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: max(610px, 160cqw);
+  background: #213b39;
+  border-radius: 15px;
+  color: #372412;
+  position: relative;
+  isolation: isolate;
+  padding: 28px 0 34px;
+}
+
+.study-illustration {
+  width: 84%;
+  aspect-ratio: 1.4;
+  position: relative;
+  border: 0;
+  display: grid;
+  place-items: center;
+  isolation: isolate;
+  flex-shrink: 0;
+  margin: 0 auto;
+  border-image: none;
+  background: #203b38;
+  border-radius: 18% 18% 0 0;
+  overflow: hidden;
+}
+
+.study-illustration img {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  object-fit: cover;
+  display: block;
+  position: absolute;
+  inset: 0;
+  border-radius: 0;
+  z-index: 0;
+}
+
+.study-illustration img.placeholder-scene {
+  object-fit: contain;
+  padding: 20px;
+}
+
+.study-title {
+  position: relative;
+  z-index: 4;
+  margin: -3px 0 -4px;
+  padding: 16px 38px;
+  border: 0;
+  filter: none;
+  min-height: 72px;
+  border-image: none;
+  background: url("./art/continuous-band.webp") center/100% 100% no-repeat;
+  display: grid;
+  place-items: center;
+}
+
+.study-title h2 {
+  font: 700 clamp(1.9rem, 9cqw, 2.6rem)/1.05 var(--font-tavern);
+  color: #ffe8ab;
+  text-shadow: 0 2px 2px #000;
+  letter-spacing: -0.4px;
+  text-wrap: balance;
+  margin: 0;
+  font-size: clamp(1.9rem, 8cqw, 2.6rem);
+}
+
+.study-rules {
+  flex: 1;
+  border: 0;
+  padding: 25px 18px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  min-height: 220px;
+  width: 84%;
+  margin: 0 auto;
+  border-image: none;
+  background: #f1d9a6 url("./art/continuous-paper.webp") center/cover;
+  border-radius: 0 0 12px 12px;
+  padding-bottom: max(20px, calc(12cqw - 18px));
+}
+
+.study-rules p {
+  font: 400 1.375rem/1.4 var(--font-tavern);
+  margin: 0;
+  text-wrap: pretty;
+  color: #372412;
+  margin-block: auto;
+}
+
+.enlarged .study-rules p,
+.enlarged .card-copy p {
+  font-size: 2.0625rem;
+}
+
+.enlarged .study-title h2,
+.enlarged .card-copy h2 {
+  font-size: 3rem;
+}
+
+.card-stage {
+  container-type: inline-size;
+  aspect-ratio: auto;
+}
+
+.card-pack-marks {
+  margin-top: auto;
+  padding-top: 12px;
+}
+
+.card-rotator {
+  position: relative;
+  height: auto;
+}
+
+.card-back {
+  position: absolute;
+  inset: 0;
+  min-height: 0;
+  height: 100%;
+}
+
+.study-face::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 3;
+  background-image:
+    url("./art/continuous-top.webp"), url("./art/continuous-bottom.webp"),
+    url("./art/continuous-left.webp"), url("./art/continuous-right.webp");
+  background-position:
+    top center,
+    bottom center,
+    left center,
+    right center;
+  background-size:
+    100% auto,
+    100% auto,
+    9.77% 100%,
+    9.77% 100%;
+  background-repeat: no-repeat;
+  clip-path: polygon(
+    evenodd,
+    0 0,
+    100% 0,
+    100% 100%,
+    0 100%,
+    0 0,
+    10% 10cqw,
+    90% 10cqw,
+    90% calc(100% - 12cqw),
+    10% calc(100% - 12cqw),
+    10% 10cqw
+  );
+}
+
+.enlarged .study-title h2 {
+  font-size: 3rem;
+}
+
+.card-stage,
+.previous-card {
+  container-type: inline-size;
+}
+
+.game-card {
+  padding: 0;
+}
+
+.previous-card {
+  padding: 0;
+  border: 0;
+  background: none;
+  text-align: center;
+}
+
+.previous-card .study-face {
+  width: 100%;
+}

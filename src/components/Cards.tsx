@@ -1,3 +1,4 @@
+import cheers from "../presentation/art/cheers-armor-v3.webp";
 import type { CardDefinition } from "../game/types";
 import { asset, cardArt } from "../presentation/theme";
 import { CardPackMarks } from "./PackMarks";
@@ -10,15 +11,26 @@ export function CardFace({
   packIds?: readonly string[];
 }) {
   return (
-    <>
-      <Artwork className="card-art" src={asset(cardArt(card.artwork))} alt="" />
-      <div className="card-copy">
+    <div className="study-face">
+      <div className="study-illustration">
+        <Artwork
+          src={
+            card.id === "core.cheers" ? cheers : asset(cardArt(card.artwork))
+          }
+          alt=""
+          className={
+            card.id === "core.cheers" ? "painted-scene" : "placeholder-scene"
+          }
+        />
+      </div>
+      <div className="study-title">
         <h2>{card.title}</h2>
-        <span className="divider" aria-hidden="true" />
+      </div>
+      <div className="study-rules">
         <p>{card.rules}</p>
         <CardPackMarks cardId={card.id} packIds={packIds} />
       </div>
-    </>
+    </div>
   );
 }
 export function CardFrame({
