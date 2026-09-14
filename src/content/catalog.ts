@@ -20,7 +20,7 @@ export const cards: CardDefinition[] = [
     "A little cheers",
     "sip",
     "Raise your glass. Take one sip.",
-    "A centered cheerful field-mouse traveler in a moss-green cape raises a bronze cup; quiet warm backdrop, broad painted shapes and generous headroom.",
+    "An original goofy enchanted copper suit of armor proudly raises a tiny wooden cup; expressive glowing eyes, quiet tavern background, broad painted forms and safe headroom.",
   ),
   card(
     "table",

@@ -1,7 +1,7 @@
 import type { CardDefinition } from "../game/types";
 import { Artwork } from "../components/UI";
 import { asset, cardArt } from "../presentation/theme";
-import cheers from "./art/cheers-mouse-v2.webp";
+import cheers from "./art/cheers-armor-v3.webp";
 import { CardPackMarks } from "../components/PackMarks";
 export function StudyFace({ card }: { card: CardDefinition }) {
   return (

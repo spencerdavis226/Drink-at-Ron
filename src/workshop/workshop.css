@@ -237,3 +237,95 @@
   min-height: 0;
   height: 100%;
 }
+
+/* One physical perimeter; inset layers do not introduce extra outer corners. */
+.study-face {
+  position: relative;
+  isolation: isolate;
+  padding: 28px 0 34px;
+  background: #213b39;
+}
+.study-face::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 3;
+  background-image:
+    url("./art/continuous-top.webp"), url("./art/continuous-bottom.webp"),
+    url("./art/continuous-left.webp"), url("./art/continuous-right.webp");
+  background-position:
+    top center,
+    bottom center,
+    left center,
+    right center;
+  background-size:
+    100% auto,
+    100% auto,
+    9.77% 100%,
+    9.77% 100%;
+  background-repeat: no-repeat;
+}
+.study-illustration {
+  width: 84%;
+  margin: 0 auto;
+  border: 0;
+  border-image: none;
+  aspect-ratio: 1.4;
+  background: #203b38;
+  border-radius: 18% 18% 0 0;
+  overflow: hidden;
+}
+.study-illustration img {
+  border-radius: 0;
+  z-index: 0;
+}
+.study-title {
+  z-index: 4;
+  margin: -3px 0 -4px;
+  min-height: 72px;
+  padding: 16px 38px;
+  border: 0;
+  border-image: none;
+  background: url("./art/continuous-band.webp") center/100% 100% no-repeat;
+  filter: none;
+  display: grid;
+  place-items: center;
+}
+.study-title h2 {
+  font-size: clamp(1.9rem, 8cqw, 2.6rem);
+}
+.study-rules {
+  width: 84%;
+  margin: 0 auto;
+  border: 0;
+  border-image: none;
+  padding: 25px 18px 16px;
+  background: #f1d9a6 url("./art/continuous-paper.webp") center/cover;
+  min-height: 220px;
+}
+.enlarged .study-title h2 {
+  font-size: 3rem;
+}
+.study-face::after {
+  clip-path: polygon(
+    evenodd,
+    0 0,
+    100% 0,
+    100% 100%,
+    0 100%,
+    0 0,
+    10% 10cqw,
+    90% 10cqw,
+    90% calc(100% - 12cqw),
+    10% calc(100% - 12cqw),
+    10% 10cqw
+  );
+}
+.study-rules {
+  border-radius: 0 0 12px 12px;
+}
+/* Reserve clearance above the bottom hardware at larger card widths. */
+.study-rules {
+  padding-bottom: max(20px, calc(12cqw - 18px));
+}

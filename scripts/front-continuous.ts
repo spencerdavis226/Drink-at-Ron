@@ -1,0 +1,19 @@
+import sharp from "sharp";
+const source = "assets/source/front-continuous-v3.png";
+const pieces: [string, number, number, number, number][] = [
+  ["top", 0, 0, 1024, 220],
+  ["bottom", 0, 1286, 1024, 250],
+  ["left", 0, 260, 100, 240],
+  ["right", 924, 260, 100, 240],
+  ["band", 0, 654, 1024, 142],
+  ["paper", 160, 850, 700, 400],
+];
+for (const [name, left, top, width, height] of pieces)
+  await sharp(source)
+    .extract({ left, top, width, height })
+    .webp({ quality: 85 })
+    .toFile(`src/workshop/art/continuous-${name}.webp`);
+await sharp("assets/source/cheers-armor-v3.png")
+  .resize(768)
+  .webp({ quality: 84 })
+  .toFile("src/workshop/art/cheers-armor-v3.webp");

@@ -1,5 +1,7 @@
 # Drink at Ron — game and content brief
 
+For the intended humor, specificity, and card-writing personality, also use [Card voice and theme reference](CARD_VOICE_REFERENCE.md). It distills the reusable creative direction from Spencer's earlier CABIIN card set without importing that game's board, team, zone, or movement rules.
+
 ## Pillars
 
 A shared deck, a lively table, one clear instruction at a time. A reveal should be delightful and a rule should make sense on one reading. No accounts, scorekeeping, timers, or player setup. The app deals cards; the people handle the activity.
