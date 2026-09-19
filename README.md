@@ -2,6 +2,8 @@
 
 A portrait-first party card game for one shared iPhone or iPad. Choose packs and a deck length, tap to reveal, then tap to discard. No accounts, backend, or paid services.
 
+See the concise [current status and handoff](docs/STATUS.md).
+
 ## Run
 
 Use Node.js 22.12 or newer.
