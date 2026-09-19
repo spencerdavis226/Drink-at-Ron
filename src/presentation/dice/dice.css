@@ -88,8 +88,10 @@
   position: absolute;
   left: 50%;
   top: 46%;
-  width: 0;
-  height: 0;
+  /* Keep a real layout box so the transformed die is rendered and observable. */
+  width: 1px;
+  height: 1px;
+  transform-origin: 0 0;
   transform-style: preserve-3d;
   will-change: transform;
 }

@@ -117,6 +117,7 @@ test("canceling animation or hiding the app keeps the committed result", async (
   for (const interrupt of ["cancel", "hide"]) {
     await seed(page);
     await page.locator(".game-card").click();
+    await expect(page.locator(".card-stage")).toHaveClass(/roll/);
     await expect(page.locator(".die-model").first()).toBeVisible();
     const before = (await saved(page)).roll;
     await page.evaluate((interrupt) => {
@@ -184,6 +185,7 @@ test("dice work offline after installation without a second roll on reload", asy
   await page.evaluate(async () => {
     await navigator.serviceWorker.ready;
   });
+  await page.reload();
   await expect
     .poll(() => page.evaluate(() => !!navigator.serviceWorker.controller))
     .toBe(true);
