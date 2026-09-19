@@ -88,6 +88,7 @@ export function GameDialogs({
     return (
       <Modal title="Previous card" onClose={() => setModal("menu")}>
         <CardFrame
+          roll={session.previousRoll}
           packIds={session.config.packIds}
           card={session.cards.find((c) => c.id === session.previousId)!}
         />

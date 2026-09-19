@@ -1,3 +1,4 @@
+import { diceFixtures } from "./dice-fixtures";
 import { createSession } from "../game/engine";
 import { cards, packs } from "../content/catalog";
 export function seededRandom(seed: string) {
@@ -12,12 +13,17 @@ export function seededRandom(seed: string) {
     return ((n ^ (n >>> 14)) >>> 0) / 4294967296;
   };
 }
+export const workshopCards = [...cards, ...diceFixtures];
+export const workshopPacks = packs.map((p) => ({
+  ...p,
+  cardIds: [...p.cardIds, ...diceFixtures.map((c) => c.id)],
+}));
 export function workshopSession(seed: string, first: string, revealed = true) {
   const random = seededRandom(seed);
   const session = createSession(
     { version: 1, packIds: packs.map((p) => p.id), limit: null },
-    cards,
-    packs,
+    workshopCards,
+    workshopPacks,
     random,
   );
   if (session.order.includes(first))

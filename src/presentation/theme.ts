@@ -15,7 +15,14 @@ export const theme = {
     panel: "art/panel.webp",
     bezel: "art/bezel.webp",
   },
-  motion: { deal: 620, flip: 680, discard: 460, settle: 140, complete: 650 },
+  motion: {
+    deal: 620,
+    flip: 680,
+    discard: 460,
+    settle: 140,
+    complete: 650,
+    roll: 2100,
+  },
 } as const;
 export const asset = (path: string) =>
   path.startsWith("/") ? path : `${import.meta.env.BASE_URL}${path}`;

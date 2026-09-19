@@ -21,7 +21,11 @@ for (const file of files) {
   if (file.startsWith("dist/assets/") && file.endsWith(".js")) {
     const code = await readFile(file, "utf8");
     js += gzipSync(code).length;
-    if (/Card workshop|Front study|workshop-viewport/.test(code))
+    if (
+      /Card workshop|Front study|workshop-viewport|core\.dice-toast-study|core\.dice-title-study/.test(
+        code,
+      )
+    )
       throw Error("Developer workshop leaked into production");
   }
 }

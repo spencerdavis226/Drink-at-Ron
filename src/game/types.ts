@@ -1,5 +1,18 @@
 export const VERSION = 1 as const;
 export type Category = "sip" | "group" | "category" | "challenge" | "rule";
+export interface DiceDefinition {
+  version: 1;
+  count: number;
+  sides: 6 | 20;
+  instruction?: string;
+  outcomes?: { min: number; max: number; instruction: string }[];
+}
+export interface DiceRoll {
+  values: number[];
+  total: number;
+  instruction: string;
+  returned: boolean;
+}
 export interface CardDefinition {
   version: 1;
   id: string;
@@ -8,6 +21,7 @@ export interface CardDefinition {
   category: Category;
   artwork: string;
   illustrationBrief: string;
+  dice?: DiceDefinition;
 }
 export interface PackDefinition {
   version: 1;
@@ -24,7 +38,9 @@ export interface GameConfig {
   limit: number | null;
 }
 export interface SessionState {
-  version: 1;
+  version: 2;
+  roll: DiceRoll | null;
+  previousRoll: DiceRoll | null;
   config: GameConfig;
   cards: CardDefinition[];
   order: string[];

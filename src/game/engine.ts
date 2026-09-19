@@ -51,10 +51,10 @@ export function createSession(
   );
   const cards = catalog
     .filter((c) => selected.has(c.id))
-    .map((c) => ({ ...c }));
+    .map((c) => structuredClone(c));
   if (!cards.length) throw new Error("This deck has no cards.");
   return {
-    version: 1,
+    version: 2,
     config: { ...config, packIds: [...config.packIds] },
     cards,
     order: shuffle(
@@ -66,6 +66,8 @@ export function createSession(
     discarded: 0,
     phase: "hidden",
     previousId: null,
+    roll: null,
+    previousRoll: null,
   };
 }
 export function currentCard(s: SessionState) {
@@ -77,13 +79,22 @@ export function advance(
 ): SessionState {
   if (s.phase === "complete") return s;
   if (s.phase === "hidden") return { ...s, phase: "revealed" };
+  if (currentCard(s).dice && !s.roll?.returned) return s;
+  const history = { previousRoll: s.roll, roll: null };
   const discarded = s.discarded + 1,
     previousId = currentCard(s).id;
   if (s.config.limit !== null && discarded === s.config.limit)
-    return { ...s, phase: "complete", discarded, previousId };
+    return {
+      ...s,
+      previousRoll: s.roll,
+      phase: "complete",
+      discarded,
+      previousId,
+    };
   if (s.position + 1 === s.order.length)
     return {
       ...s,
+      ...history,
       discarded,
       previousId,
       phase: "hidden",
@@ -93,6 +104,7 @@ export function advance(
     };
   return {
     ...s,
+    ...history,
     discarded,
     previousId,
     phase: "hidden",
@@ -107,7 +119,7 @@ export function replaySession(
   return {
     ...s,
     config: { ...s.config, packIds: [...s.config.packIds] },
-    cards: s.cards.map((c) => ({ ...c })),
+    cards: s.cards.map((c) => structuredClone(c)),
     order: shuffle(
       s.cards.map((c) => c.id),
       random,
@@ -117,5 +129,7 @@ export function replaySession(
     discarded: 0,
     phase: "hidden",
     previousId: null,
+    roll: null,
+    previousRoll: null,
   };
 }

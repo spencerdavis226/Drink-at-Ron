@@ -1,11 +1,16 @@
 import { useState, useRef } from "react";
-import { cards, packs, validateCatalog } from "../content/catalog";
+import { validateCatalog } from "../content/catalog";
 import { PresentationController } from "../presentation/controller";
 import { usePresentation } from "../presentation/usePresentation";
 import { Play } from "../screens/Play";
-import { workshopSession } from "./session";
+import {
+  workshopCards as cards,
+  workshopPacks as packs,
+  workshopSession,
+  seededRandom,
+} from "./session";
 import { Button } from "../components/UI";
-import { StudyFace } from "./StudyFace";
+
 import "./workshop.css";
 const sizes = {
   "Small phone": 320,
@@ -20,15 +25,18 @@ function Preview({
   large,
   width,
   study,
+  outcome,
 }: {
   id: string;
   seed: string;
   large: boolean;
   width: number;
   study: boolean;
+  outcome: string;
 }) {
   const [initial] = useState(() => workshopSession(seed, id));
   const random = useRef(initial.random);
+  const diceRandom = useRef(seededRandom(`${seed}:dice`));
   const state = usePresentation(
     () =>
       new PresentationController(
@@ -36,6 +44,12 @@ function Preview({
         () => {},
         () => {},
         () => random.current(),
+        () =>
+          outcome === "Minimum"
+            ? 0
+            : outcome === "Maximum"
+              ? 0.999999
+              : diceRandom.current(),
       ),
   );
   const { controller, session, outgoing, motion, transition } = state;
@@ -73,21 +87,24 @@ function Preview({
           transition={transition}
           onTap={() => controller.tap()}
           onFinish={controller.finish.bind(controller)}
-          renderFace={study ? (card) => <StudyFace card={card} /> : undefined}
         />
       </div>
     </>
   );
 }
 export default function Workshop() {
-  const [selected, setSelected] = useState("core.cheers"),
+  const [selected, setSelected] = useState(() => {
+      const id = new URLSearchParams(location.search).get("card");
+      return cards.some((c) => c.id === id) ? id! : "core.cheers";
+    }),
     [query, setQuery] = useState(""),
     [category, setCategory] = useState("all"),
     [pack, setPack] = useState("all"),
     [seed, setSeed] = useState("tavern-1"),
     [size, setSize] = useState<keyof typeof sizes>("Small phone"),
     [large, setLarge] = useState(false),
-    [study, setStudy] = useState(true);
+    [study, setStudy] = useState(true),
+    [outcome, setOutcome] = useState("Seeded");
   let validation = "All cards validate";
   try {
     validateCatalog(cards, packs);
@@ -106,7 +123,7 @@ export default function Workshop() {
     <div className="workshop">
       <header>
         <h1>Card workshop</h1>
-        <p>Front study · awaiting visual approval</p>
+        <p>Approved frame · dice interaction study</p>
         <a href="?">Return to game</a>
       </header>
       <aside>
@@ -179,6 +196,18 @@ export default function Workshop() {
           </select>
         </label>
         <label>
+          Dice outcome
+          <select
+            aria-label="Dice outcome"
+            value={outcome}
+            onChange={(e) => setOutcome(e.target.value)}
+          >
+            {["Seeded", "Minimum", "Maximum"].map((value) => (
+              <option key={value}>{value}</option>
+            ))}
+          </select>
+        </label>
+        <label>
           Seed
           <input
             aria-label="Seed"
@@ -208,7 +237,13 @@ export default function Workshop() {
         <p>{card.id}</p>
         <p>{card.illustrationBrief}</p>
         <nav aria-label="Study examples">
-          {["core.cheers", "core.animals", "core.left"].map((id) => (
+          {[
+            "core.cheers",
+            "core.animals",
+            "core.left",
+            "core.dice-toast-study",
+            "core.dice-title-study",
+          ].map((id) => (
             <Button key={id} onClick={() => setSelected(id)}>
               {cards.find((c) => c.id === id)!.title}
             </Button>
@@ -217,12 +252,13 @@ export default function Workshop() {
       </aside>
       <main>
         <Preview
-          key={`${selected}:${seed}:${study}`}
+          key={`${selected}:${seed}:${study}:${outcome}`}
           id={selected}
           seed={seed}
           large={large}
           width={sizes[size]}
           study={study}
+          outcome={outcome}
         />
       </main>
     </div>

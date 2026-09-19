@@ -1,11 +1,11 @@
 import { test, expect } from "vitest";
-import { workshopSession } from "../src/workshop/session";
+import { workshopSession, workshopCards } from "../src/workshop/session";
 import { cards } from "../src/content/catalog";
 test("seeded workshop preserves the pool and reproduces order", () => {
   const a = workshopSession("a", "core.left").session;
   expect(a).toEqual(workshopSession("a", "core.left").session);
   expect(a.order[0]).toBe("core.left");
-  expect(new Set(a.order).size).toBe(cards.length);
+  expect(new Set(a.order).size).toBe(workshopCards.length);
   expect(a.order).not.toEqual(workshopSession("b", "core.left").session.order);
 });
 test("Core composition matches the content brief", () => {

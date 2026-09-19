@@ -1,4 +1,5 @@
 import { validateCatalog } from "../content/catalog";
+import { validateRoll } from "../game/dice";
 import { validConfig } from "../game/engine";
 import type { GameConfig, SessionState } from "../game/types";
 export const SAVE_KEY = "drink-at-ron.session.v1";
@@ -20,10 +21,22 @@ export const defaults: Preferences = {
   customSize: "40",
 };
 export function parseSession(raw: string): SessionState {
-  const s = JSON.parse(raw) as SessionState;
+  const parsed = JSON.parse(raw);
+  // Retain the storage key so existing installs discover and migrate their saves.
+  // Legacy snapshots cannot have dice mechanics retroactively attached to them.
+  if (parsed?.version === 1 && Array.isArray(parsed.cards)) {
+    if (
+      parsed.cards.some((c: { dice?: unknown } | null) => c?.dice !== undefined)
+    )
+      throw Error("Invalid legacy dice save");
+    parsed.version = 2;
+    parsed.roll = null;
+    parsed.previousRoll = null;
+  }
+  const s = parsed as SessionState;
   if (
     !s ||
-    s.version !== 1 ||
+    s.version !== 2 ||
     !validConfig(s.config) ||
     !s.config.packIds.length ||
     !Array.isArray(s.cards) ||
@@ -66,6 +79,20 @@ export function parseSession(raw: string): SessionState {
     (s.config.limit !== null && s.discarded >= s.config.limit)
   )
     throw Error("Invalid count");
+  const current = s.cards.find((c) => c.id === s.order[s.position])!;
+  const previous = s.cards.find((c) => c.id === s.previousId);
+  validateRoll(s.roll, current.dice);
+  validateRoll(s.previousRoll, previous?.dice);
+  if (
+    (s.phase === "hidden" && s.roll !== null) ||
+    (previous?.dice && !s.previousRoll?.returned) ||
+    (s.previousRoll && !s.previousRoll.returned) ||
+    (s.phase === "complete" &&
+      current.dice &&
+      (!s.roll?.returned ||
+        JSON.stringify(s.roll) !== JSON.stringify(s.previousRoll)))
+  )
+    throw Error("Invalid dice progress");
   return s;
 }
 export function loadSession(): {

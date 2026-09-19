@@ -1,6 +1,11 @@
 import type { Effect } from "../presentation/controller";
 /** Original synthesized foley. No network, media playback, or dependency on audio availability. */
 export class TavernAudio {
+  private rollTimers: ReturnType<typeof setTimeout>[] = [];
+  private stopRoll() {
+    this.rollTimers.forEach(clearTimeout);
+    this.rollTimers = [];
+  }
   private context: AudioContext | undefined;
   private effects = false;
   private ambience = false;
@@ -10,6 +15,7 @@ export class TavernAudio {
   private bedGain: GainNode | undefined;
   private crackle: ReturnType<typeof setInterval> | undefined;
   configure(effects: boolean, ambience: boolean) {
+    if (!effects) this.stopRoll();
     this.effects = effects;
     this.ambience = ambience;
     this.sync();
@@ -19,6 +25,7 @@ export class TavernAudio {
     this.sync();
   }
   setHidden(hidden: boolean) {
+    if (hidden) this.stopRoll();
     this.hidden = hidden;
     this.sync();
   }
@@ -92,11 +99,29 @@ export class TavernAudio {
     osc.stop(ctx.currentTime + duration);
   }
   play(event: Effect) {
+    if (event === "roll-cancel") {
+      this.stopRoll();
+      return;
+    }
     if (!this.unlocked || this.hidden || !this.effects) return;
     const ctx = this.getContext();
     if (!ctx || ctx.state !== "running") return;
     try {
-      if (event === "deal") {
+      if (event === "roll") {
+        this.stopRoll();
+        this.noise(ctx, 0.22, 0.045, 1200);
+        for (const delay of [360, 770, 1180, 1650])
+          this.rollTimers.push(
+            setTimeout(() => this.play("dice-impact"), delay),
+          );
+      } else if (event === "dice-impact") {
+        this.tap(ctx, 185, 0.09, 0.032);
+        this.noise(ctx, 0.045, 0.035, 1000);
+      } else if (event === "dice-settle") {
+        this.stopRoll();
+        this.tap(ctx, 145, 0.09, 0.022);
+        this.tap(ctx, 880, 0.24, 0.005);
+      } else if (event === "deal") {
         this.noise(ctx, 0.38, 0.1, 1700);
         this.tap(ctx, 150, 0.14, 0.035);
       } else if (event === "reveal") {
@@ -162,6 +187,7 @@ export class TavernAudio {
     if (!this.ambience) this.stopBed();
   }
   dispose() {
+    this.stopRoll();
     this.unlocked = false;
     this.stopBed();
     void this.context?.close().catch(() => {});

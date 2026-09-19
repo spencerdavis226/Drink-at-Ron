@@ -1,5 +1,6 @@
 import { useEffect, useRef, type ReactNode } from "react";
 import type { SessionState, CardDefinition } from "../game/types";
+import { diceNotation } from "../game/dice";
 import { currentCard } from "../game/engine";
 import type { Motion } from "../presentation/controller";
 import { cardPacks } from "../presentation/packs";
@@ -35,6 +36,7 @@ export function Play({
               discard: "discard",
               settle: "card-settle",
               complete: "celebration",
+              roll: "dice-roll",
             } as const
           )[motion]
       )
@@ -48,7 +50,9 @@ export function Play({
     };
   }, [transition, motion, onFinish]);
   return (
-    <section className="table">
+    <section
+      className={`table ${session.phase === "revealed" && card.dice && !session.roll?.returned ? "dice-active" : ""}`}
+    >
       <div
         className="progress"
         aria-label={`Card ${session.discarded + 1} of ${session.config.limit ?? "endless"}`}
@@ -58,6 +62,14 @@ export function Play({
           <span className="muted">/ {session.config.limit ?? "∞"}</span>
         </span>
       </div>
+      <span className="sr-only" role="status" aria-live="polite">
+        {session.phase === "revealed" &&
+        session.roll &&
+        !session.roll.returned &&
+        motion !== "roll"
+          ? `Rolled ${session.roll.values.join(" plus ")}${session.roll.values.length > 1 ? `, total ${session.roll.total}` : ""}. Tap to return to the card.`
+          : ""}
+      </span>
       <div className={`card-stage ${motion ?? ""}`}>
         <div className="deck-under" aria-hidden="true" />
         <button
@@ -68,12 +80,18 @@ export function Play({
           aria-label={
             session.phase === "hidden"
               ? "Reveal card"
-              : `${card.title}. ${card.rules} ${cardPacks(
-                  card.id,
-                  session.config.packIds,
-                )
-                  .map((pack) => pack.title)
-                  .join(", ")}. Tap to put this card aside.`
+              : card.dice && !session.roll?.returned
+                ? session.roll
+                  ? motion === "roll"
+                    ? "Rolling dice"
+                    : `Rolled ${session.roll.total}. Return to card`
+                  : `Roll ${diceNotation(card.dice)}. ${card.rules}`
+                : `${card.title}. ${session.roll?.returned ? `Rolled ${session.roll.total}. ${session.roll.instruction}` : card.rules} ${cardPacks(
+                    card.id,
+                    session.config.packIds,
+                  )
+                    .map((pack) => pack.title)
+                    .join(", ")}. Tap to put this card aside.`
           }
         >
           <span
@@ -88,7 +106,14 @@ export function Play({
               {renderFace ? (
                 renderFace(card)
               ) : (
-                <CardFace card={card} packIds={session.config.packIds} />
+                <CardFace
+                  card={card}
+                  packIds={session.config.packIds}
+                  roll={session.roll}
+                  rolling={motion === "roll"}
+                  transition={transition}
+                  onFinish={onFinish}
+                />
               )}
             </span>
           </span>

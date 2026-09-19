@@ -1,3 +1,4 @@
+import { validateDice } from "../game/dice";
 import type { CardDefinition, PackDefinition, Category } from "../game/types";
 const card = (
   id: string,
@@ -252,6 +253,7 @@ export function validateCatalog(cs: CardDefinition[], ps: PackDefinition[]) {
     )
       fail("Invalid or duplicate card ID");
     ids.add(c.id);
+    if (c.dice !== undefined) validateDice(c.dice);
     if (!["sip", "group", "category", "challenge", "rule"].includes(c.category))
       fail(`Invalid category: ${c.id}`);
     for (const key of [

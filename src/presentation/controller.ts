@@ -1,8 +1,18 @@
-import { advance, type Random } from "../game/engine";
+import { rollDice, returnToCard } from "../game/dice";
+import { advance, currentCard, type Random } from "../game/engine";
 import type { SessionState } from "../game/types";
 import { theme } from "./theme";
 export type Motion = keyof typeof theme.motion;
-export type Effect = "deal" | "reveal" | "discard" | "complete" | "press";
+export type Effect =
+  | "deal"
+  | "reveal"
+  | "discard"
+  | "complete"
+  | "press"
+  | "roll"
+  | "dice-impact"
+  | "dice-settle"
+  | "roll-cancel";
 export interface Presentation {
   session: SessionState | null;
   outgoing: SessionState | null;
@@ -18,6 +28,7 @@ export class PresentationController {
     private persist: (session: SessionState | null) => void,
     private effect: (event: Effect) => void = () => {},
     private random: Random = Math.random,
+    private diceRandom: Random = Math.random,
   ) {
     this.state = {
       session: initial,
@@ -63,7 +74,22 @@ export class PresentationController {
   tap() {
     const { session, motion } = this.state;
     if (!session || motion || session.phase === "complete") return;
+    if (
+      session.phase === "revealed" &&
+      currentCard(session).dice &&
+      !session.roll?.returned
+    ) {
+      const rolling = !session.roll;
+      const next = rolling
+        ? rollDice(session, this.diceRandom)
+        : returnToCard(session);
+      this.persist(next);
+      this.transition(next, rolling ? "roll" : "settle");
+      this.effect(rolling ? "roll" : "press");
+      return;
+    }
     const next = advance(session, this.random);
+    if (next === session) return;
     this.persist(next);
     const revealing = session.phase === "hidden";
     this.transition(
@@ -76,6 +102,7 @@ export class PresentationController {
   finish(id: number) {
     if (id !== this.state.transition || !this.state.motion) return;
     const { session, motion } = this.state;
+    if (motion === "roll") this.effect("dice-settle");
     if (motion === "discard" && session?.phase === "complete") {
       this.transition(session, "complete");
       this.effect("complete");
@@ -84,6 +111,7 @@ export class PresentationController {
     else this.transition(session, null);
   }
   settleAll() {
+    if (this.state.motion === "roll") this.effect("roll-cancel");
     if (this.state.motion) this.transition(this.state.session, null);
   }
 }
