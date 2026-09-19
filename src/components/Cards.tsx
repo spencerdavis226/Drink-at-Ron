@@ -46,7 +46,10 @@ export function CardFace({
       <div className="study-title">
         <h2>{card.title}</h2>
       </div>
-      <div className="study-rules">
+      <div
+        className="study-rules"
+        onClick={(event) => event.stopPropagation()}
+      >
         {roll?.returned && (
           <strong className="rolled-total">Rolled {roll.total}</strong>
         )}

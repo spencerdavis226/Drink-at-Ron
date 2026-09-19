@@ -162,44 +162,111 @@ test("offline reload keeps the same revealed card", async ({
   ).toBeGreaterThan(0);
 });
 
-test("every sample card fits at enlarged text on a small phone", async ({
+test("Core cards keep edge clearance and a 2:3 frame across device sizes", async ({
   page,
 }) => {
-  await page.setViewportSize({ width: 320, height: 700 });
+  test.setTimeout(180000);
   await page.goto("./");
+  await page.evaluate(() => localStorage.clear());
+  await page.reload();
   await page.getByRole("button", { name: "Play", exact: true }).click();
   const original = await page.evaluate(
     (k) => JSON.parse(localStorage.getItem(k)!),
     key,
   );
-  for (const card of original.cards) {
-    const state = {
-      ...original,
-      order: [
-        card.id,
-        ...original.order.filter((id: string) => id !== card.id),
-      ],
-      phase: "revealed",
-    };
-    await page.evaluate(
-      ({ key, state }) => localStorage.setItem(key, JSON.stringify(state)),
-      { key, state },
-    );
-    await page.reload();
-    await page.addStyleTag({ content: ":root {font-size:24px}" });
-    await expect(page.locator(".study-title h2")).toHaveText(card.title);
-    const fits = await page.locator(".game-card").evaluate((el) => {
-      const box = el.getBoundingClientRect();
-      const text = el.querySelector(".study-rules")!.getBoundingClientRect();
-      return (
-        text.left >= box.left &&
-        text.right <= box.right &&
-        text.bottom <= box.bottom &&
-        text.top >= box.top
+  for (const viewport of [
+    { width: 320, height: 700 },
+    { width: 390, height: 844 },
+    { width: 768, height: 1024 },
+    { width: 844, height: 390 },
+  ]) {
+    await page.setViewportSize(viewport);
+    for (const card of original.cards) {
+      const state = {
+        ...original,
+        order: [
+          card.id,
+          ...original.order.filter((id: string) => id !== card.id),
+        ],
+        phase: "revealed",
+      };
+      await page.evaluate(
+        ({ key, state }) => localStorage.setItem(key, JSON.stringify(state)),
+        { key, state },
       );
-    });
-    expect(fits, card.title).toBe(true);
+      await page.reload();
+      await page.addStyleTag({ content: ":root {font-size:24px}" });
+      await expect(page.locator(".study-title h2")).toHaveText(card.title);
+      const fits = await page.locator(".game-card").evaluate((el) => {
+        const box = el.getBoundingClientRect();
+        const rules = el.querySelector(".study-rules")!.getBoundingClientRect();
+        return {
+          ratio: el.clientWidth / el.clientHeight,
+          sideMargin: Math.min(box.left, innerWidth - box.right),
+          rulesFit:
+            rules.left >= box.left &&
+            rules.right <= box.right &&
+            rules.bottom <= box.bottom &&
+            rules.top >= box.top,
+          equalFaces:
+            Math.abs((el.querySelector(".card-back") as HTMLElement).clientWidth - (el.querySelector(".card-front") as HTMLElement).clientWidth) < 1 &&
+            Math.abs((el.querySelector(".card-back") as HTMLElement).clientHeight - (el.querySelector(".card-front") as HTMLElement).clientHeight) < 1,
+        };
+      });
+      expect(fits.ratio, `${viewport.width}px ${card.title}`).toBeCloseTo(
+        2 / 3,
+        2,
+      );
+      expect(fits.rulesFit, `${viewport.width}px ${card.title}`).toBe(true);
+      expect(fits.equalFaces, `${viewport.width}px ${card.title}`).toBe(true);
+      if (viewport.width <= 390)
+        expect(fits.sideMargin, `${viewport.width}px ${card.title}`).toBeGreaterThanOrEqual(23);
+    }
   }
+});
+
+test("scrolling enlarged rules does not discard the card", async ({ page }) => {
+  await page.setViewportSize({ width: 320, height: 700 });
+  await page.goto("./");
+  await page.evaluate(() => localStorage.clear());
+  await page.reload();
+  await page.getByRole("button", { name: "Play", exact: true }).click();
+  const original = await page.evaluate(
+    (k) => JSON.parse(localStorage.getItem(k)!),
+    key,
+  );
+  const longest = original.cards.reduce(
+    (result: { id: string; rules: string }, card: { id: string; rules: string }) =>
+      card.rules.length > result.rules.length ? card : result,
+  );
+  await page.evaluate(
+    ({ key, state }) => localStorage.setItem(key, JSON.stringify(state)),
+    {
+      key,
+      state: {
+        ...original,
+        order: [
+          longest.id,
+          ...original.order.filter((id: string) => id !== longest.id),
+        ],
+        phase: "revealed",
+      },
+    },
+  );
+  await page.reload();
+  await page.addStyleTag({ content: ":root {font-size:24px}" });
+  const rules = page.locator(".study-rules");
+  await expect
+    .poll(() => rules.evaluate((el) => el.scrollHeight > el.clientHeight + 2))
+    .toBe(true);
+  await rules.evaluate((el) => el.scrollTo({ top: 240 }));
+  await expect
+    .poll(() => rules.evaluate((el) => el.scrollTop))
+    .toBeGreaterThan(0);
+  await rules.click();
+  const saved = await page.evaluate((k) => JSON.parse(localStorage.getItem(k)!), key);
+  expect(saved.phase).toBe("revealed");
+  expect(saved.discarded).toBe(0);
 });
 test("custom size persists before starting and interruption restores a stable card", async ({
   page,

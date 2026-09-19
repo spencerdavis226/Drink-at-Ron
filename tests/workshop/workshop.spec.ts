@@ -22,11 +22,11 @@ test("workshop previews are isolated, readable, and use real motion", async ({
     ).toBe(true);
     const fits = await page.locator(".game-card").evaluate((el) => {
       const card = el.getBoundingClientRect();
-      const text = el.querySelector(".study-rules p")!.getBoundingClientRect();
+      const rules = el.querySelector(".study-rules")!.getBoundingClientRect();
       return (
-        text.bottom <= card.bottom &&
-        text.left >= card.left &&
-        text.right <= card.right
+        rules.bottom <= card.bottom &&
+        rules.left >= card.left &&
+        rules.right <= card.right
       );
     });
     expect(fits).toBe(true);
@@ -40,7 +40,7 @@ test("workshop previews are isolated, readable, and use real motion", async ({
   expect(await page.evaluate(() => JSON.stringify(localStorage))).toBe(before);
 });
 
-test("all Core study cards fit each preview size, including enlarged rules", async ({
+test("all Core and dice study cards retain their ratio at each preview size", async ({
   page,
 }) => {
   test.setTimeout(90000);
@@ -82,16 +82,23 @@ test("all Core study cards fit each preview size, including enlarged rules", asy
         expect(
           await page.locator(".game-card").evaluate((el) => {
             const box = el.getBoundingClientRect();
-            return [
-              ...el.querySelectorAll(".study-rules p,.study-title h2"),
-            ].every((e) => {
+            const rules = el.querySelector(".study-rules")!.getBoundingClientRect();
+            return (
+              Math.abs(el.clientWidth / el.clientHeight - 2 / 3) < 0.01 &&
+              Math.abs((el.querySelector(".card-back") as HTMLElement).clientWidth - (el.querySelector(".card-front") as HTMLElement).clientWidth) < 1 &&
+              Math.abs((el.querySelector(".card-back") as HTMLElement).clientHeight - (el.querySelector(".card-front") as HTMLElement).clientHeight) < 1 &&
+              rules.left >= box.left - 2 &&
+              rules.right <= box.right + 2 &&
+              rules.bottom <= box.bottom + 2 &&
+              [...el.querySelectorAll(".study-title h2")].every((e) => {
               const r = e.getBoundingClientRect();
               return (
                 r.left >= box.left - 2 &&
                 r.right <= box.right + 2 &&
                 r.bottom <= box.bottom + 2
               );
-            });
+              })
+            );
           }),
           `${size} ${id} enlarged=${large}`,
         ).toBe(true);

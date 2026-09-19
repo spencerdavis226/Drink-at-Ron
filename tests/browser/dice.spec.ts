@@ -165,9 +165,13 @@ test("animation failure and four-die results still allow play at enlarged text",
   await expect(page.locator(".resolved-instruction")).toBeVisible();
   expect(
     await page.locator(".game-card").evaluate((el) => {
-      const a = el.getBoundingClientRect(),
-        b = el.querySelector(".resolved-instruction")!.getBoundingClientRect();
-      return b.bottom <= a.bottom && b.left >= a.left && b.right <= a.right;
+      const face = el.querySelector(".study-face") as HTMLElement,
+        rules = el.querySelector(".study-rules") as HTMLElement;
+      return (
+        rules.clientWidth <= face.clientWidth &&
+        rules.clientHeight <= face.clientHeight &&
+        rules.scrollWidth <= rules.clientWidth + 2
+      );
     }),
   ).toBe(true);
 });

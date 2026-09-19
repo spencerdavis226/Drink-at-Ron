@@ -85,6 +85,8 @@
 }
 .workshop-viewport .game-card {
   width: 100%;
+  min-height: 0;
+  padding: 0;
 }
 .workshop-viewport .progress {
   padding: 8px;
@@ -109,15 +111,4 @@
 .workshop :focus-visible {
   outline: 3px solid #efcd7d;
   outline-offset: 3px;
-}
-.workshop-viewport .card-stage {
-  aspect-ratio: auto;
-}
-.workshop-viewport .game-card {
-  padding: 0;
-  min-height: min(150cqw, 720px);
-}
-.workshop-viewport .card-rotator {
-  height: auto;
-  min-height: inherit;
 }

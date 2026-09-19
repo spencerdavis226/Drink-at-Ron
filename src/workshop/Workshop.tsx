@@ -14,6 +14,7 @@ import { Button } from "../components/UI";
 import "./workshop.css";
 const sizes = {
   "Small phone": 320,
+  "Phone 390": 390,
   "Large phone": 430,
   iPad: 768,
   Landscape: 844,
