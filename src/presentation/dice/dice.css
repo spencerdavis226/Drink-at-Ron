@@ -84,21 +84,11 @@
   perspective: 600px;
   perspective-origin: 50% 45%;
 }
-.die-model {
+/* Faces stay in this perspective context because WebKit flattens a nested 3D model. */
+.die-facet {
   position: absolute;
   left: 50%;
   top: 46%;
-  /* Keep a real layout box so the transformed die is rendered and observable. */
-  width: 1px;
-  height: 1px;
-  transform-origin: 0 0;
-  transform-style: preserve-3d;
-  will-change: transform;
-}
-.die-facet {
-  position: absolute;
-  left: 0;
-  top: 0;
   transform-origin: 0 0;
   backface-visibility: hidden;
   background: linear-gradient(

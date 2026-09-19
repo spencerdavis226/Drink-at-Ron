@@ -32,6 +32,49 @@ async function seed(page: Page, index = 0, limit = 2, count?: number) {
 }
 const saved = (page: Page) =>
   page.evaluate((key) => JSON.parse(localStorage.getItem(key)!), key);
+const paintedFaces = (page: Page) =>
+  page
+    .locator(".die-model")
+    .first()
+    .evaluate((model) => {
+      const rect = model.getBoundingClientRect();
+      const faces = new Set<Element>();
+      for (let x = rect.left; x < rect.right; x += 3)
+        for (let y = rect.top; y < rect.bottom; y += 3) {
+          const face = document.elementFromPoint(x, y)?.closest(".die-facet");
+          if (face?.parentElement === model) faces.add(face);
+        }
+      return faces.size;
+    });
+
+test("d6 and d20 keep painted 3D faces during and after the roll", async ({
+  page,
+}) => {
+  await page.addInitScript(() => {
+    Math.random = () => 0.4;
+  });
+  for (const [index, midFaces, finalFaces] of [
+    [0, 2, 3],
+    [1, 6, 10],
+  ] as const) {
+    await seed(page, index);
+    await page.locator(".game-card").click();
+    await expect(page.locator(".die-model").first()).toBeVisible();
+    await page.waitForTimeout(850);
+    expect(await paintedFaces(page)).toBeGreaterThanOrEqual(midFaces);
+    await ready(page);
+    expect(await paintedFaces(page)).toBe(finalFaces);
+    const value = Number(
+      await page.locator(".die-model").first().getAttribute("data-value"),
+    );
+    await expect(
+      page
+        .locator(".die-model")
+        .first()
+        .locator(`[data-face-value="${value}"]`),
+    ).toHaveCSS("visibility", "visible");
+  }
+});
 
 test("dice roll commits once, survives reload, returns to the card, and keeps Previous Card", async ({
   page,
@@ -48,6 +91,9 @@ test("dice roll commits once, survives reload, returns to the card, and keeps Pr
   await page.reload();
   await expect(page.locator('[data-dice-state="result"]')).toBeVisible();
   expect((await saved(page)).roll).toEqual(committed.roll);
+  await expect(page.locator(".die-model")).toHaveCount(
+    committed.roll.values.length,
+  );
   expect(
     await page
       .locator(".die-model")
