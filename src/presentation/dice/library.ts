@@ -5,12 +5,12 @@ import DiceBox from "@3d-dice/dice-box-threejs";
  * screen, and rebound off the walls before settling. Gravity and throw scale
  * with the (now full-screen) stage so the pace stays consistent.
  */
-const GRAVITY_MULTIPLIER = 1100;
-const THROW_FORCE = 2;
-const CONTACT_RESTITUTION = 0.3;
-const CONTACT_FRICTION = 0.85;
-const WALL_RESTITUTION = 0.55;
-const WALL_FRICTION = 0.4;
+const GRAVITY_MULTIPLIER = 450;
+const THROW_FORCE = 1.5;
+const CONTACT_RESTITUTION = 0.35;
+const CONTACT_FRICTION = 0.7;
+const WALL_RESTITUTION = 0.75;
+const WALL_FRICTION = 0.3;
 
 /**
  * Snap every die to the face nearest to straight up once physics has stopped.
@@ -61,19 +61,15 @@ function snapDiceFlat(box: any) {
 /** All upstream lifecycle work stays here. Outcomes are supplied by our engine. */
 export async function createDiceStage(selector: string) {
   const container = document.querySelector<HTMLElement>(selector)!;
-  // The stage is full-screen, so the library's throw impulse and travel
-  // distances scale with the viewport. Scale gravity and throw with it to keep
-  // the roll's timing consistent.
-  const spanScale =
-    Math.max(container.clientWidth, container.clientHeight) / 300;
   const box = new DiceBox(selector, {
     sounds: false,
-    baseScale: Math.min(
-      340,
-      Math.max(110, container.clientHeight * 0.29),
-    ),
-    strength: Math.min(1.5, Math.max(0.6, THROW_FORCE / spanScale)),
-    gravity_multiplier: Math.round(GRAVITY_MULTIPLIER * spanScale),
+    // Size dice to a modest share of the box width so two can travel and
+    // carom instead of jamming. The library's throw impulse already scales
+    // with the box, so strength and gravity stay constant for consistent
+    // airtime and travel across screen sizes.
+    baseScale: Math.min(200, Math.max(90, container.clientHeight * 0.15)),
+    strength: THROW_FORCE,
+    gravity_multiplier: GRAVITY_MULTIPLIER,
     light_intensity: 0.85,
     color_spotlight: 0xfff1d6,
     theme_customColorset: {
