@@ -65,6 +65,10 @@ export async function createDiceStage(selector: string) {
   const container = document.querySelector<HTMLElement>(selector)!;
   const box = new DiceBox(selector, {
     sounds: false,
+    // The library's shadow map is wasted here: we hide its table plane and
+    // paint our own contact shadows, and the map is the biggest mobile GPU
+    // cost. Disabling it is the single largest perf win on phones.
+    shadows: false,
     // Size dice to a share of the box so two can travel and carom.
     baseScale: Math.min(260, Math.max(110, container.clientHeight * 0.24)),
     strength: THROW_FORCE,
@@ -121,6 +125,10 @@ export async function createDiceStage(selector: string) {
   let disposed = false;
   let shadowFrame = 0;
   let shadowCanvas: HTMLCanvasElement | null = null;
+  const stopShadows = () => {
+    if (shadowFrame) cancelAnimationFrame(shadowFrame);
+    shadowFrame = 0;
+  };
   const animate = box.animateThrow.bind(box);
   box.animateThrow = (...args: unknown[]) => {
     if (!disposed) animate(...args);
@@ -132,7 +140,7 @@ export async function createDiceStage(selector: string) {
   const dispose = () => {
     if (disposed) return;
     disposed = true;
-    if (shadowFrame) cancelAnimationFrame(shadowFrame);
+    stopShadows();
     shadowCanvas?.remove();
     box.running = false;
     box.rolling = false;
@@ -161,7 +169,7 @@ export async function createDiceStage(selector: string) {
   };
   try {
     await box.initialize();
-    box.renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+    box.renderer.setPixelRatio(Math.min(devicePixelRatio, 1.5));
     box.renderer.setSize(box.container.clientWidth, box.container.clientHeight);
     // Tune contacts: grippy floor, lively walls so dice rebound off the
     // backboard instead of dying on contact.
@@ -187,7 +195,7 @@ export async function createDiceStage(selector: string) {
       "2d",
     );
     shadowCanvas.className = "dice-shadow-layer";
-    const pixelRatio = Math.min(devicePixelRatio, 2);
+    const pixelRatio = Math.min(devicePixelRatio, 1.5);
     shadowCanvas.width = Math.round(container.clientWidth * pixelRatio);
     shadowCanvas.height = Math.round(container.clientHeight * pixelRatio);
     container.insertBefore(shadowCanvas, container.firstChild);
@@ -244,6 +252,8 @@ export async function createDiceStage(selector: string) {
         `${values.length}d${sides}@${values.join(",")}`,
       );
       snapDiceFlat(box);
+      // Dice are at rest; stop repainting shadows every frame.
+      stopShadows();
       const actual = result.sets.flatMap(
         (set: { rolls: { value: number }[] }) =>
           set.rolls.map((roll) => roll.value),
