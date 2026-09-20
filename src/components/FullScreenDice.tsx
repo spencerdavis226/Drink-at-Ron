@@ -5,6 +5,27 @@ import { diceNotation } from "../game/dice";
 import { tavernAudio } from "../app/sound";
 import "./fullscreen-dice.css";
 
+// Probe WebGL once per session and release the probe context immediately, so
+// repeated rolls do not allocate a new context just to test support.
+let webglSupport: boolean | undefined;
+const supportsWebGL = () => {
+  if (webglSupport !== undefined) return webglSupport;
+  try {
+    const canvas = document.createElement("canvas");
+    const gl =
+      canvas.getContext("webgl2") ||
+      canvas.getContext("webgl") ||
+      canvas.getContext("experimental-webgl");
+    webglSupport = !!gl;
+    (gl as WebGLRenderingContext | null)
+      ?.getExtension("WEBGL_lose_context")
+      ?.loseContext();
+  } catch {
+    webglSupport = false;
+  }
+  return webglSupport;
+};
+
 /**
  * Card-forward roll overlay. There is no dialog and no dimming: the live 2:3
  * card stays readable behind a transparent 3D stage, dice tumble over it, and a
@@ -37,18 +58,6 @@ export default function FullScreenDice({
   const forceMotion =
     import.meta.env.DEV &&
     new URLSearchParams(location.search).has("force-motion");
-  const supportsWebGL = () => {
-    try {
-      const canvas = document.createElement("canvas");
-      return !!(
-        canvas.getContext("webgl2") ||
-        canvas.getContext("webgl") ||
-        canvas.getContext("experimental-webgl")
-      );
-    } catch {
-      return false;
-    }
-  };
   useEffect(() => {
     const previous = document.activeElement as HTMLElement | null;
     return () => {
@@ -96,6 +105,12 @@ export default function FullScreenDice({
       setStopReason(reason);
       finish.current();
     };
+    // Platforms without WebGL (e.g. Linux CI WebKit) degrade instantly, before
+    // installing any listeners or timers, so nothing leaks on this path.
+    if (!supportsWebGL()) {
+      stop("webgl");
+      return;
+    }
     const hidden = () => {
       if (document.hidden) stop("hidden");
     };
@@ -118,12 +133,6 @@ export default function FullScreenDice({
     window.addEventListener("resize", onResize);
     document.addEventListener("visibilitychange", hidden);
     reduced.addEventListener("change", onReducedChange);
-    // Platforms without WebGL (e.g. Linux CI WebKit) degrade instantly to the
-    // static result instead of hanging until the safety timeout.
-    if (!supportsWebGL()) {
-      stop("webgl");
-      return;
-    }
     setStatus("loading");
     void import("../presentation/dice/library")
       .then(async ({ createDiceStage }) => {
@@ -144,6 +153,15 @@ export default function FullScreenDice({
         const actual = await stage.roll(card.dice!.sides, roll.values);
         if (canceled) return;
         completed = true;
+        // A lost context after settling must not leave a frozen canvas.
+        canvas?.addEventListener(
+          "webglcontextlost",
+          () => {
+            stage?.dispose();
+            retained.current = null;
+          },
+          { once: true },
+        );
         setRollMs(Math.round(performance.now() - started));
         setStatus(`settled:${actual.join(",")}`);
         clearTimeout(timeout);
@@ -184,7 +202,11 @@ export default function FullScreenDice({
         type="button"
         className="roll-cta"
         disabled={rolling}
-        onClick={onTap}
+        onPointerDown={() => tavernAudio.unlock()}
+        onClick={() => {
+          tavernAudio.unlock();
+          onTap();
+        }}
       >
         {rolling ? "Rolling…" : roll ? "Continue" : `Roll ${diceNotation(card.dice!)}`}
       </button>

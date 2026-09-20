@@ -67,6 +67,35 @@ for (const index of [0, 1])
     expect((await saved(page)).roll.returned).toBe(true);
     expect((await saved(page)).discarded).toBe(0);
   });
+test("a restored unrolled dice card rolls from the CTA with Effects enabled", async ({
+  page,
+}) => {
+  await seed(page);
+  await page.evaluate(() =>
+    localStorage.setItem(
+      "drink-at-ron.settings.v1",
+      JSON.stringify({
+        config: { version: 1, packIds: ["core"], limit: 2 },
+        sound: true,
+        choice: "40",
+        customSize: "40",
+      }),
+    ),
+  );
+  await page.reload();
+  const cta = page.locator(".roll-cta");
+  await expect(cta).toHaveText(/^Roll /);
+  await cta.click();
+  await expect(page.locator(".roll-stage")).toHaveAttribute(
+    "data-renderer",
+    /^settled:/,
+    { timeout: 15000 },
+  );
+  await expect(page.locator(".roll-cta")).toHaveText("Continue");
+  expect(await page.locator(".roll-stage").getAttribute("data-stop-reason")).toBe(
+    "",
+  );
+});
 test("repeated rolls settle, never fall back, and are never a weak plop", async ({
   page,
 }) => {

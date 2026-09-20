@@ -317,6 +317,21 @@ export async function createDiceStage(
         }
       const result = await rolling;
       snapDiceFlat(box);
+      // Verify the actual rendered upward face after the flat-snap, not only the
+      // library's returned result array.
+      const rendered = (box.diceList ?? []).map((die: any) => {
+        try {
+          return die?.getFaceValue?.()?.value;
+        } catch {
+          return undefined;
+        }
+      });
+      if (
+        rendered.length === values.length &&
+        rendered.every((value: unknown) => typeof value === "number") &&
+        rendered.join(",") !== values.join(",")
+      )
+        throw new Error("Dice rendered face mismatch");
       // Dice are at rest; stop repainting shadows every frame.
       stopShadows();
       const actual = result.sets.flatMap(
