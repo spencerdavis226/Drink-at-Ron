@@ -106,6 +106,28 @@ test("reload and reduced motion restore static saved result without replay", asy
   await expect(page.locator(".roll-stage canvas")).toHaveCount(0);
   expect((await saved(page)).roll).toEqual(committed.roll);
 });
+test("dragging the resolved rules does not return or discard", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await seed(page);
+  await page.locator(".roll-cta").click();
+  await expect(page.locator(".roll-cta")).toHaveText("Continue");
+  const box = (await page.locator(".study-rules").boundingBox())!;
+  await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+  await page.mouse.down();
+  await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2 - 30, {
+    steps: 5,
+  });
+  await page.mouse.up();
+  await expect(page.locator(".roll-cta")).toHaveText("Continue");
+  expect((await saved(page)).roll.returned).toBe(false);
+  expect((await saved(page)).discarded).toBe(0);
+  // A stationary tap on the card still returns, then the next action discards.
+  await page.locator(".game-card").click();
+  await expect(page.locator(".roll-layer")).toHaveCount(0);
+  expect((await saved(page)).roll.returned).toBe(true);
+  await page.locator(".game-card").click();
+  await expect.poll(async () => (await saved(page)).discarded).toBe(1);
+});
 test("Escape interrupts safely and preserves the committed roll", async ({
   page,
 }) => {

@@ -71,7 +71,11 @@ export function Play({
           session.roll &&
           !session.roll.returned &&
           motion !== "roll"
-            ? `Rolled ${session.roll.values.join(" plus ")}${session.roll.values.length > 1 ? `, total ${session.roll.total}` : ""}. Tap to return to the card.`
+            ? `Rolled ${session.roll.values.join(" plus ")}${
+                session.roll.values.length > 1
+                  ? `, total ${session.roll.total}`
+                  : ""
+              }. ${session.roll.instruction}`
             : ""}
         </span>
         <div className={`card-stage ${motion ?? ""}`}>

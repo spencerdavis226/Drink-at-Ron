@@ -1,4 +1,115 @@
-# Visual pass assets
+# Drink at Ron — current visual design standards
+
+Updated 2026-09-20 after a production-browser visual audit. **This section is normative; the historical generation prompts below are archival.** Implementation tasks and priorities live only in [STATUS.md](STATUS.md). These standards refine the approved art direction; they do not authorize replacing the frame, characters or renderer wholesale.
+
+## Creative direction and quality bar
+
+An original, mischievous fantasy tavern collectible-card game. Weathered walnut, sculpted worn bronze, deep teal leather, warm parchment and painted expressive characters. Hearthstone is a craftsmanship/rendering reference, not a source of characters, symbols, compositions or copied UI. Humor can be broad and goofy in the spirit of tabletop fantasy parody; retain one immediately readable gag or action.
+
+The approved card back, continuous-front silhouette, cheers illustration and tankard remain anchors. **Premium means coherent construction and effortless reading before it means more detail.** A visible seam, hidden instruction, stretched frame, unclear control or detached shadow fails the quality bar even when the source art is excellent. Automated functional tests alone cannot approve a visual release.
+
+See [visual audit evidence](studies/visual-audit-2026-09-20/README.md) for current failures. Those captures are not approved golden images.
+
+## Card construction
+
+- One physical card, one outer **2:3 ratio** in play, back, Previous Card and workshop. Title or rule length cannot determine outer height. Correct ratio must be measured on the untransformed box; allow for rotation when checking viewport clearance.
+- Use shared stage/frame geometry, not separate approximations per screen. Reserve safe areas, HUD and any bottom control before sizing the stage. Target roughly 20–24 CSS px side clearance on small portrait phones, consistent with the approved current margins.
+- Continuous perimeter: no hard horizontal rail joints, doubled bevels, abrupt wood-grain changes or visible rectangular masking cuts. Corners and sculpted ornaments retain their proportions; stretch only deliberately plain runs. Check at actual 1× display size and at 2× inspection.
+- Illustration sits behind the frame. Plaque reads as attached to the same frame. Parchment sits inside/behind the inner lip; its square edges must not overlay carved hardware.
+- One consistent lighting direction (warm upper-left), one dark contact edge and restrained outer shadow. Do not stack arbitrary inner glows and dark outlines to conceal poor assembly.
+- Pack identity occupies a small dedicated footer position, outside the rules scroller, without covering rules. It appears in setup and pause using the same mark. No category label above the rule, decorative stats, or symbols implying mechanics.
+
+## Reading comes before illustration acreage
+
+The player should read one actionable instruction without figuring out the layout. Hierarchy on reveal: illustration/title establish personality; the **rule is the task**. At settlement, the dice result and resolved action become primary.
+
+- Space allocation is responsive within the fixed silhouette. The illustration must yield height on short phones/long titles before rule text gets clipped or shrunk. Current fixed art allocation is not a design contract.
+- Default 390×844 acceptance target: every approved Core instruction is fully readable without inner scrolling at normal text size. At 320×568, optimize for the same and record specific exceptions for review. A mere `scrollHeight > clientHeight` is not proof of clipped rules: measure the paragraph, footer and padding separately.
+- Scrolling is the accessibility/exception fallback, not the default presentation of a two-sentence card. At enlarged text, keep contained scroll functional and obvious through a quiet edge affordance. Never add permanent “scroll here” helper copy, crop the last line, clamp instructions, or use microcopy to make a test pass.
+- Short prompts can be centered. Longer instructions should be tested left-aligned with a clean reading measure; do not force every paragraph into a centered zigzag. Keep consistent paragraph placement rather than floating each card's text arbitrarily.
+- Long titles may occupy two lines. Reserve their space before allocating art/rules. Never ellipsize meaning-bearing titles, overlap ornament or squeeze letter spacing to force one line.
+- Large empty HUD-to-card gaps are not inherently premium. Balance the entire viewport before making the rules panel smaller. Ordinary play must not require scrolling past a mostly empty header.
+- Short-height landscape needs an intentional approved reading composition. Never shrink the full portrait card until text is tiny or leave the rule entirely below the initial screen. A compact card alongside an accessible reading area is a study candidate, not an already-approved new screen.
+
+## Typography
+
+Use locally bundled **Grenze** throughout, with its existing license. No font swap as an expedient fix.
+
+| Role | Starting range | Treatment |
+| --- | --- | --- |
+| Card title | 28–40 CSS px; a reviewed compact exception may use 26px | 700; approximately 1.05–1.15 line height; maximum two normal-size lines |
+| Rules / resolved instructions | 20–24 CSS px normal size | 400–500; approximately 1.3–1.4 line height; warm dark ink |
+| Primary controls | 24–28 CSS px | 600–700; clear baseline, 44px minimum target |
+| Secondary controls / pack names | 20–24 CSS px | 500–600; readable unselected state |
+| Progress | 20–24 CSS px | Quiet; subordinate to card, not another headline |
+| Dice result | Larger numeral with restrained emphasis | High contrast, one accent; instruction remains equally readable |
+
+Ranges are design starting points, not permission to override user text enlargement. Use rem-aware sizing where suitable; verify actual computed sizes. Do not make all text bold/black. Avoid heavy shadows on body text; save embossed/shadowed treatment for titles and controls. Body text on parchment should have comfortable contrast without noisy textures behind individual letters. Functional labels remain plain English; theme does not justify obscure wording.
+
+Accessible names and live announcements must contain the actual action/result. Visually hidden content stays available to assistive technology and consumes no visible layout space. Never use `display:none` to “fix” a live announcement or expose accessibility helper prose as game copy.
+
+## Art and surface density
+
+Follow [ILLUSTRATION_GUIDELINES.md](ILLUSTRATION_GUIDELINES.md) for focal-safe composition, original character design and briefs.
+
+- Center the important subject/action inside the safe crop region; show the whole meaningful silhouette. One dominant subject, a few broad color/value groups, quiet context. Inspect at the real small card window before approving detail.
+- Keep the visual joke legible from across a table; tiny costume trivia is not the primary storytelling device.
+- The tabletop and text panels must be quieter than the card. Edge grain, scuffs and bronze highlights can be rich; avoid competing high-contrast grain directly behind UI text.
+- Existing repeated tankard scenes are explicitly provisional. Do not bake titles, rules or pack symbols into illustrations. Use the shared artwork registry rather than component conditionals.
+- No full-set art commission until text, frame/crop geometry and measured offline budget are stable. Preserve source images; only optimized runtime assets enter the build.
+
+## Controls and secondary screens
+
+- One strongest action per screen. Keep play HUD compact: progress and menu, plus the contextual dice action when needed. No new permanent instructions.
+- Selected, unselected, pressed, focused and disabled are distinct states. **Unselected is not disabled:** keep its name/mark readable, use check/border/material treatment to communicate selection, and do not rely on color alone.
+- Pack tiles have stable slots for artwork/mark, title and selection indicator. Logos must not accidentally become inline punctuation after a wrapped title. Avoid repeating the same hero illustration as the only differentiator.
+- Use the same painted button vocabulary for Play, Roll, Continue and other primary actions. Avoid a clean gradient button dropped into an otherwise worn painted interface.
+- Dice controls never cover actionable rules, pack marks or menu targets. Thumb reach does not justify a floating control over the paragraph.
+- Text-bearing dialogs use quieter material than their edges. Maintain clear label baselines, consistent row spacing and 44px+ targets. Close/back controls remain reachable even with enlarged text; focus returns to a sensible control.
+- Completion can feel warm and satisfying without loud confetti or extra mechanics. Recovery and installation remain clear and functional; explanations belong in those dialogs, not the main play surface.
+
+## Motion direction: physical, restrained, coherent
+
+The card is an object, not a web panel. Every phase should communicate an action: **deal, lift/turn, land, release/discard**. Stronger motion belongs to those actions; it should not compete continuously with reading.
+
+- Front/back, thickness and lifted-card shadow must behave as one object. Remaining deck has its own subtle stationary contact shadow. A full-width lifted-card shadow behind an edge-on card reads as a compositing error.
+- Highlights belong to the moving material and clip to its silhouette. No glint sweeping bare tabletop, floating rectangular sheen or front/back bleed through the turn.
+- Show a meaningful part of the turn, not an immediate front followed by a long idle settle. Inspect at 0/25/50/75/100% and normal speed. Maintain one turn direction and one small believable lift; no ornamental extra wobble.
+- Discard follows a clear outward trajectory. It exposes the next back coherently; fading supports leaving the field and cannot hide a discontinuous swap.
+- One shared duration/easing owner per semantic phase. Current code tokens are deal 560ms, flip 560ms, discard 420ms, settle 160ms, completion 600ms. These are the baseline to review, not proof that the feel is approved. Measure effective CSS and lifecycle completion together before changing timings.
+- Animations use transform/opacity where feasible. Do not animate box-shadow/filter/blur continuously to simulate expensive polish. Keep will-change scoped to active motion rather than every UI element forever.
+- Atmosphere is sparse and low contrast; off really means off for decoration. Reduced Motion removes decorative movement; hidden app suspends effects. Do not apply a dev-only override inconsistently across renderer and controller.
+- Input locks last only through their intended transition. All accepted actions save once before animation; cancellation/hidden/reload restores the committed state. No animation polish may change this contract.
+
+## Dice-specific composition
+
+Keep the approved transparent full-screen library roll over the live card. Do not restore the rejected dimmed-dialog or custom CSS renderer.
+
+- Dice may cross the screen while tumbling, but readable results must take precedence once settled. Measure title/rule/CTA occlusion. Propose any resting-position change with visual evidence; do not manipulate physics differently between pre-simulation and replay to move dice away.
+- The result is unambiguous: saved values match final upward faces, total is easy to read, resolved instruction is available, Continue does not discard, and the later card action does.
+- One coherent material and contact-shadow treatment; match the tavern's warm lighting without excessive grime/noise on numerals. Confirm d20 numerals at small sizes.
+- Collision sound follows actual impacts, respects Effects and foreground state, and is unlocked from either actual user control. Failure/Reduced Motion yields the same readable saved result without a forced animation replay.
+
+## Visual release gate
+
+For every frame/layout/motion change, keep before/after evidence and review:
+
+1. 320×568 and 390×844 phone, 768×1024 iPad, 844×390 landscape, split view, enlarged text and Reduced Motion.
+2. Setup including unselected packs; back; short/long/two-line-title/category/rule fronts; dice ready/moving/settled; Previous Card; pause/install/completion/recovery.
+3. Mid-turn, edge-on and discard frames as well as stable screenshots. Review a normal-speed recording separately; frozen CSS frames do not measure FPS.
+4. No hard frame seams, stretched ornaments, hidden instructions, overlapping CTA, disappearing pack identity, ambiguous disabled styling, backface bleed, or detached moving-card shadow.
+5. Browser assertions measure paragraph visibility, control overlap and all card-context ratios, not only outer containment. Accessibility announcements, focus, touch/scroll gestures and exactly-once actions remain correct.
+6. Physical iPhone/iPad Safari/Home Screen results, frame timing, audio and VoiceOver are recorded separately. A desktop screenshot cannot certify native-quality performance.
+
+Only user-approved revised compositions become golden references. Do not bless current broken screenshots just to make a regression suite pass. Keep one current design system and one implementation plan.
+
+---
+
+## Historical assets and generation record — not current layout instructions
+
+The following preserves provenance and earlier prompts, including rejected/pending studies. Statements below about growing a card, pending frame approval, older timing, or replacement mouse art are historical and superseded by the current standards above and STATUS. Do not reimplement them.
+
+### Original visual pass assets
 
 Generated with the built-in image-generation tool. Original PNGs are preserved in `assets/source`; runtime WebP assets live in `public/art`. Resizing and WebP encoding use Sharp (no visual edits). The tankard preserves alpha. These are original fantasy-tavern assets, with no borrowed characters or logos.
 
