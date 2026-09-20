@@ -2,13 +2,11 @@ import { test, expect, type Page } from "@playwright/test";
 import { createSession } from "../../src/game/engine";
 import { cards, packs } from "../../src/content/catalog";
 const key = "drink-at-ron.session.v1";
-test.beforeEach(async ({ page }) => {
-  const ok = await page.evaluate(() => {
+const webgl = (page: Page) =>
+  page.evaluate(() => {
     const canvas = document.createElement("canvas");
     return !!(canvas.getContext("webgl2") || canvas.getContext("webgl"));
   });
-  test.skip(!ok, "WebGL unavailable (e.g. Linux CI WebKit)");
-});
 const diceIds = ["dice.toast", "dice.title"] as const;
 async function seed(page: Page, index = 0) {
   const card = cards.find((c) => c.id === diceIds[index])!;
@@ -32,6 +30,8 @@ for (const index of [0, 1])
   test(`dice overlay renders saved ${index ? "d20" : "2d6"} faces over the card`, async ({
     page,
   }, info) => {
+    // Only the tests that must actually render need WebGL.
+    test.skip(!(await webgl(page)), "WebGL unavailable (headless Linux WebKit)");
     const external: string[] = [];
     page.on("request", (request) => {
       if (
@@ -70,6 +70,7 @@ for (const index of [0, 1])
 test("a restored unrolled dice card rolls from the CTA with Effects enabled", async ({
   page,
 }) => {
+  test.skip(!(await webgl(page)), "WebGL unavailable (headless Linux WebKit)");
   await seed(page);
   await page.evaluate(() =>
     localStorage.setItem(
@@ -99,6 +100,7 @@ test("a restored unrolled dice card rolls from the CTA with Effects enabled", as
 test("repeated rolls settle, never fall back, and are never a weak plop", async ({
   page,
 }) => {
+  test.skip(!(await webgl(page)), "WebGL unavailable (headless Linux WebKit)");
   const durations: number[] = [];
   for (let i = 0; i < 6; i++) {
     await seed(page, i % 2);
@@ -160,6 +162,7 @@ test("dragging the resolved rules does not return or discard", async ({ page }) 
 test("Escape interrupts safely and preserves the committed roll", async ({
   page,
 }) => {
+  test.skip(!(await webgl(page)), "WebGL unavailable (headless Linux WebKit)");
   await seed(page);
   await page.locator(".roll-cta").click();
   const committed = await saved(page);
@@ -179,6 +182,7 @@ test("offline dice roll and relaunch preserve result", async ({
     browserName === "webkit",
     "Playwright WebKit offline navigation fails here; verify installed iOS offline separately.",
   );
+  test.skip(!(await webgl(page)), "WebGL unavailable (headless Linux WebKit)");
   await seed(page);
   await page.evaluate(() => navigator.serviceWorker.ready);
   await page.reload();
@@ -222,8 +226,15 @@ test("WebGL failure uses a static result without blocking return", async ({
     "data-renderer",
     "fallback",
   );
+  await expect(page.locator(".roll-stage")).toHaveAttribute(
+    "data-stop-reason",
+    "webgl",
+  );
   await expect(page.locator(".roll-cta")).toHaveText("Continue");
-  expect((await saved(page)).roll.returned).toBe(false);
+  const committed = await saved(page);
+  expect(committed.roll.returned).toBe(false);
+  await page.reload();
+  expect((await saved(page)).roll).toEqual(committed.roll);
 });
 test("resize interruption settles without another roll", async ({ page }) => {
   await seed(page);

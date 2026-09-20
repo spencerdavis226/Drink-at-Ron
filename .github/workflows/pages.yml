@@ -25,22 +25,17 @@ jobs:
       - run: npx playwright install --with-deps chromium webkit
       - run: npm test
       - run: npm run build
-      # Chromium is the reliable CI browser; gate the deploy on it.
       - run: npm run test:e2e -- --project=chromium
-      # WebKit (Linux) throttles animation/rAF in headless mode, so it is
-      # informational here. Real WebKit/iOS behaviour is a physical-device check.
       - run: npm run test:e2e -- --project=webkit
-        continue-on-error: true
       - run: npm run test:update
       - run: npm run test:workshop -- --project=chromium
         env:
           BASE_PATH: /
       - run: npm run test:workshop -- --project=webkit
-        continue-on-error: true
         env:
           BASE_PATH: /
       - uses: actions/upload-artifact@v4
-        if: failure()
+        if: always()
         with:
           name: browser-failures
           path: test-results/

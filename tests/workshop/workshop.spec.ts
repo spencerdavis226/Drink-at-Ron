@@ -44,7 +44,7 @@ test("workshop previews are isolated, readable, and use real motion", async ({
 test("all Core and dice study cards retain their ratio at each preview size", async ({
   page,
 }) => {
-  test.setTimeout(90000);
+  test.setTimeout(180000);
   await page.setViewportSize({ width: 1400, height: 1100 });
   await page.goto("/?workshop=1");
   const picker = page.getByLabel("Card", { exact: true });
