@@ -71,6 +71,6 @@ Re-export the generated UI sheet with `npx tsx scripts/chrome.ts`; regenerate ic
 
 Open `/?workshop=1` on the development server for isolated card previews, seeded sessions, and dice fixtures. Workshop code and fixtures are excluded from production; the approved shared frame and its assets are shipped. The Core deck now contains 30 production-candidate cards; group balance remains untested.
 
-See [Game design](docs/GAME_DESIGN.md), [Playtest record](docs/PLAYTEST.md), and [GitHub Pages release](docs/GITHUB_PAGES.md). The unified front is approved and used throughout. Dice use the approved full-screen `@3d-dice/dice-box-threejs` overlay; dice cards currently ship in a separate provisional pack (see STATUS.md).
+See [Game design](docs/GAME_DESIGN.md), [Playtest record](docs/PLAYTEST.md), and [GitHub Pages release](docs/GITHUB_PAGES.md). The unified front is approved and used throughout. Dice use a deterministic CSS-3D full-screen renderer; dice cards currently ship in a separate provisional pack (see STATUS.md).
 
 Illustrations follow [Image creation guidelines](docs/ILLUSTRATION_GUIDELINES.md): centered, crop-safe, simple, original fantasy. Pack logos are registered separately and appear consistently in selection, pause, and card footers.
