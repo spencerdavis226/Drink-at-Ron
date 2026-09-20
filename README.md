@@ -2,7 +2,7 @@
 
 A portrait-first party card game for one shared iPhone or iPad. Choose packs and a deck length, tap to reveal, then tap to discard. No accounts, backend, or paid services.
 
-See the concise [current status and handoff](docs/STATUS.md).
+See the authoritative [current status, execution plan, and portable handoff](docs/STATUS.md). Agents should read [AGENTS.md](AGENTS.md) first.
 
 ## Run
 
@@ -50,7 +50,7 @@ Saves snapshot card content and order. Invalid/unsupported saves require explici
 
 ## Add content
 
-See [the pack authoring guide](docs/AUTHORING.md). The 12-card house collection is development content, not the final collaboratively authored collection. The sample cards share a painted tankard illustration. This visual pass adds original weathered card skins, a walnut tabletop, and a two-sided lift/flip/discard animation. Production card-specific illustrations and the full content collection remain for a later session.
+See [the pack authoring guide](docs/AUTHORING.md). The 30-card Core collection is a production candidate awaiting group playtesting. Most cards share a painted tankard placeholder; A little cheers has individual artwork. This visual pass adds original weathered card skins, a walnut tabletop, and a two-sided lift/flip/discard animation. Production card-specific illustrations and the full content collection remain for a later session.
 
 ## Static deployment
 
@@ -69,8 +69,8 @@ Re-export the generated UI sheet with `npx tsx scripts/chrome.ts`; regenerate ic
 
 ## Production workshop and release
 
-Open `/?workshop=1` on the development server for isolated card previews, seeded sessions, and the pending richer-front study. This route and its artwork are excluded from production. The Core deck now contains 30 production-candidate cards; group balance remains untested.
+Open `/?workshop=1` on the development server for isolated card previews, seeded sessions, and dice fixtures. Workshop code and fixtures are excluded from production; the approved shared frame and its assets are shipped. The Core deck now contains 30 production-candidate cards; group balance remains untested.
 
-See [Game design](docs/GAME_DESIGN.md), [Playtest record](docs/PLAYTEST.md), and [GitHub Pages release](docs/GITHUB_PAGES.md). The new front remains workshop-only until visual approval; shipping and milestone commit follow approval and checks.
+See [Game design](docs/GAME_DESIGN.md), [Playtest record](docs/PLAYTEST.md), and [GitHub Pages release](docs/GITHUB_PAGES.md). The unified front is approved and used throughout the game. The dice presentation remains unapproved and is being redirected to a full-screen, library-first prototype; follow STATUS.md.
 
 Illustrations follow [Image creation guidelines](docs/ILLUSTRATION_GUIDELINES.md): centered, crop-safe, simple, original fantasy. Pack logos are registered separately and appear consistently in selection, pause, and card footers.
