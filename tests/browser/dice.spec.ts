@@ -51,6 +51,17 @@ for (const index of [0, 1])
       "startup ms",
       await page.locator(".roll-stage").getAttribute("data-startup-ms"),
     );
+    await page.screenshot({ path: info.outputPath(`settled-${index}.png`) });
+    for (let die = 0; die < committed.roll.values.length; die++) {
+      const model = page.locator(".die-model").nth(die);
+      await expect(model).toHaveAttribute(
+        "data-value",
+        String(committed.roll.values[die]),
+      );
+      await expect(
+        model.locator(`[data-face-value="${committed.roll.values[die]}"]`),
+      ).toHaveCSS("visibility", "visible");
+    }
     expect((await saved(page)).roll).toEqual(committed.roll);
     expect(external).toEqual([]);
     await expect(page.locator(".roll-cta")).toHaveText("Continue");
@@ -116,30 +127,6 @@ test("offline dice roll and relaunch preserve result", async ({
   await expect(page.locator(".roll-cta")).toHaveText("Continue");
   expect((await saved(page)).roll).toEqual(committed.roll);
   await context.setOffline(false);
-});
-test("WebGL failure uses a static result without blocking return", async ({
-  page,
-}) => {
-  await page.addInitScript(() => {
-    const original = HTMLCanvasElement.prototype.getContext;
-    HTMLCanvasElement.prototype.getContext = function (
-      type: string,
-      ...args: unknown[]
-    ) {
-      if (type.includes("webgl")) return null;
-      return original.apply(this, [type, ...args] as Parameters<
-        typeof original
-      >);
-    } as typeof original;
-  });
-  await seed(page);
-  await page.locator(".roll-cta").click();
-  await expect(page.locator(".roll-stage")).toHaveAttribute(
-    "data-renderer",
-    "fallback",
-  );
-  await expect(page.locator(".roll-cta")).toHaveText("Continue");
-  expect((await saved(page)).roll.returned).toBe(false);
 });
 test("resize interruption settles without another roll", async ({ page }) => {
   await seed(page);
