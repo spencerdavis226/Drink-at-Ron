@@ -1,6 +1,6 @@
 # Current status and execution plan
 
-Updated 2026-09-20. **This is the single current handoff and remaining-work plan**, shared by Codex, Cursor, and other editors. Older conversation plans and historical study notes are background, not the next-task authority. User instructions take precedence. The full-screen library dice prototype (step 3) is now implemented and committed; the remaining decision is user review and the budget policy.
+Updated 2026-09-20. **This is the single current handoff and remaining-work plan**, shared by Codex, Cursor, and other editors. Older conversation plans and historical study notes are background, not the next-task authority. User instructions take precedence. The full-screen library dice prototype (step 3) is implemented and committed, and the tiered release-budget policy is approved; the remaining decisions are visual/technical review, physical-device timing, and dice content.
 
 ## Branch and checkpoints
 
@@ -28,7 +28,7 @@ Fresh review evidence on 2026-09-20 (all commands rerun at `c392309`):
 - `CI=1 BASE_PATH=/Drink-at-Ron/ TEST_PORT=4398 npm run test:e2e -- --workers=2`: **47 passed, 3 skipped** across Chromium/WebKit. Skips remain the explicit offline cases; they are not physical iOS evidence.
 - `BASE_PATH=/Drink-at-Ron/ npm run test:update`: passed. `npm run test:workshop`: **4 passed** across Chromium/WebKit.
 - Direct WebKit workshop inspection: 2:3 ratio measured; two settled d6 dice visibly show depth and three visible faces each. This is desktop WebKit evidence, not physical iOS performance evidence.
-- `npm run build:dice-prototype`: succeeded. The lazy `library` chunk is 554.00 kB raw / **144.67 KiB gzip**; the entry stays ~82.4 KiB gzip.
+- `npm run build:dice-prototype`: succeeded. The lazy `library` chunk is 554.00 kB raw / **144.67 KiB gzip**; the entry stays ~80.5 KiB gzip.
 - `npm run measure:dice-prototype`: production `dist` is unchanged and passes (all JS **87,549 B gzip**; runtime 1,994,323 B). Prototype `dist-dice-prototype` is runtime 2,552,092 B (passes 3 MiB) but all app JS **233,234 B gzip** — **exceeds the 120 KiB limit**, entirely from the lazy library chunk. Largest image unchanged at 309,734 B.
 - `npm run test:dice-prototype`: **15 passed, 1 skipped** (WebKit offline navigation) across Chromium/WebKit. Rendered top faces matched every requested 2d6 and 1d20 value; startup reported ~47–70 ms; reload and reduced motion restore the static saved result; Escape, resize, WebGL failure, and backgrounding all settle without a reroll and preserve the committed roll. No external network requests were observed.
 - Physical-device testing, group playtesting, live Pages settings/deployment, and final dice visual approval remain unverified.
@@ -38,7 +38,7 @@ Fresh review evidence on 2026-09-20 (all commands rerun at `c392309`):
 1. Resolved in `becec5a`: `.study-rules` now lets a stationary tap reach the card, but cancels the click after pointer movement, scrolling, or cancellation. The cross-browser game test covers drag/scroll, stationary tap, pointer cancellation, and keyboard activation without changing card geometry.
 2. Resolved in `d299fed`: the audio test now has a constructible `AudioContext` mock and validates asynchronous impact-timer cleanup. No production audio defect was found.
 3. The custom dice renderer's **in-card presentation is no longer the desired product direction**. Do not spend another pass polishing it; the committed full-screen library prototype now implements the intended direction, and the custom renderer remains the production default until a selection is approved.
-4. `scripts/check-budget.ts` counts ALL generated app JavaScript, including lazy chunks, against 120 KiB gzip. Calling this an initial-bundle-only limit is incorrect; library package unpacked size is not a measurement of the delivered build. The prototype now provides the real delta: `check-budget.ts` runs only against production `dist`, so it still passes while the library is flag-gated, but promoting the library adds ~144.7 KiB gzip (lazy) and pushes all app JS to 233,234 B. That limit change is **not approved**.
+4. Resolved 2026-09-20: the release budget is now tiered by load path — initial (critical-path) JS ≤ 100 KiB gzip and lazy feature JS ≤ 200 KiB gzip, plus runtime ≤ 3 MiB and image ≤ 500 KiB. See **Release budgets**. The single all-JS figure was measuring unrelated costs together; library package unpacked size is not a measurement of the delivered build.
 
 ## Approved product constraints
 
@@ -48,6 +48,18 @@ Fresh review evidence on 2026-09-20 (all commands rerun at `c392309`):
 - Pure engine owns outcomes. A roll is saved exactly once before animation; the renderer displays predetermined faces. Returning from a roll shows its total and resolved instruction; only a subsequent action discards.
 - Keep session schema v2, v1 migration, stable storage key, pack behavior, shuffle randomness, and existing snapshots. Rendering changes should not require another schema migration.
 - No production promotion of dice fixtures until the user approves the full-screen study. No additional mechanics, backend, accounts, or content editor.
+
+## Release budgets (approved 2026-09-20)
+
+`scripts/check-budget.ts` enforces the production build (`dist`) against tiered limits that match how the app loads:
+
+- **Initial (critical-path) JS ≤ 100 KiB gzip** — the chunks referenced by `dist/index.html`. Current ~80.7 KiB.
+- **Lazy feature JS ≤ 200 KiB gzip** — every other JS file in `dist/assets`, fetched on demand. Current ~4.9 KiB; the dice library prototype adds ~144.7 KiB, still inside this tier.
+- **Runtime/precache ≤ 3 MiB** — current ~1.9 MiB; prototype ~2.55 MiB.
+- **Any single image ≤ 500 KiB.**
+- Developer workshop strings must not appear in production.
+
+Heavy optional features belong in lazy chunks and are judged against the lazy tier, never the initial tier. Do not raise these limits without user approval; report the measured delta first. The prototype measurement script (`scripts/measure-dice-prototype.ts`) reports the same split for `dist` and `dist-dice-prototype`.
 
 ## Corrected dice direction — full-screen, library-first
 
@@ -79,10 +91,10 @@ Prototype acceptance:
 - Isolated renderer adapter with load/show/roll/settle/dispose behavior; no UI/persistence logic inside the library integration.
 - Locally bundled assets, no runtime CDN, correct `/Drink-at-Ron/` paths, offline relaunch, and required license notices.
 - Measure actual added initial JS, lazy JS, total precache, images, startup delay, and observed browser behavior. Test Chromium/WebKit. Do not infer these from npm unpacked size.
-- Preserve existing release budget checks during the experiment. If the candidate exceeds them, report the measured delta and propose a specific revised limit before changing policy. A documented budget adjustment may be preferable to maintaining custom physics/rendering, but is not yet approved.
+- Preserve existing release budget checks during the experiment. If the candidate exceeds them, report the measured delta and propose a specific revised limit before changing policy. A documented budget adjustment may be preferable to maintaining custom physics/rendering — now approved as the tiered **Release budgets** above.
 - Present the running prototype and evidence for visual/technical selection. Do not silently abandon the library or rewrite geometry if it has a blocker; report the blocker and options.
 
-**Prototype result:** every acceptance check passes except the unchanged budget policy. The sole blocker is the deliberate 120 KiB all-JS gzip limit (the library adds ~144.7 KiB gzip, lazy); runtime and largest-image limits still pass. The prototype is ready for visual/technical review and must not become the default until the user approves a specific budget adjustment. Reproduce with `npm run build:dice-prototype`, `npm run measure:dice-prototype`, and `npm run test:dice-prototype`.
+**Prototype result:** every acceptance check passes under the approved tiered budget — the library loads lazily (~144.7 KiB gzip) inside the 200 KiB lazy ceiling and leaves the ~80.7 KiB initial tier untouched; runtime and largest-image limits also pass. The prototype stays flag-gated and must not become the default until the user approves the visual result and physical-device timing, and until dice content ships. Reproduce with `npm run build:dice-prototype`, `npm run measure:dice-prototype`, and `npm run test:dice-prototype`.
 
 ## Execution sequence and model routing
 
@@ -92,7 +104,7 @@ Use one editing agent at a time. Keep tasks bounded and commit verified changes 
 | --- | --- | --- | --- |
 | 1 | Terra | Repair untracked sound test; preserve existing WIP | Complete in `d299fed`; 73 unit tests pass. |
 | 2 | Terra | Stationary card taps versus rules scrolling | Complete in `becec5a`; cross-browser gesture and keyboard coverage passes without ratio regression. |
-| 3 | Sol or comparably capable Cursor model | Full-screen library prototype described above | Implemented as `c392309`: 2d6/1d20 predetermined faces confirmed, 15/1 browser tests, startup ~47–70 ms, budgets measured. Pending user selection and budget decision. |
+| 3 | Sol or comparably capable Cursor model | Full-screen library prototype described above | Implemented as `c392309`: 2d6/1d20 predetermined faces confirmed, 15/1 browser tests, startup ~47–70 ms, and inside the approved lazy budget tier. Pending visual/technical approval and physical-device timing. |
 | 4 | Sol | Integrate selected renderer, overlay lifecycle, saves/audio interruption | Existing engine invariants and focused cross-browser flows pass |
 | 5 | Terra | Workshop cleanup and approved dice content promotion | Full-screen preview isolated from saves; approved Core composition/IDs; no stale frame comparison |
 | 6 | User + Terra | Group playtest and text revisions | 40-card plus Endless evidence recorded; copy locked |
@@ -104,7 +116,7 @@ No routine Astra session is required. Escalate to Astra only if Sol's bounded in
 
 ## Portable handoff prompt — next renderer task
 
-> Read AGENTS.md and docs/STATUS.md in this checkout. Continue on codex/finish-v1; inspect git status and preserve uncommitted files. The approved ordinary cards use a shared painted 2:3 frame; the dice engine, persisted results, and v1-to-v2 migration must remain intact. The full-screen library prototype is committed as `c392309` and gated behind `VITE_DICE_PROTOTYPE=1` / dev `?dice=library`; normal builds still use the custom renderer. First show the running prototype (`npm run build:dice-prototype`, then `npm run preview -- --outDir dist-dice-prototype`) and capture `npm run test:dice-prototype` evidence for visual/technical review. Do not promote it to the default, change the 120 KiB JS budget, add a save schema, or replace the presentation without explicit user approval. If the user approves the renderer and a specific budget adjustment, integrate it as the default overlay — reuse `src/game/dice.ts` outcomes and the presentation controller, keep rules readable, prevent click-through, restore focus, bundle assets locally for Pages/offline, and retain the custom renderer only as a documented fallback. Update STATUS in place with the decision and exact next step. Do not merge, push, or publish.
+> Read AGENTS.md and docs/STATUS.md in this checkout. Continue on codex/finish-v1; inspect git status and preserve uncommitted files. The approved ordinary cards use a shared painted 2:3 frame; the dice engine, persisted results, and v1-to-v2 migration must remain intact. The full-screen library prototype is committed as `c392309` and gated behind `VITE_DICE_PROTOTYPE=1` / dev `?dice=library`; normal builds still use the custom renderer. First show the running prototype (`npm run build:dice-prototype`, then `BASE_PATH=/Drink-at-Ron/ npm run preview -- --outDir dist-dice-prototype --port 4399`) and capture `npm run test:dice-prototype` evidence for visual/technical review. The approved release budget is tiered (initial ≤100 KiB gzip, lazy feature ≤200 KiB gzip); the library fits the lazy tier, so do not treat the old 120 KiB all-JS limit as a blocker. Do not promote the prototype to the default, add a save schema, or replace the presentation without explicit user approval. If the user approves the renderer and physical-device timing, integrate it as the default overlay — reuse `src/game/dice.ts` outcomes and the presentation controller, keep rules readable, prevent click-through, restore focus, bundle assets locally for Pages/offline, and retain the custom renderer only as a documented fallback. Update STATUS in place with the decision and exact next step. Do not merge, push, or publish.
 
 For the routine tasks, assign only the relevant numbered row and its acceptance criteria. Do not ask an agent to “finish the entire application.”
 

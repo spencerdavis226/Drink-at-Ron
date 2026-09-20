@@ -29,7 +29,7 @@ npm run test:workshop  # dev server on :5175
 
 ## Budgets and dice prototype
 
-- `scripts/check-budget.ts` fails the build on: runtime > 3 MiB, all app JS (incl. lazy chunks) > 120 KiB gzip, any image > 500 KiB, or workshop strings in production. Measure (`scripts/measure-dice-prototype.ts`) instead of guessing; do not change limits without user approval.
+- `scripts/check-budget.ts` enforces tiered release budgets on `dist`: initial (critical-path) JS ≤ 100 KiB gzip, lazy feature JS ≤ 200 KiB gzip, runtime ≤ 3 MiB, any image ≤ 500 KiB, and no workshop strings in production. "Initial" = chunks referenced by `dist/index.html`; everything else is lazy. Heavy optional features (e.g. the dice library) belong in lazy chunks, not the initial tier. Measure (`scripts/measure-dice-prototype.ts`) instead of guessing; do not change limits without user approval.
 - `src/presentation/dice/prototype.ts` gates the full-screen library path (`VITE_DICE_PROTOTYPE=1`, or dev `?dice=library`); normal builds use the custom renderer. `@3d-dice/dice-box-threejs` must be fed predetermined results from `src/game/dice.ts`. Dice fixtures are development-only until the user approves the full-screen study. Prototype scripts: `build:dice-prototype`, `test:dice-prototype`, `measure:dice-prototype`.
 
 ## Evidence

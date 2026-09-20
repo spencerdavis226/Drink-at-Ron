@@ -44,7 +44,8 @@ for (const dir of ["dist", "dist-dice-prototype"]) {
         largestImageBytes: largestImage,
         passesCurrentBudgets:
           runtime <= 3 * 1024 * 1024 &&
-          allJs <= 120 * 1024 &&
+          initialJs <= 100 * 1024 &&
+          allJs - initialJs <= 200 * 1024 &&
           largestImage <= 500 * 1024,
       },
       null,
