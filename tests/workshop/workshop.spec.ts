@@ -78,9 +78,7 @@ test("all Core and dice study cards retain their ratio at each preview size", as
         }
         await expect(page.locator(".study-category")).toHaveCount(0);
         const logo = packs.find((p) => p.cardIds.includes(id))!.logo!;
-        await expect(
-          page.locator(".study-rules .card-pack-marks img"),
-        ).toHaveAttribute(
+        await expect(page.locator(".card-pack-marks img")).toHaveAttribute(
           "src",
           new RegExp(`${logo.replace(/\//g, "\\/")}$`),
         );

@@ -20,12 +20,12 @@
   color: #372412;
   position: relative;
   isolation: isolate;
-  padding: 28px 0 34px;
+  padding: 16px 0 22px;
 }
 
 .study-illustration {
   width: 84%;
-  aspect-ratio: 1.4;
+  aspect-ratio: 1.7;
   position: relative;
   border: 0;
   display: grid;
@@ -60,10 +60,10 @@
   position: relative;
   z-index: 4;
   margin: -3px 0 -4px;
-  padding: 16px 38px;
+  padding: 10px 26px;
   border: 0;
   filter: none;
-  min-height: 72px;
+  min-height: 52px;
   border-image: none;
   background: url("./art/continuous-band.webp") center/100% 100% no-repeat;
   display: grid;
@@ -80,25 +80,65 @@
   font-size: clamp(1.9rem, 8cqw, 2.6rem);
 }
 
+.study-body {
+  flex: 1;
+  min-height: 0;
+  width: 84%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  border-image: none;
+  background: #f1d9a6 url("./art/continuous-paper.webp") center/cover;
+  border-radius: 0 0 12px 12px;
+}
 .study-rules {
   flex: 1;
   border: 0;
-  padding: 25px 18px 16px;
+  padding: 14px 18px 8px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: safe center;
   gap: 12px;
   min-height: 0;
-  width: 84%;
-  margin: 0 auto;
-  border-image: none;
-  background: #f1d9a6 url("./art/continuous-paper.webp") center/cover;
-  border-radius: 0 0 12px 12px;
-  padding-bottom: max(20px, calc(12cqw - 18px));
   overflow: auto;
   overscroll-behavior: contain;
   touch-action: pan-y;
+}
+.study-rules[data-overflow="bottom"],
+.study-rules[data-overflow="both"] {
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    #000 calc(100% - 26px),
+    transparent
+  );
+  mask-image: linear-gradient(to bottom, #000 calc(100% - 26px), transparent);
+}
+.study-rules[data-overflow="top"] {
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 26px);
+  mask-image: linear-gradient(to bottom, transparent 0, #000 26px);
+}
+.study-rules[data-overflow="both"] {
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0,
+    #000 26px,
+    #000 calc(100% - 26px),
+    transparent
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0,
+    #000 26px,
+    #000 calc(100% - 26px),
+    transparent
+  );
+}
+.card-footer {
+  flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+  padding: 2px 0 12px;
 }
 
 .study-rules p {
@@ -161,8 +201,8 @@
 }
 
 .card-pack-marks {
-  margin-top: auto;
-  padding-top: 12px;
+  margin: 0;
+  padding: 0;
 }
 
 .study-face.dice-ready::before {
@@ -247,8 +287,28 @@
   border: 0;
   background: none;
   text-align: center;
+  height: min(58svh, 460px);
+  aspect-ratio: 2 / 3;
+  width: auto;
+  margin: 0 auto;
 }
 
 .previous-card .study-face {
   width: 100%;
+}
+/* Short portrait: yield illustration/title/padding before rule text. */
+@media (max-height: 700px) {
+  .study-face {
+    padding: 12px 0 18px;
+  }
+  .study-title {
+    min-height: 46px;
+    padding: 8px 20px;
+  }
+  .study-illustration {
+    aspect-ratio: 2;
+  }
+  .study-rules {
+    padding-top: 12px;
+  }
 }
