@@ -4,15 +4,17 @@ Updated 2026-09-20. **This is the single current handoff and remaining-work plan
 
 ## Branch and checkpoints
 
-Work on `codex/finish-v1`. Last application commit reviewed: `cec9184`.
+Work on `codex/finish-v1`. Last application commit: `becec5a`.
 
 - `2ec82d5`: approved continuous frame promoted to gameplay, Previous Card, and workshop.
 - `489d0aa`: preserved dice WIP; no production dice cards.
 - `875b932`: repaired dice browser assertions and offline test setup.
 - `d9be46f`: restored 2:3 card geometry, margins, and contained rules scrolling.
 - `cec9184`: fixed WebKit dice depth using face-level transforms; do not repeat the old flattening investigation without a new reproduction.
+- `d299fed`: repaired and committed the dice-audio cancellation fixture.
+- `becec5a`: stationary rules taps now discard; moved, scrolled, or cancelled pointer gestures do not.
 
-An untracked `tests/sound.test.ts` exists. Preserve it; it currently fails and is not included in the commits above. Do not stage it accidentally with documentation changes. Main is not the current work target. No merge, push, or publishing was performed by this review.
+Main is not the current work target. No merge, push, or publishing was performed by this review.
 
 ## Verified state
 
@@ -20,16 +22,17 @@ The core game is functional: pack selection, finite/endless cycles, exact resume
 
 Fresh review evidence on 2026-09-20:
 
-- `npm test`: 72 passed, **1 failed** in the untracked sound test. The AudioContext mock is an arrow-function implementation of `vi.fn`, but production calls `new AudioContext()`. Vitest reports the non-constructible mock, and no impact timers are created. Repair the fixture before diagnosing production audio from this failure; further assertions may need investigation afterward.
-- `BASE_PATH=/Drink-at-Ron/ npm run build`: passed content validation, TypeScript, PWA build, and budgets. Runtime assets approximately 1,947 KiB; all app JavaScript approximately 85.3 KiB gzip.
+- `npm test`: **73 passed**. `tests/sound.test.ts` now uses a constructible `AudioContext` mock; its cancellation, backgrounding, and sound-disable timer assertions pass.
+- `BASE_PATH=/Drink-at-Ron/ npm run build`: passed content validation, TypeScript, PWA build, and budgets. Runtime assets approximately 1,948 KiB; all app JavaScript approximately 85.5 KiB gzip.
 - `CI=1 BASE_PATH=/Drink-at-Ron/ TEST_PORT=4398 npm run test:e2e -- --workers=2`: **47 passed, 3 skipped** across Chromium/WebKit. Skips remain the explicit offline cases; they are not physical iOS evidence.
+- `BASE_PATH=/Drink-at-Ron/ npm run test:update`: passed. `npm run test:workshop`: **4 passed** across Chromium/WebKit.
 - Direct WebKit workshop inspection: 2:3 ratio measured; two settled d6 dice visibly show depth and three visible faces each. This is desktop WebKit evidence, not physical iOS performance evidence.
 - Physical-device testing, group playtesting, live Pages settings/deployment, and final dice visual approval remain unverified. The update and workshop suites were not rerun during this review.
 
 ## Review findings to resolve
 
-1. `src/components/Cards.tsx` unconditionally stops click propagation on `.study-rules`. This prevents scrolling from discarding, but also blocks an ordinary stationary tap on the rules of any revealed card. Restore ordinary tap-to-discard while suppressing actual scroll/drag gestures. Cover stationary taps, touch scrolling, pointer cancellation, and keyboard activation. Do not revert 2:3 geometry or shrink the text.
-2. The untracked sound test needs a constructible AudioContext mock and validated asynchronous setup. Fix and commit it separately, or explain any remaining production defect; do not delete it to make checks green.
+1. Resolved in `becec5a`: `.study-rules` now lets a stationary tap reach the card, but cancels the click after pointer movement, scrolling, or cancellation. The cross-browser game test covers drag/scroll, stationary tap, pointer cancellation, and keyboard activation without changing card geometry.
+2. Resolved in `d299fed`: the audio test now has a constructible `AudioContext` mock and validates asynchronous impact-timer cleanup. No production audio defect was found.
 3. The dice renderer now works in the reviewed WebKit view, but its **in-card presentation is no longer the desired product direction**. Do not spend another pass polishing that presentation.
 4. `scripts/check-budget.ts` counts ALL generated app JavaScript, including lazy chunks, against 120 KiB gzip. Calling this an initial-bundle-only limit is incorrect. Library package unpacked size is not a measurement of the delivered build.
 
@@ -81,8 +84,8 @@ Use one editing agent at a time. Keep tasks bounded and commit verified changes 
 
 | Step | Owner | Scope | Done when |
 | --- | --- | --- | --- |
-| 1 | Terra | Repair untracked sound test; preserve existing WIP | Focused audio tests and all unit tests pass; test committed |
-| 2 | Terra | Stationary card taps versus rules scrolling | Tap, real gesture, cancellation, keyboard tests pass without ratio regression |
+| 1 | Terra | Repair untracked sound test; preserve existing WIP | Complete in `d299fed`; 73 unit tests pass. |
+| 2 | Terra | Stationary card taps versus rules scrolling | Complete in `becec5a`; cross-browser gesture and keyboard coverage passes without ratio regression. |
 | 3 | Sol or comparably capable Cursor model | Full-screen library prototype described above | Working 2d6/1d20, predetermined results, browser evidence, measured budgets; user review |
 | 4 | Sol | Integrate selected renderer, overlay lifecycle, saves/audio interruption | Existing engine invariants and focused cross-browser flows pass |
 | 5 | Terra | Workshop cleanup and approved dice content promotion | Full-screen preview isolated from saves; approved Core composition/IDs; no stale frame comparison |
