@@ -1,4 +1,6 @@
 import DiceBox from "@3d-dice/dice-box-threejs";
+import paperBumpUrl from "./assets/paper-bump.webp";
+import paperUrl from "./assets/paper.webp";
 
 /**
  * Roll feel. Tuned for a craps-table toss: dice cross the screen and carom off
@@ -82,6 +84,25 @@ export async function createDiceStage(selector: string) {
   // Upstream installs an anonymous, unremovable resize listener. Our overlay
   // instead settles on resize, then disposes this entire stage.
   box.resizeWorld = () => {};
+  // The library resolves textures through its bundled assetPath, but our dice
+  // textures are Vite assets: they ship only inside this (tree-shaken) chunk
+  // instead of the production public folder. Redirect those two sources.
+  const textureUrls: Record<string, string> = {
+    "textures/paper.webp": paperUrl,
+    "textures/paper-bump.webp": paperBumpUrl,
+  };
+  const loadImage = box.DiceColors.loadImage.bind(box.DiceColors);
+  box.DiceColors.loadImage = (source: string) => {
+    const url = textureUrls[source];
+    if (!url) return loadImage(source);
+    return new Promise<HTMLImageElement>((resolve, reject) => {
+      const image = new Image();
+      image.crossOrigin = "anonymous";
+      image.onload = () => resolve(image);
+      image.onerror = reject;
+      image.src = url;
+    });
+  };
   // Pull spawn points in from the walls before the throw is pre-simulated. The
   // library spawns dice flush against them, so a large die can be clipped by
   // the viewport edge. Doing this here (not after) keeps the replay and its
