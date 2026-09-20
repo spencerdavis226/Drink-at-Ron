@@ -30,6 +30,11 @@ export default function FullScreenDice({
   const [status, setStatus] = useState("static");
   const [stopReason, setStopReason] = useState("");
   const [timing, setTiming] = useState(0);
+  // Dev-only: `?force-motion` plays the roll even when the OS asks for reduced
+  // motion, so the animation can be reviewed on a machine with it enabled.
+  const forceMotion =
+    import.meta.env.DEV &&
+    new URLSearchParams(location.search).has("force-motion");
   useEffect(() => {
     const previous = document.activeElement as HTMLElement | null;
     return () => {
@@ -53,7 +58,7 @@ export default function FullScreenDice({
     if (
       !rolling ||
       !roll ||
-      matchMedia("(prefers-reduced-motion: reduce)").matches ||
+      (matchMedia("(prefers-reduced-motion: reduce)").matches && !forceMotion) ||
       document.hidden
     )
       return;
@@ -79,7 +84,9 @@ export default function FullScreenDice({
       if (document.hidden) stop("hidden");
     };
     const reduced = matchMedia("(prefers-reduced-motion: reduce)");
-    const onReducedChange = () => stop("reduced");
+    const onReducedChange = () => {
+      if (!forceMotion) stop("reduced");
+    };
     const timeout = setTimeout(() => stop("timeout"), 12000);
     // Only a real size change settles the roll: the library cannot resize
     // mid-throw, but mobile URL-bar jitter fires spurious resize events.
