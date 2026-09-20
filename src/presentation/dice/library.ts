@@ -5,15 +5,12 @@ import DiceBox from "@3d-dice/dice-box-threejs";
  * screen, and rebound off the walls before settling. Gravity and throw scale
  * with the (now full-screen) stage so the pace stays consistent.
  */
-const GRAVITY_MULTIPLIER = 950;
-const THROW_FORCE = 2.4;
+const GRAVITY_MULTIPLIER = 1100;
+const THROW_FORCE = 2;
 const CONTACT_RESTITUTION = 0.3;
 const CONTACT_FRICTION = 0.85;
-const WALL_RESTITUTION = 0.68;
+const WALL_RESTITUTION = 0.55;
 const WALL_FRICTION = 0.4;
-const SLEEP_TIME_LIMIT = 0.5;
-const ANGULAR_DAMPING = 0.14;
-const LINEAR_DAMPING = 0.08;
 
 /**
  * Snap every die to the face nearest to straight up once physics has stopped.
@@ -81,11 +78,12 @@ export async function createDiceStage(selector: string) {
     color_spotlight: 0xfff1d6,
     theme_customColorset: {
       name: "Ron",
-      foreground: "#33220f",
-      background: "#e9dcbc",
-      outline: "#6d4d24",
-      edge: "#d8b26a",
-      texture: "marble",
+      foreground: "#3a2712",
+      background: "#e6d3a8",
+      outline: "#7a5a2e",
+      edge: "#c9a15c",
+      texture: "paper",
+      material: "none",
     },
   });
   // Upstream installs an anonymous, unremovable resize listener. Our overlay
@@ -155,15 +153,12 @@ export async function createDiceStage(selector: string) {
   }
   return {
     async roll(sides: number, values: readonly number[]) {
-      const rolling = box.roll(`${values.length}d${sides}@${values.join(",")}`);
-      // Dice bodies spawn synchronously; tune their settle after the toss.
-      for (const die of box.diceList ?? []) {
-        if (!die?.body) continue;
-        die.body.sleepTimeLimit = SLEEP_TIME_LIMIT;
-        die.body.angularDamping = ANGULAR_DAMPING;
-        die.body.linearDamping = LINEAR_DAMPING;
-      }
-      const result = await rolling;
+      // Note: per-body damping/sleep must NOT be changed here. The library
+      // pre-simulates the throw to fix the result, then replays it; altering
+      // the bodies between those runs makes the animation diverge and land on
+      // a different face. All feel tuning lives in the construction options
+      // and contact materials, which both runs share.
+      const result = await box.roll(`${values.length}d${sides}@${values.join(",")}`);
       snapDiceFlat(box);
       const actual = result.sets.flatMap(
         (set: { rolls: { value: number }[] }) =>

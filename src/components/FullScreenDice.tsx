@@ -28,6 +28,7 @@ export default function FullScreenDice({
   finish.current = onFinish;
   const retained = useRef<{ dispose(): void } | null>(null);
   const [status, setStatus] = useState("static");
+  const [stopReason, setStopReason] = useState("");
   const [timing, setTiming] = useState(0);
   useEffect(() => {
     const previous = document.activeElement as HTMLElement | null;
@@ -66,18 +67,20 @@ export default function FullScreenDice({
         >
       | undefined;
     const started = performance.now();
-    const stop = () => {
+    const stop = (reason: string) => {
       if (canceled) return;
       canceled = true;
       stage?.dispose();
       setStatus("fallback");
+      setStopReason(reason);
       finish.current();
     };
     const hidden = () => {
-      if (document.hidden) stop();
+      if (document.hidden) stop("hidden");
     };
     const reduced = matchMedia("(prefers-reduced-motion: reduce)");
-    const timeout = setTimeout(stop, 12000);
+    const onReducedChange = () => stop("reduced");
+    const timeout = setTimeout(() => stop("timeout"), 12000);
     // Only a real size change settles the roll: the library cannot resize
     // mid-throw, but mobile URL-bar jitter fires spurious resize events.
     const startWidth = window.innerWidth;
@@ -87,11 +90,11 @@ export default function FullScreenDice({
         window.innerWidth !== startWidth ||
         window.innerHeight !== startHeight
       )
-        stop();
+        stop("resize");
     };
     window.addEventListener("resize", onResize);
     document.addEventListener("visibilitychange", hidden);
-    reduced.addEventListener("change", stop);
+    reduced.addEventListener("change", onReducedChange);
     setStatus("loading");
     void import("../presentation/dice/library")
       .then(async ({ createDiceStage }) => {
@@ -104,7 +107,9 @@ export default function FullScreenDice({
         setTiming(Math.round(performance.now() - started));
         setStatus("rolling");
         const canvas = document.querySelector(`#${CSS.escape(stageId)} canvas`);
-        canvas?.addEventListener("webglcontextlost", stop, { once: true });
+        canvas?.addEventListener("webglcontextlost", () => stop("webgl"), {
+          once: true,
+        });
         const actual = await stage.roll(card.dice!.sides, roll.values);
         if (canceled) return;
         completed = true;
@@ -112,13 +117,13 @@ export default function FullScreenDice({
         clearTimeout(timeout);
         finish.current();
       })
-      .catch(stop);
+      .catch(() => stop("error"));
     return () => {
       canceled = true;
       clearTimeout(timeout);
       window.removeEventListener("resize", onResize);
       document.removeEventListener("visibilitychange", hidden);
-      reduced.removeEventListener("change", stop);
+      reduced.removeEventListener("change", onReducedChange);
       // Preserve the settled canvas until the overlay closes. See separate owner below.
       if (stage) {
         if (!completed) {
@@ -138,6 +143,7 @@ export default function FullScreenDice({
           className="roll-stage"
           id={stageId}
           data-renderer={status}
+          data-stop-reason={stopReason}
           data-startup-ms={timing}
         />
       </div>
