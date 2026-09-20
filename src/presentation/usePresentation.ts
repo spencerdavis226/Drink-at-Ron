@@ -1,3 +1,4 @@
+import { libraryDice } from "./dice/prototype";
 import { useEffect, useState, useSyncExternalStore } from "react";
 import { PresentationController } from "./controller";
 import { theme } from "./theme";
@@ -16,7 +17,11 @@ export function usePresentation(create: () => PresentationController) {
     }
     const timeout = setTimeout(
       () => controller.finish(state.transition),
-      reduced.matches ? 0 : theme.motion[state.motion] + 200,
+      reduced.matches
+        ? 0
+        : (libraryDice && state.motion === "roll"
+            ? 12000
+            : theme.motion[state.motion]) + 200,
     );
     const skip = () => {
       if (document.hidden || reduced.matches) controller.settleAll();

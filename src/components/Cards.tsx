@@ -1,3 +1,4 @@
+import { libraryDice } from "../presentation/dice/prototype";
 import cheers from "../presentation/art/cheers-armor-v3.webp";
 import { useRef } from "react";
 import { DiceOverlay } from "./DiceOverlay";
@@ -33,7 +34,7 @@ export function CardFace({
   };
   return (
     <div
-      className={`study-face ${card.dice ? `dice-card ${!roll?.returned ? "dice-pending" : ""} ${card.dice.count > 2 ? "dice-four" : ""}` : ""}`}
+      className={`study-face ${card.dice && !libraryDice ? `dice-card ${!roll?.returned ? "dice-pending" : ""} ${card.dice.count > 2 ? "dice-four" : ""}` : ""}`}
     >
       <div className="study-illustration">
         <Artwork
@@ -45,7 +46,7 @@ export function CardFace({
             card.id === "core.cheers" ? "painted-scene" : "placeholder-scene"
           }
         />
-        {card.dice && !roll?.returned && (
+        {card.dice && !libraryDice && !roll?.returned && (
           <DiceOverlay
             dice={card.dice}
             roll={roll}

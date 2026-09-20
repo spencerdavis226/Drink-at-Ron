@@ -12,9 +12,13 @@
     "format": "prettier --write src scripts tests *.ts *.json index.html",
     "generate:icons": "tsx scripts/icons.ts",
     "test:workshop": "playwright test --config playwright.workshop.config.ts",
-    "test:update": "tsx scripts/check-update.ts"
+    "test:update": "tsx scripts/check-update.ts",
+    "build:dice-prototype": "tsc -b && VITE_DICE_PROTOTYPE=1 BASE_PATH=/Drink-at-Ron/ vite build --outDir dist-dice-prototype",
+    "test:dice-prototype": "playwright test --config playwright.dice-prototype.config.ts",
+    "measure:dice-prototype": "tsx scripts/measure-dice-prototype.ts"
   },
   "dependencies": {
+    "@3d-dice/dice-box-threejs": "0.0.12",
     "react": "^19.1.0",
     "react-dom": "^19.1.0"
   },
