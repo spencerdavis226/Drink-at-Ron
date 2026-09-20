@@ -3,8 +3,10 @@ const source = "assets/source/front-continuous-v3.png";
 const pieces: [string, number, number, number, number][] = [
   ["top", 0, 0, 1024, 220],
   ["bottom", 0, 1286, 1024, 250],
-  ["left", 0, 260, 100, 240],
-  ["right", 924, 260, 100, 240],
+  // Full-height rails: extracting the exact source columns avoids the vertical
+  // stretch that made the side rails streak and break the corner grain.
+  ["left", 0, 0, 100, 1536],
+  ["right", 924, 0, 100, 1536],
   ["band", 0, 654, 1024, 142],
   ["paper", 160, 850, 700, 400],
 ];

@@ -111,6 +111,8 @@ Execution order after this visual audit: **1 → 1A → 1B → 2 → 3 → 1C �
 
 ### 1B. P1 — Repair continuous front construction
 
+**Status — PARTIAL (2026-09-20, OpenCode Go). Primary V05 seam fixed; remaining nuance needs your eye.** Root cause found: the side rails were extracted as a 100×240 slice and stretched ~6× vertically, so they streaked and broke the corner grain. Fix: `scripts/front-continuous.ts` now extracts the left/right rails at **full height** (1024×1536 source), so no scaling occurs; the corner pieces stay on top (background paint order) and the grain now continues. Parchment seated with a subtle inset edge; short-height art crop softened (aspect 2 → 1.7) so the whole character silhouette stays visible at 320. Verified at 390 (×3) and 320 (×2); the fix is width-independent. Runtime budget rose 2525 → **2596 KiB** (still under 3 MiB); initial/lazy unchanged. Commands: `npm test` 71; build passed; `TEST_PORT=4498 npm run test:e2e` **61 passed / 3 skipped**; `test:workshop` 4 passed. **Open:** the flat parchment top/bottom edge and band-to-rail junctions still deserve a device/2× review; regenerating is the escalation if the user is unhappy. **Next task: 2** (dice resource cleanup + input audio reliability).
+
 **Findings:** V05. **Files:** shared frame CSS, frame slicing script/assets if necessary, art-direction guide.
 
 - Reproduce at 1× normal size and 2× inspection. Audit source slice coordinates, rail continuity, masks, layer order, and top/bottom overlap. Current top/bottom pieces and vertically stretched side strips have visibly different joins.
