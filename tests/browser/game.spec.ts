@@ -225,7 +225,7 @@ test("Core cards keep edge clearance and a 2:3 frame across device sizes", async
   }
 });
 
-test("scrolling enlarged rules does not discard the card", async ({ page }) => {
+test("rules taps discard, while scrolling and cancelled gestures keep the card", async ({ page }) => {
   await page.setViewportSize({ width: 320, height: 700 });
   await page.goto("./");
   await page.evaluate(() => localStorage.clear());
@@ -259,14 +259,57 @@ test("scrolling enlarged rules does not discard the card", async ({ page }) => {
   await expect
     .poll(() => rules.evaluate((el) => el.scrollHeight > el.clientHeight + 2))
     .toBe(true);
+  const box = await rules.boundingBox();
+  if (!box) throw new Error("Rules panel is not visible");
+  await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+  await page.mouse.down();
+  await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2 - 20);
+  await page.mouse.up();
   await rules.evaluate((el) => el.scrollTo({ top: 240 }));
   await expect
     .poll(() => rules.evaluate((el) => el.scrollTop))
     .toBeGreaterThan(0);
-  await rules.click();
-  const saved = await page.evaluate((k) => JSON.parse(localStorage.getItem(k)!), key);
+  let saved = await page.evaluate((k) => JSON.parse(localStorage.getItem(k)!), key);
   expect(saved.phase).toBe("revealed");
   expect(saved.discarded).toBe(0);
+
+  await rules.click();
+  saved = await page.evaluate((k) => JSON.parse(localStorage.getItem(k)!), key);
+  expect(saved.phase).toBe("hidden");
+  expect(saved.discarded).toBe(1);
+
+  await page.evaluate(
+    ({ key, state }) => localStorage.setItem(key, JSON.stringify(state)),
+    {
+      key,
+      state: {
+        ...original,
+        order: [
+          longest.id,
+          ...original.order.filter((id: string) => id !== longest.id),
+        ],
+        phase: "revealed",
+      },
+    },
+  );
+  await page.reload();
+  await rules.dispatchEvent("pointerdown", {
+    pointerId: 7,
+    clientX: 120,
+    clientY: 320,
+    pointerType: "touch",
+  });
+  await rules.dispatchEvent("pointercancel", { pointerId: 7 });
+  await rules.dispatchEvent("click");
+  saved = await page.evaluate((k) => JSON.parse(localStorage.getItem(k)!), key);
+  expect(saved.phase).toBe("revealed");
+  expect(saved.discarded).toBe(0);
+
+  await page.locator(".game-card").focus();
+  await page.keyboard.press("Enter");
+  saved = await page.evaluate((k) => JSON.parse(localStorage.getItem(k)!), key);
+  expect(saved.phase).toBe("hidden");
+  expect(saved.discarded).toBe(1);
 });
 test("custom size persists before starting and interruption restores a stable card", async ({
   page,
