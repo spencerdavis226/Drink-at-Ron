@@ -63,9 +63,8 @@ afterEach(() => {
   vi.unstubAllGlobals();
 });
 
-describe("dice audio cancellation", () => {
-  it("clears pending impacts on cancellation, backgrounding, and sound disable", () => {
-    vi.useFakeTimers();
+describe("dice audio", () => {
+  it("plays a collision clack only while unlocked, visible, and effects are on", () => {
     const { context, oscillators } = audioContext();
     vi.stubGlobal(
       "AudioContext",
@@ -74,29 +73,28 @@ describe("dice audio cancellation", () => {
       }),
     );
     const audio = new TavernAudio();
+
+    // Not unlocked yet: silent.
+    audio.diceImpact(0.8);
+    expect(oscillators).toHaveLength(0);
+
     audio.configure(true, false);
     audio.unlock();
-
-    audio.play("roll");
-    expect(vi.getTimerCount()).toBe(4);
-    vi.advanceTimersByTime(360);
-    expect(oscillators).toHaveLength(1);
-    audio.play("roll-cancel");
-    expect(vi.getTimerCount()).toBe(0);
-    vi.advanceTimersByTime(2_000);
+    audio.diceImpact(0.8);
     expect(oscillators).toHaveLength(1);
 
-    audio.play("roll");
+    // Backgrounding stops impacts.
     audio.setHidden(true);
-    expect(vi.getTimerCount()).toBe(0);
+    audio.diceImpact(0.8);
+    expect(oscillators).toHaveLength(1);
     expect(context.suspend).toHaveBeenCalledOnce();
 
+    // Turning effects off stops impacts.
     audio.setHidden(false);
-    audio.play("roll");
     audio.configure(false, false);
-    expect(vi.getTimerCount()).toBe(0);
-    vi.advanceTimersByTime(2_000);
+    audio.diceImpact(0.8);
     expect(oscillators).toHaveLength(1);
+
     audio.dispose();
   });
 });

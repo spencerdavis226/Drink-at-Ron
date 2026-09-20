@@ -2,6 +2,7 @@ import { useEffect, useId, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import type { CardDefinition, DiceRoll } from "../game/types";
 import { diceNotation } from "../game/dice";
+import { tavernAudio } from "../app/sound";
 import "./fullscreen-dice.css";
 
 /**
@@ -109,7 +110,9 @@ export default function FullScreenDice({
     void import("../presentation/dice/library")
       .then(async ({ createDiceStage }) => {
         if (canceled) return;
-        stage = await createDiceStage(`#${CSS.escape(stageId)}`);
+        stage = await createDiceStage(`#${CSS.escape(stageId)}`, (strength) =>
+          tavernAudio.diceImpact(strength),
+        );
         if (canceled) {
           stage.dispose();
           return;

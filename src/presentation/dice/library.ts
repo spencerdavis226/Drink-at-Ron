@@ -66,7 +66,10 @@ function snapDiceFlat(box: any) {
 }
 
 /** All upstream lifecycle work stays here. Outcomes are supplied by our engine. */
-export async function createDiceStage(selector: string) {
+export async function createDiceStage(
+  selector: string,
+  onImpact?: (strength: number) => void,
+) {
   const container = document.querySelector<HTMLElement>(selector)!;
   const box = new DiceBox(selector, {
     sounds: false,
@@ -162,6 +165,7 @@ export async function createDiceStage(selector: string) {
     return vectors;
   };
   let disposed = false;
+  let lastImpact = 0;
   let shadowFrame = 0;
   let shadowCanvas: HTMLCanvasElement | null = null;
   const stopShadows = () => {
@@ -287,9 +291,31 @@ export async function createDiceStage(selector: string) {
       // pre-simulates the throw to fix the result, then replays it; altering
       // the bodies between those runs makes the animation diverge and land on
       // a different face.
-      const result = await box.roll(
+      const rolling = box.roll(
         `${values.length}d${sides}@${values.join(",")}`,
       );
+      // Real collision clacks: attach to the freshly spawned bodies before the
+      // animation frames run. Throttled so grazing contacts do not machine-gun.
+      if (onImpact)
+        for (const die of box.diceList ?? []) {
+          const body = die?.body;
+          if (!body) continue;
+          body.addEventListener(
+            "collide",
+            (event: { contact?: { getImpactVelocityAlongNormal?(): number } }) => {
+              if (disposed) return;
+              const speed = Math.abs(
+                event.contact?.getImpactVelocityAlongNormal?.() ?? 0,
+              );
+              if (speed < 220) return;
+              const now = performance.now();
+              if (now - lastImpact < 45) return;
+              lastImpact = now;
+              onImpact(Math.min(1, speed / 2600));
+            },
+          );
+        }
+      const result = await rolling;
       snapDiceFlat(box);
       // Dice are at rest; stop repainting shadows every frame.
       stopShadows();

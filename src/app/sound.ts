@@ -110,10 +110,6 @@ export class TavernAudio {
       if (event === "roll") {
         this.stopRoll();
         this.noise(ctx, 0.22, 0.045, 1200);
-        for (const delay of [360, 770, 1180, 1650])
-          this.rollTimers.push(
-            setTimeout(() => this.play("dice-impact"), delay),
-          );
       } else if (event === "dice-impact") {
         this.tap(ctx, 185, 0.09, 0.032);
         this.noise(ctx, 0.045, 0.035, 1000);
@@ -134,6 +130,22 @@ export class TavernAudio {
         this.tap(ctx, 660, 0.35, 0.018);
         this.tap(ctx, 990, 0.5, 0.012);
       } else this.tap(ctx, 160, 0.09, 0.025);
+    } catch {
+      /* foley never blocks an action */
+    }
+  }
+  /**
+   * Dice-on-table clack driven by a real collision. `strength` is 0..1 from the
+   * impact speed, so hard hits are louder and brighter than soft ones.
+   */
+  diceImpact(strength: number) {
+    if (!this.unlocked || this.hidden || !this.effects) return;
+    const ctx = this.getContext();
+    if (!ctx || ctx.state !== "running") return;
+    try {
+      const s = Math.min(1, Math.max(0, strength));
+      this.tap(ctx, 150 + 90 * s, 0.05 + 0.05 * s, 0.012 + 0.03 * s);
+      this.noise(ctx, 0.03, 0.018 + 0.022 * s, 900 + 1300 * s);
     } catch {
       /* foley never blocks an action */
     }
