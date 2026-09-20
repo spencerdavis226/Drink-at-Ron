@@ -30,6 +30,7 @@ export default function FullScreenDice({
   const [status, setStatus] = useState("static");
   const [stopReason, setStopReason] = useState("");
   const [timing, setTiming] = useState(0);
+  const [rollMs, setRollMs] = useState(0);
   // Dev-only: `?force-motion` plays the roll even when the OS asks for reduced
   // motion, so the animation can be reviewed on a machine with it enabled.
   const forceMotion =
@@ -122,6 +123,7 @@ export default function FullScreenDice({
         const actual = await stage.roll(card.dice!.sides, roll.values);
         if (canceled) return;
         completed = true;
+        setRollMs(Math.round(performance.now() - started));
         setStatus(`settled:${actual.join(",")}`);
         clearTimeout(timeout);
         finish.current();
@@ -154,6 +156,7 @@ export default function FullScreenDice({
           data-renderer={status}
           data-stop-reason={stopReason}
           data-startup-ms={timing}
+          data-roll-ms={rollMs}
         />
       </div>
       <button

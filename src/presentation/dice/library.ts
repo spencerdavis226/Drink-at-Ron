@@ -13,6 +13,11 @@ const CONTACT_RESTITUTION = 0.35;
 const CONTACT_FRICTION = 0.7;
 const WALL_RESTITUTION = 0.75;
 const WALL_FRICTION = 0.3;
+// The library derives throw speed from a random offset, so a near-zero offset
+// produces a weak "plop". Enforce a floor on horizontal speed and spin; this
+// runs before pre-simulation so the replay and its forced faces stay in sync.
+const MIN_THROW_SPEED = 1250;
+const MIN_SPIN = 6;
 
 /**
  * Snap every die to the face nearest to straight up once physics has stopped.
@@ -114,11 +119,45 @@ export async function createDiceStage(selector: string) {
   const startThrow = box.startClickThrow.bind(box);
   box.startClickThrow = (notation: string) => {
     const vectors = startThrow(notation);
-    const maxX = container.clientWidth * 0.36;
-    const maxY = container.clientHeight * 0.36;
+    const maxX = container.clientWidth * 0.34;
+    const maxY = container.clientHeight * 0.34;
     for (const vector of vectors?.vectors ?? []) {
-      vector.x = Math.max(-maxX, Math.min(maxX, vector.x));
-      vector.y = Math.max(-maxY, Math.min(maxY, vector.y));
+      const pos = vector?.pos;
+      if (pos) {
+        pos.x = Math.max(-maxX, Math.min(maxX, pos.x));
+        pos.y = Math.max(-maxY, Math.min(maxY, pos.y));
+      }
+      const velocity = vector?.velocity;
+      if (velocity) {
+        const speed = Math.hypot(velocity.x, velocity.y);
+        if (speed < MIN_THROW_SPEED) {
+          if (speed < 0.001) {
+            const heading = Math.random() * Math.PI * 2;
+            velocity.x = Math.cos(heading) * MIN_THROW_SPEED;
+            velocity.y = Math.sin(heading) * MIN_THROW_SPEED;
+          } else {
+            const boost = MIN_THROW_SPEED / speed;
+            velocity.x *= boost;
+            velocity.y *= boost;
+          }
+        }
+      }
+      const spin = vector?.angle;
+      if (spin) {
+        const rate = Math.hypot(spin.x, spin.y, spin.z ?? 0);
+        if (rate < MIN_SPIN) {
+          if (rate < 0.001) {
+            spin.x = MIN_SPIN * 0.6;
+            spin.y = MIN_SPIN;
+            spin.z = 0;
+          } else {
+            const boost = MIN_SPIN / rate;
+            spin.x *= boost;
+            spin.y *= boost;
+            if (spin.z != null) spin.z *= boost;
+          }
+        }
+      }
     }
     return vectors;
   };

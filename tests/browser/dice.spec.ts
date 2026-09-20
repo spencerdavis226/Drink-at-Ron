@@ -51,6 +51,7 @@ for (const index of [0, 1])
       "startup ms",
       await page.locator(".roll-stage").getAttribute("data-startup-ms"),
     );
+    await page.screenshot({ path: info.outputPath(`settled-${index}.png`) });
     expect((await saved(page)).roll).toEqual(committed.roll);
     expect(external).toEqual([]);
     await expect(page.locator(".roll-cta")).toHaveText("Continue");
@@ -59,6 +60,31 @@ for (const index of [0, 1])
     expect((await saved(page)).roll.returned).toBe(true);
     expect((await saved(page)).discarded).toBe(0);
   });
+test("repeated rolls settle, never fall back, and are never a weak plop", async ({
+  page,
+}) => {
+  const durations: number[] = [];
+  for (let i = 0; i < 6; i++) {
+    await seed(page, i % 2);
+    await page.locator(".roll-cta").click();
+    await expect(page.locator(".roll-stage")).toHaveAttribute(
+      "data-renderer",
+      /^settled:/,
+      { timeout: 15000 },
+    );
+    expect(
+      await page.locator(".roll-stage").getAttribute("data-stop-reason"),
+    ).toBe("");
+    durations.push(
+      Number(await page.locator(".roll-stage").getAttribute("data-roll-ms")),
+    );
+  }
+  console.log("roll ms", durations.join(", "));
+  for (const ms of durations) {
+    expect(ms).toBeGreaterThan(700);
+    expect(ms).toBeLessThan(6000);
+  }
+});
 test("reload and reduced motion restore static saved result without replay", async ({
   page,
 }) => {
