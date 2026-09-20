@@ -4,6 +4,12 @@ import type { CardDefinition, DiceRoll } from "../game/types";
 import { diceNotation } from "../game/dice";
 import "./fullscreen-dice.css";
 
+/**
+ * Card-forward roll overlay. There is no dialog and no dimming: the live 2:3
+ * card stays readable behind a transparent 3D stage, dice tumble over it, and a
+ * single control drives the whole interaction. The card button remains the
+ * accessible control; this layer only adds the visual affordance and result.
+ */
 export default function FullScreenDice({
   card,
   roll,
@@ -17,25 +23,31 @@ export default function FullScreenDice({
   onTap(): void;
   onFinish(): void;
 }) {
-  const dialog = useRef<HTMLDialogElement>(null);
   const stageId = `dice-stage-${useId().replace(/:/g, "")}`;
   const finish = useRef(onFinish);
   finish.current = onFinish;
-  const [rendered, setRendered] = useState(false);
+  const retained = useRef<{ dispose(): void } | null>(null);
   const [status, setStatus] = useState("static");
   const [timing, setTiming] = useState(0);
   useEffect(() => {
     const previous = document.activeElement as HTMLElement | null;
-    const element = dialog.current!;
-    element.showModal();
     return () => {
-      element.close();
       (previous && previous !== document.body
         ? previous
         : document.querySelector<HTMLElement>(".game-card")
       )?.focus();
     };
   }, []);
+  useEffect(() => {
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key !== "Escape") return;
+      event.preventDefault();
+      if (rolling) finish.current();
+      else if (roll) onTap();
+    };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [rolling, roll, onTap]);
   useEffect(() => {
     if (
       !rolling ||
@@ -58,7 +70,6 @@ export default function FullScreenDice({
       if (canceled) return;
       canceled = true;
       stage?.dispose();
-      setRendered(false);
       setStatus("fallback");
       finish.current();
     };
@@ -67,7 +78,18 @@ export default function FullScreenDice({
     };
     const reduced = matchMedia("(prefers-reduced-motion: reduce)");
     const timeout = setTimeout(stop, 12000);
-    window.addEventListener("resize", stop);
+    // Only a real size change settles the roll: the library cannot resize
+    // mid-throw, but mobile URL-bar jitter fires spurious resize events.
+    const startWidth = window.innerWidth;
+    const startHeight = window.innerHeight;
+    const onResize = () => {
+      if (
+        window.innerWidth !== startWidth ||
+        window.innerHeight !== startHeight
+      )
+        stop();
+    };
+    window.addEventListener("resize", onResize);
     document.addEventListener("visibilitychange", hidden);
     reduced.addEventListener("change", stop);
     setStatus("loading");
@@ -86,7 +108,6 @@ export default function FullScreenDice({
         const actual = await stage.roll(card.dice!.sides, roll.values);
         if (canceled) return;
         completed = true;
-        setRendered(true);
         setStatus(`settled:${actual.join(",")}`);
         clearTimeout(timeout);
         finish.current();
@@ -95,14 +116,13 @@ export default function FullScreenDice({
     return () => {
       canceled = true;
       clearTimeout(timeout);
-      window.removeEventListener("resize", stop);
+      window.removeEventListener("resize", onResize);
       document.removeEventListener("visibilitychange", hidden);
       reduced.removeEventListener("change", stop);
       // Preserve the settled canvas until the overlay closes. See separate owner below.
       if (stage) {
         if (!completed) {
           stage.dispose();
-          setRendered(false);
         } else {
           retained.current?.dispose();
           retained.current = stage;
@@ -110,51 +130,26 @@ export default function FullScreenDice({
       }
     };
   }, [rolling, roll, card.dice, stageId]);
-  const retained = useRef<{ dispose(): void } | null>(null);
   useEffect(() => () => retained.current?.dispose(), []);
   return createPortal(
-    <dialog
-      ref={dialog}
-      className="full-dice"
-      aria-labelledby={`${stageId}-title`}
-      onCancel={(event) => {
-        event.preventDefault();
-        if (rolling) finish.current();
-        else if (roll) onTap();
-      }}
-    >
-      <h2 id={`${stageId}-title`}>{card.title}</h2>
-      <div
-        className="full-dice-stage"
-        id={stageId}
-        data-renderer={status}
-        data-startup-ms={timing}
-        aria-hidden="true"
+    <div className="roll-layer">
+      <div className="roll-stage-band" aria-hidden="true">
+        <div
+          className="roll-stage"
+          id={stageId}
+          data-renderer={status}
+          data-startup-ms={timing}
+        />
+      </div>
+      <button
+        type="button"
+        className="roll-cta"
+        disabled={rolling}
+        onClick={onTap}
       >
-        {!rolling && !rendered && (
-          <div className="full-dice-values">
-            {roll ? roll.values.join(" + ") : diceNotation(card.dice!)}
-          </div>
-        )}
-      </div>
-      <div className="full-dice-rules">
-        <div className="full-dice-copy">
-          <p>{card.rules}</p>
-          <p role="status">
-            {roll && !rolling ? (
-              <strong>
-                {roll.total} · {roll.instruction}
-              </strong>
-            ) : (
-              ""
-            )}
-          </p>
-        </div>
-        <button autoFocus disabled={rolling} onClick={onTap}>
-          {rolling ? "Rolling…" : roll ? "Return to card" : "ROLL"}
-        </button>
-      </div>
-    </dialog>,
+        {rolling ? "Rolling…" : roll ? "Continue" : `Roll ${diceNotation(card.dice!)}`}
+      </button>
+    </div>,
     document.body,
   );
 }

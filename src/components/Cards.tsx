@@ -32,9 +32,20 @@ export function CardFace({
     if (rulesGesture.current?.pointerId === pointerId)
       rulesGesture.current.cancelClick = true;
   };
+  // Show the resolved outcome as soon as the roll settles (library overlay) or
+  // once the result is returned to the card (in-card renderer).
+  const resolved = !!roll && !rolling && (libraryDice || !!roll.returned);
   return (
     <div
-      className={`study-face ${card.dice && !libraryDice ? `dice-card ${!roll?.returned ? "dice-pending" : ""} ${card.dice.count > 2 ? "dice-four" : ""}` : ""}`}
+      className={`study-face ${
+        card.dice
+          ? libraryDice
+            ? roll
+              ? ""
+              : "dice-ready"
+            : `dice-card ${!roll?.returned ? "dice-pending" : ""} ${card.dice.count > 2 ? "dice-four" : ""}`
+          : ""
+      }`}
     >
       <div className="study-illustration">
         <Artwork
@@ -60,7 +71,7 @@ export function CardFace({
         <h2>{card.title}</h2>
       </div>
       <div
-        className="study-rules"
+        className={`study-rules ${resolved ? "rules-resolved" : ""}`}
         onPointerDown={(event) => {
           rulesGesture.current = {
             pointerId: event.pointerId,
@@ -99,12 +110,16 @@ export function CardFace({
           }
         }}
       >
-        {roll?.returned && (
-          <strong className="rolled-total">Rolled {roll.total}</strong>
+        {resolved ? (
+          <>
+            <strong className="rolled-total">
+              Rolled <span className="roll-number">{roll!.total}</span>
+            </strong>
+            <p className="resolved-instruction">{roll!.instruction}</p>
+          </>
+        ) : (
+          <p>{card.rules}</p>
         )}
-        <p className={roll?.returned ? "resolved-instruction" : undefined}>
-          {roll?.returned ? roll.instruction : card.rules}
-        </p>
         <CardPackMarks cardId={card.id} packIds={packIds} />
       </div>
     </div>

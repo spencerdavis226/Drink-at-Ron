@@ -1,126 +1,82 @@
-.full-dice {
-  animation: none;
-  transform: none;
+/* Full-screen transparent dice stage over the live card. */
+.roll-layer {
   position: fixed;
   inset: 0;
-  width: 100%;
-  height: 100%;
-  height: 100dvh;
-  max-width: none;
-  max-height: none;
-  margin: 0;
-  border: 0;
-  padding: max(18px, env(safe-area-inset-top))
-    max(18px, env(safe-area-inset-right)) max(18px, env(safe-area-inset-bottom))
-    max(18px, env(safe-area-inset-left));
-  background: radial-gradient(ellipse at 50% 35%, #76543144, #120e0cbf);
-  color: #f4dfb4;
-  box-sizing: border-box;
-  overflow: auto;
+  z-index: 40;
+  pointer-events: none;
 }
-.full-dice[open] {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-.full-dice::backdrop {
-  background: #100c09a8;
-}
-.full-dice h2 {
-  font-size: clamp(28px, 5vw, 44px);
-  margin: 0;
-  text-align: center;
-}
-.full-dice-stage {
-  position: relative;
-  width: 100%;
-  flex: 1;
-  min-height: 160px;
+.roll-stage-band {
+  position: fixed;
+  inset: 0;
   overflow: hidden;
 }
-.full-dice-stage canvas {
+.roll-stage {
+  position: absolute;
+  inset: 0;
+}
+.roll-stage canvas {
+  display: block;
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
 }
-.full-dice-values {
-  position: absolute;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  font-size: clamp(64px, 18vw, 120px);
-  text-shadow: 0 4px 10px #000;
-}
-.full-dice-rules {
-  width: min(100%, 700px);
-  height: 42vh;
-  flex-shrink: 0;
-  display: grid;
-  grid-template-rows: minmax(0, 1fr) auto;
-  gap: 12px;
-  padding: 16px 22px;
-  border: 3px solid #957044;
-  border-radius: 18px;
-  color: #342316;
-  background: #ecd4a8;
+.roll-cta {
+  pointer-events: auto;
+  position: fixed;
+  left: 50%;
+  bottom: max(10px, env(safe-area-inset-bottom));
+  transform: translateX(-50%);
+  z-index: 3;
+  min-height: 54px;
+  min-width: 200px;
+  padding: 10px 32px;
+  font: 700 25px/1 var(--font-tavern);
+  letter-spacing: 0.02em;
+  color: #ffeec2;
+  border: 3px solid #d7a94f;
+  border-radius: 16px;
+  background: linear-gradient(#2f6a5c, #1c463e);
   box-shadow:
-    0 8px 40px #0009,
-    inset 0 0 28px #91633755;
-  text-align: center;
-  box-sizing: border-box;
-}
-.full-dice-rules p {
-  font-size: 24px;
-  line-height: 1.2;
-  margin: 0 0 12px;
-}
-.full-dice-rules p:empty {
-  display: none;
-}
-.full-dice-rules strong {
-  color: #16584c;
-  font: inherit;
-  font-weight: 700;
-  line-height: 1.2;
-}
-.full-dice-rules button {
-  min-height: 52px;
-  min-width: 160px;
-  font: inherit;
-  font-size: 28px;
-  font-weight: 700;
-  border: 2px solid #c59654;
-  border-radius: 12px;
-  background: #204e46;
-  color: #ffe9bf;
-  padding: 8px 20px;
+    inset 0 2px 0 #79b7a5aa,
+    inset 0 -5px 12px #0a231d,
+    0 0 0 1px #5c3f1e,
+    0 12px 28px #000a;
+  text-shadow: 0 2px 2px #000a;
   cursor: pointer;
+  transition:
+    transform 120ms ease,
+    filter 120ms ease;
 }
-.full-dice-rules button:disabled {
-  opacity: 0.65;
+.roll-cta:hover:not(:disabled) {
+  filter: brightness(1.07);
+}
+.roll-cta:active:not(:disabled) {
+  transform: translate(-50%, 1px) scale(0.99);
+}
+.roll-cta:disabled {
+  filter: saturate(0.5) brightness(0.85);
+  cursor: default;
+}
+.roll-cta:focus-visible {
+  outline: 3px solid #ffe6a8;
+  outline-offset: 3px;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .roll-cta {
+    animation: roll-cta-in 260ms cubic-bezier(0.2, 0.9, 0.3, 1.2);
+  }
+}
+@keyframes roll-cta-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 14px);
+  }
 }
 @media (orientation: landscape) and (max-height: 600px) {
-  .full-dice[open] {
-    display: grid;
-    grid-template-columns: 1fr minmax(240px, 38%);
-    grid-template-rows: auto 1fr;
-    gap: 12px;
+  .roll-cta {
+    min-height: 50px;
+    min-width: 180px;
+    font-size: 23px;
   }
-  .full-dice h2 {
-    grid-column: 1 / -1;
-  }
-  .full-dice-stage {
-    height: 100%;
-  }
-  .full-dice-rules {
-    max-height: 100%;
-    overflow: auto;
-  }
-}
-
-.full-dice-copy {
-  overflow: auto;
-  min-height: 0;
-  overscroll-behavior: contain;
 }

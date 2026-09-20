@@ -217,10 +217,14 @@ function App() {
 document.documentElement.dataset.release =
   import.meta.env.VITE_RELEASE_ID || "development";
 const root = createRoot(document.getElementById("root")!);
-if (
-  import.meta.env.DEV &&
-  new URLSearchParams(location.search).get("workshop") === "1"
-) {
+const params = new URLSearchParams(location.search);
+const renderApp = () =>
+  root.render(
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>,
+  );
+if (import.meta.env.DEV && params.get("workshop") === "1") {
   void import("./workshop/Workshop").then(({ default: Workshop }) =>
     root.render(
       <React.StrictMode>
@@ -228,10 +232,11 @@ if (
       </React.StrictMode>,
     ),
   );
+} else if (import.meta.env.DEV && params.get("review") === "dice") {
+  void import("./workshop/review").then(({ seedDiceReview }) => {
+    seedDiceReview();
+    renderApp();
+  });
 } else {
-  root.render(
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>,
-  );
+  renderApp();
 }

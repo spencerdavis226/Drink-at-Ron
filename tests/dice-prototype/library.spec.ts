@@ -17,14 +17,12 @@ async function seed(page: Page, index = 0) {
     { key, session },
   );
   await page.reload();
-  await expect(
-    page.getByRole("button", { name: "ROLL", exact: true }),
-  ).toBeVisible();
+  await expect(page.locator(".roll-cta")).toHaveText(/^Roll /);
 }
 const saved = (page: Page) =>
   page.evaluate((key) => JSON.parse(localStorage.getItem(key)!), key);
 for (const index of [0, 1])
-  test(`library renders saved ${index ? "d20" : "2d6"} faces across screen`, async ({
+  test(`library renders saved ${index ? "d20" : "2d6"} faces over the card`, async ({
     page,
   }, info) => {
     const external: string[] = [];
@@ -36,11 +34,13 @@ for (const index of [0, 1])
         external.push(request.url());
     });
     await seed(page, index);
-    const bounds = await page.locator("dialog").boundingBox();
+    // The card stays in the layout behind the transparent stage, undimmed.
+    await expect(page.locator(".game-card")).toBeVisible();
+    const bounds = await page.locator(".roll-layer").boundingBox();
     expect(bounds!.width).toBe(page.viewportSize()!.width);
-    await page.getByRole("button", { name: "ROLL", exact: true }).click();
+    await page.locator(".roll-cta").click();
     const committed = await saved(page);
-    await expect(page.locator(".full-dice-stage")).toHaveAttribute(
+    await expect(page.locator(".roll-stage")).toHaveAttribute(
       "data-renderer",
       `settled:${committed.roll.values.join(",")}`,
       { timeout: 15000 },
@@ -49,15 +49,14 @@ for (const index of [0, 1])
       info.project.name,
       index,
       "startup ms",
-      await page.locator(".full-dice-stage").getAttribute("data-startup-ms"),
+      await page.locator(".roll-stage").getAttribute("data-startup-ms"),
     );
     await page.screenshot({ path: info.outputPath(`settled-${index}.png`) });
     expect((await saved(page)).roll).toEqual(committed.roll);
     expect(external).toEqual([]);
-    await page
-      .getByRole("button", { name: "Return to card", exact: true })
-      .click();
-    await expect(page.locator("dialog")).toHaveCount(0);
+    await expect(page.locator(".roll-cta")).toHaveText("Continue");
+    await page.locator(".roll-cta").click();
+    await expect(page.locator(".roll-layer")).toHaveCount(0);
     expect((await saved(page)).roll.returned).toBe(true);
     expect((await saved(page)).discarded).toBe(0);
   });
@@ -66,32 +65,25 @@ test("reload and reduced motion restore static saved result without replay", asy
 }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
   await seed(page);
-  await page.getByRole("button", { name: "ROLL", exact: true }).click();
-  await expect(
-    page.getByRole("button", { name: "Return to card", exact: true }),
-  ).toBeEnabled();
+  await page.locator(".roll-cta").click();
+  await expect(page.locator(".roll-cta")).toHaveText("Continue");
   const committed = await saved(page);
   await page.reload();
-  await expect(
-    page.getByRole("button", { name: "Return to card", exact: true }),
-  ).toBeVisible();
-  await expect(page.locator(".full-dice-stage canvas")).toHaveCount(0);
+  await expect(page.locator(".roll-cta")).toHaveText("Continue");
+  await expect(page.locator(".roll-stage canvas")).toHaveCount(0);
   expect((await saved(page)).roll).toEqual(committed.roll);
 });
 test("Escape interrupts safely and preserves the committed roll", async ({
   page,
 }) => {
   await seed(page);
-  await page.getByRole("button", { name: "ROLL", exact: true }).click();
+  await page.locator(".roll-cta").click();
   const committed = await saved(page);
   await page.keyboard.press("Escape");
-  await expect(
-    page.getByRole("button", { name: "Return to card", exact: true }),
-  ).toBeEnabled();
+  await expect(page.locator(".roll-cta")).toHaveText("Continue");
   expect((await saved(page)).roll).toEqual(committed.roll);
-  await page
-    .getByRole("button", { name: "Return to card", exact: true })
-    .click();
+  await page.locator(".roll-cta").click();
+  await expect(page.locator(".roll-layer")).toHaveCount(0);
   await expect(page.locator(".game-card")).toBeFocused();
 });
 test("offline library roll and relaunch preserve result", async ({
@@ -111,19 +103,17 @@ test("offline library roll and relaunch preserve result", async ({
     .toBe(true);
   await context.setOffline(true);
   await page.reload();
-  await page.getByRole("button", { name: "ROLL", exact: true }).click();
-  await expect(
-    page.getByRole("button", { name: "Return to card", exact: true }),
-  ).toBeEnabled({ timeout: 15000 });
-  await expect(page.locator(".full-dice-stage")).toHaveAttribute(
+  await page.locator(".roll-cta").click();
+  await expect(page.locator(".roll-cta")).toHaveText("Continue", {
+    timeout: 15000,
+  });
+  await expect(page.locator(".roll-stage")).toHaveAttribute(
     "data-renderer",
     /^settled:/,
   );
   const committed = await saved(page);
   await page.reload();
-  await expect(
-    page.getByRole("button", { name: "Return to card", exact: true }),
-  ).toBeVisible();
+  await expect(page.locator(".roll-cta")).toHaveText("Continue");
   expect((await saved(page)).roll).toEqual(committed.roll);
   await context.setOffline(false);
 });
@@ -143,33 +133,29 @@ test("WebGL failure uses a static result without blocking return", async ({
     } as typeof original;
   });
   await seed(page);
-  await page.getByRole("button", { name: "ROLL", exact: true }).click();
-  await expect(page.locator(".full-dice-stage")).toHaveAttribute(
+  await page.locator(".roll-cta").click();
+  await expect(page.locator(".roll-stage")).toHaveAttribute(
     "data-renderer",
     "fallback",
   );
-  await expect(
-    page.getByRole("button", { name: "Return to card", exact: true }),
-  ).toBeEnabled();
+  await expect(page.locator(".roll-cta")).toHaveText("Continue");
   expect((await saved(page)).roll.returned).toBe(false);
 });
 test("resize interruption settles without another roll", async ({ page }) => {
   await seed(page);
-  await page.getByRole("button", { name: "ROLL", exact: true }).click();
+  await page.locator(".roll-cta").click();
   const committed = await saved(page);
   await page.setViewportSize({ width: 844, height: 390 });
-  await expect(
-    page.getByRole("button", { name: "Return to card", exact: true }),
-  ).toBeEnabled();
+  await expect(page.locator(".roll-cta")).toHaveText("Continue");
   expect((await saved(page)).roll).toEqual(committed.roll);
   await page.reload();
-  await expect(page.locator(".full-dice-stage canvas")).toHaveCount(0);
+  await expect(page.locator(".roll-stage canvas")).toHaveCount(0);
 });
 test("backgrounding stops animation and preserves the saved outcome", async ({
   page,
 }) => {
   await seed(page);
-  await page.getByRole("button", { name: "ROLL", exact: true }).click();
+  await page.locator(".roll-cta").click();
   const committed = await saved(page);
   await page.evaluate(() => {
     Object.defineProperty(document, "hidden", {
@@ -178,9 +164,7 @@ test("backgrounding stops animation and preserves the saved outcome", async ({
     });
     document.dispatchEvent(new Event("visibilitychange"));
   });
-  await expect(
-    page.getByRole("button", { name: "Return to card", exact: true }),
-  ).toBeEnabled();
-  await expect(page.locator(".full-dice-stage canvas")).toHaveCount(0);
+  await expect(page.locator(".roll-cta")).toHaveText("Continue");
+  await expect(page.locator(".roll-stage canvas")).toHaveCount(0);
   expect((await saved(page)).roll).toEqual(committed.roll);
 });
