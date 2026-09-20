@@ -1,15 +1,19 @@
 import DiceBox from "@3d-dice/dice-box-threejs";
 
 /**
- * Roll feel. Upstream defaults are floaty (gravity 400, contact restitution
- * 0.5) and wait 0.9s for settled dice to sleep. Heavier gravity, less bounce,
- * more grip, and a shorter sleep delay make the roll end decisively.
+ * Roll feel. Tuned for a craps-table toss: dice enter from the edges, cross the
+ * screen, and rebound off the walls before settling. Gravity and throw scale
+ * with the (now full-screen) stage so the pace stays consistent.
  */
-const GRAVITY_MULTIPLIER = 650;
-const THROW_STRENGTH = 0.75;
-const CONTACT_RESTITUTION = 0.22;
+const GRAVITY_MULTIPLIER = 950;
+const THROW_FORCE = 2.4;
+const CONTACT_RESTITUTION = 0.3;
 const CONTACT_FRICTION = 0.85;
-const SLEEP_TIME_LIMIT = 0.45;
+const WALL_RESTITUTION = 0.68;
+const WALL_FRICTION = 0.4;
+const SLEEP_TIME_LIMIT = 0.5;
+const ANGULAR_DAMPING = 0.14;
+const LINEAR_DAMPING = 0.08;
 
 /**
  * Snap every die to the face nearest to straight up once physics has stopped.
@@ -60,9 +64,9 @@ function snapDiceFlat(box: any) {
 /** All upstream lifecycle work stays here. Outcomes are supplied by our engine. */
 export async function createDiceStage(selector: string) {
   const container = document.querySelector<HTMLElement>(selector)!;
-  // The stage is now full-screen, so the library's throw impulse and travel
+  // The stage is full-screen, so the library's throw impulse and travel
   // distances scale with the viewport. Scale gravity and throw with it to keep
-  // the roll's timing (and therefore perceived pace) constant.
+  // the roll's timing consistent.
   const spanScale =
     Math.max(container.clientWidth, container.clientHeight) / 300;
   const box = new DiceBox(selector, {
@@ -71,18 +75,17 @@ export async function createDiceStage(selector: string) {
       340,
       Math.max(110, container.clientHeight * 0.29),
     ),
-    strength: Math.min(0.9, Math.max(0.28, THROW_STRENGTH / spanScale)),
+    strength: Math.min(1.5, Math.max(0.6, THROW_FORCE / spanScale)),
     gravity_multiplier: Math.round(GRAVITY_MULTIPLIER * spanScale),
-    light_intensity: 0.8,
+    light_intensity: 0.85,
     color_spotlight: 0xfff1d6,
     theme_customColorset: {
       name: "Ron",
-      foreground: "#2a1a0e",
-      background: "#efe0b6",
-      outline: "#7a5a2e",
-      edge: "#c9a15c",
-      texture: "none",
-      material: "none",
+      foreground: "#33220f",
+      background: "#e9dcbc",
+      outline: "#6d4d24",
+      edge: "#d8b26a",
+      texture: "marble",
     },
   });
   // Upstream installs an anonymous, unremovable resize listener. Our overlay
@@ -129,13 +132,19 @@ export async function createDiceStage(selector: string) {
     await box.initialize();
     box.renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
     box.renderer.setSize(box.container.clientWidth, box.container.clientHeight);
-    // Trim bounce and add grip so landed dice stop sliding instead of drifting.
-    for (const material of box.world?.contactmaterials ?? []) {
-      material.restitution = Math.min(
-        material.restitution,
-        CONTACT_RESTITUTION,
-      );
-      material.friction = Math.max(material.friction, CONTACT_FRICTION);
+    // Tune contacts: grippy floor and dice-dice, lively walls so dice rebound
+    // off the backboard instead of dying on contact.
+    for (const contact of box.world?.contactmaterials ?? []) {
+      if (contact.restitution > 0.8) {
+        contact.restitution = WALL_RESTITUTION;
+        contact.friction = WALL_FRICTION;
+      } else {
+        contact.restitution = Math.min(
+          contact.restitution,
+          CONTACT_RESTITUTION,
+        );
+        contact.friction = Math.max(contact.friction, CONTACT_FRICTION);
+      }
     }
     // The library paints an opaque "table" plane. Hide it so the dice tumble
     // over the live card (transparent canvas) instead of a second surface.
@@ -147,10 +156,12 @@ export async function createDiceStage(selector: string) {
   return {
     async roll(sides: number, values: readonly number[]) {
       const rolling = box.roll(`${values.length}d${sides}@${values.join(",")}`);
-      // Dice bodies spawn synchronously; shorten their default 0.9s sleep
-      // delay so the settled result appears promptly once motion stops.
+      // Dice bodies spawn synchronously; tune their settle after the toss.
       for (const die of box.diceList ?? []) {
-        if (die?.body) die.body.sleepTimeLimit = SLEEP_TIME_LIMIT;
+        if (!die?.body) continue;
+        die.body.sleepTimeLimit = SLEEP_TIME_LIMIT;
+        die.body.angularDamping = ANGULAR_DAMPING;
+        die.body.linearDamping = LINEAR_DAMPING;
       }
       const result = await rolling;
       snapDiceFlat(box);
