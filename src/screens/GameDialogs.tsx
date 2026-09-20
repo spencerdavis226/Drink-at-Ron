@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import type { SessionState } from "../game/types";
 import type { Preferences } from "../app/persistence";
 import { Button, Modal, Toggle } from "../components/UI";
@@ -5,6 +6,7 @@ import { PackLogo } from "../components/PackMarks";
 import { selectedPacks } from "../presentation/packs";
 import { CardFrame } from "../components/Cards";
 export type DialogName = "menu" | "previous" | "end" | "install" | null;
+const EXIT_MS = 200;
 export function GameDialogs({
   modal,
   setModal,
@@ -22,9 +24,35 @@ export function GameDialogs({
   offlineReady: boolean;
   onEnd: () => void;
 }) {
-  if (modal === "install")
+  // Keep the last dialog mounted while it animates out, so pause states do not
+  // pop away instantly.
+  const [displayed, setDisplayed] = useState<DialogName>(modal);
+  const [exiting, setExiting] = useState(false);
+  useEffect(() => {
+    if (modal) {
+      setDisplayed(modal);
+      setExiting(false);
+      return;
+    }
+    if (!displayed) return;
+    const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    setExiting(true);
+    const timer = setTimeout(
+      () => {
+        setDisplayed(null);
+        setExiting(false);
+      },
+      reduced ? 0 : EXIT_MS,
+    );
+    return () => clearTimeout(timer);
+  }, [modal, displayed]);
+  if (displayed === "install")
     return (
-      <Modal title="Install app" onClose={() => setModal(null)}>
+      <Modal
+        title="Install app"
+        onClose={() => setModal(null)}
+        exiting={exiting}
+      >
         <p>
           In Safari, open Share, choose <strong>Add to Home Screen</strong>,
           then <strong>Add</strong>. Leave Open as Web App enabled if offered.
@@ -39,9 +67,9 @@ export function GameDialogs({
         <Button onClick={() => setModal(null)}>Got it</Button>
       </Modal>
     );
-  if (modal === "menu")
+  if (displayed === "menu")
     return (
-      <Modal title="Paused" onClose={() => setModal(null)}>
+      <Modal title="Paused" onClose={() => setModal(null)} exiting={exiting}>
         <Button onClick={() => setModal(null)}>Resume game</Button>
         <Button
           variant="menu-row"
@@ -84,9 +112,13 @@ export function GameDialogs({
         </Button>
       </Modal>
     );
-  if (modal === "previous" && session?.previousId)
+  if (displayed === "previous" && session?.previousId)
     return (
-      <Modal title="Previous card" onClose={() => setModal("menu")}>
+      <Modal
+        title="Previous card"
+        onClose={() => setModal("menu")}
+        exiting={exiting}
+      >
         <CardFrame
           roll={session.previousRoll}
           packIds={session.config.packIds}
@@ -95,9 +127,13 @@ export function GameDialogs({
         <Button onClick={() => setModal(null)}>Back to game</Button>
       </Modal>
     );
-  if (modal === "end")
+  if (displayed === "end")
     return (
-      <Modal title="Call it a night?" onClose={() => setModal("menu")}>
+      <Modal
+        title="Call it a night?"
+        onClose={() => setModal("menu")}
+        exiting={exiting}
+      >
         <Button onClick={onEnd}>End game</Button>
         <Button variant="text-button" onClick={() => setModal(null)}>
           Keep playing

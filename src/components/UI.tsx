@@ -159,10 +159,12 @@ export function Modal({
   title,
   children,
   onClose,
+  exiting = false,
 }: {
   title: string;
   children: ReactNode;
   onClose: () => void;
+  exiting?: boolean;
 }) {
   const ref = useRef<HTMLDialogElement>(null);
   useEffect(() => {
@@ -177,6 +179,7 @@ export function Modal({
   return (
     <dialog
       ref={ref}
+      className={exiting ? "closing" : ""}
       onCancel={(e) => {
         e.preventDefault();
         onClose();

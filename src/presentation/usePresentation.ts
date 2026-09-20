@@ -18,7 +18,7 @@ export function usePresentation(create: () => PresentationController) {
       () => controller.finish(state.transition),
       reduced.matches
         ? 0
-        : (state.motion === "roll" ? 12000 : theme.motion[state.motion]) + 200,
+        : (state.motion === "roll" ? 12000 : theme.motion[state.motion]) + 80,
     );
     const skip = () => {
       if (document.hidden || reduced.matches) controller.settleAll();

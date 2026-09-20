@@ -16,12 +16,12 @@ export const theme = {
     bezel: "art/bezel.webp",
   },
   motion: {
-    deal: 620,
-    flip: 680,
-    discard: 460,
-    settle: 140,
-    complete: 650,
-    roll: 2100,
+    deal: 560,
+    flip: 560,
+    discard: 420,
+    settle: 160,
+    complete: 600,
+    roll: 2600,
   },
 } as const;
 export const asset = (path: string) =>
