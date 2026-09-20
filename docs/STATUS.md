@@ -22,14 +22,16 @@ Main is not the current work target. No merge, push, or publishing was performed
 
 The core game is functional: pack selection, finite/endless cycles, exact resume, shared frame, local fonts/assets, optional audio, workshop, and Pages workflow exist. Thirty Core cards remain production candidates; two provisional dice cards live in a separate `Dice (provisional)` pack. Dice outcomes, per-draw results, migration, and controller integration exist. `@3d-dice/dice-box-threejs` (Three.js + Cannon ES) is the default dice renderer, lazy-loaded from the play screen, so the initial bundle stays React-only.
 
-Fresh review evidence on 2026-09-20 (all commands rerun at `e472f3f`):
+Fresh review evidence on 2026-09-20 (all commands rerun at `923613a`):
 
-- `npm test`: **71 passed**.
-- `BASE_PATH=/Drink-at-Ron/ npm run build`: passed content validation, TypeScript, PWA build, and tiered budgets — 2519 KiB runtime/precache, 80.9 KiB gzip initial, 145.8 KiB gzip lazy.
-- `CI=1 BASE_PATH=/Drink-at-Ron/ TEST_PORT=4398 npm run test:e2e -- --workers=2`: **51 passed, 3 skipped** across Chromium/WebKit, including the dice overlay suite. Skips remain the explicit offline cases; they are not physical iOS evidence.
+- `npm test`: **73 passed**.
+- `BASE_PATH=/Drink-at-Ron/ npm run build`: passed content validation, TypeScript, PWA build, and tiered budgets — 2519 KiB runtime/precache, 80.9 KiB gzip initial, 146.0 KiB gzip lazy.
+- `CI=1 BASE_PATH=/Drink-at-Ron/ TEST_PORT=4398 npm run test:e2e -- --workers=2`: **53 passed, 3 skipped** across Chromium/WebKit, including the dice overlay suite. Skips remain the explicit offline cases; they are not physical iOS evidence.
 - `BASE_PATH=/Drink-at-Ron/ npm run test:update`: passed. `npm run test:workshop`: **4 passed** across Chromium/WebKit.
+- Roll consistency is now guarded: a test runs 6 rolls per browser and requires every roll to settle, never fall back, and never finish as a weak "plop"; measured durations are 2.3-3.5 s. `data-roll-ms` exposes the duration for diagnostics.
 - Reduced motion shows the static result with no dice (accessibility); the dev-only `?force-motion` overrides it for review.
-- Physical-device testing, group playtesting, live Pages settings/deployment, and final dice art/copy remain unverified. The dice experience has not been measured on a physical iPhone/iPad.
+- The user confirmed on a physical device that the dice look and rolls are good after the minimum-throw fix.
+- Physical-device lag has not been re-measured since; group playtesting, live Pages deployment, and final dice art/copy remain unverified.
 
 ## Review findings to resolve
 
@@ -37,6 +39,8 @@ Fresh review evidence on 2026-09-20 (all commands rerun at `e472f3f`):
 2. Resolved in `d299fed`: the audio test has a constructible `AudioContext` mock and validates asynchronous impact-timer cleanup.
 3. Resolved in `e472f3f`: the custom in-card dice renderer was retired; the full-screen library overlay is now the only dice renderer, matching the approved direction.
 4. Resolved 2026-09-20: the release budget is tiered by load path (see **Release budgets**). The earlier single all-JS figure measured unrelated costs together; library package unpacked size is not a measurement of the delivered build.
+5. Resolved in `923613a`: the "plops" were the library deriving throw speed from a random offset (near-zero offset = weak toss). A minimum throw speed and spin are now enforced before pre-simulation; the spawn clamp bug (`vector.x` vs `vector.pos.x`) was also fixed. A 6-rolls-per-browser regression test guards it.
+6. Reverted: a deterministic CSS-3D renderer (`e086291`) was tried and rejected by the user as a severe visual regression. Do not replace the WebGL renderer without a screenshot-gated comparison the user approves.
 
 ## Approved product constraints
 
@@ -66,7 +70,7 @@ User clarification, 2026-09-20: dice roll across the screen, in the spirit of a 
 Implemented flow:
 
 1. The revealed 2:3 card stays fully visible. There is no dialog and no dimming; the dice tumble on a transparent full-screen stage over the card.
-2. One bottom control reads `Roll 2d6` / `Rolling…` / `Continue`; tapping the card works too. Dice enter from the screen edges and carom off invisible walls (~2.2 s). Gravity and throw are constant — the library's impulse already scales with the box.
+2. One bottom control reads `Roll 2d6` / `Rolling…` / `Continue`; tapping the card works too. Dice enter from the screen edges and carom off invisible walls (~2.3–3.5 s). Gravity and throw are constant; a minimum throw speed and spin guarantee every toss carries instead of plopping.
 3. The moment the dice settle, the card's parchment becomes the result: `Rolled N` with the number emphasized plus the resolved instruction. Dice remain until tapped; no auto-discard.
 4. Continue returns to the unchanged card (result already shown); the next normal card action discards.
 
