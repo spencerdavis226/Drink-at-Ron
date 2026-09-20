@@ -24,7 +24,7 @@ npm run test:workshop
 
 The deployment uploads the exact `dist` artifact tested by browser checks. The two-build update test builds its second release in a temporary directory and never modifies that artifact. `VITE_RELEASE_ID` uses the commit SHA in CI and is exposed only as an HTML data attribute for diagnostics.
 
-Build budgets: at most 3 MiB total runtime files (a conservative precache upper bound), 500 KiB per image, and 120 KiB gzip total app JavaScript. The build rejects workshop code in shipped JavaScript. Workshop assets live outside public and are not shipped. Future illustrated packs require reviewing these budgets and caching strategy deliberately.
+Build budgets (`scripts/check-budget.ts`): at most 3 MiB total runtime files (a conservative precache upper bound), 500 KiB per image, at most 100 KiB gzip initial (entry) JavaScript, and at most 200 KiB gzip lazy feature JavaScript. The build rejects workshop code in shipped JavaScript. Workshop assets live outside public and are not shipped. Future illustrated packs require reviewing these budgets and caching strategy deliberately.
 
 The service worker caches local fonts and artwork. Updates remain pending during gameplay and are offered between games. Saved sessions and preferences are retained. GitHub Pages cannot supply custom cache headers; rely on Vite's hashed bundles and the service-worker release lifecycle.
 
