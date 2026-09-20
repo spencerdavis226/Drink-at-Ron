@@ -8,11 +8,10 @@ import {
 } from "../src/game/dice";
 import { parseSession } from "../src/app/persistence";
 import { PresentationController } from "../src/presentation/controller";
-import { diceFixtures } from "../src/workshop/dice-fixtures";
 import { cards, packs, validateCatalog } from "../src/content/catalog";
-import { dieFaces } from "../src/presentation/dice/geometry";
 import type { DiceDefinition } from "../src/game/types";
-const fixture = diceFixtures[0];
+const diceCards = cards.filter((c) => c.dice);
+const fixture = diceCards[0];
 const session = (limit: number | null = 2, card = fixture) =>
   createSession(
     { version: 1, packIds: ["core"], limit },
@@ -26,10 +25,9 @@ const settle = (c: PresentationController) => {
 };
 
 describe("dice content", () => {
-  it("validates fixtures without expanding the production Core", () => {
-    validateCatalog(diceFixtures, []);
-    expect(cards).toHaveLength(30);
-    expect(cards.some((c) => c.dice)).toBe(false);
+  it("validates the production dice cards", () => {
+    validateCatalog(diceCards, []);
+    expect(diceCards.length).toBeGreaterThanOrEqual(2);
   });
   it.each([0, 5, 1.5, -1, NaN])("rejects unsupported count %s", (count) =>
     expect(() => validateDice({ ...fixture.dice, count })).toThrow(),
@@ -53,7 +51,7 @@ describe("dice content", () => {
     expect(() => validateDice({ ...fixture.dice, ...patch })).toThrow(),
   );
   it("resolves every range boundary and only known placeholders", () => {
-    for (const card of diceFixtures) {
+    for (const card of diceCards) {
       const d = card.dice!;
       for (let total = d.count; total <= d.sides * d.count; total++)
         expect(resolveInstruction(d, total)).toBeTruthy();
@@ -165,11 +163,12 @@ describe("dice transactions and saves", () => {
     ).toBe(true);
   });
   it("migrates legacy saves without touching their snapshots, choices or order", () => {
+    const plain = cards.filter((c) => !c.dice);
     const current = advance(
       createSession(
         { version: 1, packIds: ["core"], limit: 40 },
-        cards,
-        packs,
+        plain,
+        [{ ...packs[0], cardIds: plain.map((c) => c.id) }],
         () => 0.2,
       ),
     );
@@ -221,32 +220,9 @@ describe("dice transactions and saves", () => {
   it.each([0, 0.049999, 0.05, 0.499, 0.999999])(
     "maps random sample %s to a legal d20 result",
     (sample) => {
-      const s = rollDice(advance(session(1, diceFixtures[1])), () => sample);
+      const s = rollDice(advance(session(1, diceCards[1])), () => sample);
       expect(s.roll?.values).toEqual([1 + Math.floor(sample * 20)]);
     },
   );
 });
-describe("dice rendering geometry", () => {
-  it.each([6, 20] as const)(
-    "has %i unique outward faces and exact landing orientations",
-    (sides) => {
-      const faces = dieFaces(sides);
-      expect(faces).toHaveLength(sides);
-      expect(new Set(faces.map((f) => f.value)).size).toBe(sides);
-      for (const f of faces) {
-        expect(f.width).toBeGreaterThan(0);
-        expect(f.height).toBeGreaterThan(0);
-        const m = f.landing.slice(9, -1).split(",").map(Number);
-        const rotated = [0, 1, 2].map(
-          (i) =>
-            m[i] * f.normal[0] +
-            m[i + 4] * f.normal[1] +
-            m[i + 8] * f.normal[2],
-        );
-        expect(rotated[0]).toBeCloseTo(0);
-        expect(rotated[1]).toBeCloseTo(0);
-        expect(rotated[2]).toBeCloseTo(1);
-      }
-    },
-  );
-});
+

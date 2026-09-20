@@ -1,4 +1,3 @@
-import { libraryDice } from "../presentation/dice/prototype";
 import { lazy, Suspense, useEffect, useRef, type ReactNode } from "react";
 import type { SessionState, CardDefinition } from "../game/types";
 import { diceNotation } from "../game/dice";
@@ -6,9 +5,7 @@ import { currentCard } from "../game/engine";
 import type { Motion } from "../presentation/controller";
 import { cardPacks } from "../presentation/packs";
 import { CardFace } from "../components/Cards";
-const FullScreenDice = libraryDice
-  ? lazy(() => import("../components/FullScreenDice"))
-  : null;
+const FullScreenDice = lazy(() => import("../components/FullScreenDice"));
 export function Play({
   session,
   motion,
@@ -16,6 +13,7 @@ export function Play({
   onTap,
   onFinish,
   renderFace,
+  overlay = true,
 }: {
   session: SessionState;
   motion: Motion | null;
@@ -23,6 +21,7 @@ export function Play({
   onTap: () => void;
   onFinish: (id: number) => void;
   renderFace?: (card: CardDefinition) => ReactNode;
+  overlay?: boolean;
 }) {
   const card = currentCard(session),
     ref = useRef<HTMLButtonElement>(null);
@@ -116,8 +115,6 @@ export function Play({
                     packIds={session.config.packIds}
                     roll={session.roll}
                     rolling={motion === "roll"}
-                    transition={transition}
-                    onFinish={onFinish}
                   />
                 )}
               </span>
@@ -126,7 +123,7 @@ export function Play({
           <div className="reveal-glint" aria-hidden="true" />
         </div>
       </section>
-      {FullScreenDice &&
+      {overlay &&
         session.phase === "revealed" &&
         card.dice &&
         !session.roll?.returned &&

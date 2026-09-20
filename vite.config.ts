@@ -38,13 +38,6 @@ export default defineConfig({
       },
       workbox: {
         globPatterns: ["**/*.{js,css,html,svg,png,webp,avif,woff2}"],
-        // Dice textures are prototype-only. Their code is tree-shaken from
-        // normal releases, so keep them out of the install precache; the
-        // prototype build keeps them for offline dice.
-        globIgnores:
-          process.env.VITE_DICE_PROTOTYPE === "1"
-            ? []
-            : ["**/paper-*.webp", "**/paper-bump-*.webp"],
         cleanupOutdatedCaches: true,
       },
     }),

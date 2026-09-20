@@ -6,9 +6,23 @@ import {
   currentCard,
   shuffle,
 } from "../src/game/engine";
+import { rollDice, returnToCard } from "../src/game/dice";
 import { parseSession } from "../src/app/persistence";
+import type { SessionState } from "../src/game/types";
 const config = { version: 1 as const, packIds: ["core"], limit: 40 };
 const rng = () => 0.42;
+// The default Core pack drives the deck-mechanics tests; the catalog also ships
+// a separate provisional dice pack, so use the core deck size, not cards.length.
+const coreDeckSize = packs[0].cardIds.length;
+// Dice cards must be rolled and returned before they can be discarded.
+const dismiss = (state: SessionState, random = rng) => {
+  let s = state;
+  if (currentCard(s).dice && !s.roll?.returned) {
+    if (!s.roll) s = rollDice(s, random);
+    s = returnToCard(s);
+  }
+  return advance(s, random);
+};
 describe("deck engine", () => {
   it.each([1, 20, 40, 60, 500])(
     "finishes exactly %i cards after dismissal",
@@ -19,7 +33,7 @@ describe("deck engine", () => {
         s = advance(s, rng);
         expect(s.phase).toBe("revealed");
         expect(s.discarded).toBe(i);
-        s = advance(s, rng);
+        s = dismiss(s, rng);
         expect(parseSession(JSON.stringify(s))).toEqual(s);
       }
       expect(s.phase).toBe("complete");
@@ -32,16 +46,16 @@ describe("deck engine", () => {
     let previous = "";
     for (let cycle = 0; cycle < 100; cycle++) {
       const seen = new Set<string>();
-      for (let i = 0; i < cards.length; i++) {
+      for (let i = 0; i < coreDeckSize; i++) {
         const id = currentCard(s).id;
         if (i === 0) expect(id).not.toBe(previous);
         seen.add(id);
         previous = id;
-        s = advance(advance(s, rng), rng);
+        s = dismiss(advance(s, rng), rng);
       }
-      expect(seen.size).toBe(cards.length);
+      expect(seen.size).toBe(coreDeckSize);
     }
-    expect(s.discarded).toBe(100 * cards.length);
+    expect(s.discarded).toBe(100 * coreDeckSize);
   });
   it("handles one-card endless pools", () => {
     let s = createSession(
@@ -50,7 +64,7 @@ describe("deck engine", () => {
       [{ ...packs[0], cardIds: [cards[0].id] }],
       rng,
     );
-    for (let i = 0; i < 5; i++) s = advance(advance(s, rng), rng);
+    for (let i = 0; i < 5; i++) s = dismiss(advance(s, rng), rng);
     expect(s.discarded).toBe(5);
     expect(s.cycle).toBe(5);
   });
@@ -61,7 +75,7 @@ describe("deck engine", () => {
       [packs[0], { ...packs[0], id: "bonus" }],
       rng,
     );
-    expect(s.cards.length).toBe(cards.length);
+    expect(s.cards.length).toBe(coreDeckSize);
   });
   it.each([0, -1, 501, 1.5, NaN])("rejects bad limit %s", (limit) =>
     expect(() => createSession({ ...config, limit }, cards, packs)).toThrow(),

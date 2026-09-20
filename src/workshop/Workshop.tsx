@@ -88,6 +88,7 @@ function Preview({
           transition={transition}
           onTap={() => controller.tap()}
           onFinish={controller.finish.bind(controller)}
+          overlay={false}
         />
       </div>
     </>
@@ -242,8 +243,8 @@ export default function Workshop() {
             "core.cheers",
             "core.animals",
             "core.left",
-            "core.dice-toast-study",
-            "core.dice-title-study",
+            "dice.toast",
+            "dice.title",
           ].map((id) => (
             <Button key={id} onClick={() => setSelected(id)}>
               {cards.find((c) => c.id === id)!.title}

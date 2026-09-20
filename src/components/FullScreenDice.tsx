@@ -47,6 +47,8 @@ export default function FullScreenDice({
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
       if (event.key !== "Escape") return;
+      // Let an open modal (game menu, dialogs) own Escape instead.
+      if (document.querySelector("dialog[open]")) return;
       event.preventDefault();
       if (rolling) finish.current();
       else if (roll) onTap();

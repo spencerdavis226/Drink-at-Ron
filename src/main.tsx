@@ -232,11 +232,6 @@ if (import.meta.env.DEV && params.get("workshop") === "1") {
       </React.StrictMode>,
     ),
   );
-} else if (import.meta.env.DEV && params.get("review") === "dice") {
-  void import("./workshop/review").then(({ seedDiceReview }) => {
-    seedDiceReview();
-    renderApp();
-  });
 } else {
   renderApp();
 }

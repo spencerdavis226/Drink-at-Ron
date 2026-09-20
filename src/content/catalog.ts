@@ -15,7 +15,24 @@ const card = (
   illustrationBrief,
   artwork: "art/tankard.webp",
 });
-export const cards: CardDefinition[] = [
+const diceCard = (
+  id: string,
+  title: string,
+  category: Category,
+  rules: string,
+  illustrationBrief: string,
+  dice: CardDefinition["dice"],
+): CardDefinition => ({
+  version: 1,
+  id,
+  title,
+  category,
+  rules,
+  illustrationBrief,
+  artwork: "art/tankard.webp",
+  dice,
+});
+const plainCards: CardDefinition[] = [
   card(
     "cheers",
     "A little cheers",
@@ -227,6 +244,68 @@ export const cards: CardDefinition[] = [
     "One cheerful forest sprite cupping a hand beside its mouth, centered with a plain warm backdrop.",
   ),
 ];
+// Provisional dice cards. Content and art are placeholders for the approved
+// full-screen dice renderer; copy and illustrations still need a real pass.
+// They live in their own pack so the validated 30-card Core is unaffected.
+const diceCards: CardDefinition[] = [
+  diceCard(
+    "dice.toast",
+    "A toast of fate",
+    "challenge",
+    "Roll 2d6. Your total decides who gives the toast.",
+    "Two oversized ivory dice tumble from a tiny enchanted gauntlet. One clear silhouette, centered with generous crop margins; warm painted tavern style.",
+    {
+      version: 1,
+      count: 2,
+      sides: 6,
+      outcomes: [
+        {
+          min: 2,
+          max: 6,
+          instruction: "Give the group a toast to a tiny victory.",
+        },
+        {
+          min: 7,
+          max: 12,
+          instruction: "Choose someone to give the group a grand toast.",
+        },
+      ],
+    },
+  ),
+  diceCard(
+    "dice.title",
+    "Roll for royalty",
+    "challenge",
+    "Roll 1d20. Claim the title fate has picked for you until the next card is revealed.",
+    "One lopsided paper crown on a proud enchanted helmet; goofy original fantasy, centered and legible at a glance.",
+    {
+      version: 1,
+      count: 1,
+      sides: 20,
+      outcomes: [
+        {
+          min: 1,
+          max: 10,
+          instruction:
+            "You are the Royal Crumb Inspector until the next card is revealed. Introduce yourself with dignity.",
+        },
+        {
+          min: 11,
+          max: 19,
+          instruction:
+            "You are the Grand Duke of Snacks until the next card is revealed. Introduce yourself with dignity.",
+        },
+        {
+          min: 20,
+          max: 20,
+          instruction:
+            "You are the Supreme Ruler of This Table until the next card is revealed. Give your shortest royal speech.",
+        },
+      ],
+    },
+  ),
+];
+export const cards: CardDefinition[] = [...plainCards, ...diceCards];
 export const packs: PackDefinition[] = [
   {
     version: 1,
@@ -235,7 +314,16 @@ export const packs: PackDefinition[] = [
     title: "The house collection",
     description:
       "Toasts, tall tales, and a little tavern mischief. Thirty cards for a classic party.",
-    cardIds: cards.map((c) => c.id),
+    cardIds: plainCards.map((c) => c.id),
+  },
+  {
+    version: 1,
+    id: "dice",
+    logo: "art/packs/dice.svg",
+    title: "Dice (provisional)",
+    description:
+      "Provisional dice cards for trying the roll. Content and art are not final.",
+    cardIds: diceCards.map((c) => c.id),
   },
 ];
 export function validateCatalog(cs: CardDefinition[], ps: PackDefinition[]) {

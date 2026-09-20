@@ -1,23 +1,12 @@
 import { test, expect, type Page } from "@playwright/test";
 import { createSession } from "../../src/game/engine";
-import { packs } from "../../src/content/catalog";
-import { diceFixtures } from "../../src/workshop/dice-fixtures";
+import { cards, packs } from "../../src/content/catalog";
 const key = "drink-at-ron.session.v1";
-const ready = async (page: Page) =>
-  expect(page.locator(".card-stage")).not.toHaveClass(
-    /roll|flip|settle|deal|discard/,
-  );
-async function seed(page: Page, index = 0, limit = 2, count?: number) {
-  const card = structuredClone(diceFixtures[index]);
-  if (count)
-    card.dice = {
-      version: 1,
-      count,
-      sides: 6,
-      instruction: "Tell a {total}-word tale together.",
-    };
+const diceIds = ["dice.toast", "dice.title"] as const;
+async function seed(page: Page, index = 0) {
+  const card = cards.find((c) => c.id === diceIds[index])!;
   const session = createSession(
-    { version: 1, packIds: ["core"], limit },
+    { version: 1, packIds: ["core"], limit: 2 },
     [card],
     [{ ...packs[0], cardIds: [card.id] }],
   );
@@ -28,224 +17,154 @@ async function seed(page: Page, index = 0, limit = 2, count?: number) {
     { key, session },
   );
   await page.reload();
-  return session;
+  await expect(page.locator(".roll-cta")).toHaveText(/^Roll /);
 }
 const saved = (page: Page) =>
   page.evaluate((key) => JSON.parse(localStorage.getItem(key)!), key);
-const paintedFaces = (page: Page) =>
-  page
-    .locator(".die-model")
-    .first()
-    .evaluate((model) => {
-      const rect = model.getBoundingClientRect();
-      const faces = new Set<Element>();
-      for (let x = rect.left; x < rect.right; x += 3)
-        for (let y = rect.top; y < rect.bottom; y += 3) {
-          const face = document.elementFromPoint(x, y)?.closest(".die-facet");
-          if (face?.parentElement === model) faces.add(face);
-        }
-      return faces.size;
+for (const index of [0, 1])
+  test(`dice overlay renders saved ${index ? "d20" : "2d6"} faces over the card`, async ({
+    page,
+  }, info) => {
+    const external: string[] = [];
+    page.on("request", (request) => {
+      if (
+        !request.url().startsWith("http://127.0.0.1:") &&
+        !request.url().startsWith("data:")
+      )
+        external.push(request.url());
     });
-
-test("d6 and d20 keep painted 3D faces during and after the roll", async ({
-  page,
-}) => {
-  await page.addInitScript(() => {
-    Math.random = () => 0.4;
-  });
-  for (const [index, midFaces, finalFaces] of [
-    [0, 2, 3],
-    [1, 6, 10],
-  ] as const) {
     await seed(page, index);
-    await page.locator(".game-card").click();
-    await expect(page.locator(".die-model").first()).toBeVisible();
-    await page.waitForTimeout(850);
-    expect(await paintedFaces(page)).toBeGreaterThanOrEqual(midFaces);
-    await ready(page);
-    expect(await paintedFaces(page)).toBe(finalFaces);
-    const value = Number(
-      await page.locator(".die-model").first().getAttribute("data-value"),
+    // The card stays in the layout behind the transparent stage, undimmed.
+    await expect(page.locator(".game-card")).toBeVisible();
+    const bounds = await page.locator(".roll-layer").boundingBox();
+    expect(bounds!.width).toBe(page.viewportSize()!.width);
+    await page.locator(".roll-cta").click();
+    const committed = await saved(page);
+    await expect(page.locator(".roll-stage")).toHaveAttribute(
+      "data-renderer",
+      `settled:${committed.roll.values.join(",")}`,
+      { timeout: 15000 },
     );
-    await expect(
-      page
-        .locator(".die-model")
-        .first()
-        .locator(`[data-face-value="${value}"]`),
-    ).toHaveCSS("visibility", "visible");
-  }
-});
-
-test("dice roll commits once, survives reload, returns to the card, and keeps Previous Card", async ({
-  page,
-}) => {
-  await seed(page);
-  await expect(page.getByRole("button", { name: /Roll 2d6/ })).toBeVisible();
-  await page.locator(".game-card").click();
-  await page.locator(".game-card").evaluate((el) => {
-    for (let i = 0; i < 10; i++) (el as HTMLElement).click();
+    console.log(
+      info.project.name,
+      index,
+      "startup ms",
+      await page.locator(".roll-stage").getAttribute("data-startup-ms"),
+    );
+    expect((await saved(page)).roll).toEqual(committed.roll);
+    expect(external).toEqual([]);
+    await expect(page.locator(".roll-cta")).toHaveText("Continue");
+    await page.locator(".roll-cta").click();
+    await expect(page.locator(".roll-layer")).toHaveCount(0);
+    expect((await saved(page)).roll.returned).toBe(true);
+    expect((await saved(page)).discarded).toBe(0);
   });
-  const committed = await saved(page);
-  expect(committed.roll.values).toHaveLength(2);
-  expect(committed.discarded).toBe(0);
-  await page.reload();
-  await expect(page.locator('[data-dice-state="result"]')).toBeVisible();
-  expect((await saved(page)).roll).toEqual(committed.roll);
-  await expect(page.locator(".die-model")).toHaveCount(
-    committed.roll.values.length,
-  );
-  expect(
-    await page
-      .locator(".die-model")
-      .evaluateAll((els) =>
-        els.map((e) => Number((e as HTMLElement).dataset.value)),
-      ),
-  ).toEqual(committed.roll.values);
-  await page.getByRole("button", { name: /Return to card/ }).click();
-  await ready(page);
-  await expect(page.locator(".resolved-instruction")).toHaveText(
-    committed.roll.instruction,
-  );
-  await expect(page.locator(".rolled-total")).toHaveText(
-    `Rolled ${committed.roll.total}`,
-  );
-  await page.reload();
-  await expect(page.locator(".resolved-instruction")).toHaveText(
-    committed.roll.instruction,
-  );
-  await page.locator(".game-card").click();
-  await ready(page);
-  expect((await saved(page)).roll).toBeNull();
-  await page.getByRole("button", { name: "Open game menu" }).click();
-  await page
-    .getByRole("button", { name: "Previous card", exact: true })
-    .click();
-  await expect(page.locator(".previous-card .rolled-total")).toHaveText(
-    `Rolled ${committed.roll.total}`,
-  );
-  await expect(page.locator(".previous-card .resolved-instruction")).toHaveText(
-    committed.roll.instruction,
-  );
-  await page.getByRole("button", { name: "Back to game" }).click();
-  await page.getByRole("button", { name: "Reveal card" }).click();
-  await ready(page);
-  await expect(page.getByRole("button", { name: /Roll 2d6/ })).toBeVisible();
-});
-
-test("d20 ends only after result return and final dismissal, with keyboard and reduced motion", async ({
+test("reload and reduced motion restore static saved result without replay", async ({
   page,
 }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
-  await seed(page, 1, 1);
-  await page.getByRole("button", { name: /Roll 1d20/ }).focus();
-  await page.keyboard.press("Enter");
-  await ready(page);
-  const roll = (await saved(page)).roll;
-  expect(roll.total).toBeGreaterThanOrEqual(1);
-  expect(roll.total).toBeLessThanOrEqual(20);
-  await expect(page.getByRole("status")).toContainText(`Rolled ${roll.total}`);
-  await page.keyboard.press("Enter");
-  await ready(page);
-  await expect(page.locator(".resolved-instruction")).toBeVisible();
-  expect((await saved(page)).phase).toBe("revealed");
-  await page.keyboard.press("Enter");
-  await expect(
-    page.getByRole("button", { name: "Play again", exact: true }),
-  ).toBeVisible();
-  await page.getByRole("button", { name: "Play again", exact: true }).click();
-  await ready(page);
-  expect((await saved(page)).roll).toBeNull();
+  await seed(page);
+  // Reduced motion commits the roll with no dice animation.
+  await page.locator(".roll-cta").click();
+  await expect(page.locator(".roll-cta")).toHaveText("Continue");
+  const committed = await saved(page);
+  await page.reload();
+  await expect(page.locator(".roll-cta")).toHaveText("Continue");
+  await expect(page.locator(".roll-stage canvas")).toHaveCount(0);
+  expect((await saved(page)).roll).toEqual(committed.roll);
 });
-
-test("canceling animation or hiding the app keeps the committed result", async ({
+test("Escape interrupts safely and preserves the committed roll", async ({
   page,
 }) => {
-  for (const interrupt of ["cancel", "hide"]) {
-    await seed(page);
-    await page.locator(".game-card").click();
-    await expect(page.locator(".card-stage")).toHaveClass(/roll/);
-    await expect(page.locator(".die-model").first()).toBeVisible();
-    const before = (await saved(page)).roll;
-    await page.evaluate((interrupt) => {
-      if (interrupt === "cancel")
-        document.getAnimations().forEach((a) => a.cancel());
-      else {
-        Object.defineProperty(document, "hidden", {
-          value: true,
-          configurable: true,
-        });
-        document.dispatchEvent(new Event("visibilitychange"));
-      }
-    }, interrupt);
-    await ready(page);
-    expect((await saved(page)).roll).toEqual(before);
-    await page.evaluate(() => {
-      Object.defineProperty(document, "hidden", {
-        value: false,
-        configurable: true,
-      });
-      document.dispatchEvent(new Event("visibilitychange"));
-    });
-    await expect(
-      page.getByRole("button", { name: /Return to card/ }),
-    ).toBeVisible();
-  }
+  await seed(page);
+  await page.locator(".roll-cta").click();
+  const committed = await saved(page);
+  await page.keyboard.press("Escape");
+  await expect(page.locator(".roll-cta")).toHaveText("Continue");
+  expect((await saved(page)).roll).toEqual(committed.roll);
+  await page.locator(".roll-cta").click();
+  await expect(page.locator(".roll-layer")).toHaveCount(0);
+  await expect(page.locator(".game-card")).toBeFocused();
 });
-
-test("animation failure and four-die results still allow play at enlarged text", async ({
-  page,
-}) => {
-  await page.addInitScript(() => {
-    Element.prototype.animate = function () {
-      throw new Error("Renderer unavailable");
-    };
-  });
-  await page.setViewportSize({ width: 320, height: 700 });
-  await seed(page, 0, 1, 4);
-  await page.addStyleTag({ content: ":root{font-size:24px}" });
-  await page.locator(".game-card").click();
-  await ready(page);
-  expect((await saved(page)).roll.values).toHaveLength(4);
-  await page.getByRole("button", { name: /Return to card/ }).click();
-  await ready(page);
-  await expect(page.locator(".resolved-instruction")).toBeVisible();
-  expect(
-    await page.locator(".game-card").evaluate((el) => {
-      const face = el.querySelector(".study-face") as HTMLElement,
-        rules = el.querySelector(".study-rules") as HTMLElement;
-      return (
-        rules.clientWidth <= face.clientWidth &&
-        rules.clientHeight <= face.clientHeight &&
-        rules.scrollWidth <= rules.clientWidth + 2
-      );
-    }),
-  ).toBe(true);
-});
-
-test("dice work offline after installation without a second roll on reload", async ({
+test("offline dice roll and relaunch preserve result", async ({
   page,
   context,
   browserName,
 }) => {
   test.skip(
-    browserName !== "chromium",
-    "Offline service-worker automation covered in Chromium; physical iOS remains separate.",
+    browserName === "webkit",
+    "Playwright WebKit offline navigation fails here; verify installed iOS offline separately.",
   );
   await seed(page);
-  await page.evaluate(async () => {
-    await navigator.serviceWorker.ready;
-  });
+  await page.evaluate(() => navigator.serviceWorker.ready);
   await page.reload();
   await expect
     .poll(() => page.evaluate(() => !!navigator.serviceWorker.controller))
     .toBe(true);
   await context.setOffline(true);
-  await page.locator(".game-card").click();
-  await ready(page);
-  await expect(page.locator(".die-model")).toHaveCount(2);
-  const roll = (await saved(page)).roll;
   await page.reload();
-  await expect(page.locator('[data-dice-state="result"]')).toBeVisible();
-  expect((await saved(page)).roll).toEqual(roll);
+  await page.locator(".roll-cta").click();
+  await expect(page.locator(".roll-cta")).toHaveText("Continue", {
+    timeout: 15000,
+  });
+  await expect(page.locator(".roll-stage")).toHaveAttribute(
+    "data-renderer",
+    /^settled:/,
+  );
+  const committed = await saved(page);
+  await page.reload();
+  await expect(page.locator(".roll-cta")).toHaveText("Continue");
+  expect((await saved(page)).roll).toEqual(committed.roll);
   await context.setOffline(false);
+});
+test("WebGL failure uses a static result without blocking return", async ({
+  page,
+}) => {
+  await page.addInitScript(() => {
+    const original = HTMLCanvasElement.prototype.getContext;
+    HTMLCanvasElement.prototype.getContext = function (
+      type: string,
+      ...args: unknown[]
+    ) {
+      if (type.includes("webgl")) return null;
+      return original.apply(this, [type, ...args] as Parameters<
+        typeof original
+      >);
+    } as typeof original;
+  });
+  await seed(page);
+  await page.locator(".roll-cta").click();
+  await expect(page.locator(".roll-stage")).toHaveAttribute(
+    "data-renderer",
+    "fallback",
+  );
+  await expect(page.locator(".roll-cta")).toHaveText("Continue");
+  expect((await saved(page)).roll.returned).toBe(false);
+});
+test("resize interruption settles without another roll", async ({ page }) => {
+  await seed(page);
+  await page.locator(".roll-cta").click();
+  const committed = await saved(page);
+  await page.setViewportSize({ width: 844, height: 390 });
+  await expect(page.locator(".roll-cta")).toHaveText("Continue");
+  expect((await saved(page)).roll).toEqual(committed.roll);
+  await page.reload();
+  await expect(page.locator(".roll-stage canvas")).toHaveCount(0);
+});
+test("backgrounding stops animation and preserves the saved outcome", async ({
+  page,
+}) => {
+  await seed(page);
+  await page.locator(".roll-cta").click();
+  const committed = await saved(page);
+  await page.evaluate(() => {
+    Object.defineProperty(document, "hidden", {
+      configurable: true,
+      value: true,
+    });
+    document.dispatchEvent(new Event("visibilitychange"));
+  });
+  await expect(page.locator(".roll-cta")).toHaveText("Continue");
+  await expect(page.locator(".roll-stage canvas")).toHaveCount(0);
+  expect((await saved(page)).roll).toEqual(committed.roll);
 });

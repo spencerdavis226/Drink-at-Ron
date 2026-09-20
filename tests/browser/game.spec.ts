@@ -479,7 +479,9 @@ test("offline uses local Grenze and painted controls", async ({
   ).toContain("button.webp");
   expect(
     await page
-      .locator(".pack-copy .pack-logo img")
+      .locator(".pack-copy")
+      .filter({ hasText: "The house collection" })
+      .locator(".pack-logo img")
       .evaluate((el) => (el as HTMLImageElement).naturalWidth),
   ).toBeGreaterThan(0);
   await page.getByRole("button", { name: "Install app" }).click();

@@ -1,7 +1,5 @@
-import { libraryDice } from "../presentation/dice/prototype";
 import cheers from "../presentation/art/cheers-armor-v3.webp";
 import { useRef } from "react";
-import { DiceOverlay } from "./DiceOverlay";
 import type { CardDefinition, DiceRoll } from "../game/types";
 import { asset, cardArt } from "../presentation/theme";
 import { CardPackMarks } from "./PackMarks";
@@ -11,15 +9,11 @@ export function CardFace({
   packIds,
   roll = null,
   rolling = false,
-  transition = 0,
-  onFinish = () => {},
 }: {
   card: CardDefinition;
   packIds?: readonly string[];
   roll?: DiceRoll | null;
   rolling?: boolean;
-  transition?: number;
-  onFinish?: (id: number) => void;
 }) {
   const rulesGesture = useRef<{
     pointerId: number;
@@ -32,20 +26,11 @@ export function CardFace({
     if (rulesGesture.current?.pointerId === pointerId)
       rulesGesture.current.cancelClick = true;
   };
-  // Show the resolved outcome as soon as the roll settles (library overlay) or
-  // once the result is returned to the card (in-card renderer).
-  const resolved = !!roll && !rolling && (libraryDice || !!roll.returned);
+  // Show the resolved outcome once the dice settle (the overlay owns the roll).
+  const resolved = !!roll && !rolling;
   return (
     <div
-      className={`study-face ${
-        card.dice
-          ? libraryDice
-            ? roll
-              ? ""
-              : "dice-ready"
-            : `dice-card ${!roll?.returned ? "dice-pending" : ""} ${card.dice.count > 2 ? "dice-four" : ""}`
-          : ""
-      }`}
+      className={`study-face ${card.dice && !roll ? "dice-ready" : ""}`}
     >
       <div className="study-illustration">
         <Artwork
@@ -57,15 +42,6 @@ export function CardFace({
             card.id === "core.cheers" ? "painted-scene" : "placeholder-scene"
           }
         />
-        {card.dice && !libraryDice && !roll?.returned && (
-          <DiceOverlay
-            dice={card.dice}
-            roll={roll}
-            rolling={rolling}
-            transition={transition}
-            onFinish={onFinish}
-          />
-        )}
       </div>
       <div className="study-title">
         <h2>{card.title}</h2>

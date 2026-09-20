@@ -1,4 +1,5 @@
 import { test, expect } from "@playwright/test";
+import { packs } from "../../src/content/catalog";
 test("workshop previews are isolated, readable, and use real motion", async ({
   page,
 }) => {
@@ -76,9 +77,13 @@ test("all Core and dice study cards retain their ratio at each preview size", as
           ).toBeLessThanOrEqual(1);
         }
         await expect(page.locator(".study-category")).toHaveCount(0);
+        const logo = packs.find((p) => p.cardIds.includes(id))!.logo!;
         await expect(
           page.locator(".study-rules .card-pack-marks img"),
-        ).toHaveAttribute("src", /art\/packs\/core.svg$/);
+        ).toHaveAttribute(
+          "src",
+          new RegExp(`${logo.replace(/\//g, "\\/")}$`),
+        );
         expect(
           await page.locator(".game-card").evaluate((el) => {
             const box = el.getBoundingClientRect();

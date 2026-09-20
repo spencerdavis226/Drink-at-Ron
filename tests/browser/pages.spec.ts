@@ -36,10 +36,12 @@ test("Core logo matches selection, card, pause legend and previous card", async 
   page,
 }) => {
   await page.goto("./");
-  await expect(page.locator(".pack-copy .pack-logo img")).toHaveAttribute(
-    "src",
-    /art\/packs\/core.svg$/,
-  );
+  await expect(
+    page
+      .locator(".pack-copy")
+      .filter({ hasText: "The house collection" })
+      .locator(".pack-logo img"),
+  ).toHaveAttribute("src", /art\/packs\/core.svg$/);
   await page.getByRole("button", { name: "Play", exact: true }).click();
   await page.getByRole("button", { name: "Reveal card", exact: true }).click();
   await expect(page.locator(".card-stage")).not.toHaveClass(/flip|settle|deal/);
