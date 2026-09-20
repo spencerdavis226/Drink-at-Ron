@@ -50,7 +50,7 @@ Saves snapshot card content and order. Invalid/unsupported saves require explici
 
 ## Add content
 
-See [the pack authoring guide](docs/AUTHORING.md). The 30-card Core collection is a production candidate awaiting group playtesting. Most cards share a painted tankard placeholder; A little cheers has individual artwork. This visual pass adds original weathered card skins, a walnut tabletop, and a two-sided lift/flip/discard animation. Production card-specific illustrations and the full content collection remain for a later session.
+See [the pack authoring guide](docs/AUTHORING.md). The 30-card Core collection is a production candidate awaiting group playtesting. Most cards share a painted tankard placeholder; A little cheers has individual artwork. This visual pass adds original weathered card skins, a walnut tabletop, and a two-sided lift/flip/discard animation. A separate provisional `Dice` pack (2d6 and 1d20) demonstrates the approved full-screen dice renderer; its copy and art are placeholders. Production card-specific illustrations and the full content collection remain for a later session.
 
 ## Static deployment
 
@@ -71,6 +71,6 @@ Re-export the generated UI sheet with `npx tsx scripts/chrome.ts`; regenerate ic
 
 Open `/?workshop=1` on the development server for isolated card previews, seeded sessions, and dice fixtures. Workshop code and fixtures are excluded from production; the approved shared frame and its assets are shipped. The Core deck now contains 30 production-candidate cards; group balance remains untested.
 
-See [Game design](docs/GAME_DESIGN.md), [Playtest record](docs/PLAYTEST.md), and [GitHub Pages release](docs/GITHUB_PAGES.md). The unified front is approved and used throughout the game. The dice presentation remains unapproved and is being redirected to a full-screen, library-first prototype; follow STATUS.md.
+See [Game design](docs/GAME_DESIGN.md), [Playtest record](docs/PLAYTEST.md), and [GitHub Pages release](docs/GITHUB_PAGES.md). The unified front is approved and used throughout. Dice use the approved full-screen `@3d-dice/dice-box-threejs` overlay; dice cards currently ship in a separate provisional pack (see STATUS.md).
 
 Illustrations follow [Image creation guidelines](docs/ILLUSTRATION_GUIDELINES.md): centered, crop-safe, simple, original fantasy. Pack logos are registered separately and appear consistently in selection, pause, and card footers.

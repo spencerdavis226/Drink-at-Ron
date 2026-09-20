@@ -30,7 +30,7 @@ npm run test:workshop  # dev server on :5175
 ## Budgets and dice prototype
 
 - `scripts/check-budget.ts` enforces tiered release budgets on `dist`: initial (critical-path) JS ≤ 100 KiB gzip, lazy feature JS ≤ 200 KiB gzip, runtime ≤ 3 MiB, any image ≤ 500 KiB, and no workshop strings in production. "Initial" = chunks referenced by `dist/index.html`; everything else is lazy. Heavy optional features (e.g. the dice library) belong in lazy chunks, not the initial tier. Measure (`scripts/measure-dice-prototype.ts`) instead of guessing; do not change limits without user approval.
-- `src/presentation/dice/prototype.ts` gates the full-screen library path (`VITE_DICE_PROTOTYPE=1`, or dev `?dice=library`); normal builds use the custom renderer. `@3d-dice/dice-box-threejs` must be fed predetermined results from `src/game/dice.ts`. Dice fixtures are development-only until the user approves the full-screen study. Prototype scripts: `build:dice-prototype`, `test:dice-prototype`, `measure:dice-prototype`.
+- The full-screen `@3d-dice/dice-box-threejs` overlay is the default dice renderer (`src/components/FullScreenDice.tsx`, adapter `src/presentation/dice/library.ts`); it is lazy-loaded and must be fed predetermined results from `src/game/dice.ts`. Provisional dice cards live in the `dice` pack; keep the validated 30-card Core unchanged. Do not reintroduce a second renderer, and do not change per-body damping/sleep between the library's pre-simulation and its replay — that diverges the forced face.
 
 ## Evidence
 
