@@ -21,6 +21,11 @@
   width: 100%;
   height: 100%;
 }
+.dice-shadow-layer {
+  /* Beneath the WebGL canvas: painted ground shadows, no dimming. */
+  z-index: 0;
+  pointer-events: none;
+}
 .roll-cta {
   pointer-events: auto;
   position: fixed;

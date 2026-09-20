@@ -1,9 +1,9 @@
 import DiceBox from "@3d-dice/dice-box-threejs";
 
 /**
- * Roll feel. Tuned for a craps-table toss: dice enter from the edges, cross the
- * screen, and rebound off the walls before settling. Gravity and throw scale
- * with the (now full-screen) stage so the pace stays consistent.
+ * Roll feel. Tuned for a craps-table toss: dice cross the screen and carom off
+ * the walls before settling. Gravity and throw stay constant; the library's own
+ * impulse already scales with the box.
  */
 const GRAVITY_MULTIPLIER = 450;
 const THROW_FORCE = 1.5;
@@ -63,11 +63,8 @@ export async function createDiceStage(selector: string) {
   const container = document.querySelector<HTMLElement>(selector)!;
   const box = new DiceBox(selector, {
     sounds: false,
-    // Size dice to a modest share of the box width so two can travel and
-    // carom instead of jamming. The library's throw impulse already scales
-    // with the box, so strength and gravity stay constant for consistent
-    // airtime and travel across screen sizes.
-    baseScale: Math.min(200, Math.max(90, container.clientHeight * 0.15)),
+    // Size dice to a share of the box so two can travel and carom.
+    baseScale: Math.min(260, Math.max(110, container.clientHeight * 0.24)),
     strength: THROW_FORCE,
     gravity_multiplier: GRAVITY_MULTIPLIER,
     light_intensity: 0.85,
@@ -85,7 +82,24 @@ export async function createDiceStage(selector: string) {
   // Upstream installs an anonymous, unremovable resize listener. Our overlay
   // instead settles on resize, then disposes this entire stage.
   box.resizeWorld = () => {};
+  // Pull spawn points in from the walls before the throw is pre-simulated. The
+  // library spawns dice flush against them, so a large die can be clipped by
+  // the viewport edge. Doing this here (not after) keeps the replay and its
+  // forced faces consistent.
+  const startThrow = box.startClickThrow.bind(box);
+  box.startClickThrow = (notation: string) => {
+    const vectors = startThrow(notation);
+    const maxX = container.clientWidth * 0.36;
+    const maxY = container.clientHeight * 0.36;
+    for (const vector of vectors?.vectors ?? []) {
+      vector.x = Math.max(-maxX, Math.min(maxX, vector.x));
+      vector.y = Math.max(-maxY, Math.min(maxY, vector.y));
+    }
+    return vectors;
+  };
   let disposed = false;
+  let shadowFrame = 0;
+  let shadowCanvas: HTMLCanvasElement | null = null;
   const animate = box.animateThrow.bind(box);
   box.animateThrow = (...args: unknown[]) => {
     if (!disposed) animate(...args);
@@ -97,6 +111,8 @@ export async function createDiceStage(selector: string) {
   const dispose = () => {
     if (disposed) return;
     disposed = true;
+    if (shadowFrame) cancelAnimationFrame(shadowFrame);
+    shadowCanvas?.remove();
     box.running = false;
     box.rolling = false;
     box.scene.traverse(
@@ -126,8 +142,8 @@ export async function createDiceStage(selector: string) {
     await box.initialize();
     box.renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
     box.renderer.setSize(box.container.clientWidth, box.container.clientHeight);
-    // Tune contacts: grippy floor and dice-dice, lively walls so dice rebound
-    // off the backboard instead of dying on contact.
+    // Tune contacts: grippy floor, lively walls so dice rebound off the
+    // backboard instead of dying on contact.
     for (const contact of box.world?.contactmaterials ?? []) {
       if (contact.restitution > 0.8) {
         contact.restitution = WALL_RESTITUTION;
@@ -143,6 +159,56 @@ export async function createDiceStage(selector: string) {
     // The library paints an opaque "table" plane. Hide it so the dice tumble
     // over the live card (transparent canvas) instead of a second surface.
     if (box.desk) box.desk.visible = false;
+    // Dependency-free contact shadows: project each die onto the floor plane
+    // and paint a soft blob beneath it. Grounds the dice without dimming the
+    // card or bundling a second Three copy for ShadowMaterial.
+    const context = (shadowCanvas = document.createElement("canvas")).getContext(
+      "2d",
+    );
+    shadowCanvas.className = "dice-shadow-layer";
+    const pixelRatio = Math.min(devicePixelRatio, 2);
+    shadowCanvas.width = Math.round(container.clientWidth * pixelRatio);
+    shadowCanvas.height = Math.round(container.clientHeight * pixelRatio);
+    container.insertBefore(shadowCanvas, container.firstChild);
+    const paintShadows = () => {
+      if (disposed || !context || !shadowCanvas) return;
+      const { width, height } = shadowCanvas;
+      context.clearRect(0, 0, width, height);
+      for (const die of box.diceList ?? []) {
+        if (!die?.position || !die.geometry || !box.camera) continue;
+        const radius = die.geometry.boundingSphere?.radius ?? 40;
+        const center = die.position.clone();
+        center.z = 0;
+        const centerNdc = center.project(box.camera);
+        const edge = die.position.clone();
+        edge.x += radius;
+        edge.z = 0;
+        const edgeNdc = edge.project(box.camera);
+        const cx = (centerNdc.x * 0.5 + 0.5) * width;
+        const cy = (1 - (centerNdc.y * 0.5 + 0.5)) * height;
+        const spread = Math.abs(edgeNdc.x - centerNdc.x) * 0.5 * width * 1.1;
+        if (!(spread > 0)) continue;
+        const lift = Math.max(0, die.position.z);
+        const opacity = Math.max(0.12, 0.45 - lift / 1100);
+        const gradient = context.createRadialGradient(
+          cx,
+          cy,
+          0,
+          cx,
+          cy,
+          spread,
+        );
+        gradient.addColorStop(0, `rgba(16,9,4,${opacity})`);
+        gradient.addColorStop(0.65, `rgba(16,9,4,${opacity * 0.45})`);
+        gradient.addColorStop(1, "rgba(16,9,4,0)");
+        context.fillStyle = gradient;
+        context.beginPath();
+        context.ellipse(cx, cy, spread, spread * 0.6, 0, 0, Math.PI * 2);
+        context.fill();
+      }
+      shadowFrame = requestAnimationFrame(paintShadows);
+    };
+    shadowFrame = requestAnimationFrame(paintShadows);
   } catch (error) {
     dispose();
     throw error;
@@ -152,9 +218,10 @@ export async function createDiceStage(selector: string) {
       // Note: per-body damping/sleep must NOT be changed here. The library
       // pre-simulates the throw to fix the result, then replays it; altering
       // the bodies between those runs makes the animation diverge and land on
-      // a different face. All feel tuning lives in the construction options
-      // and contact materials, which both runs share.
-      const result = await box.roll(`${values.length}d${sides}@${values.join(",")}`);
+      // a different face.
+      const result = await box.roll(
+        `${values.length}d${sides}@${values.join(",")}`,
+      );
       snapDiceFlat(box);
       const actual = result.sets.flatMap(
         (set: { rolls: { value: number }[] }) =>
