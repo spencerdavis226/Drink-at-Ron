@@ -1,6 +1,6 @@
 # Current status and execution plan
 
-Updated 2026-09-20. **This is the single current handoff and remaining-work plan**, shared by Codex, Cursor, and other editors. Older conversation plans and historical study notes are background, not the next-task authority. User instructions take precedence. Steps 3 and 4 are complete: the dice renderer is a deterministic CSS-3D full-screen overlay (no WebGL, no physics engine), and provisional dice cards ship in their own pack. Remaining: physical-device verification, dice copy/art, and the later playtest/release steps.
+Updated 2026-09-20. **This is the single current handoff and remaining-work plan**, shared by Codex, Cursor, and other editors. Older conversation plans and historical study notes are background, not the next-task authority. User instructions take precedence. Steps 3 and 4 are complete: the full-screen `@3d-dice/dice-box-threejs` overlay is the default dice renderer, and provisional dice cards ship in their own pack. Remaining: physical-device checks, dice content approval/playtest, and the later art/release steps.
 
 ## Branch and checkpoints
 
@@ -20,22 +20,22 @@ Main is not the current work target. No merge, push, or publishing was performed
 
 ## Verified state
 
-The core game is functional: pack selection, finite/endless cycles, exact resume, shared frame, local fonts/assets, optional audio, workshop, and Pages workflow exist. Thirty Core cards remain production candidates; two provisional dice cards live in a separate `Dice (provisional)` pack. Dice outcomes, per-draw results, migration, and controller integration exist. Dice render deterministically in CSS 3D (no WebGL, no physics engine), so both the initial and lazy bundles stay tiny.
+The core game is functional: pack selection, finite/endless cycles, exact resume, shared frame, local fonts/assets, optional audio, workshop, and Pages workflow exist. Thirty Core cards remain production candidates; two provisional dice cards live in a separate `Dice (provisional)` pack. Dice outcomes, per-draw results, migration, and controller integration exist. `@3d-dice/dice-box-threejs` (Three.js + Cannon ES) is the default dice renderer, lazy-loaded from the play screen, so the initial bundle stays React-only.
 
-Fresh review evidence on 2026-09-20 (all commands rerun at `e086291`):
+Fresh review evidence on 2026-09-20 (all commands rerun at `e472f3f`):
 
-- `npm test`: **73 passed** (includes d6/d20 landing-orientation geometry).
-- `BASE_PATH=/Drink-at-Ron/ npm run build`: passed content validation, TypeScript, PWA build, and tiered budgets — 1951 KiB runtime/precache, 80.9 KiB gzip initial, 5.6 KiB gzip lazy.
-- `CI=1 BASE_PATH=/Drink-at-Ron/ TEST_PORT=4398 npm run test:e2e -- --workers=2`: **49 passed, 3 skipped** across Chromium/WebKit, including the dice overlay suite. Each die's *visible* face is asserted to equal the engine value in both engines. Skips remain the explicit offline cases; they are not physical iOS evidence.
+- `npm test`: **71 passed**.
+- `BASE_PATH=/Drink-at-Ron/ npm run build`: passed content validation, TypeScript, PWA build, and tiered budgets — 2519 KiB runtime/precache, 80.9 KiB gzip initial, 145.8 KiB gzip lazy.
+- `CI=1 BASE_PATH=/Drink-at-Ron/ TEST_PORT=4398 npm run test:e2e -- --workers=2`: **51 passed, 3 skipped** across Chromium/WebKit, including the dice overlay suite. Skips remain the explicit offline cases; they are not physical iOS evidence.
 - `BASE_PATH=/Drink-at-Ron/ npm run test:update`: passed. `npm run test:workshop`: **4 passed** across Chromium/WebKit.
 - Reduced motion shows the static result with no dice (accessibility); the dev-only `?force-motion` overrides it for review.
-- Physical-device testing, group playtesting, live Pages settings/deployment, and final dice art/copy remain unverified. The dice experience has not been measured on a physical iPhone/iPad since the CSS-3D rewrite.
+- Physical-device testing, group playtesting, live Pages settings/deployment, and final dice art/copy remain unverified. The dice experience has not been measured on a physical iPhone/iPad.
 
 ## Review findings to resolve
 
 1. Resolved in `becec5a`: `.study-rules` lets a stationary tap reach the card but cancels the click after pointer movement, scrolling, or cancellation.
 2. Resolved in `d299fed`: the audio test has a constructible `AudioContext` mock and validates asynchronous impact-timer cleanup.
-3. Resolved in `e086291`: the WebGL dice library was replaced with a deterministic CSS-3D renderer. The WebGL path caused real-device lag and plops (per-roll context churn, no-reflections material, pre-sim/replay face divergence) and cost ~146 KiB gzip plus an unused physics engine.
+3. Resolved in `e472f3f`: the custom in-card dice renderer was retired; the full-screen library overlay is now the only dice renderer, matching the approved direction.
 4. Resolved 2026-09-20: the release budget is tiered by load path (see **Release budgets**). The earlier single all-JS figure measured unrelated costs together; library package unpacked size is not a measurement of the delivered build.
 
 ## Approved product constraints
@@ -52,29 +52,29 @@ Fresh review evidence on 2026-09-20 (all commands rerun at `e086291`):
 `scripts/check-budget.ts` enforces the production build (`dist`) against tiered limits that match how the app loads:
 
 - **Initial (critical-path) JS ≤ 100 KiB gzip** — the chunks referenced by `dist/index.html`. Current ~80.9 KiB.
-- **Lazy feature JS ≤ 200 KiB gzip** — every other JS file in `dist/assets`, fetched on demand. Current ~5.6 KiB; the CSS-3D dice renderer is tiny.
-- **Runtime/precache ≤ 3 MiB** — current ~1.95 MiB. Comfortable headroom now that no WebGL library ships.
+- **Lazy feature JS ≤ 200 KiB gzip** — every other JS file in `dist/assets`, fetched on demand. Current ~145.8 KiB (the dice library chunk).
+- **Runtime/precache ≤ 3 MiB** — current ~2.5 MiB, including the lazy dice chunk and its textures. Still comfortable headroom.
 - **Any single image ≤ 500 KiB.**
 - Developer workshop strings must not appear in production.
 
 Heavy optional features belong in lazy chunks and are judged against the lazy tier, never the initial tier. Do not raise these limits without user approval; report the measured delta first.
 
-## Dice direction — full-screen, deterministic CSS 3D (implemented)
+## Dice direction — full-screen, library-first (implemented)
 
 User clarification, 2026-09-20: dice roll across the screen, in the spirit of a tabletop toss, **not inside the card's illustration window**. BG3/Roll20 are interaction references, not sources of copied UI or assets.
 
 Implemented flow:
 
 1. The revealed 2:3 card stays fully visible. There is no dialog and no dimming; the dice tumble on a transparent full-screen stage over the card.
-2. One bottom control reads `Roll 2d6` / `Rolling…` / `Continue`; tapping the card works too. Dice enter from the screen edges, tumble over the card, and settle in ~1.9 s via one authored trajectory that blends into the exact landing for each value.
+2. One bottom control reads `Roll 2d6` / `Rolling…` / `Continue`; tapping the card works too. Dice enter from the screen edges and carom off invisible walls (~2.2 s). Gravity and throw are constant — the library's impulse already scales with the box.
 3. The moment the dice settle, the card's parchment becomes the result: `Rolled N` with the number emphasized plus the resolved instruction. Dice remain until tapped; no auto-discard.
 4. Continue returns to the unchanged card (result already shown); the next normal card action discards.
 
-Contact shadows are painted per die on a dedicated element that scales and fades with the die's height, so they read as grounded without dimming. The motion is one authored full-screen trajectory per die (enter from an edge, bounce, settle) that blends into the exact landing orientation for its value, so it can never plop weakly or land wrong; no physics engine is involved. Reduced motion shows the static result with no dice; `?force-motion` in dev overrides that. Reload mid-roll shows the saved settled result; if the animation cannot run, the card still shows the result and gameplay is never blocked.
+Contact shadows are painted on a 2D canvas beneath the WebGL canvas by projecting each die onto the floor plane, so dice read as grounded without dimming or bundling a second Three copy. Spawn points are clamped inward before the throw is pre-simulated so large dice never clip at the edge; a post-settle flat-snap removes cocked dice. All feel tuning lives in construction options and contact materials — do not change per-body damping/sleep between the library's pre-simulation and its replay, or the forced face will diverge. Reduced motion shows the static result with no dice; `?force-motion` in dev overrides that. Reload mid-roll shows the saved settled result; animation/load failure falls back to readable static results and never blocks gameplay.
 
 ### Renderer decision (resolved)
 
-The renderer is deterministic CSS 3D (`src/components/FullScreenDice.tsx`, `src/presentation/dice/DiceRoll.tsx`, math in `src/presentation/dice/geometry.ts`). It consumes engine-owned values from `src/game/dice.ts` and blends to the exact face for each value. No WebGL, no physics engine, no procedural-texture dependency — which is why it is lean and cannot plop. A commissioned face texture can later drop into the facet material without touching the math. Verify with the standard `npm run build` and `npm run test:e2e`.
+The full-screen overlay (`src/components/FullScreenDice.tsx`, adapter `src/presentation/dice/library.ts`) is the default and only dice renderer. `@3d-dice/dice-box-threejs` supplies predetermined results (e.g. `2d6@3,5`) from `src/game/dice.ts`. The separate Babylon/Ammo `@3d-dice/dice-box` package is not interchangeable. The earlier custom in-card renderer was removed rather than retained. There is no separate prototype build: verify with the standard `npm run build` and `npm run test:e2e`.
 
 Provisional content: `dice.toast` (2d6) and `dice.title` (1d20) in `src/content/catalog.ts`, pack id `dice`, with placeholder artwork and copy.
 
@@ -87,7 +87,7 @@ Use one editing agent at a time. Keep tasks bounded and commit verified changes 
 | 1 | Terra | Repair untracked sound test; preserve existing WIP | Complete in `d299fed`; unit tests pass. |
 | 2 | Terra | Stationary card taps versus rules scrolling | Complete in `becec5a`; cross-browser gesture and keyboard coverage passes without ratio regression. |
 | 3 | Sol | Full-screen library dice prototype | Complete: card-forward, full-screen, contact-shadowed; user approved the visual result. |
-| 4 | Sol | Integrate the selected renderer as the default; retire the custom renderer | Complete in `e472f3f`; the WebGL library was later replaced by deterministic CSS 3D in `e086291` (leaner, no context churn). Dice suite runs in CI and asserts visible faces. |
+| 4 | Sol | Integrate the selected renderer as the default; retire the custom renderer | Complete in `e472f3f`; engine invariants and cross-browser flows pass, dice suite runs in CI. |
 | 5 | Terra | Workshop cleanup and dice content copy/art | Numbered dice pack content approved; workshop previews the real overlay or is deliberately scoped; no stale frame comparison. |
 | 6 | User + Terra | Group playtest and text revisions | 40-card plus Endless evidence recorded; copy locked. |
 | 7 | Terra + image tool + user | Data-driven art mapping and approved illustration batches | Centered readable art; no per-card component branches; budgets verified. |
@@ -98,7 +98,7 @@ No routine Astra session is required. Escalate to Astra only if Sol's bounded in
 
 ## Portable handoff prompt — next task
 
-> Read AGENTS.md and docs/STATUS.md in this checkout. Continue on codex/finish-v1; inspect git status and preserve uncommitted files. Dice render deterministically in CSS 3D (`src/components/FullScreenDice.tsx`, `src/presentation/dice/DiceRoll.tsx`, math in `src/presentation/dice/geometry.ts`) from engine-owned values in `src/game/dice.ts`; do not reintroduce WebGL or a physics engine, and keep every die's visible face equal to its value. The engine, persisted results, and v1-to-v2 migration must stay intact. Provisional dice cards live in the `dice` pack; keep the 30-card Core unchanged. The next task is physical-device verification of the dice (roll feel, frame timing, backgrounding, orientation, reduced motion) plus dice copy/art and workshop cleanup. Update STATUS in place with results and the exact next step. Do not merge, push, or publish without explicit authorization.
+> Read AGENTS.md and docs/STATUS.md in this checkout. Continue on codex/finish-v1; inspect git status and preserve uncommitted files. The full-screen `@3d-dice/dice-box-threejs` overlay is the default dice renderer; the engine (`src/game/dice.ts`), persisted results, and v1-to-v2 migration must stay intact, and do not reintroduce a second renderer or change per-body physics between the library's pre-simulation and replay. Provisional dice cards live in the `dice` pack; keep the 30-card Core unchanged. The next task is physical-device verification of the dice (roll feel, frame timing, backgrounding, orientation, reduced motion) plus workshop cleanup and dice copy/art. Update STATUS in place with results and the exact next step. Do not merge, push, or publish without explicit authorization.
 
 For the routine tasks, assign only the relevant numbered row and its acceptance criteria. Do not ask an agent to “finish the entire application.”
 
