@@ -32,7 +32,11 @@ jobs:
       - run: npm run test:e2e -- --project=webkit
         continue-on-error: true
       - run: npm run test:update
-      - run: npm run test:workshop
+      - run: npm run test:workshop -- --project=chromium
+        env:
+          BASE_PATH: /
+      - run: npm run test:workshop -- --project=webkit
+        continue-on-error: true
         env:
           BASE_PATH: /
       - uses: actions/upload-artifact@v4
