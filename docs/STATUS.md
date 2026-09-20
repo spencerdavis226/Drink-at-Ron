@@ -1,6 +1,6 @@
 # Current status and execution plan
 
-Updated 2026-09-20. **This is the single current handoff and remaining-work plan**, shared by Codex, Cursor, and other editors. Older conversation plans and historical study notes are background, not the next-task authority. User instructions take precedence. The full-screen library dice prototype (step 3) is implemented and committed, and the tiered release-budget policy is approved; the remaining decisions are visual/technical review, physical-device timing, and dice content.
+Updated 2026-09-20. **This is the single current handoff and remaining-work plan**, shared by Codex, Cursor, and other editors. Older conversation plans and historical study notes are background, not the next-task authority. User instructions take precedence. The full-screen library dice prototype (step 3) is implemented, reworked card-forward, and committed, and the tiered release-budget policy is approved; the remaining decisions are user sign-off, physical-device timing, and dice content.
 
 ## Branch and checkpoints
 
@@ -65,14 +65,14 @@ Heavy optional features belong in lazy chunks and are judged against the lazy ti
 
 User clarification, 2026-09-20: dice should roll across the screen, in the spirit of a tabletop roll overlay, **not inside the card's illustration window**. BG3/Roll20 are interaction references, not sources of copied UI or assets.
 
-Required flow:
+Implemented flow (this superseded the earlier dim-and-panel sketch):
 
-1. Reveal relevant card, then present a bold ROLL control in a screen-level overlay. Dim the game behind it. Show the current rule as accessible, readable real text in a quiet parchment area; never bury it under dice.
-2. Tap ROLL once. Roll large dice across the viewport's available stage, with physical-looking tumble/contact/shadows. Use the full screen as the overlay boundary, excluding safe areas and the readable rules area from the dice collision/landing region.
-3. Settle with individual values and total. Keep result visible until tapped. No automatic discard or reroll.
-4. Tap to close the overlay and return to the unchanged 2:3 card. Show the total and resolved instruction on its parchment. The next normal card action discards.
+1. The revealed 2:3 card stays fully visible. There is no dialog and no dimming; the dice tumble on a transparent full-screen stage over the card.
+2. One bottom control reads `Roll 2d6` / `Rolling…` / `Continue`; tapping the card works too. Dice enter from the screen edges and carom off invisible walls (~2.2 s). Gravity and throw are constant — the library's impulse already scales with the box.
+3. The moment the dice settle, the card's parchment becomes the result: `Rolled N` with the number emphasized plus the resolved instruction. Dice remain until tapped; no auto-discard.
+4. Continue returns to the unchanged card (result already shown); the next normal card action discards.
 
-Mount the overlay at the application root or through a portal, outside card transforms and clipping. Use the existing presentation controller and persisted result. Separate overlay input/focus from the underlying card; no click-through or scroll-triggered actions. Restore focus on close. Support resize, safe areas, landscape, reduced motion, keyboard/screen reader, backgrounding, and cancellation. Reload mid-roll shows the saved settled result. Animation/load failure falls back to readable static results and never blocks gameplay.
+Contact shadows are painted on a 2D canvas beneath the WebGL canvas by projecting each die onto the floor plane, so dice read as grounded without dimming or bundling a second Three copy. Spawn points are clamped inward before the throw is pre-simulated so large dice never clip at the edge; a post-settle flat-snap removes cocked dice. Reduced motion shows the static result with no dice (accessibility); the dev-only `?force-motion` overrides that for review. Reload mid-roll shows the saved settled result; animation/load failure falls back to readable static results and never blocks gameplay.
 
 ### Library decision
 
@@ -94,7 +94,7 @@ Prototype acceptance:
 - Preserve existing release budget checks during the experiment. If the candidate exceeds them, report the measured delta and propose a specific revised limit before changing policy. A documented budget adjustment may be preferable to maintaining custom physics/rendering — now approved as the tiered **Release budgets** above.
 - Present the running prototype and evidence for visual/technical selection. Do not silently abandon the library or rewrite geometry if it has a blocker; report the blocker and options.
 
-**Prototype result:** every acceptance check passes under the approved tiered budget — the library loads lazily (~144.7 KiB gzip) inside the 200 KiB lazy ceiling and leaves the ~80.7 KiB initial tier untouched; runtime and largest-image limits also pass. The prototype stays flag-gated and must not become the default until the user approves the visual result and physical-device timing, and until dice content ships. Reproduce with `npm run build:dice-prototype`, `npm run measure:dice-prototype`, and `npm run test:dice-prototype`.
+**Prototype result:** every acceptance check passes under the approved tiered budget — the library loads lazily inside the 200 KiB lazy ceiling and leaves the ~80.7 KiB initial tier untouched. Dice use the parchment (paper) texture with a projected contact shadow. Those texture assets ship only with the tree-shaken dice chunk and are excluded from the normal release precache (`vite.config.ts` `globIgnores`), so users do not download unused dice art. The prototype stays flag-gated and must not become the default until the user signs off on the visuals and physical-device timing, and until dice content ships. Reproduce with `npm run build:dice-prototype`, `npm run measure:dice-prototype`, and `npm run test:dice-prototype`; review in dev at `/?review=dice` (add `&force-motion=1` to bypass reduced motion).
 
 ## Execution sequence and model routing
 
@@ -104,7 +104,7 @@ Use one editing agent at a time. Keep tasks bounded and commit verified changes 
 | --- | --- | --- | --- |
 | 1 | Terra | Repair untracked sound test; preserve existing WIP | Complete in `d299fed`; 73 unit tests pass. |
 | 2 | Terra | Stationary card taps versus rules scrolling | Complete in `becec5a`; cross-browser gesture and keyboard coverage passes without ratio regression. |
-| 3 | Sol or comparably capable Cursor model | Full-screen library prototype described above | Implemented as `c392309`: 2d6/1d20 predetermined faces confirmed, 15/1 browser tests, startup ~47–70 ms, and inside the approved lazy budget tier. Pending visual/technical approval and physical-device timing. |
+| 3 | Sol or comparably capable Cursor model | Full-screen library prototype described above | Implemented and reworked (`c392309`→`889dd1e`): card-forward, full-screen, contact-shadowed, textures gated from the release precache; 15/1 browser tests. User calls the dice "good enough for now"; formal sign-off and physical-device timing still pending. |
 | 4 | Sol | Integrate selected renderer, overlay lifecycle, saves/audio interruption | Existing engine invariants and focused cross-browser flows pass |
 | 5 | Terra | Workshop cleanup and approved dice content promotion | Full-screen preview isolated from saves; approved Core composition/IDs; no stale frame comparison |
 | 6 | User + Terra | Group playtest and text revisions | 40-card plus Endless evidence recorded; copy locked |
