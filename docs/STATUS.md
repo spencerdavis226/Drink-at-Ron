@@ -32,6 +32,7 @@ Fresh review evidence on 2026-09-20 (all commands rerun at `923613a`):
 - Reduced motion shows the static result with no dice (accessibility); the dev-only `?force-motion` overrides it for review.
 - The user confirmed on a physical device that the dice look and rolls are good after the minimum-throw fix.
 - **Deployed 2026-09-20**: GitHub Pages now builds from GitHub Actions; the live site is https://spencerdavis226.github.io/Drink-at-Ron/ (commit `ed41b7a`). Page, manifest, and service worker all respond 200. CI gates the deploy on Chromium unit/e2e/update/workshop; WebKit runs non-blocking because Linux CI WebKit throttles animation/rAF headlessly (a runner limitation, not an app bug).
+- Animation/ambience pass (2026-09-20, `a1bf166`): flip/discard/deal/settle and dialogs animate only transform/opacity (no animated box-shadow, blend mode, or blurred backdrop); dialogs animate in and out; ambience adds candle flicker and drifting dust with parallax. Motion tokens unified; flip 560 ms, discard 420 ms, deal 560 ms; controller safety margin 200 ms → 80 ms.
 - Physical-device lag has not been re-measured since; group playtesting, live Pages deployment, and final dice art/copy remain unverified.
 
 ## Review findings to resolve
