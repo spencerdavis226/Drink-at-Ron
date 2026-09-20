@@ -37,6 +37,18 @@ export default function FullScreenDice({
   const forceMotion =
     import.meta.env.DEV &&
     new URLSearchParams(location.search).has("force-motion");
+  const supportsWebGL = () => {
+    try {
+      const canvas = document.createElement("canvas");
+      return !!(
+        canvas.getContext("webgl2") ||
+        canvas.getContext("webgl") ||
+        canvas.getContext("experimental-webgl")
+      );
+    } catch {
+      return false;
+    }
+  };
   useEffect(() => {
     const previous = document.activeElement as HTMLElement | null;
     return () => {
@@ -106,6 +118,12 @@ export default function FullScreenDice({
     window.addEventListener("resize", onResize);
     document.addEventListener("visibilitychange", hidden);
     reduced.addEventListener("change", onReducedChange);
+    // Platforms without WebGL (e.g. Linux CI WebKit) degrade instantly to the
+    // static result instead of hanging until the safety timeout.
+    if (!supportsWebGL()) {
+      stop("webgl");
+      return;
+    }
     setStatus("loading");
     void import("../presentation/dice/library")
       .then(async ({ createDiceStage }) => {

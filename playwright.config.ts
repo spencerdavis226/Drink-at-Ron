@@ -5,6 +5,7 @@ export default defineConfig({
   testDir: "tests/browser",
   outputDir: "test-results/game",
   fullyParallel: true,
+  retries: process.env.CI ? 1 : 0,
   use: {
     baseURL: `http://127.0.0.1:${port}${base}`,
     trace: "retain-on-failure",

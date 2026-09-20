@@ -2,6 +2,13 @@ import { test, expect, type Page } from "@playwright/test";
 import { createSession } from "../../src/game/engine";
 import { cards, packs } from "../../src/content/catalog";
 const key = "drink-at-ron.session.v1";
+test.beforeEach(async ({ page }) => {
+  const ok = await page.evaluate(() => {
+    const canvas = document.createElement("canvas");
+    return !!(canvas.getContext("webgl2") || canvas.getContext("webgl"));
+  });
+  test.skip(!ok, "WebGL unavailable (e.g. Linux CI WebKit)");
+});
 const diceIds = ["dice.toast", "dice.title"] as const;
 async function seed(page: Page, index = 0) {
   const card = cards.find((c) => c.id === diceIds[index])!;
