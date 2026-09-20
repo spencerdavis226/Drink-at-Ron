@@ -1,12 +1,38 @@
 # Drink at Ron — agent entry point
 
-Read `docs/STATUS.md` before planning or editing. It contains the current evidence, approved constraints, next task, and portable handoff. It supersedes obsolete progress claims in historical plans/study notes; direct user instructions take precedence.
+Read `docs/STATUS.md` before planning or editing. It is the single current handoff (evidence, approved constraints, next task); it supersedes historical plans/study notes, and direct user instructions take precedence. Update it in place at handoff with changed files, commit, verification, risks, and next task — do not add competing plan documents.
 
-- Preserve the current branch and all existing changes; never discard untracked work.
-- Work on one assigned task at a time. Do not repeat completed milestones or independently replace the stack.
-- Keep the pure engine and saved outcomes independent of rendering. Maintain snapshot/migration compatibility.
-- Preserve the approved painted frame and 2:3 geometry. Dice direction is now full-screen and library-first; read the acceptance criteria in STATUS.
-- Keep assets local and GitHub Pages/offline-compatible. Measure actual build sizes before proposing budget changes.
-- Use focused tests while iterating. Report failures honestly, including untracked tests, and distinguish browser automation from physical iOS evidence.
-- At handoff, update STATUS in place with changed files, commit/checkpoint, verification, remaining risks, and next task. Do not create another competing plan document.
-- Merge, push, and publication require user authorization. Ordinary local edits/checks within the assigned task do not need repeated confirmation.
+## Constraints
+
+- Preserve the current branch (`codex/finish-v1`), HEAD, and all untracked work; never discard work in progress.
+- Work on one assigned task at a time; do not repeat completed milestones or replace the stack on your own.
+- Keep the pure engine (`src/game`) and saved outcomes independent of rendering. Preserve session schema v2 + v1 migration and the `drink-at-ron.session.v1` storage key; rendering changes must not force a migration.
+- Preserve the approved painted frame and constant 2:3 outer ratio (front/back/Previous Card agree). Stationary taps must keep working while long rules stay scrollable.
+- Keep assets local and GitHub Pages/offline compatible — no CDN or runtime services.
+- Merge, push, and publication need explicit user authorization; ordinary local edits/checks do not.
+
+## Commands (Node 22.12+, `npm ci`)
+
+```sh
+npm run dev            # vite on 127.0.0.1; no service worker — offline needs a production build/preview
+npm test               # vitest; only tests/**/*.test.ts (unit)
+BASE_PATH=/Drink-at-Ron/ npm run build    # validate-content -> tsc -b -> vite -> check-budget
+npx playwright install chromium webkit
+CI=1 BASE_PATH=/Drink-at-Ron/ TEST_PORT=4398 npm run test:e2e -- --workers=2
+BASE_PATH=/Drink-at-Ron/ npm run test:update   # two-build update/PWA flow
+npm run test:workshop  # dev server on :5175
+```
+
+- Playwright specs (`*.spec.ts`) are not run by `npm test`. E2E serves `dist` through `npm run preview`; build first. Locally `reuseExistingServer` is on, so a stale preview on the default `:4173` will silently serve an old build — set `TEST_PORT`.
+- `?workshop=1` and `npm run test:workshop` use the dev server, not `dist`; workshop code must never reach production.
+- CI (`.github/workflows/pages.yml`) runs test -> build -> e2e -> update -> workshop, builds with `BASE_PATH=/Drink-at-Ron/`, and deploys `dist` to Pages only from `main`.
+
+## Budgets and dice prototype
+
+- `scripts/check-budget.ts` fails the build on: runtime > 3 MiB, all app JS (incl. lazy chunks) > 120 KiB gzip, any image > 500 KiB, or workshop strings in production. Measure (`scripts/measure-dice-prototype.ts`) instead of guessing; do not change limits without user approval.
+- `src/presentation/dice/prototype.ts` gates the full-screen library path (`VITE_DICE_PROTOTYPE=1`, or dev `?dice=library`); normal builds use the custom renderer. `@3d-dice/dice-box-threejs` must be fed predetermined results from `src/game/dice.ts`. Dice fixtures are development-only until the user approves the full-screen study. Prototype scripts: `build:dice-prototype`, `test:dice-prototype`, `measure:dice-prototype`.
+
+## Evidence
+
+- Chromium/WebKit emulation is not physical iOS evidence; device-only checks live in `docs/DEVICE_CHECKLIST.md`.
+- Report failures honestly, including untracked tests. Never call checks green while any suite (including uncommitted ones) fails.
