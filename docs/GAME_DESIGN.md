@@ -12,9 +12,9 @@ Classic party: short drinking prompts, broad group prompts, categories, playful 
 
 Choose anyone to draw first. Pass the device clockwise unless a card names the next drawer. The drawer starts a category or challenge. Complete its activity before dismissing the card. Category rounds end on the first repeat or voluntary pass; no stopwatch or debate about how long someone hesitated. Temporary rules last until the next card is revealed, with explicit consequences in the card text. No rule persists across multiple cards or requires app bookkeeping.
 
-## Production-candidate Core
+## Current content
 
-30 cards: 5 sip, 8 group, 7 category, 6 challenge, 4 rule. This distribution is a starting hypothesis, not validated balance. All cards are equally likely per shuffle cycle. A 40-card game repeats 10 cards after exhausting the 30-card pool; the cycle boundary never repeats immediately when the pool has multiple cards.
+The standard set is the supplied 40-card sample collection (pack `core`): 8 sip, 6 group, 6 category, 14 challenge, 6 rule, with 14 cards carrying a dice definition. `VIP night` adds a 12-card themed pack (3 sip, 3 group, 2 category, 2 challenge, 2 rule). This distribution is supplied sample material, not validated balance. All cards are equally likely per shuffle cycle; a deck longer than the pool repeats cards only after exhausting it, and the cycle boundary never repeats immediately when the pool has multiple cards.
 
 Keep one primary instruction, usually under 45 words. Specify who starts and when an activity stops where relevant. Avoid prompts that assume knowledge of a particular franchise or demographic makeup. Preserve stable IDs for unchanged concepts. Text revisions affect new sessions only; active sessions keep their snapshot.
 

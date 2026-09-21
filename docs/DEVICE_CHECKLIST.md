@@ -13,7 +13,7 @@ Automated browser emulation is not evidence of actual iOS Home Screen behavior. 
 - [ ] Previous Card is read-only; menu close restores focus; End Game can be canceled.
 - [ ] Enlarge text and zoom, enable Reduce Motion and VoiceOver. Read full rules and operate all controls.
 - [ ] Test portrait, landscape, iPad split view, and hardware keyboard where available.
-- [ ] Turn sounds on/off; interrupt audio by switching apps and verify gameplay remains responsive.
+- [ ] Reach a dice card, roll, and confirm the saved total matches the settled dice; Continue returns to the card and the later card action discards.
 - [ ] Publish an update while a game is active: no mid-game reload. Finish/end game, apply offered update, then check offline relaunch.
 - [ ] Measure interaction smoothness on real devices; target 60 fps. No performance claim until measured.
 
@@ -23,10 +23,15 @@ Automated browser emulation is not evidence of actual iOS Home Screen behavior. 
 
 ## Unified tavern presentation
 
+Sound has been removed; there are no audio checks. Verify the visual and dice items below.
+
 - [ ] Check the new painted Home Screen icons and dark launch colors on actual iOS.
-- [ ] With headphones and device speakers, tune card rustle, wood taps, magical accents, and fireplace ambience. Verify Effects/Ambience toggles are independent.
-- [ ] Enable ambience, background/lock the device, and confirm it stops. Return and verify it resumes only where browser policy allows, without errors.
-- [ ] Verify Atmosphere off removes edge lighting, embers, and glints. Reduce Motion removes continuous effects regardless of the saved toggle.
+- [ ] Roll a dice card: the Roll/Continue control reuses the painted surface, keeps a 44px+ target, and never covers the rules or pack mark.
+- [ ] Roll 20+ times across a session; watch for accumulating lag, a frozen canvas, or a lost WebGL context.
+- [ ] Simulate a platform without WebGL: the saved result still appears and Continue remains usable (no forced replay).
+- [ ] Rotate the device and let the Safari toolbar expand/collapse during and after a roll; the settled dice stay readable.
+- [ ] Roll once installed and offline; reopen the app and confirm the saved roll is restored without replaying.
+- [ ] Install a new release after a completed game and resume the saved session from the updated build.
 - [ ] Ensure all rules remain clear in Grenze at larger text sizes. Check actual iPad split view and VoiceOver.
 - [ ] Interrupt a discard: the save already contains the next card, and reopening must not repeat the discarded card or celebration.
 
@@ -35,6 +40,6 @@ Automated browser emulation is not evidence of actual iOS Home Screen behavior. 
 Automated evidence is recorded in `docs/studies/README.md`. Keep the following pending until observed on physical hardware:
 
 - [ ] Approve the short, long, and temporary-rule front studies on an iPhone and iPad.
-- [ ] Play the new 30-card Core collection using the playtest record.
+- [ ] Play the 40-card `core` sample collection using the playtest record.
 - [ ] Verify the published `/Drink-at-Ron/` URL, Home Screen installation, offline relaunch, and updates on iOS.
 - [ ] Evaluate full-frame illustration sharpness, scrolling with enlarged text, and flip smoothness on physical devices.

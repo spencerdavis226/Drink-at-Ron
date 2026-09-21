@@ -76,9 +76,9 @@ The card is an object, not a web panel. Every phase should communicate an action
 - Highlights belong to the moving material and clip to its silhouette. No glint sweeping bare tabletop, floating rectangular sheen or front/back bleed through the turn.
 - Show a meaningful part of the turn, not an immediate front followed by a long idle settle. Inspect at 0/25/50/75/100% and normal speed. Maintain one turn direction and one small believable lift; no ornamental extra wobble.
 - Discard follows a clear outward trajectory. It exposes the next back coherently; fading supports leaving the field and cannot hide a discontinuous swap.
-- One shared duration/easing owner per semantic phase. Current code tokens are deal 560ms, flip 560ms, discard 420ms, settle 160ms, completion 600ms. These are the baseline to review, not proof that the feel is approved. Measure effective CSS and lifecycle completion together before changing timings.
+- One shared duration/easing owner per semantic phase. Current code tokens (`src/presentation/theme.ts`, emitted as `--motion-*`): deal 560ms, flip 560ms, discard 420ms, settle 160ms, roll 2600ms, dialog enter 220ms, dialog exit 180ms, completion 600ms. These are the baseline to review, not proof that the feel is approved. Measure effective CSS and lifecycle completion together before changing timings.
 - Animations use transform/opacity where feasible. Do not animate box-shadow/filter/blur continuously to simulate expensive polish. Keep will-change scoped to active motion rather than every UI element forever.
-- Atmosphere is sparse and low contrast; off really means off for decoration. Reduced Motion removes decorative movement; hidden app suspends effects. Do not apply a dev-only override inconsistently across renderer and controller.
+- Atmosphere is sparse, low contrast and always on; Reduced Motion removes it and a hidden app suspends it (there is no Atmosphere or Effects switch). Do not apply a dev-only override inconsistently across renderer and controller.
 - Input locks last only through their intended transition. All accepted actions save once before animation; cancellation/hidden/reload restores the committed state. No animation polish may change this contract.
 
 ## Dice-specific composition
@@ -88,7 +88,7 @@ Keep the approved transparent full-screen library roll over the live card. Do no
 - Dice may cross the screen while tumbling, but readable results must take precedence once settled. Measure title/rule/CTA occlusion. Propose any resting-position change with visual evidence; do not manipulate physics differently between pre-simulation and replay to move dice away.
 - The result is unambiguous: saved values match final upward faces, total is easy to read, resolved instruction is available, Continue does not discard, and the later card action does.
 - One coherent material and contact-shadow treatment; match the tavern's warm lighting without excessive grime/noise on numerals. Confirm d20 numerals at small sizes.
-- Collision sound follows actual impacts, respects Effects and foreground state, and is unlocked from either actual user control. Failure/Reduced Motion yields the same readable saved result without a forced animation replay.
+- Sound was removed entirely (2026-09-20): there is no collision audio, Effects/Ambience switch, or audio subsystem. Renderer failure or Reduced Motion yields the same readable saved result without a forced animation replay.
 
 ## Visual release gate
 
@@ -99,7 +99,7 @@ For every frame/layout/motion change, keep before/after evidence and review:
 3. Mid-turn, edge-on and discard frames as well as stable screenshots. Review a normal-speed recording separately; frozen CSS frames do not measure FPS.
 4. No hard frame seams, stretched ornaments, hidden instructions, overlapping CTA, disappearing pack identity, ambiguous disabled styling, backface bleed, or detached moving-card shadow.
 5. Browser assertions measure paragraph visibility, control overlap and all card-context ratios, not only outer containment. Accessibility announcements, focus, touch/scroll gestures and exactly-once actions remain correct.
-6. Physical iPhone/iPad Safari/Home Screen results, frame timing, audio and VoiceOver are recorded separately. A desktop screenshot cannot certify native-quality performance.
+6. Physical iPhone/iPad Safari/Home Screen results, frame timing and VoiceOver are recorded separately. A desktop screenshot cannot certify native-quality performance.
 
 Only user-approved revised compositions become golden references. Do not bless current broken screenshots just to make a regression suite pass. Keep one current design system and one implementation plan.
 
@@ -138,9 +138,9 @@ The approved card back, parchment, tankard, and tabletop remain the permanent re
 - Grenze throughout: variable upright and italic WOFF2 files from the official Omnibus-Type repository, bundled locally with `public/fonts/OFL.txt`. Titles use 700–800, controls 500–700, and rules 400. Rule text is 20–24 px at normal scale and grows with text enlargement.
 - Nine-slice borders preserve the painted frame corners on buttons, choice tiles, pack tiles, dialogs, recovery panels, and card fronts. Do not stretch a whole panel image around long content.
 - Primary controls use worn gold. Secondary surfaces use quiet teal leather. Functional icon symbols sit inside the generated bezel and retain accessible names.
-- Motion durations: deal 620 ms, flip 680 ms, discard 460 ms, settle 140 ms, completion 650 ms. CSS consumes the manifest values. Reduced Motion disables animation; browser cancellation and visibility changes settle to saved state.
-- Effects and Ambience default off (existing effects preferences survive); Atmosphere defaults on. Atmospheric movement is sparse: warm edge lighting, six small embers at the outer edges, and a short reveal glint. Suspend when hidden.
-- Audio is original procedural Web Audio foley and fireplace ambience, with no sampled recordings, music, speech, licensing service, or network dependency. On-device listening remains part of release QA.
+- (Historical) Motion durations from an earlier pass were deal 620 ms, flip 680 ms, discard 460 ms, settle 140 ms, completion 650 ms. Current tokens are listed in the normative standards above and in `src/presentation/theme.ts`.
+- (Historical) An earlier pass had Effects/Ambience preferences and an Atmosphere toggle. Sound was removed entirely and the atmosphere is now always on; see the normative standards above.
+- (Historical) A procedural Web Audio foley and fireplace-ambience layer existed. It was removed on 2026-09-20; no audio subsystem ships.
 
 ## Reusable control artwork
 
@@ -154,11 +154,13 @@ Correction prompt (the first output rendered a checkerboard instead of alpha):
 
 > Edit this UI asset sheet only: replace ALL gray-and-white checkerboard background with a uniform solid very dark warm brown #17100c. Keep the three painted components exactly unchanged, at exactly the same positions and dimensions, with identical artwork, edges and colors. No checkerboard anywhere, no transparency needed. Do not add or remove or move anything.
 
-## Richer front study — pending approval
+## Richer front study — historical (now the shipping front)
+
+This study was approved on 2026-09-14 and promoted to the shared `CardFace`; the workshop-only toggle and its assets are gone. **"The card grows for long content" is superseded:** the shipping card keeps one fixed 2:3 outer ratio and contains long rules in a scrollable panel (see the normative standards above).
 
 The study is isolated in the developer workshop. It is not yet the shipping card frame. Review `core.cheers`, `core.animals`, and `core.left` at Small phone and iPad sizes, then try enlarged text and Replay reveal. Approval is required before promoting this front into gameplay and Previous Card.
 
-Composition: upper painted scene, raised teal title plaque, pale parchment instruction panel. Bronze hop-leaf corners, walnut rails, and contact shadows tie the front to the approved back. Nine-slice borders retain corner craftsmanship; rules remain real Grenze text and the card grows for long content. Categories stay in authoring metadata; the card footer carries the pack logo. Scene art is separate from frame and text.
+Composition: upper painted scene, raised teal title plaque, pale parchment instruction panel. Bronze hop-leaf corners, walnut rails, and contact shadows tie the front to the approved back. Nine-slice borders retain corner craftsmanship; rules remain real Grenze text and (historical) the card grew for long content. Categories stay in authoring metadata; the card footer carries the pack logo. Scene art is separate from frame and text.
 
 New source artwork was generated with the built-in image generation tool, using `assets/source/card-back.png` and `assets/source/card-front.png` as references. Original PNGs are retained; optimized slices and the illustration live under `src/workshop/art` until approval.
 
@@ -172,7 +174,7 @@ Saved source: `assets/source/front-study-sheet.png`. Extracted rectangles in sou
 
 The dwarf study was rejected for excessive detail, franchise resemblance, and poor crop safety. It is no longer used. `ILLUSTRATION_GUIDELINES.md` is now the governing image-creation document. Categories remain metadata only; the action area shows rules and a pack logo. Core's four-point diamond matches setup and the pause legend.
 
-Normal-size study cards share a common silhouette at each viewport. The art window is approximately 1.4:1; the scene never drives layout dimensions. Enlarged text may extend the frame instead of clipping or shrinking the rules.
+Normal-size study cards share a common silhouette at each viewport. The art window is approximately 1.4:1; the scene never drives layout dimensions. (Historical, superseded) enlarged text was said to extend the frame instead of clipping or shrinking the rules; the shipping card instead keeps its 2:3 ratio and scrolls the rules panel.
 
 Generated with the built-in image generation tool using the approved card back as a palette/material reference. New source: `assets/source/cheers-mouse-v2.png`; 768px-wide WebP: `src/workshop/art/cheers-mouse-v2.webp`.
 
@@ -202,6 +204,6 @@ Revise this original enchanted armor illustration. Keep the same character, expr
 
 ## Approved frame rollout — 2026-09-14
 
-The unified front is approved and promoted to the shared `CardFace`: gameplay, Previous Card, and the workshop now render the same components and CSS. Approved optimized surfaces live in `src/presentation/art`; `src/presentation/card-front.css` loads after the legacy theme so old parchment borders cannot show through. The illustration stays centered, rules stay real text, and the Core diamond retains its footer position. Source artwork remains archived under `assets/source`.
+The unified front is approved and promoted to the shared `CardFace`: gameplay, Previous Card, and the workshop now render the same components and CSS. Frame surfaces live in `src/presentation/art` and the individual illustration in `public/art/cheers.webp`, resolved through the artwork registry; `src/presentation/card-front.css` loads after the legacy theme so old parchment borders cannot show through. The illustration stays centered, rules stay real text, and the Core diamond retains its footer position. Source artwork remains archived under `assets/source`.
 
-Front surfaces are preloaded/decoded and included in the production offline cache. GitHub Pages build: 1,931 KiB runtime assets, 80.8 KiB gzip JavaScript, within existing budgets. Verification covers 36 unit tests, Chromium/WebKit gameplay checks, all 30 workshop cards at five sizes with normal/enlarged text, and a two-build offline update preserving the session. Physical iPhone/iPad Home Screen and performance checks remain outstanding. Dice is a separate planned milestone; this rollout changes no engine rules or saved-session schema.
+Front surfaces are preloaded/decoded and included in the production offline cache. (Historical figures from this rollout: 1,931 KiB runtime, 80.8 KiB gzip JavaScript, 36 unit tests, 30 workshop cards.) The dice milestone has since shipped as the full-screen library overlay, mixed into the `core` pack. Physical iPhone/iPad Home Screen and performance checks remain outstanding.

@@ -20,7 +20,7 @@ Use the game without coaching beyond choosing a first drawer and clockwise turns
 - Install from Safari, launch from Home Screen, then relaunch offline after assets cache.
 - Background while facedown, revealed, and mid-discard; return and verify exact progress.
 - Test larger text and reduced motion; try portrait, landscape, and iPad split view.
-- Listen to effects and ambience on physical speakers; check comfortable volume and interruption recovery.
+- Reach a dice card and roll; note whether Roll/Continue is obvious without coaching and whether the settled result is readable.
 - Note unintended taps, slow frames, clipped content, and anything hard to read.
 - Confirm a new release waits until the game ends before offering Update game.
 

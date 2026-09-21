@@ -1,6 +1,6 @@
 # Current state and implementation plan
 
-Updated 2026-09-20. **Single authoritative handoff for OpenCode Go, Codex, and other editors.** Read `AGENTS.md` first. This replaces the old numbered model-routing plan; historical studies are references, not new work orders. Direct user instructions win.
+Updated 2026-09-21. **Single authoritative handoff for OpenCode Go, Codex, and other editors.** Read `AGENTS.md` first. This replaces the old numbered model-routing plan; historical studies are references, not new work orders. Direct user instructions win.
 
 ## Review baseline and scope
 
@@ -118,7 +118,7 @@ The user asked for a themed pack for an occasion (a birthday, a bachelorette, or
 - Verification: `npm test` **74 passed**; `BASE_PATH=/Drink-at-Ron/ npm run build` passed (52 cards / 2 packs; 2599 KiB runtime, 81.8 KiB gzip initial, 146.2 KiB gzip lazy); full browser e2e **75 passed / 3 skipped**; `npm run test:workshop` **10 passed**; `npm run test:update` passed. The workshop all-card ratio sweep timeout was raised 180s → 420s because the catalog grew and software-rendered WebKit measured ~2.8 min.
 - A **parallel editing session was active** on this checkout during the change (it committed task 4 as `5e72078` mid-review and briefly held the workshop dev-server port). No files were discarded.
 - Committed as `52e4a23` (local only; no push). `README.md` was reconciled in that commit.
-- Remaining: `ART_DIRECTION.md`, `GAME_DESIGN.md`, `DEVICE_CHECKLIST.md` and the studies still describe the old 30-card Core and provisional dice pack (task 7 docs reconciliation); `public/art/packs/dice.svg` is now unused.
+- Remaining: individual illustrations and copy approval (tasks 8–9); `public/art/packs/dice.svg` is now unused. The stale 30-card/provisional-dice documentation was reconciled in task 7.
 
 ## Implementation queue for OpenCode Go
 
@@ -290,6 +290,8 @@ Execution order after this visual audit: **1 → 1A → 1B → 2 → 3 → 1C �
 **Done when:** shared timings agree, dialog controls/focus are reliable, keyboard/touch targets work, baseline measurements and focused improvements are recorded. If physical hardware isn't available, finish engineering evidence and leave the hardware gate explicitly pending.
 
 ### 7. P2 — Reconcile design and contributor documentation
+
+**Status — DONE (2026-09-20/21, OpenCode Go).** Files: `README.md` (project map drops sound; presentation section rewritten for the one motion manifest + always-on atmosphere + no audio; static deployment points at GITHUB_PAGES instead of claiming no site; 40-card core + VIP pack), `docs/ART_DIRECTION.md` (normative motion tokens now include roll 2600ms and dialog 220/180; atmosphere always-on; collision-sound and audio bullets replaced; release gate drops audio; the historical section's motion/effects/audio bullets, the "Richer front study" heading, and the grow-for-content claims are tagged historical/superseded; stale rollout figures marked historical and dice marked shipped), `docs/AUTHORING.md` (fixed 2:3 with contained scrolling, not a growing card; workshop section no longer describes the removed front-study toggle), `docs/GAME_DESIGN.md` (40-card `core` + 12-card VIP distribution replaces the 30-card list), `docs/DEVICE_CHECKLIST.md` (audio items replaced by dice, no-WebGL, roll CTA, 20+ rolls, orientation/toolbar resize, installed offline roll and post-update resume; 30-card → 40-card), `docs/PLAYTEST.md` (audio observation → dice observation), `docs/GITHUB_PAGES.md` (recorded publish history separated from the current live build). No code changes. A docs sweep confirms no remaining “30-card”, “provisional dice pack”, “pending approval”, “grow the card/frame”, or live audio instructions outside historical notes. `npm test` **78 passed**; `BASE_PATH=/Drink-at-Ron/ npm run build` passed (2599 KiB runtime, 81.9 KiB initial, 146.2 KiB lazy). **Next task: 8** (human playtest and copy lock; task 9 remains the release gate). Not committed, not pushed.
 
 **Evidence:** ART_DIRECTION still contains “pending approval,” older motion durations, and obsolete “grow the card” guidance alongside later approvals. AUTHORING says long rules can grow the frame. README still says no public site exists. These contradictions can cause another agent to undo approved work.
 

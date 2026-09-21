@@ -29,7 +29,7 @@ export const examplePack: PackDefinition = {
 };
 ```
 
-Use stable namespaced IDs; never recycle one for an unrelated card. Supported categories: `sip`, `group`, `category`, `challenge`, and `rule`. Rules are plain text, not HTML. Keep one clear instruction, generally under 45 words; long text may grow the card and scroll the page instead of shrinking the type. Illustration briefs remain authoring metadata. Do not bake rule text into artwork.
+Use stable namespaced IDs; never recycle one for an unrelated card. Supported categories: `sip`, `group`, `category`, `challenge`, and `rule`. Rules are plain text, not HTML. Keep one clear instruction, generally under 45 words. Long text stays inside the fixed 2:3 card and scrolls within the rules panel at enlarged settings; the card never grows for content. Illustration briefs remain authoring metadata. Do not bake rule text into artwork.
 
 Overlapping packs share a card by ID; it enters the shuffle pool only once. New packs are off until selected. Pack choices affect the next game; an active session retains its snapshot. Keep previously published artwork available when possible. Ship expansions with a new build, not a remote download service.
 
@@ -39,9 +39,7 @@ Packs can optionally specify `artwork: 'art/your-pack.webp'`. The file must exis
 
 ## Card workshop
 
-Run `npm run dev`, then open `http://127.0.0.1:5173/?workshop=1`. Search and filter the catalog, pick a card, adjust preview width or enlarged text, and tap the card to exercise the actual flip/discard controller. Replay reveal deals the selected card facedown. The seed reproduces shuffle order; the chosen card is moved to the front without changing pool membership. No workshop actions write game saves or preferences.
-
-The new front study is on by default here only. Turn it off to compare the current shipping frame. The study uses one finished illustration for `core.cheers`; remaining cards keep placeholder artwork. Study assets and code are removed from production builds. See GAME_DESIGN.md for the editorial rubric and PLAYTEST.md before commissioning the full collection.
+Run `npm run dev`, then open `http://127.0.0.1:5173/?workshop=1`. Search and filter the catalog, pick a card, set the preview viewport width and height or enlarged text, and tap the card to exercise the actual flip/discard controller. The preview renders the real shipping `Play` component and frame — there is no separate front-study toggle. Replay reveal deals the selected card facedown. The seed reproduces shuffle order and dice outcomes; the chosen card is moved to the front without changing pool membership. No workshop actions write game saves or preferences. See GAME_DESIGN.md for the editorial rubric and PLAYTEST.md before commissioning the full collection.
 
 ## Illustration and pack identity
 
