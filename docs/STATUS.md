@@ -305,6 +305,8 @@ Execution order after this visual audit: **1 → 1A → 1B → 2 → 3 → 1C �
 
 Use `GAME_DESIGN.md`, `CARD_VOICE_REFERENCE.md`, `ILLUSTRATION_GUIDELINES.md`, and `PLAYTEST.md`.
 
+**Status — KIT PREPARED (2026-09-21, OpenCode Go); awaiting the human session.** `docs/PLAYTEST.md` is now a ready-to-run kit: two sessions (finite `The house collection` 40, then Endless ≥2 cycles), dice/roll checks, temporary-rule expiry checks, a copy/pack decision list, and a per-card observation sheet generated from the built catalog (40 core + 12 VIP with ID, title, category, dice and rule). No playtest results exist and none were invented. **Next: run the session, fill in the record, and return decisions** on the core pack name, whether dice cards stay mixed or become a named pack, and VIP copy.
+
 - Human session: Core 40 cards and Endless through two cycles; separate mixed Core/Dice session. Record confusing instructions, skipped prompts, temporary-rule expiry, repetition, accidental taps, and whether Roll/Continue is obvious without coaching.
 - Go can prepare the session/checklist and summarize observations; it cannot invent playtest results or approve content for the user.
 - Revise only approved card text/concepts. Retain IDs when concepts match; give unrelated replacements new IDs. Keep Core category distribution until an explicit balance decision. No timing/scoring/targeting system.
