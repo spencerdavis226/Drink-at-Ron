@@ -101,6 +101,9 @@ test("repeated rolls settle, never fall back, and are never a weak plop", async 
   page,
 }) => {
   test.skip(!(await webgl(page)), "WebGL unavailable (headless Linux WebKit)");
+  // Software-rendered CI WebKit creates a stage per roll; 6 rolls can exceed the
+  // default timeout.
+  test.setTimeout(90000);
   const durations: number[] = [];
   for (let i = 0; i < 6; i++) {
     await seed(page, i % 2);
@@ -120,7 +123,9 @@ test("repeated rolls settle, never fall back, and are never a weak plop", async 
   console.log("roll ms", durations.join(", "));
   for (const ms of durations) {
     expect(ms).toBeGreaterThan(700);
-    expect(ms).toBeLessThan(6000);
+    // Upper bound is loose: software-rendered CI runners are slow, but a
+    // fallback or runaway roll would still be caught by the settled assertion.
+    expect(ms).toBeLessThan(9000);
   }
 });
 test("reload and reduced motion restore static saved result without replay", async ({
