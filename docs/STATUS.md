@@ -4,7 +4,7 @@ Updated 2026-09-21. **Single authoritative handoff for OpenCode Go, Codex, and o
 
 ## Finish glow removal and motion endpoints — 2026-09-21
 
-**Status — DONE (2026-09-21, OpenCode Go).** Removed the decorative finishing glow/glint and eliminated the measured motion jumps without touching engine/schema/physics/artwork. All prior uncommitted work is preserved. No commit, push, or publication.
+**Status — DONE (2026-09-21, OpenCode Go).** Removed the decorative finishing glow/glint and eliminated the measured motion jumps without touching engine/schema/physics/artwork. All prior uncommitted work is preserved. Committed and pushed as **`e88d77a`** on `codex/finish-v1` (that commit also bundles the pending continuous-frame/enamel-dice WIP); the local dev server for phone play is separate and not part of the commit.
 
 **Removed glow/glint (reproduced, then deleted).** `.study-face.dice-ready::before` painted `inset 0 0 0 2px rgba(255,217,140,.9)` plus `inset 0 0 38px rgba(231,173,74,.47)` and animated opacity 0.5↔1 (`dice-ready-glow`); `.reveal-glint` was `display:block` with the `glint` sweep during a flip. Both, their markup/keyframes, and the `dice-ready` class are gone. Painted bronze edges, the `.card-rotator` contact shadow, and the global `button:focus-visible` outline remain.
 
