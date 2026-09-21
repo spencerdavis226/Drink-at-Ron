@@ -15,7 +15,11 @@ test("workshop previews are isolated, readable, and use real motion", async ({
     page.getByRole("heading", { name: "Card workshop" }),
   ).toBeVisible();
   const frame = preview(page);
-  for (const id of ["core.house-special", "core.categories", "core.rulemaster"]) {
+  for (const id of [
+    "core.house-special",
+    "core.categories",
+    "core.rulemaster",
+  ]) {
     await page.getByLabel("Card", { exact: true }).selectOption(id);
     await expect(frame.locator(".study-rules p")).toBeVisible();
     await page.getByLabel("Enlarged text").check();
@@ -68,28 +72,29 @@ test("viewport presets set real width and height on the preview", async ({
     ).toEqual({ w: width, h: height });
   }
 });
-test("all Core and dice study cards retain their ratio at each preview size", async ({
-  page,
-}) => {
-  // 40 sample cards (14 with dice) plus the VIP pack; each iteration reloads the
-  // preview twice, and software-rendered WebKit is the slow case.
-  test.setTimeout(420000);
-  await page.setViewportSize({ width: 1400, height: 1100 });
-  await page.goto("/?workshop=1");
-  const picker = page.getByLabel("Card", { exact: true });
-  const ids = await picker
-    .locator("option")
-    .evaluateAll((options) =>
-      options.map((o) => (o as HTMLOptionElement).value),
-    );
-  const frame = preview(page);
-  for (const size of [
-    "Small phone",
-    "Large phone",
-    "iPad",
-    "Landscape",
-    "Split view",
-  ]) {
+// One test per viewport. A single combined sweep exceeded its budget on the
+// software-rendered CI WebKit runner; splitting keeps the same assertions while
+// giving each viewport its own budget.
+for (const size of [
+  "Small phone",
+  "Large phone",
+  "iPad",
+  "Landscape",
+  "Split view",
+]) {
+  test(`all study cards retain their ratio at ${size}`, async ({ page }) => {
+    // 40 sample cards (14 with dice) plus the VIP pack; each iteration
+    // re-reads the preview, and software-rendered WebKit is the slow case.
+    test.setTimeout(600000);
+    await page.setViewportSize({ width: 1400, height: 1100 });
+    await page.goto("/?workshop=1");
+    const picker = page.getByLabel("Card", { exact: true });
+    const ids = await picker
+      .locator("option")
+      .evaluateAll((options) =>
+        options.map((o) => (o as HTMLOptionElement).value),
+      );
+    const frame = preview(page);
     await page.getByLabel("Viewport", { exact: true }).selectOption(size);
     let normalHeight: number | undefined;
     for (const id of ids) {
@@ -145,14 +150,16 @@ test("all Core and dice study cards retain their ratio at each preview size", as
         ).toBe(true);
       }
     }
-  }
-});
+  });
+}
 test("the dev force-motion override reaches the presentation controller", async ({
   page,
 }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/?workshop=1&force-motion=1");
-  await page.getByLabel("Card", { exact: true }).selectOption("core.house-special");
+  await page
+    .getByLabel("Card", { exact: true })
+    .selectOption("core.house-special");
   const frame = preview(page);
   const navigated = page.waitForEvent(
     "framenavigated",
