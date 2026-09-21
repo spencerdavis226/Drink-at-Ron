@@ -7,7 +7,7 @@ const webgl = (page: Page) =>
     const canvas = document.createElement("canvas");
     return !!(canvas.getContext("webgl2") || canvas.getContext("webgl"));
   });
-const diceIds = ["dice.toast", "dice.title"] as const;
+const diceIds = ["core.same-shit", "core.fuck-around"] as const;
 async function seed(page: Page, index = 0) {
   const card = cards.find((c) => c.id === diceIds[index])!;
   const session = createSession(

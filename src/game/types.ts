@@ -28,6 +28,8 @@ export interface PackDefinition {
   id: string;
   title: string;
   description: string;
+  /** Optional one-line setup reminder shown when this pack is selected. */
+  setupHint?: string;
   cardIds: string[];
   artwork?: string;
   logo?: string;

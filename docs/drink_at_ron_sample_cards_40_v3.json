@@ -1,0 +1,270 @@
+{
+  "packId": "core_sample_40_v3",
+  "packName": "Core Sample 40",
+  "version": 3,
+  "notes": {
+    "tone": "Short, crude, direct, CABIIN-inspired party cards.",
+    "diceSupport": [
+      "d6",
+      "2d6",
+      "d20"
+    ],
+    "ruleDuration": "Temporary rules end when the next card is revealed."
+  },
+  "cards": [
+    {
+      "id": "house_special",
+      "title": "House Special",
+      "type": "drink",
+      "text": "Drink 3."
+    },
+    {
+      "id": "bar_tab",
+      "title": "Bar Tab",
+      "type": "drink",
+      "text": "Give 3."
+    },
+    {
+      "id": "bad_influence",
+      "title": "Bad Influence",
+      "type": "drink",
+      "text": "Pick someone. Both drink 2."
+    },
+    {
+      "id": "last_call",
+      "title": "Last Call",
+      "type": "group",
+      "text": "Everyone drinks 2."
+    },
+    {
+      "id": "you_specifically",
+      "title": "Fuck You Specifically",
+      "type": "drink",
+      "text": "Pick someone. They drink 4."
+    },
+    {
+      "id": "cheap_date",
+      "title": "Cheap Date",
+      "type": "group",
+      "text": "Cheapest drink at the table drinks 3."
+    },
+    {
+      "id": "baller",
+      "title": "Big Money",
+      "type": "group",
+      "text": "Priciest drink at the table gives 4."
+    },
+    {
+      "id": "group_project",
+      "title": "Group Project",
+      "type": "group",
+      "text": "Last hand in the air drinks 3."
+    },
+    {
+      "id": "bad_text",
+      "title": "U Up?",
+      "type": "drink",
+      "text": "Sent a regrettable late-night text? Drink 3."
+    },
+    {
+      "id": "hr_violation",
+      "title": "HR Violation",
+      "type": "drink",
+      "text": "Hooked up with a coworker? Drink 4."
+    },
+    {
+      "id": "fake_sick",
+      "title": "Corporate Wellness",
+      "type": "drink",
+      "text": "Faked sick to skip work? Drink 3."
+    },
+    {
+      "id": "crypto_bro",
+      "title": "Financial Genius",
+      "type": "drink",
+      "text": "Own crypto? Drink 2. Don't? Give 2."
+    },
+    {
+      "id": "deez_nuts",
+      "title": "Deez Nuts",
+      "type": "challenge",
+      "text": "Get someone with a deez nuts joke. They drink 3."
+    },
+    {
+      "id": "smooth_brain",
+      "title": "Smooth Brain",
+      "type": "challenge",
+      "text": "Admit something dumb you believed. Drink 2."
+    },
+    {
+      "id": "would_you",
+      "title": "Would You Though?",
+      "type": "group",
+      "text": "Most likely to text an ex drinks 3."
+    },
+    {
+      "id": "cheers_idiots",
+      "title": "Cheers, Idiots",
+      "type": "group",
+      "text": "Cheers. Everyone drinks 2."
+    },
+    {
+      "id": "dice_tax",
+      "title": "Dice Tax",
+      "type": "dice",
+      "dice": "d6",
+      "text": "Roll d6. Drink half, round up."
+    },
+    {
+      "id": "give_a_shit",
+      "title": "Give a Shit",
+      "type": "dice",
+      "dice": "d6",
+      "text": "Roll d6. Give that many."
+    },
+    {
+      "id": "fuckin_math",
+      "title": "Fuckin' Math",
+      "type": "dice",
+      "dice": "d6",
+      "text": "Roll d6. Drink 7 minus your roll."
+    },
+    {
+      "id": "low_roller",
+      "title": "Pathetic",
+      "type": "dice",
+      "dice": "d6",
+      "text": "Roll d6. 1–2: drink 4. Else give 2."
+    },
+    {
+      "id": "high_roller",
+      "title": "Big Dick Energy",
+      "type": "dice",
+      "dice": "d6",
+      "text": "Roll d6. 5–6: give 5. Else drink 2."
+    },
+    {
+      "id": "same_shit",
+      "title": "Same Shit",
+      "type": "dice",
+      "dice": "2d6",
+      "text": "Roll 2d6. Doubles: give total. Else drink 3."
+    },
+    {
+      "id": "two_beers_math",
+      "title": "That's Two Beers",
+      "type": "dice",
+      "dice": "2d6",
+      "text": "Roll 2d6. Give the total."
+    },
+    {
+      "id": "snake_eyes",
+      "title": "Snake Eyes",
+      "type": "dice",
+      "dice": "2d6",
+      "text": "Roll 2d6. Double 1s: drink 6. Else give 3."
+    },
+    {
+      "id": "lucky_bastard",
+      "title": "Lucky Bastard",
+      "type": "dice",
+      "dice": "2d6",
+      "text": "Roll 2d6. 9+: give 5. Under 9: drink 3."
+    },
+    {
+      "id": "fuck_around",
+      "title": "Fuck Around & Find Out",
+      "type": "dice",
+      "dice": "d20",
+      "text": "Roll d20. 1: drink 5. 20: give 8. Else drink 2."
+    },
+    {
+      "id": "crit_fail",
+      "title": "Critical Failure",
+      "type": "dice",
+      "dice": "d20",
+      "text": "Roll d20. 1–5: drink 4. 16–20: give 4."
+    },
+    {
+      "id": "chosen_one",
+      "title": "God's Drunkest Soldier",
+      "type": "dice",
+      "dice": "d20",
+      "text": "Roll d20. 20: everyone else drinks 3. 1: drink 5."
+    },
+    {
+      "id": "categories",
+      "title": "Categories",
+      "type": "game",
+      "text": "Pick a category. First repeat or blank drinks 3."
+    },
+    {
+      "id": "rhyme_time",
+      "title": "Rhyme Time",
+      "type": "game",
+      "text": "Pick a word. First bad rhyme drinks 3."
+    },
+    {
+      "id": "questions_only",
+      "title": "Questions Only",
+      "type": "game",
+      "text": "Questions only. First statement drinks 3."
+    },
+    {
+      "id": "name_3",
+      "title": "Name 3",
+      "type": "game",
+      "text": "Group picks a topic. Name 3 or drink 3."
+    },
+    {
+      "id": "rock_paper_drink",
+      "title": "Rock Paper Drink",
+      "type": "game",
+      "text": "Challenge someone. Loser drinks 3."
+    },
+    {
+      "id": "never_have_i",
+      "title": "Never Have I Ever",
+      "type": "game",
+      "text": "Say one. Anyone who has drinks 2."
+    },
+    {
+      "id": "rulemaster",
+      "title": "Rulemaster",
+      "type": "rule",
+      "text": "Make a rule until next card. Breaker drinks 2."
+    },
+    {
+      "id": "no_names",
+      "title": "Who the Fuck Are You?",
+      "type": "rule",
+      "text": "Until next card: no names. Slip = drink 2."
+    },
+    {
+      "id": "potty_mouth",
+      "title": "Church Mode",
+      "type": "rule",
+      "text": "Until next card: no swearing. Slip = drink 2."
+    },
+    {
+      "id": "captain_dumbass",
+      "title": "Captain Dumbass",
+      "type": "rule",
+      "text": "Until next card: call everyone “Captain.” Slip = drink 2."
+    },
+    {
+      "id": "cursed_number",
+      "title": "Cursed Number",
+      "type": "rule",
+      "dice": "d6",
+      "text": "Roll d6. That number is banned. Say it = drink 2."
+    },
+    {
+      "id": "dice_lord",
+      "title": "Dice Lord",
+      "type": "rule",
+      "dice": "d6",
+      "text": "Roll d6. Odd: no pointing. Even: no questions. Slip = drink 2."
+    }
+  ]
+}

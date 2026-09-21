@@ -2,7 +2,7 @@ import { test, expect, type Page } from "@playwright/test";
 import { createSession } from "../../src/game/engine";
 import { cards, packs } from "../../src/content/catalog";
 const key = "drink-at-ron.session.v1";
-const cheers = cards.find((c) => c.id === "core.cheers")!;
+const cheers = cards.find((c) => c.id === "core.cheers-idiots")!;
 const diceCard = cards.find((c) => c.dice)!;
 function sessionFor(
   card: (typeof cards)[number],

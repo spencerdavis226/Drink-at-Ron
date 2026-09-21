@@ -50,7 +50,7 @@ Saves snapshot card content and order. Invalid/unsupported saves require explici
 
 ## Add content
 
-See [the pack authoring guide](docs/AUTHORING.md). The 30-card Core collection is a production candidate awaiting group playtesting. Most cards share a painted tankard placeholder; A little cheers has individual artwork. This visual pass adds original weathered card skins, a walnut tabletop, and a two-sided lift/flip/discard animation. A separate provisional `Dice` pack (2d6 and 1d20) demonstrates the approved full-screen dice renderer; its copy and art are placeholders. Production card-specific illustrations and the full content collection remain for a later session.
+See [the pack authoring guide](docs/AUTHORING.md). The current standard set is the 40-card sample collection in `src/content/sample.ts` (pack `core`), with dice cards mixed in; `VIP night` is an additional themed pack. It is supplied sample content awaiting playtesting, not a permanent brief. Most cards share a painted tankard placeholder; Cheers, Idiots reuses the individual cheers artwork. This visual pass adds original weathered card skins, a walnut tabletop, and a two-sided lift/flip/discard animation. Production card-specific illustrations and the full content collection remain for a later session.
 
 ## Static deployment
 

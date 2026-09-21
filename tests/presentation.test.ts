@@ -7,11 +7,13 @@ import {
   loadPreferences,
   parseSession,
 } from "../src/app/persistence";
+const core = packs[0];
+const plain = cards.filter((c) => !c.dice && core.cardIds.includes(c.id));
 const initial = (limit = 3) =>
   createSession(
     { version: 1, packIds: ["core"], limit },
-    cards,
-    packs,
+    plain,
+    [{ ...core, cardIds: plain.map((c) => c.id) }],
     () => 0.5,
   );
 const settle = (c: PresentationController) => {

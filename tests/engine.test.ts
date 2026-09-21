@@ -11,8 +11,8 @@ import { parseSession } from "../src/app/persistence";
 import type { SessionState } from "../src/game/types";
 const config = { version: 1 as const, packIds: ["core"], limit: 40 };
 const rng = () => 0.42;
-// The default Core pack drives the deck-mechanics tests; the catalog also ships
-// a separate provisional dice pack, so use the core deck size, not cards.length.
+// The default Core pack now carries the dice cards too, so use the core deck
+// size, not the whole catalog length.
 const coreDeckSize = packs[0].cardIds.length;
 // Dice cards must be rolled and returned before they can be discarded.
 const dismiss = (state: SessionState, random = rng) => {

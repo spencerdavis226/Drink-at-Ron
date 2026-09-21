@@ -1,4 +1,24 @@
 import { test, expect } from "@playwright/test";
+import { createSession } from "../../src/game/engine";
+import { cards, packs } from "../../src/content/catalog";
+const key = "drink-at-ron.session.v1";
+const plain = cards.find(
+  (c) => !c.dice && packs.find((p) => p.id === "core")!.cardIds.includes(c.id),
+)!;
+// Seed one known non-dice card so reveal -> discard -> previous is deterministic.
+async function seedPlain(page: import("@playwright/test").Page) {
+  const session = createSession(
+    { version: 1, packIds: ["core"], limit: 40 },
+    [plain],
+    [{ ...packs[0], cardIds: [plain.id] }],
+  );
+  session.phase = "hidden";
+  await page.evaluate(
+    ({ key, session }) => localStorage.setItem(key, JSON.stringify(session)),
+    { key, session },
+  );
+  await page.reload();
+}
 test("Pages manifest, assets and production exclusion", async ({
   page,
   request,
@@ -43,6 +63,7 @@ test("Core logo matches selection, card, pause legend and previous card", async 
       .locator(".pack-logo img"),
   ).toHaveAttribute("src", /art\/packs\/core.svg$/);
   await page.getByRole("button", { name: "Play", exact: true }).click();
+  await seedPlain(page);
   await page.getByRole("button", { name: "Reveal card", exact: true }).click();
   await expect(page.locator(".card-stage")).not.toHaveClass(/flip|settle|deal/);
   await expect(page.locator(".card-category")).toHaveCount(0);

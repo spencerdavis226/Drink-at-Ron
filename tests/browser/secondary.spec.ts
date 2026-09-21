@@ -22,8 +22,8 @@ test("unselected packs stay readable and selection is unambiguous", async ({
 }) => {
   await page.goto("./");
   const core = page.getByRole("button", { name: /house collection/ });
-  const dice = page.getByRole("button", { name: /Dice/ });
-  const unselected = await dice.evaluate((el) => {
+  const other = page.getByRole("button", { name: /VIP night/ });
+  const unselected = await other.evaluate((el) => {
     const style = getComputedStyle(el);
     return {
       opacity: Number(style.opacity),
@@ -47,9 +47,22 @@ test("unselected packs stay readable and selection is unambiguous", async ({
       );
     }),
   ).toBe(true);
-  await dice.click();
-  await expect(dice).toHaveAttribute("aria-pressed", "true");
-  await expect(dice.locator(".checkbox")).toHaveText("✓");
+  await other.click();
+  await expect(other).toHaveAttribute("aria-pressed", "true");
+  await expect(other.locator(".checkbox")).toHaveText("✓");
+});
+test("selecting VIP night reveals its one-line setup reminder", async ({
+  page,
+}) => {
+  await page.goto("./");
+  const vip = page.getByRole("button", { name: /VIP night/ });
+  await expect(page.locator(".pack-hint")).toHaveCount(0);
+  await vip.click();
+  const hint = page.locator(".pack-hint");
+  await expect(hint).toHaveCount(1);
+  await expect(hint).toContainText("guest of honor");
+  await vip.click();
+  await expect(page.locator(".pack-hint")).toHaveCount(0);
 });
 test("the Roll control reuses the painted surface and keeps a 44px target", async ({
   page,

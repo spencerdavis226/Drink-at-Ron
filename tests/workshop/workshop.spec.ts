@@ -15,7 +15,7 @@ test("workshop previews are isolated, readable, and use real motion", async ({
     page.getByRole("heading", { name: "Card workshop" }),
   ).toBeVisible();
   const frame = preview(page);
-  for (const id of ["core.cheers", "core.animals", "core.left"]) {
+  for (const id of ["core.house-special", "core.categories", "core.rulemaster"]) {
     await page.getByLabel("Card", { exact: true }).selectOption(id);
     await expect(frame.locator(".study-rules p")).toBeVisible();
     await page.getByLabel("Enlarged text").check();
@@ -71,7 +71,9 @@ test("viewport presets set real width and height on the preview", async ({
 test("all Core and dice study cards retain their ratio at each preview size", async ({
   page,
 }) => {
-  test.setTimeout(180000);
+  // 40 sample cards (14 with dice) plus the VIP pack; each iteration reloads the
+  // preview twice, and software-rendered WebKit is the slow case.
+  test.setTimeout(420000);
   await page.setViewportSize({ width: 1400, height: 1100 });
   await page.goto("/?workshop=1");
   const picker = page.getByLabel("Card", { exact: true });
@@ -150,7 +152,7 @@ test("the dev force-motion override reaches the presentation controller", async 
 }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/?workshop=1&force-motion=1");
-  await page.getByLabel("Card", { exact: true }).selectOption("core.cheers");
+  await page.getByLabel("Card", { exact: true }).selectOption("core.house-special");
   const frame = preview(page);
   const navigated = page.waitForEvent(
     "framenavigated",
@@ -171,7 +173,7 @@ test("the production overlay is contained and seeded replay repeats outcomes", a
 }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/?workshop=1");
-  await page.getByLabel("Card", { exact: true }).selectOption("dice.toast");
+  await page.getByLabel("Card", { exact: true }).selectOption("core.dice-tax");
   const frame = preview(page);
   await expect(frame.locator(".roll-layer")).toBeVisible();
   const iframeBox = (await page.locator("iframe").boundingBox())!;

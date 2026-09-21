@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite --host 127.0.0.1",
+    "dev:phone": "vite --host 0.0.0.0",
     "build": "tsx scripts/validate-content.ts && tsc -b && vite build && tsx scripts/check-budget.ts",
     "preview": "vite preview --host 127.0.0.1",
     "test": "vitest run",

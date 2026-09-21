@@ -5,6 +5,36 @@ async function ready(page: import("@playwright/test").Page) {
     /flip|discard|settle|deal/,
   );
 }
+// The standard pack mixes dice cards in, so tests that tap a card straight to
+// discard first move known non-dice cards to the front of the saved order.
+async function forcePlainFirst(
+  page: import("@playwright/test").Page,
+  count: number,
+) {
+  await page.evaluate(
+    ({ k, count }) => {
+      const s = JSON.parse(localStorage.getItem(k)!);
+      const first = s.cards
+        .filter((c: { dice?: unknown }) => !c.dice)
+        .slice(0, count)
+        .map((c: { id: string }) => c.id);
+      s.order = [
+        ...first,
+        ...s.order.filter((id: string) => !first.includes(id)),
+      ];
+      s.position = 0;
+      s.cycle = 0;
+      s.discarded = 0;
+      s.phase = "hidden";
+      s.previousId = null;
+      s.roll = null;
+      s.previousRoll = null;
+      localStorage.setItem(k, JSON.stringify(s));
+    },
+    { k: key, count },
+  );
+  await page.reload();
+}
 test("full custom game, rapid taps, restore, previous card, replay and settings", async ({
   page,
 }) => {
@@ -14,6 +44,7 @@ test("full custom game, rapid taps, restore, previous card, replay and settings"
   await page.getByRole("button", { name: "Custom deck size" }).click();
   await page.getByLabel("Number of cards").fill("2");
   await page.getByRole("button", { name: "Play", exact: true }).click();
+  await forcePlainFirst(page, 2);
   await page.getByRole("button", { name: "Reveal card" }).click();
   await page.locator(".game-card").evaluate((el) => {
     for (let i = 0; i < 8; i++) (el as HTMLElement).click();
@@ -97,6 +128,7 @@ test("portrait, landscape, iPad and large text retain readable rules", async ({
 }) => {
   await page.goto("./");
   await page.getByRole("button", { name: "Play", exact: true }).click();
+  await forcePlainFirst(page, 6);
   for (const viewport of [
     { width: 375, height: 667 },
     { width: 390, height: 844 },
@@ -235,10 +267,14 @@ test("rules taps discard, while scrolling and cancelled gestures keep the card",
     (k) => JSON.parse(localStorage.getItem(k)!),
     key,
   );
-  const longest = original.cards.reduce(
-    (result: { id: string; rules: string }, card: { id: string; rules: string }) =>
-      card.rules.length > result.rules.length ? card : result,
-  );
+  const longest = original.cards
+    .filter((card: { dice?: unknown }) => !card.dice)
+    .reduce(
+      (
+        result: { id: string; rules: string },
+        card: { id: string; rules: string },
+      ) => (card.rules.length > result.rules.length ? card : result),
+    );
   await page.evaluate(
     ({ key, state }) => localStorage.setItem(key, JSON.stringify(state)),
     {
@@ -320,6 +356,7 @@ test("custom size persists before starting and interruption restores a stable ca
   await page.reload();
   await expect(page.getByLabel("Number of cards")).toHaveValue("37");
   await page.getByRole("button", { name: "Play", exact: true }).click();
+  await forcePlainFirst(page, 1);
   await page.getByRole("button", { name: "Reveal card" }).click();
   await page.reload();
   await expect(page.locator(".game-card")).toHaveClass(/face/);
@@ -345,6 +382,7 @@ test("minimal interface and a real two-sided flip", async ({ page }) => {
     "aria-hidden",
     "true",
   );
+  await forcePlainFirst(page, 1);
   await page.getByRole("button", { name: "Reveal card" }).click();
   await ready(page);
   await expect(page.locator(".card-front")).toHaveAttribute(
@@ -397,6 +435,7 @@ test("canceled animations and backgrounding settle without additional draws", as
 }) => {
   await page.goto("./");
   await page.getByRole("button", { name: "Play", exact: true }).click();
+  await forcePlainFirst(page, 1);
   await page.getByRole("button", { name: "Reveal card" }).click();
   await page
     .locator(".game-card")

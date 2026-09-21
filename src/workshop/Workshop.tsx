@@ -15,7 +15,7 @@ const sizes = {
 export default function Workshop() {
   const [selected, setSelected] = useState(() => {
       const id = new URLSearchParams(location.search).get("card");
-      return cards.some((c) => c.id === id) ? id! : "core.cheers";
+      return cards.some((c) => c.id === id) ? id! : "core.house-special";
     }),
     [query, setQuery] = useState(""),
     [category, setCategory] = useState("all"),
@@ -169,11 +169,11 @@ export default function Workshop() {
         <p>{card.illustrationBrief}</p>
         <nav aria-label="Study examples">
           {[
-            "core.cheers",
-            "core.animals",
-            "core.left",
-            "dice.toast",
-            "dice.title",
+            "core.house-special",
+            "core.categories",
+            "core.rulemaster",
+            "core.dice-tax",
+            "core.fuck-around",
           ].map((id) => (
             <Button key={id} onClick={() => setSelected(id)}>
               {cards.find((c) => c.id === id)!.title}

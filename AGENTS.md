@@ -15,6 +15,7 @@ Read `docs/STATUS.md` before planning or editing. It is the single current hando
 
 ```sh
 npm run dev            # vite on 127.0.0.1; no service worker — offline needs a production build/preview
+npm run dev:phone      # vite on 0.0.0.0; open the printed Network URL from a phone on the same Wi-Fi (HTTP: no service worker/offline)
 npm test               # vitest; only tests/**/*.test.ts (unit)
 BASE_PATH=/Drink-at-Ron/ npm run build    # validate-content -> tsc -b -> vite -> check-budget
 npx playwright install chromium webkit
@@ -30,7 +31,7 @@ npm run test:workshop  # dev server on :5175
 ## Budgets and dice prototype
 
 - `scripts/check-budget.ts` enforces tiered release budgets on `dist`: initial (critical-path) JS ≤ 100 KiB gzip, lazy feature JS ≤ 200 KiB gzip, runtime ≤ 3 MiB, any image ≤ 500 KiB, and no workshop strings in production. "Initial" = chunks referenced by `dist/index.html`; everything else is lazy. Heavy optional features (e.g. the dice library) belong in lazy chunks, not the initial tier. Measure the built output instead of guessing, and do not change limits without user approval.
-- The full-screen `@3d-dice/dice-box-threejs` overlay is the default dice renderer (`src/components/FullScreenDice.tsx`, adapter `src/presentation/dice/library.ts`); it is lazy-loaded and must be fed predetermined results from `src/game/dice.ts`. Provisional dice cards live in the `dice` pack; keep the validated 30-card Core unchanged. Do not reintroduce a second renderer, and do not change per-body damping/sleep between the library's pre-simulation and its replay — that diverges the forced face.
+- The full-screen `@3d-dice/dice-box-threejs` overlay is the default dice renderer (`src/components/FullScreenDice.tsx`, adapter `src/presentation/dice/library.ts`); it is lazy-loaded and must be fed predetermined results from `src/game/dice.ts`. `src/content/sample.ts` holds the current standard 40-card set (dice cards included) as pack `core`; `src/content/vip.ts` is an additional themed pack. Both are supplied sample content that may be replaced — keep engine/state contracts and saved-order behavior unchanged. Do not reintroduce a second renderer, and do not change per-body damping/sleep between the library's pre-simulation and its replay — that diverges the forced face.
 
 ## Evidence
 

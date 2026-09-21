@@ -21,10 +21,10 @@ const motionStyles = Object.fromEntries(
 ) as CSSProperties;
 
 export default function Preview() {
-  const requested = params.get("card") ?? "core.cheers";
+  const requested = params.get("card") ?? "core.house-special";
   const id = workshopCards.some((c) => c.id === requested)
     ? requested
-    : "core.cheers";
+    : "core.house-special";
   const seed = params.get("seed") ?? "tavern-1";
   const outcome = params.get("outcome") ?? "Seeded";
   const revealed = flag("revealed");

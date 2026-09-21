@@ -2,7 +2,8 @@ import { test, expect, type Page } from "@playwright/test";
 import { createSession, advance } from "../../src/game/engine";
 import { cards, packs } from "../../src/content/catalog";
 const key = "drink-at-ron.session.v1";
-const plain = cards.filter((c) => !c.dice);
+const core = packs.find((p) => p.id === "core")!;
+const plain = cards.filter((c) => !c.dice && core.cardIds.includes(c.id));
 const longestRule = [...plain].sort((a, b) => b.rules.length - a.rules.length)[0];
 const longestTitle = [...plain].sort((a, b) => b.title.length - a.title.length)[0];
 const ruleCard = plain.find((c) => c.category === "rule")!;
@@ -76,6 +77,8 @@ test("a short phone scrolls long rules with a visible overflow affordance", asyn
 }) => {
   await page.setViewportSize({ width: 320, height: 568 });
   await seed(page, revealed(longestRule));
+  // Enlarged text guarantees the longest plain rule overflows the short phone.
+  await page.addStyleTag({ content: ":root {font-size:24px}" });
   await expect(page.locator(".study-rules")).toHaveAttribute(
     "data-overflow",
     "bottom",

@@ -22,7 +22,7 @@ The next investment should be: repair visible/accessibility regressions → clos
 | Dice | One lazy Three/Cannon library adapter, predetermined values, full-screen transparent stage, collision audio, fallback | Cleanup on every exit; verify actual face after snap; stronger failure coverage |
 | Cards | Approved shared 2:3 painted frame and scrollable rules | Fix visible live-region text; inspect bottom CTA clearance and long-result access |
 | Presentation | Controller guards rapid input and persists before motion; latest animations use transform/opacity | Dialog timing/closing interaction tests; physical frame-time evidence |
-| Content | 30 Core candidates + 2 provisional Dice cards; stable IDs, categories, briefs, distinct pack marks | Human playtest, copy approval, final pack naming and individual art |
+| Content | Current standard set: 40 supplied sample cards (dice included) in pack `core`, plus a 12-card VIP night pack; stable IDs, categories, briefs, distinct pack marks | Human playtest, copy approval, final pack naming and individual art |
 | Workshop | Dev-only, deterministic, storage-isolated, catalog/layout tests | Real dice preview, real viewport dimensions, remove obsolete study control |
 | Release | Pages base path, local fonts/assets, precache, two-build update test, budget enforcement | Narrow WebKit exceptions; capture failures; physical installed/offline checks |
 | Documentation | Design, illustration, authoring, device and playtest guides exist | Remove conflicting historical guidance from current instructions |
@@ -71,7 +71,7 @@ The generic tankard on most cards is known placeholder content, not a newly disc
 - Painted walnut/bronze/teal/parchment; Hearthstone-inspired craftsmanship with original, goofy fantasy characters. No copied franchise identities; no new art-direction reset.
 - One dice renderer: `@3d-dice/dice-box-threejs@0.0.12`. Keep the card-forward transparent full-screen interaction approved after the earlier dimmed-dialog study. No second CSS/Babylon renderer.
 - Do not change per-body damping/sleep between library pre-simulation and replay. Engine values remain authoritative. Rendering failure shows the saved result.
-- Keep the 30-card Core unchanged during engineering tasks. Provisional dice content remains in pack `dice` until a separate content decision.
+- Keep the current sample content (`src/content/sample.ts`, `src/content/vip.ts`) as supplied material: it may be replaced, but preserve engine/state contracts and saved-order behavior. Do not retrofit individual art to fictional briefs before the registry task.
 - All runtime assets local and offline/Pages compatible. No new backend, analytics, accounts, marketplace, scoring, timers, player system, or content editor.
 - Budgets remain: initial JS ≤100 KiB gzip, lazy JS ≤200 KiB gzip, runtime ≤3 MiB, individual image ≤500 KiB. Changes require user approval.
 
@@ -80,6 +80,44 @@ The generic tankard on most cards is known placeholder content, not a newly disc
 - **Sound removed entirely.** `src/app/sound.ts` (synthesized effects + ambience), its `tavernAudio` wiring in `main.tsx`/`UI.tsx`/`FullScreenDice.tsx`, the dice collision-impact callback in the adapter, the Effects/Ambience menu switches, the `sound`/`ambience` preference fields and the unused `Toggle` component are gone. `tests/sound.test.ts` and the two audio-failure browser tests were deleted; legacy saves that still carry `sound`/`ambience` load and are ignored (`loadPreferences` no longer requires them). The dice library keeps `sounds: false`. The `PresentationController` effect seam remains (it is semantic, not audio), with no production subscriber.
 - **Atmosphere is always on.** The `atmosphere` preference and its menu switch are removed; `Atmosphere` renders unconditionally and the reveal glint is no longer gated on an `atmosphere-on` class. Reduced Motion and the hidden/`suspended` state still pause it.
 - Applied after the task-1C commit `871b61d`. Budgets improved slightly: initial JS **79.9 KiB** gzip, runtime **2592 KiB**. Tasks 6 and 7 must not reintroduce audio or an atmosphere toggle.
+
+## VIP night pack — added 2026-09-20 (OpenCode Go, direct user request)
+
+The user asked for a themed pack for an occasion (a birthday, a bachelorette, or someone's own night) in which **every card involves the VIP, positive or negative**. Two decisions were confirmed with the user: one fixed guest of honor for the whole game, and a one-line reminder on Setup while the pack is selected. This work sits outside the task queue below; the queue's next item is unchanged.
+
+**Files**
+
+- `src/content/vip.ts` (new) — 12 cards, IDs `vip.*`, categories sip 3 / group 3 / category 2 / challenge 2 / rule 2. Every rule names the VIP and stays a single clear instruction with a one-sip consequence; passing remains allowed.
+- `src/content/catalog.ts` — imports `vipCards`/`vipPack`; `setupHint` is validated when present. The catalog was concurrently rewritten to compose the 40-card `sample` pack, so the VIP pack now composes alongside it (`[...sampleCards, ...vipCards]`, `[samplePack, vipPack]`).
+- `src/game/types.ts` — optional `PackDefinition.setupHint`.
+- `src/screens/Setup.tsx`, `src/style.css` — a quiet `.pack-hint` rendered only while a selected pack defines a hint.
+- `public/art/packs/vip.svg` (new) — distinct bronze crown mark; readable at 28px and unlike the Core diamond.
+- `tests/vip-pack.test.ts` (new) — pack registered with a distinct logo and hint; every VIP rule contains “VIP” and is under 45 words; category spread; an empty hint fails validation.
+- `tests/browser/secondary.spec.ts` — selecting VIP night reveals the hint, deselecting hides it.
+
+**Verification on the combined tree at this handoff** (supersedes the earlier 32-card figures in “Fresh verification” above for the current working tree)
+
+- `npm test` — **74 passed** (6 files).
+- `BASE_PATH=/Drink-at-Ron/ npm run build` — passed, validated **52 cards in 2 packs**; budgets **2599 KiB runtime, 81.8 KiB gzip initial, 146.2 KiB gzip lazy**.
+- `CI=1 BASE_PATH=/Drink-at-Ron/ TEST_PORT=4703 npm run test:e2e -- --workers=2` — **75 passed / 3 skipped** (the three explicit WebKit offline skips).
+- `BASE_PATH=/Drink-at-Ron/ npm run test:update` — passed.
+- Evidence `docs/studies/vip-pack-2026-09-20/`: Setup default vs. VIP selected, the logo crop, and a revealed `vip.gift` card. The card footer mark resolves to `art/packs/vip.svg`.
+
+**Risks / open items**
+
+- **Shared tree.** While this pack was built, another process committed task 4 (`5e72078`) and rewrote content to a 40-card `sample` pack, editing `catalog.ts`, `Cards.tsx` and browser tests. AGENTS.md allows one editing agent at a time; re-check the tree before editing these files.
+- `npm run test:workshop` (WebKit): `all Core and dice study cards retain their ratio at each preview size` times out. The test iterates every option in the workshop Card picker, and catalog growth (32 → 52 cards) makes its 180 s budget too small. Left unchanged by user decision — make the test scale (e.g. one test per viewport) rather than weaken the ratio assertion. Chromium passed; the other two WebKit failures were trace-file/timeout artifacts of the same run.
+- VIP cards still use the placeholder tankard artwork; they need the illustration/artwork-registry pass (task 5) and human copy approval (task 8). Not a physical-device or group playtest.
+
+## Direct user decision (2026-09-20): sample content replaces the house and dice packs
+
+- **The supplied `docs/drink_at_ron_sample_cards_40_v3.json` is now the standard set.** The old 30-card house Core and the 2-card provisional `dice` pack were replaced by one combined 40-card pack `core` in `src/content/sample.ts` (28 non-dice + 12 dice cards; 14 cards carry a `dice` definition, including two temporary-rule cards). The separate `dice` pack no longer exists. Content is supplied sample material, not a permanent brief; card wording is kept as provided, including the crude language.
+- **`VIP night` is retained as a third pack.** The uncommitted `src/content/vip.ts` work from a parallel session is preserved and registered next to the sample pack, so the catalog is 52 cards in 2 packs.
+- Rendering still uses the shared 2:3 frame and the placeholder tankard; `core.cheers-idiots` reuses the approved cheers illustration. Dice cards are mixed into the default deck, so any game can now reach a roll.
+- Files: `src/content/sample.ts` (new), `src/content/catalog.ts` (rewritten), `src/components/Cards.tsx` (cheers id), `src/workshop/Workshop.tsx` and `src/workshop/Preview.tsx` (workshop sample ids), `AGENTS.md`, and the coupled tests (`tests/dice.test.ts`, `tests/presentation.test.ts`, `tests/workshop.test.ts`, `tests/browser/{game,pages,dice,secondary,motion,layout}.spec.ts`, `tests/workshop/workshop.spec.ts`).
+- Verification: `npm test` **74 passed**; `BASE_PATH=/Drink-at-Ron/ npm run build` passed (52 cards / 2 packs; 2599 KiB runtime, 81.8 KiB gzip initial, 146.2 KiB gzip lazy); full browser e2e **75 passed / 3 skipped**; `npm run test:workshop` **10 passed**; `npm run test:update` passed. The workshop all-card ratio sweep timeout was raised 180s → 420s because the catalog grew and software-rendered WebKit measured ~2.8 min.
+- A **parallel editing session was active** on this checkout during the change (it committed task 4 as `5e72078` mid-review and briefly held the workshop dev-server port). No files were discarded.
+- Remaining: `README.md`, `AUTHORING.md`, `ART_DIRECTION.md`, `GAME_DESIGN.md`, `DEVICE_CHECKLIST.md` and the studies still describe the old 30-card Core and provisional dice pack (task 7 docs reconciliation); `public/art/packs/dice.svg` is now unused. No commit, push, or deploy.
 
 ## Implementation queue for OpenCode Go
 

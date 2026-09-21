@@ -63,11 +63,15 @@ export function CardFace({
       <div className="study-illustration">
         <Artwork
           src={
-            card.id === "core.cheers" ? cheers : asset(cardArt(card.artwork))
+            card.id === "core.cheers-idiots"
+              ? cheers
+              : asset(cardArt(card.artwork))
           }
           alt=""
           className={
-            card.id === "core.cheers" ? "painted-scene" : "placeholder-scene"
+            card.id === "core.cheers-idiots"
+              ? "painted-scene"
+              : "placeholder-scene"
           }
         />
       </div>

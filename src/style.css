@@ -308,6 +308,17 @@ p {
   line-height: 1.5;
   margin: 16px 0;
 }
+/* A selected pack's one-line setup reminder; quieter than a Notice. */
+.pack-hint {
+  margin: 12px 2px 0;
+  padding: 10px 12px 10px 14px;
+  border-left: 3px solid #bd9457;
+  border-radius: 0 8px 8px 0;
+  background: #1d1710b3;
+  color: #f0dcb4;
+  font-size: 1.15rem;
+  line-height: 1.4;
+}
 .playing {
   max-width: 650px;
   display: flex;

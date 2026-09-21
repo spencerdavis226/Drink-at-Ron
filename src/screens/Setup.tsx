@@ -78,6 +78,13 @@ export function Setup({
             }
           />
         ))}
+        {packs
+          .filter((pack) => selected.includes(pack.id) && pack.setupHint)
+          .map((pack) => (
+            <p className="pack-hint" key={`${pack.id}-hint`}>
+              {pack.setupHint}
+            </p>
+          ))}
       </div>
       <Button
         disabled={!selected.length || (prefs.choice === "custom" && !valid)}

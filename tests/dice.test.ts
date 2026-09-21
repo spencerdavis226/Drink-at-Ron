@@ -11,7 +11,11 @@ import { PresentationController } from "../src/presentation/controller";
 import { cards, packs, validateCatalog } from "../src/content/catalog";
 import type { DiceDefinition } from "../src/game/types";
 const diceCards = cards.filter((c) => c.dice);
-const fixture = diceCards[0];
+// A 2d6 card with a real range table drives the range/deep-snapshot tests.
+const fixture = diceCards.find(
+  (c) => c.dice!.count === 2 && c.dice!.sides === 6 && c.dice!.outcomes,
+)!;
+const d20Card = diceCards.find((c) => c.dice!.sides === 20)!;
 const session = (limit: number | null = 2, card = fixture) =>
   createSession(
     { version: 1, packIds: ["core"], limit },
@@ -64,8 +68,8 @@ describe("dice content", () => {
     };
     validateDice(d);
     expect(resolveInstruction(d, 80)).toBe("Tell a 80-word tale.");
-    expect(resolveInstruction(fixture.dice!, 6)).toMatch(/^Give/);
-    expect(resolveInstruction(fixture.dice!, 7)).toMatch(/^Choose/);
+    expect(resolveInstruction(fixture.dice!, 2)).toBe("Drink 6.");
+    expect(resolveInstruction(fixture.dice!, 3)).toBe("Give 3.");
   });
 });
 describe("dice transactions and saves", () => {
@@ -220,7 +224,7 @@ describe("dice transactions and saves", () => {
   it.each([0, 0.049999, 0.05, 0.499, 0.999999])(
     "maps random sample %s to a legal d20 result",
     (sample) => {
-      const s = rollDice(advance(session(1, diceCards[1])), () => sample);
+      const s = rollDice(advance(session(1, d20Card)), () => sample);
       expect(s.roll?.values).toEqual([1 + Math.floor(sample * 20)]);
     },
   );
