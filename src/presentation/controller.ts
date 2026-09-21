@@ -89,6 +89,8 @@ export class PresentationController {
         ? rollDice(session, this.diceRandom)
         : returnToCard(session);
       this.persist(next);
+      // Returning a rolled card starts a short non-positional settle that also
+      // locks out a double tap from discarding the card immediately.
       this.transition(next, rolling ? "roll" : "settle");
       this.effect(rolling ? "roll" : "press");
       return;
@@ -111,9 +113,7 @@ export class PresentationController {
     if (motion === "discard" && session?.phase === "complete") {
       this.transition(session, "complete");
       this.effect("complete");
-    } else if (motion === "flip" || motion === "discard" || motion === "deal")
-      this.transition(session, "settle");
-    else this.transition(session, null);
+    } else this.transition(session, null);
   }
   settleAll() {
     if (this.state.motion === "roll") this.effect("roll-cancel");

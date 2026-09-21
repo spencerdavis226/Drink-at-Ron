@@ -78,6 +78,14 @@ test("Previous Card owns the same 2:3 geometry as gameplay", async ({
     .locator(".previous-card")
     .evaluate((el) => el.clientWidth / el.clientHeight);
   expect(Math.abs(ratio - 2 / 3)).toBeLessThan(0.01);
+  const fits = await page.locator(".previous-card").evaluate((el) => {
+    const card = el.getBoundingClientRect();
+    const parent = el.parentElement!.getBoundingClientRect();
+    return card.left >= parent.left && card.right <= parent.right;
+  });
+  expect(fits, "Previous Card must not clip its right rail in the dialog").toBe(
+    true,
+  );
   await expect(
     page.locator(".previous-card .card-pack-marks img"),
   ).toBeVisible();
@@ -109,4 +117,59 @@ test("artwork scene comes from the registry, not the card id", async ({
   await expect(page.locator(".study-illustration img")).toHaveClass(
     /placeholder-scene/,
   );
+});
+
+test("illustrations change inside the opening without painting over the frame", async ({
+  page,
+}) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await seed(page, revealed(cards.find((c) => c.id === "core.cheers-idiots")!));
+  await page.addStyleTag({
+    content:
+      ".card-stage{transform:none}.study-illustration img{visibility:hidden}.study-illustration{background:red}",
+  });
+  const face = page.locator(".study-face");
+  const red = await face.screenshot();
+  await page.addStyleTag({ content: ".study-illustration{background:blue}" });
+  const blue = await face.screenshot();
+  const sharp = (await import("sharp")).default;
+  const a = await sharp(red)
+    .ensureAlpha()
+    .raw()
+    .toBuffer({ resolveWithObject: true });
+  const b = await sharp(blue).ensureAlpha().raw().toBuffer();
+  const pixel = (data: Buffer, x: number, y: number) => {
+    const offset =
+      (Math.floor(y * a.info.height) * a.info.width +
+        Math.floor(x * a.info.width)) *
+      4;
+    return [...data.subarray(offset, offset + 4)];
+  };
+  // The aperture changes, but the top ornament, side rails and title stay intact.
+  expect(pixel(a.data, 0.5, 0.2)).not.toEqual(pixel(b, 0.5, 0.2));
+  for (const [x, y] of [
+    [0.5, 0.065],
+    [0.05, 0.25],
+    [0.95, 0.25],
+    [0.5, 0.46],
+  ]) {
+    expect(pixel(a.data, x, y)).toEqual(pixel(b, x, y));
+  }
+});
+
+test("failed scene and placeholder leave the original leather visible", async ({
+  page,
+}) => {
+  await page.route("**/art/cheers.webp", (route) => route.abort());
+  await page.route("**/art/tankard.webp", (route) => route.abort());
+  await seed(page, revealed(cards.find((c) => c.id === "core.cheers-idiots")!));
+  await expect(page.locator(".study-illustration img")).toHaveCSS(
+    "visibility",
+    "hidden",
+  );
+  const background = await page
+    .locator(".study-face")
+    .evaluate((el) => getComputedStyle(el).backgroundImage);
+  expect(background).toContain("continuous-frame");
+  await expect(page.locator(".study-rules")).toBeVisible();
 });

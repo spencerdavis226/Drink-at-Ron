@@ -64,21 +64,16 @@ test("selecting VIP night reveals its one-line setup reminder", async ({
   await vip.click();
   await expect(page.locator(".pack-hint")).toHaveCount(0);
 });
-test("the Roll control reuses the painted surface and keeps a 44px target", async ({
+test("the card is the only dice control and keeps a generous target", async ({
   page,
 }) => {
   await seedDice(page);
-  const cta = page.locator(".roll-cta");
-  await expect(cta).toBeVisible();
-  const metrics = await cta.evaluate((el) => {
-    const style = getComputedStyle(el);
-    return {
-      source: style.borderImageSource,
-      height: el.getBoundingClientRect().height,
-    };
-  });
-  expect(metrics.source).toContain("button.webp");
-  expect(metrics.height).toBeGreaterThanOrEqual(44);
+  await expect(page.locator(".roll-cta")).toHaveCount(0);
+  const card = page.locator(".game-card");
+  await expect(card).toHaveAccessibleName(/^Roll /);
+  const box = await card.boundingBox();
+  expect(box!.width).toBeGreaterThanOrEqual(44);
+  expect(box!.height).toBeGreaterThanOrEqual(44);
 });
 test("dialog copy sits on a quiet panel surface", async ({ page }) => {
   await page.goto("./");

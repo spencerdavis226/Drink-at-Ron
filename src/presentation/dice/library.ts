@@ -1,6 +1,5 @@
 import DiceBox from "@3d-dice/dice-box-threejs";
-import paperBumpUrl from "./assets/paper-bump.webp";
-import paperUrl from "./assets/paper.webp";
+import enamelUrl from "./assets/enamel.svg";
 
 /**
  * Roll feel. Tuned for a craps-table toss: dice cross the screen and carom off
@@ -82,10 +81,10 @@ export async function createDiceStage(selector: string) {
     color_spotlight: 0xfff1d6,
     theme_customColorset: {
       name: "Ron",
-      foreground: "#3a2712",
-      background: "#e6d3a8",
-      outline: "#7a5a2e",
-      edge: "#c9a15c",
+      foreground: "#ffe1a0",
+      background: "#185a55",
+      outline: "#382617",
+      edge: "#bd8846",
       texture: "paper",
       material: "none",
     },
@@ -94,11 +93,12 @@ export async function createDiceStage(selector: string) {
   // instead settles on resize, then disposes this entire stage.
   box.resizeWorld = () => {};
   // The library resolves textures through its bundled assetPath, but our dice
-  // textures are Vite assets: they ship only inside this (tree-shaken) chunk
+  // texture is an original procedural enamel surface, replacing the paper maps.
+  // Vite assets: they ship only inside this (tree-shaken) chunk
   // instead of the production public folder. Redirect those two sources.
   const textureUrls: Record<string, string> = {
-    "textures/paper.webp": paperUrl,
-    "textures/paper-bump.webp": paperBumpUrl,
+    "textures/paper.webp": enamelUrl,
+    "textures/paper-bump.webp": enamelUrl,
   };
   const loadImage = box.DiceColors.loadImage.bind(box.DiceColors);
   box.DiceColors.loadImage = (source: string) => {
@@ -207,7 +207,22 @@ export async function createDiceStage(selector: string) {
     }
   };
   try {
+    await document.fonts.load("400 32px Grenze");
     await box.initialize();
+    for (const shape of ["d6", "d20"])
+      box.DiceFactory.get(shape).font = "Grenze";
+    // Material-only tuning: no changes to simulation, geometry or forced faces.
+    const makeMaterials = box.DiceFactory.createMaterials.bind(box.DiceFactory);
+    box.DiceFactory.createMaterials = (...args: unknown[]) => {
+      const materials = makeMaterials(...args);
+      for (const material of materials) {
+        material.color.set("#ffffff");
+        material.specular?.set("#8eaa9d");
+        material.shininess = 65;
+        material.bumpScale = 0.12;
+      }
+      return materials;
+    };
     box.renderer.setPixelRatio(Math.min(devicePixelRatio, 1.5));
     box.renderer.setSize(box.container.clientWidth, box.container.clientHeight);
     // Tune contacts: grippy floor, lively walls so dice rebound off the
@@ -230,9 +245,8 @@ export async function createDiceStage(selector: string) {
     // Dependency-free contact shadows: project each die onto the floor plane
     // and paint a soft blob beneath it. Grounds the dice without dimming the
     // card or bundling a second Three copy for ShadowMaterial.
-    const context = (shadowCanvas = document.createElement("canvas")).getContext(
-      "2d",
-    );
+    const context = (shadowCanvas =
+      document.createElement("canvas")).getContext("2d");
     shadowCanvas.className = "dice-shadow-layer";
     const pixelRatio = Math.min(devicePixelRatio, 1.5);
     shadowCanvas.width = Math.round(container.clientWidth * pixelRatio);
@@ -287,9 +301,7 @@ export async function createDiceStage(selector: string) {
       // pre-simulates the throw to fix the result, then replays it; altering
       // the bodies between those runs makes the animation diverge and land on
       // a different face.
-      const rolling = box.roll(
-        `${values.length}d${sides}@${values.join(",")}`,
-      );
+      const rolling = box.roll(`${values.length}d${sides}@${values.join(",")}`);
       const result = await rolling;
       snapDiceFlat(box);
       // Verify the actual rendered upward face after the flat-snap, not only the

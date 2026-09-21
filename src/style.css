@@ -400,10 +400,6 @@ p {
   touch-action: manipulation;
   -webkit-user-select: none;
   user-select: none;
-  transition: transform 0.16s cubic-bezier(0.22, 0.61, 0.36, 1);
-}
-.game-card:active:not([aria-disabled="true"]) {
-  transform: translateY(-3px) rotate(0.3deg);
 }
 .card-rotator {
   display: grid;
@@ -518,9 +514,6 @@ p {
     cubic-bezier(0.36, 0, 0.7, 1) forwards;
   pointer-events: none;
 }
-.discard .deck-under {
-  animation: stack-settle var(--motion-discard, 420ms) ease-out;
-}
 @keyframes lift-turn {
   0% {
     transform: translateY(0) rotateZ(0) scale(1);
@@ -557,15 +550,6 @@ p {
   100% {
     transform: translate(-72%, -8%) rotate(-16deg);
     opacity: 0;
-  }
-}
-@keyframes stack-settle {
-  0%,
-  50% {
-    transform: translateY(3px);
-  }
-  100% {
-    transform: translateY(0);
   }
 }
 dialog {
@@ -757,9 +741,6 @@ dialog p {
     animation: none !important;
     transition: none !important;
     scroll-behavior: auto !important;
-  }
-  .game-card:active:not([aria-disabled="true"]) {
-    transform: none;
   }
 }
 

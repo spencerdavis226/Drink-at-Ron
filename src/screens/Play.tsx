@@ -1,5 +1,13 @@
-import { lazy, Suspense, useEffect, useRef, type ReactNode } from "react";
+import {
+  lazy,
+  Suspense,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  type ReactNode,
+} from "react";
 import type { SessionState, CardDefinition } from "../game/types";
+import { diceResultText } from "../presentation/dice/result-text";
 import { diceNotation } from "../game/dice";
 import { currentCard } from "../game/engine";
 import type { Motion } from "../presentation/controller";
@@ -25,6 +33,42 @@ export function Play({
 }) {
   const card = currentCard(session),
     ref = useRef<HTMLButtonElement>(null);
+  // WebKit can paint the reverse of a nested, clipped 3D face despite
+  // backface-visibility. Cull by the actual rendered angle, not a timer, so
+  // interrupted/reduced-motion turns cannot expose mirrored card text.
+  useLayoutEffect(() => {
+    const el = ref.current;
+    const rotator = el?.querySelector<HTMLElement>(".card-rotator");
+    const front = el?.querySelector<HTMLElement>(".card-front");
+    const back = el?.querySelector<HTMLElement>(".card-back");
+    if (!rotator || !front || !back) return;
+    let frame = 0;
+    let live = true;
+    const paint = () => {
+      frame = 0;
+      if (!live) return;
+      const transform = getComputedStyle(rotator).transform;
+      const frontFacing =
+        motion === "flip"
+          ? transform !== "none" && new DOMMatrixReadOnly(transform).m11 < 0
+          : session.phase === "revealed";
+      front.style.visibility = frontFacing ? "visible" : "hidden";
+      back.style.visibility = frontFacing ? "hidden" : "visible";
+      // Don't keep a per-frame loop alive on a hidden tab; resync on return.
+      if (motion === "flip" && !document.hidden)
+        frame = requestAnimationFrame(paint);
+    };
+    const onVisibility = () => {
+      if (!document.hidden) paint();
+    };
+    paint();
+    document.addEventListener("visibilitychange", onVisibility);
+    return () => {
+      live = false;
+      cancelAnimationFrame(frame);
+      document.removeEventListener("visibilitychange", onVisibility);
+    };
+  }, [session.phase, transition, motion]);
   useEffect(() => {
     const el = ref.current;
     if (!el || !motion) return;
@@ -39,6 +83,7 @@ export function Play({
               discard: "discard",
               settle: "card-settle",
               complete: "celebration",
+              // Roll completion is owned by the dice overlay, not a keyframe.
               roll: "dice-roll",
             } as const
           )[motion]
@@ -54,9 +99,7 @@ export function Play({
   }, [transition, motion, onFinish]);
   return (
     <>
-      <section
-        className={`table ${session.phase === "revealed" && card.dice && !session.roll?.returned ? "dice-active" : ""}`}
-      >
+      <section className="table">
         <div
           className="progress"
           aria-label={`Card ${session.discarded + 1} of ${session.config.limit ?? "endless"}`}
@@ -75,7 +118,7 @@ export function Play({
                 session.roll.values.length > 1
                   ? `, total ${session.roll.total}`
                   : ""
-              }. ${session.roll.instruction}`
+              }. ${diceResultText(card, session.roll)}`
             : ""}
         </span>
         <div className={`card-stage ${motion ?? ""}`}>
@@ -94,7 +137,7 @@ export function Play({
                       ? "Rolling dice"
                       : `Rolled ${session.roll.total}. Return to card`
                     : `Roll ${diceNotation(card.dice)}. ${card.rules}`
-                  : `${card.title}. ${session.roll?.returned ? `Rolled ${session.roll.total}. ${session.roll.instruction}` : card.rules} ${cardPacks(
+                  : `${card.title}. ${session.roll?.returned ? `Rolled ${session.roll.total}. ${diceResultText(card, session.roll)}` : card.rules} ${cardPacks(
                       card.id,
                       session.config.packIds,
                     )
@@ -121,7 +164,6 @@ export function Play({
                     rolling={motion === "roll"}
                   />
                 )}
-                <div className="reveal-glint" aria-hidden="true" />
               </span>
             </span>
           </button>

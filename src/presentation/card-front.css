@@ -16,28 +16,37 @@
   width: 100%;
   height: 100%;
   min-height: 0;
-  background: #213b39;
   border-radius: 15px;
   color: #372412;
   position: relative;
   isolation: isolate;
-  padding: 16px 0 22px;
+  padding: 0;
+  overflow: hidden;
+  background: #213b39 url("./art/continuous-frame.webp") center / 100% 100%
+    no-repeat;
+}
+
+/* Same master above and below the artwork. Only the illustration aperture is
+   transparent in the upper surface; no independently scaled frame pieces. */
+.study-face::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: url("./art/continuous-frame.webp") center / 100% 100% no-repeat;
+  -webkit-mask: url("./art/frame-window.svg") center / 100% 100% no-repeat;
+  mask: url("./art/frame-window.svg") center / 100% 100% no-repeat;
 }
 
 .study-illustration {
-  width: 84%;
-  aspect-ratio: 1.7;
-  position: relative;
-  border: 0;
+  position: absolute;
+  inset: 5% 8% auto;
+  height: 39%;
   display: grid;
   place-items: center;
-  isolation: isolate;
-  flex-shrink: 0;
-  margin: 0 auto;
-  border-image: none;
-  background: #203b38;
-  border-radius: 18% 18% 0 0;
   overflow: hidden;
+  isolation: isolate;
 }
 
 .study-illustration img {
@@ -52,53 +61,47 @@
   z-index: 0;
 }
 
-.study-illustration img.placeholder-scene {
+.study-illustration img.placeholder-scene,
+.study-illustration img[data-fallback="true"] {
+  object-fit: contain !important;
   padding: 20px;
 }
 
 .study-title {
-  position: relative;
-  z-index: 4;
-  margin: -3px 0 -4px;
-  padding: 10px 26px;
-  border: 0;
-  filter: none;
-  min-height: 52px;
-  border-image: none;
-  background: url("./art/continuous-band.webp") center/100% 100% no-repeat;
+  z-index: 2;
+  position: absolute;
+  inset: 42.5% 11% auto;
+  height: 9%;
   display: grid;
   place-items: center;
+  padding: 0 2px;
 }
-
 .study-title h2 {
-  font: 700 clamp(1.9rem, 9cqw, 2.6rem)/1.05 var(--font-tavern);
+  font: 700 clamp(1.25rem, 6.8cqw, 2rem)/1.02 var(--font-tavern);
   color: #ffe8ab;
   text-shadow: 0 2px 2px #000;
-  letter-spacing: -0.4px;
   text-wrap: balance;
+  text-align: center;
+  /* Grenze's visible lettering sits low within its line box. Center the ink
+     optically on the painted band; em units keep the correction proportional. */
+  transform: translateY(-0.08em);
   margin: 0;
-  font-size: clamp(1.9rem, 8cqw, 2.6rem);
 }
-
 .study-body {
-  flex: 1;
-  min-height: 0;
-  width: 84%;
-  margin: 0 auto;
+  z-index: 2;
+  position: absolute;
+  inset: 52.5% 11% 11%;
   display: flex;
   flex-direction: column;
-  border-image: none;
-  background: #f1d9a6 url("./art/continuous-paper.webp") center/cover;
-  border-radius: 0 0 14px 14px;
-  box-shadow:
-    inset 0 0 0 1px #00000022,
-    inset 0 3px 9px #00000030,
-    inset 0 -4px 11px #00000030;
+  min-height: 0;
+  overflow: hidden;
+  /* Parchment is part of the continuous painted surface, not a second panel. */
+  background: none;
 }
 .study-rules {
   flex: 1;
   border: 0;
-  padding: 14px 18px 8px;
+  padding: 10px 8px 6px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -142,7 +145,7 @@
   flex-shrink: 0;
   display: flex;
   justify-content: center;
-  padding: 2px 0 12px;
+  padding: 4px 0 2px;
 }
 
 .study-rules p {
@@ -153,37 +156,16 @@
   margin-block: auto;
 }
 
-.rolled-total {
-  display: block;
-  font: 700 1.5rem/1.1 var(--font-tavern);
-  color: #16584c;
-  letter-spacing: 0.01em;
-}
-.roll-number {
-  display: inline-block;
-  font-size: 1.9em;
-  line-height: 0.8;
-  margin-left: 0.08em;
-  vertical-align: -0.16em;
-  color: #8a4a12;
-  text-shadow:
-    0 1px 0 #fff8,
-    0 0 16px #d9a94a88;
-}
-.resolved-instruction {
+.study-rules p.resolved-instruction {
   font-weight: 700;
   color: #2b1c0d;
 }
 .study-rules.rules-resolved {
   padding-top: 16px;
   gap: 8px;
-  box-shadow:
-    inset 0 0 0 2px #c79a4e99,
-    inset 0 0 34px #d8a94a44;
 }
 @media (prefers-reduced-motion: no-preference) {
-  .rules-resolved .rolled-total,
-  .rules-resolved .resolved-instruction {
+  .rules-resolved .study-rules p.resolved-instruction {
     animation: outcome-in 340ms ease-out;
   }
 }
@@ -199,81 +181,17 @@
   font-size: 2.0625rem;
 }
 
-.enlarged .study-title h2,
-.enlarged .card-copy h2 {
-  font-size: 3rem;
+/* Titles can scroll at accessibility sizes instead of escaping the plaque. */
+.enlarged .study-title {
+  overflow: auto;
+}
+.enlarged .study-title h2 {
+  font-size: 1.75rem;
 }
 
 .card-pack-marks {
   margin: 0;
   padding: 0;
-}
-
-.study-face.dice-ready::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  pointer-events: none;
-  z-index: 4;
-  box-shadow:
-    inset 0 0 0 2px #ffd98ce6,
-    inset 0 0 38px #e7ad4a77;
-  opacity: 0.6;
-}
-@media (prefers-reduced-motion: no-preference) {
-  .study-face.dice-ready::before {
-    /* Opacity-only so the readiness accent stays on the compositor and honors
-       Atmosphere/Reduced Motion/hidden suspension like every other accent. */
-    animation: dice-ready-glow 2.2s ease-in-out infinite;
-  }
-}
-@keyframes dice-ready-glow {
-  0%,
-  100% {
-    opacity: 0.5;
-  }
-  50% {
-    opacity: 1;
-  }
-}
-.study-face::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 3;
-  background-image:
-    url("./art/continuous-top.webp"), url("./art/continuous-bottom.webp"),
-    url("./art/continuous-left.webp"), url("./art/continuous-right.webp");
-  background-position:
-    top center,
-    bottom center,
-    left center,
-    right center;
-  background-size:
-    100% auto,
-    100% auto,
-    9.77% 100%,
-    9.77% 100%;
-  background-repeat: no-repeat;
-  clip-path: polygon(
-    evenodd,
-    0 0,
-    100% 0,
-    100% 100%,
-    0 100%,
-    0 0,
-    10% 10cqw,
-    90% 10cqw,
-    90% calc(100% - 12cqw),
-    10% calc(100% - 12cqw),
-    10% 10cqw
-  );
-}
-
-.enlarged .study-title h2 {
-  font-size: 3rem;
 }
 
 .card-stage,
@@ -290,28 +208,12 @@
   border: 0;
   background: none;
   text-align: center;
-  height: min(58svh, 460px);
+  width: min(100%, calc(58svh * 2 / 3), 306.667px);
+  height: auto;
   aspect-ratio: 2 / 3;
-  width: auto;
   margin: 0 auto;
 }
 
 .previous-card .study-face {
   width: 100%;
-}
-/* Short portrait: yield illustration/title/padding before rule text. */
-@media (max-height: 700px) {
-  .study-face {
-    padding: 12px 0 18px;
-  }
-  .study-title {
-    min-height: 46px;
-    padding: 8px 20px;
-  }
-  .study-illustration {
-    aspect-ratio: 1.7;
-  }
-  .study-rules {
-    padding-top: 12px;
-  }
 }

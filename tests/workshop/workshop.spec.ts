@@ -203,8 +203,8 @@ test("the production overlay is contained and seeded replay repeats outcomes", a
     await page.getByRole("button", { name: "Replay reveal" }).click();
     await navigated;
     await frame.getByRole("button", { name: "Reveal card" }).click();
-    await expect(frame.locator(".roll-cta")).toHaveText(/^Roll /);
-    await frame.locator(".roll-cta").click();
+    await expect(frame.locator(".game-card")).toHaveAccessibleName(/^Roll /);
+    await frame.locator(".game-card").click();
     await expect(frame.locator(".resolved-instruction")).toBeVisible();
     return frame.locator(".resolved-instruction").innerText();
   };

@@ -283,28 +283,6 @@ dialog.closing {
 .complete.celebrate {
   animation: celebration var(--motion-complete, 600ms) ease-out;
 }
-.reveal-glint {
-  display: none;
-  pointer-events: none;
-  position: absolute;
-  inset: 0;
-  /* Lives on the front surface so the highlight turns and clips with the card. */
-  border-radius: inherit;
-  background: linear-gradient(
-    105deg,
-    transparent 42%,
-    #fff0c466 50%,
-    transparent 58%
-  );
-  opacity: 0;
-  transform: translateX(-55%) skewX(-6deg);
-  will-change: transform, opacity;
-  z-index: 5;
-}
-.flip .reveal-glint {
-  display: block;
-  animation: glint var(--motion-flip, 560ms) ease-out both;
-}
 .atmosphere {
   position: fixed;
   inset: 0;
@@ -469,10 +447,13 @@ dialog.closing {
   }
 }
 @keyframes card-settle {
-  from {
+  0% {
+    transform: none;
+  }
+  45% {
     transform: translateY(-2px);
   }
-  to {
+  100% {
     transform: none;
   }
 }
@@ -487,19 +468,6 @@ dialog.closing {
   }
   100% {
     transform: none;
-  }
-}
-@keyframes glint {
-  0% {
-    opacity: 0;
-    transform: translateX(-55%) skewX(-6deg);
-  }
-  45% {
-    opacity: 0.72;
-  }
-  100% {
-    opacity: 0;
-    transform: translateX(55%) skewX(-6deg);
   }
 }
 @keyframes fire-breathe {
@@ -615,8 +583,7 @@ dialog.closing {
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .atmosphere,
-  .reveal-glint {
+  .atmosphere {
     display: none !important;
   }
   *,

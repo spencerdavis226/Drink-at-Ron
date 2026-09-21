@@ -165,7 +165,13 @@ test("reduced motion and keyboard play", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("./");
   await page.getByRole("button", { name: "Play", exact: true }).click();
-  await page.getByRole("button", { name: "Reveal card" }).focus();
+  // Let the reduced-motion deal settle before activating the card; otherwise
+  // Enter can arrive while the controller still holds the deal motion and is
+  // (correctly) ignored, leaving the card hidden.
+  await ready(page);
+  const reveal = page.getByRole("button", { name: "Reveal card" });
+  await reveal.focus();
+  await expect(reveal).toBeFocused();
   await page.keyboard.press("Enter");
   await ready(page);
   await expect(page.locator(".study-title h2")).toBeVisible();

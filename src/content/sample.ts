@@ -384,7 +384,7 @@ export const sampleCards: CardDefinition[] = [
       version: 1,
       count: 1,
       sides: 6,
-      instruction: "That number is banned. Say it: drink 2.",
+      instruction: "{total} is banned. Say it: drink 2.",
     },
   ),
   card(

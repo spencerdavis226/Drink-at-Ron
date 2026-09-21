@@ -136,7 +136,7 @@ The approved card back, parchment, tankard, and tabletop remain the permanent re
 
 - Shared asset, color, and motion definitions: `src/presentation/theme.ts`; shared CSS: `src/presentation/theme.css`.
 - Grenze throughout: variable upright and italic WOFF2 files from the official Omnibus-Type repository, bundled locally with `public/fonts/OFL.txt`. Titles use 700–800, controls 500–700, and rules 400. Rule text is 20–24 px at normal scale and grows with text enlargement.
-- Nine-slice borders preserve the painted frame corners on buttons, choice tiles, pack tiles, dialogs, recovery panels, and card fronts. Do not stretch a whole panel image around long content.
+- Nine-slice borders preserve the painted frame corners on buttons, choice tiles, pack tiles, dialogs, and recovery panels. Fixed-ratio card fronts use the intact approved master. Do not stretch a whole panel image around long content.
 - Primary controls use worn gold. Secondary surfaces use quiet teal leather. Functional icon symbols sit inside the generated bezel and retain accessible names.
 - (Historical) Motion durations from an earlier pass were deal 620 ms, flip 680 ms, discard 460 ms, settle 140 ms, completion 650 ms. Current tokens are listed in the normative standards above and in `src/presentation/theme.ts`.
 - (Historical) An earlier pass had Effects/Ambience preferences and an Atmosphere toggle. Sound was removed entirely and the atmosphere is now always on; see the normative standards above.
@@ -186,7 +186,9 @@ Create an ORIGINAL whimsical storybook fantasy card illustration, landscape 3:2 
 
 The user reaffirmed the cohesive Hearthstone-inspired material/rendering language, with more goofy tavern and dungeon-crawl humor where appropriate (Heroes of Barcadia / Munchkin as tone references). Original character identity is required, not a departure into quiet woodland storybook art. The mouse is superseded by an original enchanted copper armor toast study. The old assets remain checkpoint history, not the current direction.
 
-The new master has one outer perimeter. The illustrated region and parchment are inset; a teal band attaches to the side rails with bronze brackets. `scripts/front-continuous.ts` exports top/bottom/side rails, band, and parchment from `assets/source/front-continuous-v3.png`. CSS masks interior portions of the perimeter exports so they do not cover art or the pack mark. No whole-card texture stretching; text remains DOM. The user approved this unified frame on 2026-09-14. The shared CardFace now supplies gameplay, Previous Card, and workshop previews.
+The master has one outer perimeter. The illustrated region and parchment are inset; a teal band attaches to the side rails with bronze brackets. `scripts/front-continuous.ts` now exports a single optimized 768×1152 surface from `assets/source/front-continuous-v3.png`. Because the outer card is always 2:3, uniform scaling preserves every original painted joint and corner. Do not independently stretch rails, title strips, or paper over this surface. The live illustration is clipped inside the upper opening; title and rules are accessible DOM text placed within the original plaque and parchment. The shared CardFace supplies gameplay, Previous Card, and workshop previews.
+
+Inspection gates: compare 320px, 390px and iPad screenshots; no square art/paper corners may cover bronze hardware. Previous Card must fit both its dialog width and viewport height. Inspect actual painted flip frames in Chromium and WebKit: hidden fronts must never show mirrored text. Browser backface CSS alone is insufficient evidence; Play culls the reverse side using the rendered rotation angle only while turning. Preserve readable 22px rules and a contained scroll fallback for long content.
 
 Built-in image generation was used for both new assets and the illustration correction. Final source illustration: `assets/source/cheers-armor-v3.png`; continuous frame surfaces are optimized into `src/presentation/art` (continuous-* names) and the card illustration into `public/art/cheers.webp`, resolved through the artwork registry. Reproduce with `npx tsx scripts/front-continuous.ts`.
 
@@ -207,3 +209,19 @@ Revise this original enchanted armor illustration. Keep the same character, expr
 The unified front is approved and promoted to the shared `CardFace`: gameplay, Previous Card, and the workshop now render the same components and CSS. Frame surfaces live in `src/presentation/art` and the individual illustration in `public/art/cheers.webp`, resolved through the artwork registry; `src/presentation/card-front.css` loads after the legacy theme so old parchment borders cannot show through. The illustration stays centered, rules stay real text, and the Core diamond retains its footer position. Source artwork remains archived under `assets/source`.
 
 Front surfaces are preloaded/decoded and included in the production offline cache. (Historical figures from this rollout: 1,931 KiB runtime, 80.8 KiB gzip JavaScript, 36 unit tests, 30 workshop cards.) The dice milestone has since shipped as the full-screen library overlay, mixed into the `core` pack. Physical iPhone/iPad Home Screen and performance checks remain outstanding.
+
+
+## Layered illustration aperture — 2026-09-21
+
+Render the same approved 2:3 master beneath and above the illustration. The lower surface supplies the original textured teal leather. The upper surface uses `src/presentation/art/frame-window.svg` as an alpha mask: only the illustration opening is transparent. Image pixels extend underneath the perimeter and title band, so their rectangular bounds never form a visible seam. Keep the mask in the master's 1024×1536 coordinates; update it only against the approved source. This is a rendering mask, not replacement vector decoration or regenerated artwork.
+
+Keep the artwork container transparent. Finished scenes use their registry fit, while transparent tankard placeholders and failed-scene fallback images use `contain`. If both assets fail, the leather remains. Never introduce an opaque flat green panel over that texture. Keep focal subjects centered within the aperture and reserve space below the central top ornament.
+
+Dice interaction follows the same card gesture: reveal → tap card to roll → tap card to return to its saved result → tap to discard. There is no separate Roll/Continue button. Accessible action labels, input locks, rules-scroll gesture handling, and Escape interruption remain. The full-screen dice layer is pointer-transparent.
+
+
+## Dice surfaces and outcome copy — 2026-09-21
+
+Dice use deep teal enamel, warm gold numerals in the bundled Grenze font, bronze bevels and subtle broad surface variation. Keep grain fine and low contrast; strong sand/paper noise looks cheap at this scale. Use restrained specular highlights and shallow bump so face values stay readable during and after motion. Texture and material work must never change forced-result simulation/replay settings.
+
+After rolling, show one resolved instruction on the parchment, with the result embedded in its sentence. Do not add a separate “Rolled N” heading. New templates should use `{total}` when that number is part of the rule; avoid ambiguous references such as “that number.” Existing saves remain authoritative and are formatted for reading without mutating their outcomes.
