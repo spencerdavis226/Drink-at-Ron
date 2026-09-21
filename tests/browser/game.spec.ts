@@ -76,7 +76,6 @@ test("full custom game, rapid taps, restore, previous card, replay and settings"
   await ready(page);
   await expect(page.locator(".game-card")).toHaveClass(/face/);
   await page.locator(".game-card").click();
-  await ready(page);
   await expect(page.getByRole("button", { name: "Play again" })).toBeVisible();
   await page.reload();
   await expect(page.getByRole("button", { name: "Play again" })).toBeVisible();
