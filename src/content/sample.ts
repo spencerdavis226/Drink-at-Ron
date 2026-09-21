@@ -9,8 +9,9 @@ import type {
 // provisional dice pack with one combined 40-card collection. It is a supplied
 // sample, not a permanent content brief: expect card text, categories and art
 // to be revised. Cards with a `dice` definition pause the deck until the roll
-// is resolved. Art stays on the placeholder tankard until finished scenes land
-// through the artwork registry.
+// is resolved. Most cards stay on the placeholder tankard until finished
+// scenes land through the artwork registry; Cheers, Idiots uses its individual
+// illustrated scene.
 const card = (
   id: string,
   title: string,
@@ -18,6 +19,7 @@ const card = (
   rules: string,
   illustrationBrief: string,
   dice?: DiceDefinition,
+  artwork = "art/tankard.webp",
 ): CardDefinition => ({
   version: 1,
   id: `core.${id}`,
@@ -25,7 +27,7 @@ const card = (
   category,
   rules,
   illustrationBrief,
-  artwork: "art/tankard.webp",
+  artwork,
   ...(dice ? { dice } : {}),
 });
 
@@ -141,6 +143,8 @@ export const sampleCards: CardDefinition[] = [
     "group",
     "Cheers. Everyone drinks 2.",
     "Mismatched cups raised together in a raucous centered toast, warm tavern light.",
+    undefined,
+    "art/cheers.webp",
   ),
   card(
     "dice-tax",
@@ -148,7 +152,12 @@ export const sampleCards: CardDefinition[] = [
     "challenge",
     "Roll d6. Drink half, round up.",
     "One oversized ivory die balanced on a coin tax tin, centered with generous crop margins.",
-    { version: 1, count: 1, sides: 6, instruction: "Drink half your roll, rounded up." },
+    {
+      version: 1,
+      count: 1,
+      sides: 6,
+      instruction: "Drink half your roll, rounded up.",
+    },
   ),
   card(
     "give-a-shit",

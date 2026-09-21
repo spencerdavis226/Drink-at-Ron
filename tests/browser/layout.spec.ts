@@ -4,8 +4,12 @@ import { cards, packs } from "../../src/content/catalog";
 const key = "drink-at-ron.session.v1";
 const core = packs.find((p) => p.id === "core")!;
 const plain = cards.filter((c) => !c.dice && core.cardIds.includes(c.id));
-const longestRule = [...plain].sort((a, b) => b.rules.length - a.rules.length)[0];
-const longestTitle = [...plain].sort((a, b) => b.title.length - a.title.length)[0];
+const longestRule = [...plain].sort(
+  (a, b) => b.rules.length - a.rules.length,
+)[0];
+const longestTitle = [...plain].sort(
+  (a, b) => b.title.length - a.title.length,
+)[0];
 const ruleCard = plain.find((c) => c.category === "rule")!;
 const samples = [longestRule, longestTitle, ruleCard];
 function revealed(card: (typeof cards)[number], list = [card]) {
@@ -39,7 +43,9 @@ test("Core instructions fit at 390x844 with ratio, pack mark and no CTA occlusio
     );
     const m = await page.evaluate(() => {
       const rules = document.querySelector(".study-rules")!;
-      const card = document.querySelector(".game-card")!.getBoundingClientRect();
+      const card = document
+        .querySelector(".game-card")!
+        .getBoundingClientRect();
       return {
         // 2px tolerance matches the overflow-affordance threshold (subpixel).
         fit: rules.scrollHeight <= rules.clientHeight + 2,
@@ -52,7 +58,9 @@ test("Core instructions fit at 390x844 with ratio, pack mark and no CTA occlusio
     expect(m.mark, `${card.id} keeps its pack mark`).toBe(true);
   }
 });
-test("Previous Card owns the same 2:3 geometry as gameplay", async ({ page }) => {
+test("Previous Card owns the same 2:3 geometry as gameplay", async ({
+  page,
+}) => {
   await page.setViewportSize({ width: 390, height: 844 });
   const [a, b] = plain;
   let session = createSession(
@@ -63,7 +71,9 @@ test("Previous Card owns the same 2:3 geometry as gameplay", async ({ page }) =>
   session = advance(advance(advance(session))); // reveal, discard, reveal
   await seed(page, session);
   await page.getByRole("button", { name: "Open game menu" }).click();
-  await page.getByRole("button", { name: "Previous card", exact: true }).click();
+  await page
+    .getByRole("button", { name: "Previous card", exact: true })
+    .click();
   const ratio = await page
     .locator(".previous-card")
     .evaluate((el) => el.clientWidth / el.clientHeight);
@@ -82,5 +92,21 @@ test("a short phone scrolls long rules with a visible overflow affordance", asyn
   await expect(page.locator(".study-rules")).toHaveAttribute(
     "data-overflow",
     "bottom",
+  );
+});
+test("artwork scene comes from the registry, not the card id", async ({
+  page,
+}) => {
+  const cheers = cards.find((c) => c.id === "core.cheers-idiots")!;
+  const placeholder = plain.find((c) => c.artwork === "art/tankard.webp")!;
+  await seed(page, revealed(cheers));
+  const image = page.locator(".study-illustration img");
+  await expect(image).toHaveClass(/painted-scene/);
+  await expect
+    .poll(() => image.evaluate((el) => (el as HTMLImageElement).naturalWidth))
+    .toBeGreaterThan(0);
+  await seed(page, revealed(placeholder));
+  await expect(page.locator(".study-illustration img")).toHaveClass(
+    /placeholder-scene/,
   );
 });

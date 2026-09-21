@@ -26,15 +26,3 @@ export const theme = {
 } as const;
 export const asset = (path: string) =>
   path.startsWith("/") ? path : `${import.meta.env.BASE_URL}${path}`;
-export const cardArt = (path: string) =>
-  path === "art/tankard.svg" ? theme.assets.tankard : path;
-const decoded = new Map<string, Promise<void>>();
-export function preloadArt(path: string): Promise<void> {
-  const url = asset(cardArt(path));
-  if (decoded.has(url)) return decoded.get(url)!;
-  const img = new Image();
-  img.src = url;
-  const promise = img.decode().catch(() => undefined);
-  decoded.set(url, promise);
-  return promise;
-}

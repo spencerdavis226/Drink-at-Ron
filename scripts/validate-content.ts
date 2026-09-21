@@ -1,10 +1,20 @@
 import { existsSync } from "node:fs";
 import { cards, packs, validateCatalog } from "../src/content/catalog";
+import { artworkRegistry, normalizeArtwork } from "../src/presentation/artwork";
 import { theme } from "../src/presentation/theme";
 validateCatalog(cards, packs);
-for (const c of cards)
-  if (!existsSync(`public/${c.artwork}`))
-    throw Error(`Missing artwork: ${c.artwork}`);
+// Card scenes resolve through the artwork registry: an unregistered reference
+// or a missing file fails the build, while old saved strings still render at
+// runtime through the same resolver.
+for (const c of cards) {
+  const spec = artworkRegistry[normalizeArtwork(c.artwork)];
+  if (!spec) throw Error(`Unregistered artwork for ${c.id}: ${c.artwork}`);
+  if (spec.publicPath && !existsSync(`public/${spec.publicPath}`))
+    throw Error(`Missing artwork: ${spec.publicPath}`);
+}
+for (const [reference, spec] of Object.entries(artworkRegistry))
+  if (spec.publicPath && !existsSync(`public/${spec.publicPath}`))
+    throw Error(`Missing registered artwork: ${reference}`);
 console.log(`Validated ${cards.length} cards in ${packs.length} pack(s).`);
 
 for (const p of packs)

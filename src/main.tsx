@@ -12,7 +12,9 @@ import {
 } from "./app/persistence";
 import { PresentationController } from "./presentation/controller";
 import { usePresentation } from "./presentation/usePresentation";
-import { theme, preloadArt } from "./presentation/theme";
+import { theme } from "./presentation/theme";
+import { preloadArt, preloadUrl } from "./presentation/artwork";
+import { coreFrameSurfaces } from "./presentation/frame-surfaces";
 import { Button, IconButton, Notice } from "./components/UI";
 import { Atmosphere } from "./components/Atmosphere";
 import { Setup } from "./screens/Setup";
@@ -22,11 +24,6 @@ import { GameDialogs, type DialogName } from "./screens/GameDialogs";
 import "./style.css";
 import "./presentation/theme.css";
 import "./presentation/card-front.css";
-const frontSurfaces = import.meta.glob<string>("./presentation/art/*.webp", {
-  eager: true,
-  query: "?url",
-  import: "default",
-});
 function App() {
   const [loaded] = useState(loadSession),
     [corrupt, setCorrupt] = useState(loaded.corrupt),
@@ -56,9 +53,10 @@ function App() {
     if (!save(SETTINGS_KEY, prefs)) setNotice(true);
   }, [prefs]);
   useEffect(() => {
-    Object.values({ ...theme.assets, ...frontSurfaces }).forEach(
-      (path) => void preloadArt(path),
-    );
+    // Frame surfaces first, then shared theme assets; card illustrations load
+    // on demand through the artwork registry.
+    for (const src of coreFrameSurfaces) void preloadUrl(src);
+    for (const path of Object.values(theme.assets)) void preloadArt(path);
     const onVisibility = () => setHidden(document.hidden);
     document.addEventListener("visibilitychange", onVisibility);
     return () => {

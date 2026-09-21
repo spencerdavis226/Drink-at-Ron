@@ -186,7 +186,7 @@ The user reaffirmed the cohesive Hearthstone-inspired material/rendering languag
 
 The new master has one outer perimeter. The illustrated region and parchment are inset; a teal band attaches to the side rails with bronze brackets. `scripts/front-continuous.ts` exports top/bottom/side rails, band, and parchment from `assets/source/front-continuous-v3.png`. CSS masks interior portions of the perimeter exports so they do not cover art or the pack mark. No whole-card texture stretching; text remains DOM. The user approved this unified frame on 2026-09-14. The shared CardFace now supplies gameplay, Previous Card, and workshop previews.
 
-Built-in image generation was used for both new assets and the illustration correction. Final source illustration: `assets/source/cheers-armor-v3.png`; approved optimized files are in `src/presentation/art` with continuous-* and cheers-armor-v3 names. Reproduce with `npx tsx scripts/front-continuous.ts`.
+Built-in image generation was used for both new assets and the illustration correction. Final source illustration: `assets/source/cheers-armor-v3.png`; continuous frame surfaces are optimized into `src/presentation/art` (continuous-* names) and the card illustration into `public/art/cheers.webp`, resolved through the artwork registry. Reproduce with `npx tsx scripts/front-continuous.ts`.
 
 ### Exact frame prompt
 

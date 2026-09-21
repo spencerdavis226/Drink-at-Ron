@@ -1,7 +1,6 @@
-import cheers from "../presentation/art/cheers-armor-v3.webp";
 import { useEffect, useRef, useState } from "react";
 import type { CardDefinition, DiceRoll } from "../game/types";
-import { asset, cardArt } from "../presentation/theme";
+import { resolveArtwork } from "../presentation/artwork";
 import { CardPackMarks } from "./PackMarks";
 import { Artwork } from "./UI";
 type Overflow = "none" | "top" | "bottom" | "both";
@@ -35,13 +34,7 @@ export function CardFace({
     const atTop = el.scrollTop <= 2;
     const atBottom = el.scrollTop + el.clientHeight >= el.scrollHeight - 2;
     setOverflow(
-      atTop && atBottom
-        ? "none"
-        : atTop
-          ? "bottom"
-          : atBottom
-            ? "top"
-            : "both",
+      atTop && atBottom ? "none" : atTop ? "bottom" : atBottom ? "top" : "both",
     );
   };
   // Show the resolved outcome once the dice settle (the overlay owns the roll).
@@ -58,21 +51,18 @@ export function CardFace({
     document.fonts?.ready.then(updateOverflow).catch(() => undefined);
     return () => observer.disconnect();
   }, [resolved, card.id]);
+  const art = resolveArtwork(card.artwork);
   return (
     <div className={`study-face ${card.dice && !roll ? "dice-ready" : ""}`}>
       <div className="study-illustration">
         <Artwork
-          src={
-            card.id === "core.cheers-idiots"
-              ? cheers
-              : asset(cardArt(card.artwork))
-          }
+          src={art.url}
+          fallback={art.fallbackUrl}
           alt=""
           className={
-            card.id === "core.cheers-idiots"
-              ? "painted-scene"
-              : "placeholder-scene"
+            art.scene === "painted" ? "painted-scene" : "placeholder-scene"
           }
+          style={{ objectFit: art.fit }}
         />
       </div>
       <div className="study-title">

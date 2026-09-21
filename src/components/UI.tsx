@@ -50,8 +50,9 @@ export function Notice({ children }: { children: ReactNode }) {
 }
 export function Artwork({
   src,
+  fallback = asset(theme.assets.tankard),
   ...props
-}: ImgHTMLAttributes<HTMLImageElement>) {
+}: ImgHTMLAttributes<HTMLImageElement> & { fallback?: string }) {
   return (
     <img
       {...props}
@@ -62,7 +63,7 @@ export function Artwork({
           return;
         }
         e.currentTarget.dataset.fallback = "true";
-        e.currentTarget.src = asset(theme.assets.tankard);
+        e.currentTarget.src = fallback;
       }}
     />
   );

@@ -18,4 +18,4 @@ for (const [name, left, top, width, height] of pieces)
 await sharp("assets/source/cheers-armor-v3.png")
   .resize(768)
   .webp({ quality: 84 })
-  .toFile("src/presentation/art/cheers-armor-v3.webp");
+  .toFile("public/art/cheers.webp");

@@ -2,8 +2,8 @@
 
 1. Add card definitions and a pack definition in a module under `src/content`.
 2. Import and append them to the exported `cards` and `packs` arrays in `catalog.ts`.
-3. Put referenced artwork under `public/art`. References use `art/name.svg`, `.png`, `.webp`, or `.avif`, without a leading slash.
-4. Run `npm test` and `npm run build`. The build checks fields, IDs, membership, and local artwork existence.
+3. Put referenced artwork under `public/art`. A card's `artwork` must be a key in the registry in `src/presentation/artwork.ts`; the shared placeholder is `art/tankard.webp`. To ship a finished illustration, add the file and a registry entry (public path plus `scene: 'painted'`) instead of branching on a card ID in `CardFace`.
+4. Run `npm test` and `npm run build`. The build checks fields, IDs, membership, and resolves every card's artwork through that same registry, failing on an unregistered reference or a missing file.
 5. Inspect each card at small iPhone size and enlarged text. The group should understand a rule on one reading.
 
 Example (not enabled in the catalog):
@@ -16,7 +16,7 @@ export const exampleCards: CardDefinition[] = [{
   title: 'Fireside story',
   rules: 'Going clockwise, each person adds one sentence to a story. End after one round.',
   category: 'challenge',
-  artwork: 'art/tankard.svg',
+  artwork: 'art/tankard.webp',
   illustrationBrief: 'A friendly dragon telling a story beside a tiny fireplace.',
 }];
 export const examplePack: PackDefinition = {
