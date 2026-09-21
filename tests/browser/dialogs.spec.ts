@@ -33,15 +33,22 @@ test("dialog enter and exit share the motion tokens", async ({ page }) => {
   await page.getByRole("button", { name: "Install app" }).click();
   const dialog = page.locator("dialog[open]");
   await expect(dialog).toBeVisible();
-  expect(
-    await dialog.evaluate((el) => getComputedStyle(el).animationDuration),
-  ).toBe("0.22s");
+  // Read the exit contract by toggling the class instead of racing the ~180ms
+  // unmount window between two browser round-trips.
+  const animations = await dialog.evaluate((el) => {
+    const entry = getComputedStyle(el).animationDuration;
+    el.classList.add("closing");
+    const closing = getComputedStyle(el);
+    const exit = {
+      name: closing.animationName,
+      duration: closing.animationDuration,
+    };
+    el.classList.remove("closing");
+    return { entry, exit };
+  });
+  expect(animations.entry).toBe("0.22s");
+  expect(animations.exit).toEqual({ name: "panel-exit", duration: "0.18s" });
   await page.keyboard.press("Escape");
-  const closing = page.locator("dialog.closing");
-  await expect(closing).toBeAttached();
-  expect(
-    await closing.evaluate((el) => getComputedStyle(el).animationDuration),
-  ).toBe("0.18s");
   await expect(page.getByRole("dialog")).toHaveCount(0);
 });
 
@@ -51,12 +58,22 @@ test("an exiting dialog is inert and cannot trigger its controls", async ({
   await seed(page, game());
   await page.getByRole("button", { name: "Open game menu" }).click();
   await expect(page.getByRole("dialog")).toBeVisible();
-  await page.keyboard.press("Escape");
-  const closing = page.locator("dialog.closing");
-  await expect(closing).toHaveAttribute("inert", "");
-  expect(
-    await closing.evaluate((el) => getComputedStyle(el).pointerEvents),
-  ).toBe("none");
+  // Capture the transient exit state in-page; a round-trip after the close
+  // click can miss the short exit window on slow runners.
+  const exiting = (await page.evaluate(`new Promise((resolve) => {
+    const dialog = document.querySelector("dialog[open]");
+    const observer = new MutationObserver(() => {
+      if (!dialog.classList.contains("closing")) return;
+      observer.disconnect();
+      resolve({
+        inert: dialog.hasAttribute("inert"),
+        pointerEvents: getComputedStyle(dialog).pointerEvents,
+      });
+    });
+    observer.observe(dialog, { attributes: true });
+    dialog.querySelector("button[aria-label='Close']").click();
+  })`)) as { inert: boolean; pointerEvents: string };
+  expect(exiting).toEqual({ inert: true, pointerEvents: "none" });
   await expect(page.getByRole("dialog")).toHaveCount(0);
 });
 

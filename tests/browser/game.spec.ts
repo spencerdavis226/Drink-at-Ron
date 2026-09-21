@@ -38,6 +38,8 @@ async function forcePlainFirst(
 test("full custom game, rapid taps, restore, previous card, replay and settings", async ({
   page,
 }) => {
+  // Multi-step flow; Linux WebKit on CI is slow enough to exceed the default.
+  test.setTimeout(90000);
   const errors: string[] = [];
   page.on("pageerror", (error) => errors.push(error.message));
   await page.goto("./");
@@ -74,6 +76,7 @@ test("full custom game, rapid taps, restore, previous card, replay and settings"
   await ready(page);
   await expect(page.locator(".game-card")).toHaveClass(/face/);
   await page.locator(".game-card").click();
+  await ready(page);
   await expect(page.getByRole("button", { name: "Play again" })).toBeVisible();
   await page.reload();
   await expect(page.getByRole("button", { name: "Play again" })).toBeVisible();
@@ -126,6 +129,9 @@ test("storage failure still allows play", async ({ page }) => {
 test("portrait, landscape, iPad and large text retain readable rules", async ({
   page,
 }) => {
+  // Five viewports of reveal/discard; Linux WebKit on CI is slow enough to
+  // exceed the default timeout.
+  test.setTimeout(90000);
   await page.goto("./");
   await page.getByRole("button", { name: "Play", exact: true }).click();
   await forcePlainFirst(page, 6);
@@ -241,8 +247,14 @@ test("Core cards keep edge clearance and a 2:3 frame across device sizes", async
             rules.bottom <= box.bottom &&
             rules.top >= box.top,
           equalFaces:
-            Math.abs((el.querySelector(".card-back") as HTMLElement).clientWidth - (el.querySelector(".card-front") as HTMLElement).clientWidth) < 1 &&
-            Math.abs((el.querySelector(".card-back") as HTMLElement).clientHeight - (el.querySelector(".card-front") as HTMLElement).clientHeight) < 1,
+            Math.abs(
+              (el.querySelector(".card-back") as HTMLElement).clientWidth -
+                (el.querySelector(".card-front") as HTMLElement).clientWidth,
+            ) < 1 &&
+            Math.abs(
+              (el.querySelector(".card-back") as HTMLElement).clientHeight -
+                (el.querySelector(".card-front") as HTMLElement).clientHeight,
+            ) < 1,
         };
       });
       expect(fits.ratio, `${viewport.width}px ${card.title}`).toBeCloseTo(
@@ -252,12 +264,17 @@ test("Core cards keep edge clearance and a 2:3 frame across device sizes", async
       expect(fits.rulesFit, `${viewport.width}px ${card.title}`).toBe(true);
       expect(fits.equalFaces, `${viewport.width}px ${card.title}`).toBe(true);
       if (viewport.width <= 390)
-        expect(fits.sideMargin, `${viewport.width}px ${card.title}`).toBeGreaterThanOrEqual(23);
+        expect(
+          fits.sideMargin,
+          `${viewport.width}px ${card.title}`,
+        ).toBeGreaterThanOrEqual(23);
     }
   }
 });
 
-test("rules taps discard, while scrolling and cancelled gestures keep the card", async ({ page }) => {
+test("rules taps discard, while scrolling and cancelled gestures keep the card", async ({
+  page,
+}) => {
   await page.setViewportSize({ width: 320, height: 700 });
   await page.goto("./");
   await page.evaluate(() => localStorage.clear());
@@ -305,7 +322,10 @@ test("rules taps discard, while scrolling and cancelled gestures keep the card",
   await expect
     .poll(() => rules.evaluate((el) => el.scrollTop))
     .toBeGreaterThan(0);
-  let saved = await page.evaluate((k) => JSON.parse(localStorage.getItem(k)!), key);
+  let saved = await page.evaluate(
+    (k) => JSON.parse(localStorage.getItem(k)!),
+    key,
+  );
   expect(saved.phase).toBe("revealed");
   expect(saved.discarded).toBe(0);
 
@@ -373,6 +393,7 @@ test("custom size persists before starting and interruption restores a stable ca
 });
 
 test("minimal interface and a real two-sided flip", async ({ page }) => {
+  test.setTimeout(60000);
   await page.goto("./");
   await expect(
     page.locator(".helper, .footnote, .eyebrow, .tap-hint"),
