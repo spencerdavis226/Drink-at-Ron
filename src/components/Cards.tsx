@@ -52,6 +52,10 @@ export function CardFace({
     if (!el || typeof ResizeObserver === "undefined") return;
     const observer = new ResizeObserver(updateOverflow);
     observer.observe(el);
+    // Web fonts change the wrapped line count without resizing the scroller
+    // box, so observe the content and re-measure once fonts settle.
+    for (const child of el.children) observer.observe(child);
+    document.fonts?.ready.then(updateOverflow).catch(() => undefined);
     return () => observer.disconnect();
   }, [resolved, card.id]);
   return (

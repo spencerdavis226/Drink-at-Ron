@@ -121,10 +121,10 @@ export function Play({
                     rolling={motion === "roll"}
                   />
                 )}
+                <div className="reveal-glint" aria-hidden="true" />
               </span>
             </span>
           </button>
-          <div className="reveal-glint" aria-hidden="true" />
         </div>
       </section>
       {overlay &&
