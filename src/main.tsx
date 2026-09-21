@@ -10,7 +10,6 @@ import {
   SAVE_KEY,
   SETTINGS_KEY,
 } from "./app/persistence";
-import { tavernAudio } from "./app/sound";
 import { PresentationController } from "./presentation/controller";
 import { usePresentation } from "./presentation/usePresentation";
 import { theme, preloadArt } from "./presentation/theme";
@@ -38,13 +37,9 @@ function App() {
     [hidden, setHidden] = useState(document.hidden);
   const { controller, session, outgoing, motion, transition } = usePresentation(
     () =>
-      new PresentationController(
-        loaded.session,
-        (next) => {
-          if (!save(SAVE_KEY, next)) setNotice(true);
-        },
-        (event) => tavernAudio.play(event),
-      ),
+      new PresentationController(loaded.session, (next) => {
+        if (!save(SAVE_KEY, next)) setNotice(true);
+      }),
   );
   const display = outgoing ?? session;
   const active = !!display && display.phase !== "complete";
@@ -59,20 +54,15 @@ function App() {
   });
   useEffect(() => {
     if (!save(SETTINGS_KEY, prefs)) setNotice(true);
-    tavernAudio.configure(prefs.sound, prefs.ambience);
   }, [prefs]);
   useEffect(() => {
     Object.values({ ...theme.assets, ...frontSurfaces }).forEach(
       (path) => void preloadArt(path),
     );
-    const onVisibility = () => {
-      setHidden(document.hidden);
-      tavernAudio.setHidden(document.hidden);
-    };
+    const onVisibility = () => setHidden(document.hidden);
     document.addEventListener("visibilitychange", onVisibility);
     return () => {
       document.removeEventListener("visibilitychange", onVisibility);
-      tavernAudio.dispose();
     };
   }, []);
   useEffect(() => {
@@ -110,12 +100,10 @@ function App() {
   ) as CSSProperties;
   return (
     <>
-      <Atmosphere enabled={prefs.atmosphere} hidden={hidden} />
+      <Atmosphere hidden={hidden} />
       <main
-        className={`${active ? "app playing" : "app"} ${prefs.atmosphere ? "atmosphere-on" : ""} ${hidden ? "suspended" : ""}`}
+        className={`${active ? "app playing" : "app"} ${hidden ? "suspended" : ""}`}
         style={styles}
-        onPointerDownCapture={() => tavernAudio.unlock()}
-        onKeyDownCapture={() => tavernAudio.unlock()}
       >
         <header className="topbar">
           {active ? (
@@ -202,8 +190,6 @@ function App() {
           modal={modal}
           setModal={setModal}
           session={session}
-          prefs={prefs}
-          setPrefs={setPrefs}
           offlineReady={offlineReady || cachedReady}
           onEnd={() => {
             controller.clear();

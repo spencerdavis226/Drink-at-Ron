@@ -1,13 +1,7 @@
-export function Atmosphere({
-  enabled,
-  hidden,
-}: {
-  enabled: boolean;
-  hidden: boolean;
-}) {
+export function Atmosphere({ hidden }: { hidden: boolean }) {
   return (
     <div
-      className={`atmosphere ${enabled ? "enabled" : ""} ${hidden ? "suspended" : ""}`}
+      className={`atmosphere ${hidden ? "suspended" : ""}`}
       aria-hidden="true"
     >
       <div className="firelight" />

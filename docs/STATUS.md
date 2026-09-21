@@ -75,6 +75,12 @@ The generic tankard on most cards is known placeholder content, not a newly disc
 - All runtime assets local and offline/Pages compatible. No new backend, analytics, accounts, marketplace, scoring, timers, player system, or content editor.
 - Budgets remain: initial JS ≤100 KiB gzip, lazy JS ≤200 KiB gzip, runtime ≤3 MiB, individual image ≤500 KiB. Changes require user approval.
 
+## Direct user decisions (2026-09-20)
+
+- **Sound removed entirely.** `src/app/sound.ts` (synthesized effects + ambience), its `tavernAudio` wiring in `main.tsx`/`UI.tsx`/`FullScreenDice.tsx`, the dice collision-impact callback in the adapter, the Effects/Ambience menu switches, the `sound`/`ambience` preference fields and the unused `Toggle` component are gone. `tests/sound.test.ts` and the two audio-failure browser tests were deleted; legacy saves that still carry `sound`/`ambience` load and are ignored (`loadPreferences` no longer requires them). The dice library keeps `sounds: false`. The `PresentationController` effect seam remains (it is semantic, not audio), with no production subscriber.
+- **Atmosphere is always on.** The `atmosphere` preference and its menu switch are removed; `Atmosphere` renders unconditionally and the reveal glint is no longer gated on an `atmosphere-on` class. Reduced Motion and the hidden/`suspended` state still pause it.
+- Applied after the task-1C commit `871b61d`. Budgets improved slightly: initial JS **79.9 KiB** gzip, runtime **2592 KiB**. Tasks 6 and 7 must not reintroduce audio or an atmosphere toggle.
+
 ## Implementation queue for OpenCode Go
 
 Execution order after this visual audit: **1 → 1A → 1B → 2 → 3 → 1C → 1D → 4 → 5 → 6 → 7 → 8 → 9**. The lettered tasks are bounded additions, not an invitation to redesign everything. Work in that order unless a task explicitly allows independence. For each task: inspect the listed files, reproduce the issue, make the smallest coherent change, run targeted checks, update this document with evidence and remaining risks. Do not solve every task in one turn. A failing regression is not permission to remove an assertion or widen a budget.
@@ -222,15 +228,15 @@ Execution order after this visual audit: **1 → 1A → 1B → 2 → 3 → 1C �
 
 ### 6. P2 — Finish presentation consistency and measure performance
 
-**Files:** shared UI/GameDialogs, theme tokens/CSS, Atmosphere, sound, relevant browser tests.
+**Files:** shared UI/GameDialogs, theme tokens/CSS, Atmosphere, relevant browser tests.
 
 **Do:**
 - Consolidate dialog timing: `EXIT_MS=200`, CSS exit 180ms and entry fallback 220ms are separate from the supposedly shared motion manifest. Ensure close completion/cancellation has a bounded fallback and exiting controls cannot trigger unintended actions.
-- Test rapid close/reopen, menu→Previous→Back, End cancel, keyboard focus restoration, and Reduced Motion. Preserve native-dialog focus behavior.
+- Test keyboard focus restoration, rapid close/reopen, menu→Previous→Back, End cancel, and Reduced Motion. Preserve native-dialog focus behavior.
+- Audio/ambience work is closed by the 2026-09-20 direct decision: sound is removed, so do not test or restore it. Idle atmosphere is always on; only Reduced Motion and hidden suspension apply.
 - Evaluate the dice CTA against existing painted controls and reuse their visual treatment where appropriate, keeping its clear 44px+ target and low visible-copy count. No new art direction.
-- Profile current flip/discard/deal, a dice roll and idle atmosphere on actual iPhone/iPad. Record device/OS/build, Effects/Ambience/Atmosphere settings, frame-time/stall observations, startup and background behavior. Compare Atmosphere off/on; do not promise 60 fps from desktop tests.
-- Optimize measured costs only: unnecessary GPU contexts, synchronous dice pre-simulation, redundant image decode, shadow rendering, paint/layer growth, or audio buffer work if profiles identify them. Do not reduce fidelity/change physics speculatively. Keep no redraw loop after settled dice and suspend hidden decoration/audio.
-- Test audio resume rejection and async dispose/resume races, ambience on/off independently of Effects; remove obsolete unused timer scaffolding only after checking tests/references.
+- Profile current flip/discard/deal, a dice roll and idle atmosphere on actual iPhone/iPad. Record device/OS/build, frame-time/stall observations, startup and background behavior. Do not promise 60 fps from desktop tests.
+- Optimize measured costs only: unnecessary GPU contexts, synchronous dice pre-simulation, redundant image decode, shadow rendering, or paint/layer growth if profiles identify them. Do not reduce fidelity/change physics speculatively. Keep no redraw loop after settled dice and suspend hidden decoration.
 
 **Done when:** shared timings agree, dialog controls/focus are reliable, keyboard/touch targets work, baseline measurements and focused improvements are recorded. If physical hardware isn't available, finish engineering evidence and leave the hardware gate explicitly pending.
 
@@ -240,7 +246,7 @@ Execution order after this visual audit: **1 → 1A → 1B → 2 → 3 → 1C �
 
 **Files:** README, ART_DIRECTION, AUTHORING, GITHUB_PAGES, DEVICE_CHECKLIST, PLAYTEST; this STATUS remains the only execution plan.
 
-**Do:** put approved current rules first; clearly label historical prompts as historical. Align 2:3/contained scrolling, current dice interaction, motion tokens, local asset workflow, provisional pack status, and actual CI policy. Record deployment history separately from current verified live state. Extend device checklist for dice, no-WebGL fallback, CTA/audio, 20+ rolls, orientation/toolbar resize, installed offline roll, and post-update resume. Do not mark unchecked device items passed.
+**Do:** put approved current rules first; clearly label historical prompts as historical. Align 2:3/contained scrolling, current dice interaction, motion tokens, local asset workflow, provisional pack status, and actual CI policy. Record deployment history separately from current verified live state. Extend device checklist for dice, no-WebGL fallback, the roll CTA, 20+ rolls, orientation/toolbar resize, installed offline roll, and post-update resume; drop audio/ambience items since sound was removed. Do not mark unchecked device items passed.
 
 **Done when:** an agent can read the entry point and guides without finding contradictory instructions; historical rejected dwarf/mouse/CSS dice studies are not interpreted as current direction. This documentation task may proceed after task 1 independently of implementation, but must describe actual code accurately.
 

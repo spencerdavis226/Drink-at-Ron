@@ -6,17 +6,11 @@ export const SAVE_KEY = "drink-at-ron.session.v1";
 export const SETTINGS_KEY = "drink-at-ron.settings.v1";
 export interface Preferences {
   config: GameConfig;
-  sound: boolean;
-  ambience: boolean;
-  atmosphere: boolean;
   choice: string;
   customSize: string;
 }
 export const defaults: Preferences = {
   config: { version: 1, packIds: ["core"], limit: 40 },
-  sound: false,
-  ambience: false,
-  atmosphere: true,
   choice: "40",
   customSize: "40",
 };
@@ -119,16 +113,15 @@ export function loadSession(): {
 export function loadPreferences(): Preferences {
   try {
     const p = JSON.parse(localStorage.getItem(SETTINGS_KEY) || "null");
+    // Legacy saves may still carry sound/ambience/atmosphere; they are ignored.
     if (
       p &&
       validConfig(p.config) &&
-      typeof p.sound === "boolean" &&
       ["20", "40", "60", "custom", "endless"].includes(p.choice)
     )
       return {
-        ...p,
-        ambience: typeof p.ambience === "boolean" ? p.ambience : false,
-        atmosphere: typeof p.atmosphere === "boolean" ? p.atmosphere : true,
+        config: p.config,
+        choice: p.choice,
         customSize:
           typeof p.customSize === "string"
             ? p.customSize

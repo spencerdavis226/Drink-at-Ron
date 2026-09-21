@@ -271,7 +271,7 @@ dialog.closing {
   will-change: transform, opacity;
   z-index: 5;
 }
-.atmosphere-on .flip .reveal-glint {
+.flip .reveal-glint {
   display: block;
   animation: glint var(--motion-flip, 560ms) ease-out both;
 }
@@ -281,10 +281,6 @@ dialog.closing {
   z-index: -1;
   pointer-events: none;
   overflow: hidden;
-  display: none;
-}
-.atmosphere.enabled {
-  display: block;
 }
 .firelight {
   position: absolute;

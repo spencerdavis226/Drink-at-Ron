@@ -7,7 +7,6 @@ import {
 } from "react";
 import { PackLogo } from "./PackMarks";
 import { asset, theme } from "../presentation/theme";
-import { tavernAudio } from "../app/sound";
 import type { PackDefinition } from "../game/types";
 export function Button({
   variant = "primary",
@@ -23,8 +22,6 @@ export function Button({
       className={`${variant} ${className}`}
       onClick={(e) => {
         e.currentTarget.focus({ preventScroll: true });
-        tavernAudio.unlock();
-        if (variant !== "primary") tavernAudio.play("press");
         onClick?.(e);
       }}
     />
@@ -132,27 +129,6 @@ export function DeckChoices({
         </Button>
       ))}
     </div>
-  );
-}
-export function Toggle({
-  label,
-  enabled,
-  onToggle,
-}: {
-  label: string;
-  enabled: boolean;
-  onToggle: () => void;
-}) {
-  return (
-    <Button
-      variant="menu-row"
-      role="switch"
-      aria-checked={enabled}
-      onClick={onToggle}
-    >
-      {label}
-      <span>{enabled ? "On" : "Off"}</span>
-    </Button>
   );
 }
 export function Modal({

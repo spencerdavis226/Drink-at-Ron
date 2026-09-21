@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import type { SessionState } from "../game/types";
-import type { Preferences } from "../app/persistence";
-import { Button, Modal, Toggle } from "../components/UI";
+import { Button, Modal } from "../components/UI";
 import { PackLogo } from "../components/PackMarks";
 import { selectedPacks } from "../presentation/packs";
 import { CardFrame } from "../components/Cards";
@@ -11,16 +10,12 @@ export function GameDialogs({
   modal,
   setModal,
   session,
-  prefs,
-  setPrefs,
   offlineReady,
   onEnd,
 }: {
   modal: DialogName;
   setModal: (modal: DialogName) => void;
   session: SessionState | null;
-  prefs: Preferences;
-  setPrefs: (prefs: Preferences) => void;
   offlineReady: boolean;
   onEnd: () => void;
 }) {
@@ -88,21 +83,6 @@ export function GameDialogs({
             ))}
           </div>
         )}
-        <Toggle
-          label="Effects"
-          enabled={prefs.sound}
-          onToggle={() => setPrefs({ ...prefs, sound: !prefs.sound })}
-        />
-        <Toggle
-          label="Ambience"
-          enabled={prefs.ambience}
-          onToggle={() => setPrefs({ ...prefs, ambience: !prefs.ambience })}
-        />
-        <Toggle
-          label="Atmosphere"
-          enabled={prefs.atmosphere}
-          onToggle={() => setPrefs({ ...prefs, atmosphere: !prefs.atmosphere })}
-        />
         <Button
           variant="menu-row"
           className="danger"

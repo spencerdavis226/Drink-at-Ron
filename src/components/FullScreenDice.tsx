@@ -2,7 +2,6 @@ import { useEffect, useId, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import type { CardDefinition, DiceRoll } from "../game/types";
 import { diceNotation } from "../game/dice";
-import { tavernAudio } from "../app/sound";
 import "./fullscreen-dice.css";
 
 // Probe WebGL once per session and release the probe context immediately, so
@@ -137,9 +136,7 @@ export default function FullScreenDice({
     void import("../presentation/dice/library")
       .then(async ({ createDiceStage }) => {
         if (canceled) return;
-        stage = await createDiceStage(`#${CSS.escape(stageId)}`, (strength) =>
-          tavernAudio.diceImpact(strength),
-        );
+        stage = await createDiceStage(`#${CSS.escape(stageId)}`);
         if (canceled) {
           stage.dispose();
           return;
@@ -202,11 +199,7 @@ export default function FullScreenDice({
         type="button"
         className="roll-cta"
         disabled={rolling}
-        onPointerDown={() => tavernAudio.unlock()}
-        onClick={() => {
-          tavernAudio.unlock();
-          onTap();
-        }}
+        onClick={onTap}
       >
         {rolling ? "Rolling…" : roll ? "Continue" : `Roll ${diceNotation(card.dice!)}`}
       </button>

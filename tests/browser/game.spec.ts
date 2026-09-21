@@ -365,7 +365,7 @@ test("minimal interface and a real two-sided flip", async ({ page }) => {
   await expect(page.locator(".progress")).toContainText("2 / 40");
 });
 
-test("legacy sound preferences migrate and tavern switches persist", async ({
+test("legacy audio and atmosphere preferences are ignored and toggles are gone", async ({
   page,
 }) => {
   await page.goto("./");
@@ -375,6 +375,8 @@ test("legacy sound preferences migrate and tavern switches persist", async ({
       JSON.stringify({
         config: { version: 1, packIds: ["core"], limit: 40 },
         sound: true,
+        ambience: true,
+        atmosphere: false,
         choice: "40",
         customSize: "40",
       }),
@@ -383,42 +385,12 @@ test("legacy sound preferences migrate and tavern switches persist", async ({
   await page.reload();
   await page.getByRole("button", { name: "Play", exact: true }).click();
   await page.getByRole("button", { name: "Open game menu" }).click();
-  await expect(page.getByRole("switch", { name: /Effects/ })).toBeChecked();
+  // The ambience is always on and the audio/atmosphere switches are removed.
+  await expect(page.locator(".atmosphere")).toBeVisible();
+  await expect(page.getByRole("switch")).toHaveCount(0);
   await expect(
-    page.getByRole("switch", { name: /Ambience/ }),
-  ).not.toBeChecked();
-  await expect(page.getByRole("switch", { name: /Atmosphere/ })).toBeChecked();
-  await page.getByRole("switch", { name: /Ambience/ }).click();
-  await page.getByRole("switch", { name: /Atmosphere/ }).click();
-  await page.reload();
-  await page.getByRole("button", { name: "Open game menu" }).click();
-  await expect(page.getByRole("switch", { name: /Ambience/ })).toBeChecked();
-  await expect(
-    page.getByRole("switch", { name: /Atmosphere/ }),
-  ).not.toBeChecked();
-});
-test("unavailable or rejected audio never blocks gameplay", async ({
-  page,
-}) => {
-  const errors: string[] = [];
-  page.on("pageerror", (e) => errors.push(e.message));
-  await page.addInitScript(() => {
-    window.AudioContext = class {
-      constructor() {
-        throw Error("Audio unavailable");
-      }
-    } as unknown as typeof AudioContext;
-  });
-  await page.goto("./");
-  await page.getByRole("button", { name: "Play", exact: true }).click();
-  await page.getByRole("button", { name: "Open game menu" }).click();
-  await page.getByRole("switch", { name: /Effects/ }).click();
-  await page.getByRole("switch", { name: /Ambience/ }).click();
-  await page.getByRole("button", { name: "Resume game" }).click();
-  await page.getByRole("button", { name: "Reveal card" }).click();
-  await ready(page);
-  await expect(page.locator(".study-title h2")).toBeVisible();
-  expect(errors).toEqual([]);
+    page.getByRole("button", { name: "Previous card", exact: true }),
+  ).toBeVisible();
 });
 test("canceled animations and backgrounding settle without additional draws", async ({
   page,
@@ -501,24 +473,4 @@ test("readable fallback when artwork fails and keyboard focus returns", async ({
   await expect(
     page.getByRole("button", { name: "Open game menu" }),
   ).toBeFocused();
-});
-
-test("rejected audio resume stays silent without an unhandled error", async ({
-  page,
-}) => {
-  const errors: string[] = [];
-  page.on("pageerror", (e) => errors.push(e.message));
-  await page.addInitScript(() => {
-    AudioContext.prototype.resume = () =>
-      Promise.reject(Error("NotAllowedError"));
-  });
-  await page.goto("./");
-  await page.getByRole("button", { name: "Play", exact: true }).click();
-  await page.getByRole("button", { name: "Open game menu" }).click();
-  await page.getByRole("switch", { name: /Ambience/ }).click();
-  await page.getByRole("switch", { name: /Effects/ }).click();
-  await page.getByRole("button", { name: "Resume game" }).click();
-  await page.getByRole("button", { name: "Reveal card" }).click();
-  await ready(page);
-  expect(errors).toEqual([]);
 });

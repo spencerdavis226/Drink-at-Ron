@@ -93,26 +93,26 @@ describe("presentation transactions", () => {
   });
 });
 describe("preferences compatibility", () => {
-  it("preserves existing game choices and sound, while adding atmosphere defaults", () => {
+  it("keeps game choices and ignores legacy audio/atmosphere flags", () => {
     const old = {
       config: defaults.config,
       sound: true,
+      ambience: true,
+      atmosphere: false,
       choice: "custom",
       customSize: "37",
     };
     vi.stubGlobal("localStorage", { getItem: () => JSON.stringify(old) });
     expect(loadPreferences()).toEqual({
-      ...old,
-      ambience: false,
-      atmosphere: true,
+      config: defaults.config,
+      choice: "custom",
+      customSize: "37",
     });
   });
-  it("restores explicit toggles", () => {
+  it("falls back to defaults for unusable preferences", () => {
     vi.stubGlobal("localStorage", {
-      getItem: () =>
-        JSON.stringify({ ...defaults, ambience: true, atmosphere: false }),
+      getItem: () => JSON.stringify({ sound: true, atmosphere: false }),
     });
-    expect(loadPreferences().ambience).toBe(true);
-    expect(loadPreferences().atmosphere).toBe(false);
+    expect(loadPreferences()).toEqual(defaults);
   });
 });

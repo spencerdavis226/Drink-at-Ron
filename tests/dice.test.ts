@@ -100,7 +100,7 @@ describe("dice transactions and saves", () => {
     expect(persist).toHaveBeenCalledTimes(3);
     expect(c.getSnapshot().session!.discarded).toBe(1);
   });
-  it("cancellation and background settling preserve results without replaying sound", () => {
+  it("cancellation and background settling preserve results without replaying effects", () => {
     const persist = vi.fn(),
       effect = vi.fn(),
       c = new PresentationController(revealed(), persist, effect);
