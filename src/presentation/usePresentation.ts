@@ -1,6 +1,7 @@
 import { useEffect, useState, useSyncExternalStore } from "react";
 import { PresentationController } from "./controller";
 import { theme } from "./theme";
+import { forceMotion } from "./motion";
 export function usePresentation(create: () => PresentationController) {
   const [controller] = useState(create);
   const state = useSyncExternalStore(
@@ -10,18 +11,22 @@ export function usePresentation(create: () => PresentationController) {
   useEffect(() => {
     if (!state.motion) return;
     const reduced = matchMedia("(prefers-reduced-motion: reduce)");
+    // Reduced Motion is always honored in production; the dev override settles
+    // through the normal token so the animation still plays for review.
+    const settleNow = reduced.matches && !forceMotion();
     if (document.hidden) {
       controller.settleAll();
       return;
     }
     const timeout = setTimeout(
       () => controller.finish(state.transition),
-      reduced.matches
+      settleNow
         ? 0
         : (state.motion === "roll" ? 12000 : theme.motion[state.motion]) + 80,
     );
     const skip = () => {
-      if (document.hidden || reduced.matches) controller.settleAll();
+      if (document.hidden || (reduced.matches && !forceMotion()))
+        controller.settleAll();
     };
     document.addEventListener("visibilitychange", skip);
     reduced.addEventListener("change", skip);

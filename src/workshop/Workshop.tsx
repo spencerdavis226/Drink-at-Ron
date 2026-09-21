@@ -1,99 +1,17 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { validateCatalog } from "../content/catalog";
-import { PresentationController } from "../presentation/controller";
-import { usePresentation } from "../presentation/usePresentation";
-import { Play } from "../screens/Play";
-import {
-  workshopCards as cards,
-  workshopPacks as packs,
-  workshopSession,
-  seededRandom,
-} from "./session";
+import { workshopCards as cards, workshopPacks as packs } from "./session";
 import { Button } from "../components/UI";
 
 import "./workshop.css";
 const sizes = {
-  "Small phone": 320,
-  "Phone 390": 390,
-  "Large phone": 430,
-  iPad: 768,
-  Landscape: 844,
-  "Split view": 375,
+  "Small phone": { width: 320, height: 568 },
+  "Phone 390": { width: 390, height: 844 },
+  "Large phone": { width: 430, height: 932 },
+  iPad: { width: 768, height: 1024 },
+  Landscape: { width: 844, height: 390 },
+  "Split view": { width: 375, height: 667 },
 };
-function Preview({
-  id,
-  seed,
-  large,
-  width,
-  study,
-  outcome,
-}: {
-  id: string;
-  seed: string;
-  large: boolean;
-  width: number;
-  study: boolean;
-  outcome: string;
-}) {
-  const [initial] = useState(() => workshopSession(seed, id));
-  const random = useRef(initial.random);
-  const diceRandom = useRef(seededRandom(`${seed}:dice`));
-  const state = usePresentation(
-    () =>
-      new PresentationController(
-        initial.session,
-        () => {},
-        () => {},
-        () => random.current(),
-        () =>
-          outcome === "Minimum"
-            ? 0
-            : outcome === "Maximum"
-              ? 0.999999
-              : diceRandom.current(),
-      ),
-  );
-  const { controller, session, outgoing, motion, transition } = state;
-  return (
-    <>
-      <div className="workshop-actions">
-        <Button
-          onClick={() => {
-            controller.settleAll();
-            const next = workshopSession(seed, id, false);
-            random.current = next.random;
-            controller.start(next.session);
-          }}
-        >
-          Replay reveal
-        </Button>
-        <Button
-          onClick={() => {
-            controller.settleAll();
-            const next = workshopSession(seed, id, true);
-            random.current = next.random;
-            controller.start(next.session);
-          }}
-        >
-          Front
-        </Button>
-      </div>
-      <div
-        className={`workshop-viewport ${large ? "enlarged" : ""} ${study ? "study" : ""}`}
-        style={{ width, maxWidth: "100%" }}
-      >
-        <Play
-          session={(outgoing ?? session)!}
-          motion={motion}
-          transition={transition}
-          onTap={() => controller.tap()}
-          onFinish={controller.finish.bind(controller)}
-          overlay={false}
-        />
-      </div>
-    </>
-  );
-}
 export default function Workshop() {
   const [selected, setSelected] = useState(() => {
       const id = new URLSearchParams(location.search).get("card");
@@ -103,10 +21,12 @@ export default function Workshop() {
     [category, setCategory] = useState("all"),
     [pack, setPack] = useState("all"),
     [seed, setSeed] = useState("tavern-1"),
+    [seedDraft, setSeedDraft] = useState("tavern-1"),
     [size, setSize] = useState<keyof typeof sizes>("Small phone"),
     [large, setLarge] = useState(false),
-    [study, setStudy] = useState(true),
-    [outcome, setOutcome] = useState("Seeded");
+    [revealed, setRevealed] = useState(true),
+    [outcome, setOutcome] = useState("Seeded"),
+    [nonce, setNonce] = useState(0);
   let validation = "All cards validate";
   try {
     validateCatalog(cards, packs);
@@ -121,11 +41,24 @@ export default function Workshop() {
       `${c.title} ${c.rules}`.toLowerCase().includes(query.toLowerCase()),
   );
   const card = cards.find((c) => c.id === selected)!;
+  const { width, height } = sizes[size];
+  // The preview is a real dev-only page in an iframe: it gets true viewport and
+  // media conditions, its own document for the body-portalled dice overlay, and
+  // never touches the saved-game app.
+  const src = `${import.meta.env.BASE_URL}?${new URLSearchParams({
+    preview: "1",
+    card: selected,
+    seed,
+    outcome,
+    revealed: revealed ? "1" : "0",
+    enlarged: large ? "1" : "0",
+    n: String(nonce),
+  })}`;
   return (
     <div className="workshop">
       <header>
         <h1>Card workshop</h1>
-        <p>Approved frame · dice interaction study</p>
+        <p>Approved frame · production preview</p>
         <a href="?">Return to game</a>
       </header>
       <aside>
@@ -213,8 +146,12 @@ export default function Workshop() {
           Seed
           <input
             aria-label="Seed"
-            value={seed}
-            onChange={(e) => setSeed(e.target.value)}
+            value={seedDraft}
+            onChange={(e) => setSeedDraft(e.target.value)}
+            onBlur={() => setSeed(seedDraft)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") setSeed(seedDraft);
+            }}
           />
         </label>
         <label>
@@ -224,14 +161,6 @@ export default function Workshop() {
             onChange={(e) => setLarge(e.target.checked)}
           />{" "}
           Enlarged text
-        </label>
-        <label>
-          <input
-            type="checkbox"
-            checked={study}
-            onChange={(e) => setStudy(e.target.checked)}
-          />{" "}
-          New front study
         </label>
         <p>
           {shown.length} cards · {validation}
@@ -253,15 +182,33 @@ export default function Workshop() {
         </nav>
       </aside>
       <main>
-        <Preview
-          key={`${selected}:${seed}:${study}:${outcome}`}
-          id={selected}
-          seed={seed}
-          large={large}
-          width={sizes[size]}
-          study={study}
-          outcome={outcome}
-        />
+        <div className="workshop-actions">
+          <Button
+            onClick={() => {
+              setRevealed(false);
+              setNonce((n) => n + 1);
+            }}
+          >
+            Replay reveal
+          </Button>
+          <Button
+            onClick={() => {
+              setRevealed(true);
+              setNonce((n) => n + 1);
+            }}
+          >
+            Front
+          </Button>
+        </div>
+        <div className="workshop-viewport" style={{ width, height }}>
+          <iframe
+            className="workshop-frame"
+            title={`${card.title} preview`}
+            src={src}
+            width={width}
+            height={height}
+          />
+        </div>
       </main>
     </div>
   );

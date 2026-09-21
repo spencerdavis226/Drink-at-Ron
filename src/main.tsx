@@ -210,7 +210,15 @@ const renderApp = () =>
       <App />
     </React.StrictMode>,
   );
-if (import.meta.env.DEV && params.get("workshop") === "1") {
+if (import.meta.env.DEV && params.get("preview") === "1") {
+  void import("./workshop/Preview").then(({ default: Preview }) =>
+    root.render(
+      <React.StrictMode>
+        <Preview />
+      </React.StrictMode>,
+    ),
+  );
+} else if (import.meta.env.DEV && params.get("workshop") === "1") {
   void import("./workshop/Workshop").then(({ default: Workshop }) =>
     root.render(
       <React.StrictMode>

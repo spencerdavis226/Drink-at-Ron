@@ -198,7 +198,11 @@ Execution order after this visual audit: **1 → 1A → 1B → 2 → 3 → 1C �
 
 ### 4. P2 — Make the workshop a faithful production preview
 
-**Evidence:** `Workshop.tsx` explicitly passes `overlay={false}`, so dice roll through the controller safety timeout without showing the production overlay. Size presets set only width, not actual viewport height/media conditions. The obsolete “New front study” control remains. Replay resets shuffle RNG but not `diceRandom`, so repeating the same seed need not repeat dice outcomes.
+**Status — DONE (2026-09-20, OpenCode Go).** Files: `src/workshop/Workshop.tsx` (editor now hosts a real preview; the obsolete "New front study" toggle and its dead `.study` class are gone; viewport presets set **width and height**), `src/workshop/Preview.tsx` (new dev-only preview entry: real `<Play>` + `Atmosphere` with an isolated in-memory controller and seeded shuffle + dice streams), `src/main.tsx` (DEV-only `?preview=1` branch), `src/presentation/motion.ts` (new shared `forceMotion()`), `src/presentation/usePresentation.ts` (reduced motion honored in production; the dev override plays through the normal token instead of settling instantly), `src/components/FullScreenDice.tsx` (uses the shared flag), `src/workshop/workshop.css`, `tests/workshop/workshop.spec.ts` (rewritten + expanded). Commands: `npm test` **70 passed**; build passed (2593 KiB runtime, 79.9 KiB initial, 146.2 KiB lazy; workshop excluded); `TEST_PORT=4600 npm run test:e2e` **73 passed / 3 skipped**; `test:update` passed; `test:workshop` **10 passed**. **Next task: 5** (artwork registry).
+
+**Approach:** the preview is a real dev page in a same-origin iframe, so true viewport/media conditions, the body-portalled dice overlay and the WebGL renderer all run in their own document; the overlay is contained by the iframe and the editor is untouched. This is why no cross-realm portal indirection was needed. `?preview=1` is DEV-only and renders only the isolated preview, never the saved-game app. Each preview mount recreates both RNG streams from the seed, so a seeded replay repeats dice outcomes (asserted). `?force-motion` now reaches the controller, not just the overlay; production always honors Reduced Motion.
+
+**Findings:** `Workshop.tsx` explicitly passes `overlay={false}`, so dice roll through the controller safety timeout without showing the production overlay. Size presets set only width, not actual viewport height/media conditions. The obsolete "New front study" control remains. Replay resets shuffle RNG but not `diceRandom`, so repeating the same seed need not repeat dice outcomes.
 
 **Files:** `src/workshop/Workshop.tsx`, `src/workshop/session.ts`, workshop CSS/tests, `src/presentation/usePresentation.ts`, `src/components/FullScreenDice.tsx`.
 
@@ -287,6 +291,7 @@ BASE_PATH=/Drink-at-Ron/ npm run build
 CI=1 BASE_PATH=/Drink-at-Ron/ TEST_PORT=4498 npm run test:e2e -- --workers=2
 BASE_PATH=/Drink-at-Ron/ npm run test:update
 npm run test:workshop
+npm run dev:phone      # LAN-bound dev server for playing on a phone (same Wi-Fi, HTTP)
 ```
 
 Use an unused test port. Build and browser checks must share `/Drink-at-Ron/`; dev/workshop uses `/`. `npm test` runs unit tests only. Update test builds its second artifact in a temporary directory; never substitute a rebuilt untested artifact before deploy. Run focused checks during iteration, then the affected broader checks once. Report every failure/skip, including untracked tests, and explain evidence gaps rather than calling everything green.
