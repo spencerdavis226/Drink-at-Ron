@@ -226,7 +226,10 @@ dialog {
     cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 dialog.closing {
-  animation: panel-exit 180ms cubic-bezier(0.4, 0, 0.7, 1) forwards;
+  animation: panel-exit var(--motion-dialog-exit, 180ms)
+    cubic-bezier(0.4, 0, 0.7, 1) forwards;
+  /* Exiting controls must not act: the dialog is inert and non-interactive. */
+  pointer-events: none;
 }
 .dialog-head {
   gap: 8px;

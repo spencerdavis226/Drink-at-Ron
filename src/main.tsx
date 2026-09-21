@@ -92,7 +92,8 @@ function App() {
   const finish = (id: number) => controller.finish(id);
   const styles = Object.fromEntries(
     Object.entries(theme.motion).map(([key, value]) => [
-      `--motion-${key}`,
+      // camelCase keys become kebab-case CSS variables (dialogExit -> --motion-dialog-exit).
+      `--motion-${key.replace(/[A-Z]/g, (m) => `-${m.toLowerCase()}`)}`,
       `${value}ms`,
     ]),
   ) as CSSProperties;

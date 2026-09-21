@@ -157,6 +157,8 @@ export function Modal({
     <dialog
       ref={ref}
       className={exiting ? "closing" : ""}
+      // An exiting dialog must not accept input or focus while it animates out.
+      inert={exiting || undefined}
       onCancel={(e) => {
         e.preventDefault();
         onClose();

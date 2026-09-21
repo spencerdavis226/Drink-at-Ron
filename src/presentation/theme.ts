@@ -22,6 +22,8 @@ export const theme = {
     settle: 160,
     complete: 600,
     roll: 2600,
+    dialog: 220,
+    dialogExit: 180,
   },
 } as const;
 export const asset = (path: string) =>

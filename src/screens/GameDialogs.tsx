@@ -4,8 +4,12 @@ import { Button, Modal } from "../components/UI";
 import { PackLogo } from "../components/PackMarks";
 import { selectedPacks } from "../presentation/packs";
 import { CardFrame } from "../components/Cards";
+import { theme } from "../presentation/theme";
 export type DialogName = "menu" | "previous" | "end" | "install" | null;
-const EXIT_MS = 200;
+// Unmount just after the shared exit animation finishes. The timer is the
+// bounded fallback, so a missing/again-changing animation can never strand the
+// dialog open.
+const EXIT_MS = theme.motion.dialogExit + 40;
 export function GameDialogs({
   modal,
   setModal,

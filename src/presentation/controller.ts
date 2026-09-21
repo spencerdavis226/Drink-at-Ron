@@ -2,7 +2,12 @@ import { rollDice, returnToCard } from "../game/dice";
 import { advance, currentCard, type Random } from "../game/engine";
 import type { SessionState } from "../game/types";
 import { theme } from "./theme";
-export type Motion = keyof typeof theme.motion;
+// Card motion phases. The dialog enter/exit tokens share the manifest but are
+// not card animations, so they are excluded from the controller's Motion.
+export type Motion = Exclude<
+  keyof typeof theme.motion,
+  "dialog" | "dialogExit"
+>;
 export type Effect =
   | "deal"
   | "reveal"
