@@ -149,6 +149,8 @@ Execution order after this visual audit: **1 → 1A → 1B → 2 → 3 → 1C �
 
 ### 1D. P2 — Unify secondary screens and control hierarchy
 
+**Status — DONE (2026-09-20, OpenCode Go). Awaiting your eye; V12 spacing and the shared tankard need a content/design pass.** Files: `src/style.css` (pack tiles no longer dim when unselected; the selection mark is muted `+` vs gold `✓`), `src/presentation/theme.css` (selected tile ring; `.pack-copy` gives title and pack mark stable slots; `dialog` and `.recovery` keep the painted `panel.webp` frame but scrim their interior so body copy no longer sits on the high-contrast fill), `src/components/fullscreen-dice.css` (Roll/Continue now uses the painted `button.webp` surface instead of a smooth gradient pill), `tests/browser/secondary.spec.ts` (new), `docs/studies/secondary-screens-2026-09-20/` (before/after). Commands: `npm test` **70 passed**; build passed (2593 KiB runtime, 79.9 KiB initial, 146.2 KiB lazy); `TEST_PORT=4600 npm run test:e2e` **73 passed / 3 skipped**; `test:update` passed; `test:workshop` **4 passed**. The 2026-09-20 sound removal had already simplified the pause menu (no audio/atmosphere switches). **Next task: 4** (make the workshop a faithful production preview).
+
 **Findings:** V10–V12. **Files:** Setup, shared UI, GameDialogs, dice CTA styles and theme.
 
 - Keep unselected pack tiles readable and visibly tappable; reserve disabled appearance for unavailable actions. Use existing selected border/check feedback with consistent title/logo/selection alignment. No new pack descriptions permanently crowding setup.

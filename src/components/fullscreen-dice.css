@@ -33,34 +33,34 @@
   bottom: max(10px, env(safe-area-inset-bottom));
   transform: translateX(-50%);
   z-index: 3;
-  min-height: 54px;
-  min-width: 200px;
-  padding: 10px 32px;
-  font: 700 25px/1 var(--font-tavern);
-  letter-spacing: 0.02em;
-  color: #ffeec2;
-  border: 3px solid #d7a94f;
-  border-radius: 16px;
-  background: linear-gradient(#2f6a5c, #1c463e);
-  box-shadow:
-    inset 0 2px 0 #79b7a5aa,
-    inset 0 -5px 12px #0a231d,
-    0 0 0 1px #5c3f1e,
-    0 12px 28px #000a;
-  text-shadow: 0 2px 2px #000a;
+  min-height: 72px;
+  min-width: 220px;
+  padding: 0 10px;
+  font: 700 1.7rem/1.05 var(--font-tavern);
+  color: #34210f;
+  /* Reuse the painted Play/menu control instead of a second chrome style. */
+  background: #bc8c49;
+  border: solid transparent;
+  border-width: 18px 28px;
+  border-image: url("/art/button.webp") 110 210 fill / 18px 28px stretch;
+  border-radius: 0;
+  text-shadow: 0 1px #ffe7b0;
+  box-shadow: 0 6px 7px #0008;
   cursor: pointer;
   transition:
     transform 120ms ease,
+    box-shadow 120ms ease,
     filter 120ms ease;
 }
 .roll-cta:hover:not(:disabled) {
   filter: brightness(1.07);
 }
 .roll-cta:active:not(:disabled) {
-  transform: translate(-50%, 1px) scale(0.99);
+  transform: translate(-50%, 2px);
+  box-shadow: 0 2px 4px #0008;
 }
 .roll-cta:disabled {
-  filter: saturate(0.5) brightness(0.85);
+  filter: saturate(0.6) brightness(0.9);
   cursor: default;
 }
 .roll-cta:focus-visible {
@@ -80,8 +80,8 @@
 }
 @media (orientation: landscape) and (max-height: 600px) {
   .roll-cta {
-    min-height: 50px;
-    min-width: 180px;
-    font-size: 23px;
+    min-height: 64px;
+    min-width: 200px;
+    font-size: 1.5rem;
   }
 }

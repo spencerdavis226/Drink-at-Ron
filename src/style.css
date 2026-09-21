@@ -211,8 +211,10 @@ p {
     0 10px 20px #0007;
 }
 .pack[aria-pressed="false"] {
-  filter: saturate(0.3);
-  opacity: 0.65;
+  /* Available but unselected: stays readable so it never reads as disabled. */
+  --pack-mark-bg: #23180d;
+  --pack-mark-border: #8a6a3d;
+  --pack-mark-ink: #e6cf9f;
 }
 .pack-art {
   width: 72px;
@@ -239,9 +241,9 @@ p {
   width: 30px;
   height: 30px;
   border-radius: 50%;
-  background: #cba464;
-  border: 2px solid #e4c68c;
-  color: #2b301f;
+  background: var(--pack-mark-bg, #cba464);
+  border: 2px solid var(--pack-mark-border, #e4c68c);
+  color: var(--pack-mark-ink, #2b301f);
   box-shadow: 0 2px 4px #0008;
   font-size: 1.2rem;
 }
