@@ -10,3 +10,15 @@ await sharp("assets/source/cheers-armor-v3.png")
   .resize(768)
   .webp({ quality: 84 })
   .toFile("public/art/cheers.webp");
+
+// Current plain parchment front; preserve the complete painted composition.
+await sharp("assets/source/front-parchment-v1.png")
+  .resize(768, 1152)
+  .webp({ quality: 85 })
+  .toFile("src/presentation/art/parchment-frame.webp");
+
+// Approved ornate teal master, 2026-09-22. Typography remains live HTML.
+await sharp("assets/source/front-studies-2026-09-22/c3-ornate-quarter.png")
+  .resize(768, 1152)
+  .webp({ quality: 85 })
+  .toFile("src/presentation/art/ornate-teal-frame.webp");

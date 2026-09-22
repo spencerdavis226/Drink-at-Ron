@@ -14,9 +14,9 @@ import {
 } from "../src/presentation/imprint/icons.generated";
 import { normalizeIcon } from "../src/presentation/imprint/normalize";
 
-test("every catalog card resolves an imprint without an assignment", () => {
-  for (const card of cards) {
-    const imprint = resolveImprint(card.id);
+test("unassigned cards resolve a complete fallback imprint", () => {
+  for (const id of ["future.new-card", "other.expansion-card"]) {
+    const imprint = resolveImprint(id);
     expect(defaultIcons).toContain(imprint.icon);
     expect(ornamentIcons).toContain(imprint.ornament);
     expect(tintNames).toContain(imprint.tint);
@@ -90,3 +90,7 @@ test("the hash is stable for a given card id", () => {
   expect(fnv1a("core.house-special")).toBe(fnv1a("core.house-special"));
   expect(fnv1a("core.house-special")).not.toBe(fnv1a("core.house-specia1"));
 });
+
+ test("every current card has a curated assignment", () => {
+ for (const card of cards) expect(imprintAssignments[card.id], card.id).toBeDefined();
+ });

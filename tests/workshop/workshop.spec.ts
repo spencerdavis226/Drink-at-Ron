@@ -2,6 +2,42 @@ import { test, expect } from "@playwright/test";
 import { packs } from "../../src/content/catalog";
 const preview = (page: import("@playwright/test").Page) =>
   page.frameLocator("iframe");
+// Changing card/text size navigates the preview iframe. Wait for the requested
+// document before reading geometry; WebKit can otherwise evaluate the old page
+// as its execution context is destroyed.
+async function waitForPreview(
+  page: import("@playwright/test").Page,
+  id: string,
+  large: boolean,
+) {
+  await expect
+    .poll(
+      async () => {
+        try {
+          return await preview(page)
+            .locator("html")
+            .evaluate(() => {
+              const params = new URLSearchParams(location.search);
+              return {
+                ready: document.readyState,
+                card: params.get("card"),
+                large: params.get("enlarged"),
+                fonts: document.fonts.status,
+              };
+            });
+        } catch {
+          return { navigating: true };
+        }
+      },
+      { timeout: 15000, message: `Preview ready: ${id}, enlarged=${large}` },
+    )
+    .toEqual({
+      ready: "complete",
+      card: id,
+      large: large ? "1" : "0",
+      fonts: "loaded",
+    });
+}
 test("workshop previews are isolated, readable, and use real motion", async ({
   page,
 }) => {
@@ -23,6 +59,7 @@ test("workshop previews are isolated, readable, and use real motion", async ({
     await page.getByLabel("Card", { exact: true }).selectOption(id);
     await expect(frame.locator(".study-rules p")).toBeVisible();
     await page.getByLabel("Enlarged text").check();
+    await waitForPreview(page, id, true);
     expect(
       await frame
         .locator(".study-rules")
@@ -39,6 +76,7 @@ test("workshop previews are isolated, readable, and use real motion", async ({
     });
     expect(fits).toBe(true);
     await page.getByLabel("Enlarged text").uncheck();
+    await waitForPreview(page, id, false);
   }
   await page.getByRole("button", { name: "Replay reveal" }).click();
   await expect(
@@ -101,6 +139,7 @@ for (const size of [
       await picker.selectOption(id);
       for (const large of [false, true]) {
         await page.getByLabel("Enlarged text").setChecked(large);
+        await waitForPreview(page, id, large);
         if (!large) {
           const height = await frame
             .locator(".game-card")

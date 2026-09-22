@@ -1,0 +1,912 @@
+[
+  {
+    "engine": "chromium",
+    "width": 260,
+    "id": "core.you-specifically",
+    "frame": "c",
+    "titleOverflow": true,
+    "rulesOverflow": false,
+    "titleLines": 2,
+    "ruleLines": 2
+  },
+  {
+    "engine": "chromium",
+    "width": 260,
+    "id": "core.fake-sick",
+    "frame": "c",
+    "titleOverflow": true,
+    "rulesOverflow": false,
+    "titleLines": 2,
+    "ruleLines": 2
+  },
+  {
+    "engine": "chromium",
+    "width": 260,
+    "id": "core.crypto-bro",
+    "frame": "c",
+    "titleOverflow": true,
+    "rulesOverflow": false,
+    "titleLines": 2,
+    "ruleLines": 3
+  },
+  {
+    "engine": "chromium",
+    "width": 260,
+    "id": "core.would-you",
+    "frame": "c",
+    "titleOverflow": true,
+    "rulesOverflow": false,
+    "titleLines": 2,
+    "ruleLines": 2
+  },
+  {
+    "engine": "chromium",
+    "width": 260,
+    "id": "core.two-beers-math",
+    "frame": "c",
+    "titleOverflow": true,
+    "rulesOverflow": false,
+    "titleLines": 2,
+    "ruleLines": 2
+  },
+  {
+    "engine": "chromium",
+    "width": 260,
+    "id": "core.fuck-around",
+    "frame": "c",
+    "titleOverflow": true,
+    "rulesOverflow": false,
+    "titleLines": 2,
+    "ruleLines": 3
+  },
+  {
+    "engine": "chromium",
+    "width": 260,
+    "id": "core.chosen-one",
+    "frame": "c",
+    "titleOverflow": true,
+    "rulesOverflow": false,
+    "titleLines": 2,
+    "ruleLines": 4
+  },
+  {
+    "engine": "chromium",
+    "width": 260,
+    "id": "core.rock-paper-drink",
+    "frame": "c",
+    "titleOverflow": true,
+    "rulesOverflow": false,
+    "titleLines": 2,
+    "ruleLines": 3
+  },
+  {
+    "engine": "chromium",
+    "width": 260,
+    "id": "core.never-have-i",
+    "frame": "c",
+    "titleOverflow": true,
+    "rulesOverflow": false,
+    "titleLines": 2,
+    "ruleLines": 2
+  },
+  {
+    "engine": "chromium",
+    "width": 260,
+    "id": "core.no-names",
+    "frame": "c",
+    "titleOverflow": true,
+    "rulesOverflow": false,
+    "titleLines": 2,
+    "ruleLines": 3
+  },
+  {
+    "engine": "chromium",
+    "width": 260,
+    "id": "core.captain-dumbass",
+    "frame": "c",
+    "titleOverflow": true,
+    "rulesOverflow": false,
+    "titleLines": 2,
+    "ruleLines": 4
+  },
+  {
+    "engine": "chromium",
+    "width": 260,
+    "id": "vip.toast",
+    "frame": "c",
+    "titleOverflow": true,
+    "rulesOverflow": false,
+    "titleLines": 2,
+    "ruleLines": 6
+  },
+  {
+    "engine": "chromium",
+    "width": 260,
+    "id": "vip.sidekick",
+    "frame": "c",
+    "titleOverflow": true,
+    "rulesOverflow": false,
+    "titleLines": 2,
+    "ruleLines": 6
+  },
+  {
+    "engine": "chromium",
+    "width": 260,
+    "id": "vip.tax",
+    "frame": "c",
+    "titleOverflow": false,
+    "rulesOverflow": true,
+    "titleLines": 1,
+    "ruleLines": 7
+  },
+  {
+    "engine": "chromium",
+    "width": 260,
+    "id": "vip.tax",
+    "frame": "b",
+    "titleOverflow": false,
+    "rulesOverflow": true,
+    "titleLines": 1,
+    "ruleLines": 7
+  },
+  {
+    "engine": "chromium",
+    "width": 260,
+    "id": "vip.fan-club",
+    "frame": "c",
+    "titleOverflow": true,
+    "rulesOverflow": true,
+    "titleLines": 2,
+    "ruleLines": 7
+  },
+  {
+    "engine": "chromium",
+    "width": 260,
+    "id": "vip.fan-club",
+    "frame": "b",
+    "titleOverflow": false,
+    "rulesOverflow": true,
+    "titleLines": 1,
+    "ruleLines": 7
+  },
+  {
+    "engine": "chromium",
+    "width": 260,
+    "id": "vip.standing-ovation",
+    "frame": "c",
+    "titleOverflow": true,
+    "rulesOverflow": true,
+    "titleLines": 2,
+    "ruleLines": 7
+  },
+  {
+    "engine": "chromium",
+    "width": 260,
+    "id": "vip.standing-ovation",
+    "frame": "b",
+    "titleOverflow": false,
+    "rulesOverflow": true,
+    "titleLines": 1,
+    "ruleLines": 7
+  },
+  {
+    "engine": "chromium",
+    "width": 260,
+    "id": "vip.favors",
+    "frame": "c",
+    "titleOverflow": true,
+    "rulesOverflow": false,
+    "titleLines": 2,
+    "ruleLines": 6
+  },
+  {
+    "engine": "chromium",
+    "width": 260,
+    "id": "vip.gift",
+    "frame": "c",
+    "titleOverflow": true,
+    "rulesOverflow": true,
+    "titleLines": 2,
+    "ruleLines": 8
+  },
+  {
+    "engine": "chromium",
+    "width": 260,
+    "id": "vip.gift",
+    "frame": "b",
+    "titleOverflow": false,
+    "rulesOverflow": true,
+    "titleLines": 1,
+    "ruleLines": 8
+  },
+  {
+    "engine": "chromium",
+    "width": 260,
+    "id": "vip.superlatives",
+    "frame": "c",
+    "titleOverflow": true,
+    "rulesOverflow": true,
+    "titleLines": 2,
+    "ruleLines": 9
+  },
+  {
+    "engine": "chromium",
+    "width": 260,
+    "id": "vip.superlatives",
+    "frame": "b",
+    "titleOverflow": false,
+    "rulesOverflow": true,
+    "titleLines": 1,
+    "ruleLines": 9
+  },
+  {
+    "engine": "chromium",
+    "width": 260,
+    "id": "vip.roast",
+    "frame": "c",
+    "titleOverflow": true,
+    "rulesOverflow": true,
+    "titleLines": 2,
+    "ruleLines": 7
+  },
+  {
+    "engine": "chromium",
+    "width": 260,
+    "id": "vip.roast",
+    "frame": "b",
+    "titleOverflow": false,
+    "rulesOverflow": true,
+    "titleLines": 1,
+    "ruleLines": 7
+  },
+  {
+    "engine": "chromium",
+    "width": 260,
+    "id": "vip.title",
+    "frame": "c",
+    "titleOverflow": true,
+    "rulesOverflow": true,
+    "titleLines": 2,
+    "ruleLines": 7
+  },
+  {
+    "engine": "chromium",
+    "width": 260,
+    "id": "vip.title",
+    "frame": "b",
+    "titleOverflow": false,
+    "rulesOverflow": true,
+    "titleLines": 1,
+    "ruleLines": 7
+  },
+  {
+    "engine": "chromium",
+    "width": 260,
+    "id": "vip.excellency",
+    "frame": "c",
+    "titleOverflow": true,
+    "rulesOverflow": false,
+    "titleLines": 2,
+    "ruleLines": 6
+  },
+  {
+    "engine": "chromium",
+    "width": 260,
+    "id": "vip.never-alone",
+    "frame": "c",
+    "titleOverflow": true,
+    "rulesOverflow": true,
+    "titleLines": 2,
+    "ruleLines": 8
+  },
+  {
+    "engine": "chromium",
+    "width": 260,
+    "id": "vip.never-alone",
+    "frame": "b",
+    "titleOverflow": false,
+    "rulesOverflow": true,
+    "titleLines": 1,
+    "ruleLines": 8
+  },
+  {
+    "engine": "chromium",
+    "width": 330,
+    "id": "core.you-specifically",
+    "frame": "c",
+    "titleOverflow": true,
+    "rulesOverflow": false,
+    "titleLines": 2,
+    "ruleLines": 2
+  },
+  {
+    "engine": "chromium",
+    "width": 330,
+    "id": "core.fake-sick",
+    "frame": "c",
+    "titleOverflow": true,
+    "rulesOverflow": false,
+    "titleLines": 2,
+    "ruleLines": 2
+  },
+  {
+    "engine": "chromium",
+    "width": 330,
+    "id": "core.would-you",
+    "frame": "c",
+    "titleOverflow": true,
+    "rulesOverflow": false,
+    "titleLines": 2,
+    "ruleLines": 2
+  },
+  {
+    "engine": "chromium",
+    "width": 330,
+    "id": "core.fuck-around",
+    "frame": "c",
+    "titleOverflow": true,
+    "rulesOverflow": false,
+    "titleLines": 2,
+    "ruleLines": 2
+  },
+  {
+    "engine": "chromium",
+    "width": 330,
+    "id": "core.chosen-one",
+    "frame": "c",
+    "titleOverflow": true,
+    "rulesOverflow": false,
+    "titleLines": 2,
+    "ruleLines": 2
+  },
+  {
+    "engine": "chromium",
+    "width": 330,
+    "id": "core.no-names",
+    "frame": "c",
+    "titleOverflow": true,
+    "rulesOverflow": false,
+    "titleLines": 2,
+    "ruleLines": 2
+  },
+  {
+    "engine": "chromium",
+    "width": 330,
+    "id": "vip.favors",
+    "frame": "c",
+    "titleOverflow": true,
+    "rulesOverflow": false,
+    "titleLines": 2,
+    "ruleLines": 5
+  },
+  {
+    "engine": "chromium",
+    "width": 480,
+    "id": "core.you-specifically",
+    "frame": "c",
+    "titleOverflow": true,
+    "rulesOverflow": false,
+    "titleLines": 2,
+    "ruleLines": 1
+  },
+  {
+    "engine": "chromium",
+    "width": 480,
+    "id": "core.fake-sick",
+    "frame": "c",
+    "titleOverflow": true,
+    "rulesOverflow": false,
+    "titleLines": 2,
+    "ruleLines": 1
+  },
+  {
+    "engine": "chromium",
+    "width": 480,
+    "id": "core.would-you",
+    "frame": "c",
+    "titleOverflow": true,
+    "rulesOverflow": false,
+    "titleLines": 2,
+    "ruleLines": 1
+  },
+  {
+    "engine": "chromium",
+    "width": 480,
+    "id": "core.fuck-around",
+    "frame": "c",
+    "titleOverflow": true,
+    "rulesOverflow": false,
+    "titleLines": 2,
+    "ruleLines": 2
+  },
+  {
+    "engine": "chromium",
+    "width": 480,
+    "id": "core.chosen-one",
+    "frame": "c",
+    "titleOverflow": true,
+    "rulesOverflow": false,
+    "titleLines": 2,
+    "ruleLines": 2
+  },
+  {
+    "engine": "chromium",
+    "width": 480,
+    "id": "core.no-names",
+    "frame": "c",
+    "titleOverflow": true,
+    "rulesOverflow": false,
+    "titleLines": 2,
+    "ruleLines": 2
+  },
+  {
+    "engine": "webkit",
+    "width": 260,
+    "id": "core.you-specifically",
+    "frame": "c",
+    "titleOverflow": true,
+    "rulesOverflow": false,
+    "titleLines": 2,
+    "ruleLines": 2
+  },
+  {
+    "engine": "webkit",
+    "width": 260,
+    "id": "core.fake-sick",
+    "frame": "c",
+    "titleOverflow": true,
+    "rulesOverflow": false,
+    "titleLines": 2,
+    "ruleLines": 2
+  },
+  {
+    "engine": "webkit",
+    "width": 260,
+    "id": "core.crypto-bro",
+    "frame": "c",
+    "titleOverflow": true,
+    "rulesOverflow": false,
+    "titleLines": 2,
+    "ruleLines": 3
+  },
+  {
+    "engine": "webkit",
+    "width": 260,
+    "id": "core.would-you",
+    "frame": "c",
+    "titleOverflow": true,
+    "rulesOverflow": false,
+    "titleLines": 2,
+    "ruleLines": 2
+  },
+  {
+    "engine": "webkit",
+    "width": 260,
+    "id": "core.two-beers-math",
+    "frame": "c",
+    "titleOverflow": true,
+    "rulesOverflow": false,
+    "titleLines": 2,
+    "ruleLines": 2
+  },
+  {
+    "engine": "webkit",
+    "width": 260,
+    "id": "core.fuck-around",
+    "frame": "c",
+    "titleOverflow": true,
+    "rulesOverflow": false,
+    "titleLines": 2,
+    "ruleLines": 3
+  },
+  {
+    "engine": "webkit",
+    "width": 260,
+    "id": "core.chosen-one",
+    "frame": "c",
+    "titleOverflow": true,
+    "rulesOverflow": false,
+    "titleLines": 2,
+    "ruleLines": 4
+  },
+  {
+    "engine": "webkit",
+    "width": 260,
+    "id": "core.rock-paper-drink",
+    "frame": "c",
+    "titleOverflow": true,
+    "rulesOverflow": false,
+    "titleLines": 2,
+    "ruleLines": 3
+  },
+  {
+    "engine": "webkit",
+    "width": 260,
+    "id": "core.never-have-i",
+    "frame": "c",
+    "titleOverflow": true,
+    "rulesOverflow": false,
+    "titleLines": 2,
+    "ruleLines": 2
+  },
+  {
+    "engine": "webkit",
+    "width": 260,
+    "id": "core.no-names",
+    "frame": "c",
+    "titleOverflow": true,
+    "rulesOverflow": false,
+    "titleLines": 2,
+    "ruleLines": 3
+  },
+  {
+    "engine": "webkit",
+    "width": 260,
+    "id": "core.captain-dumbass",
+    "frame": "c",
+    "titleOverflow": true,
+    "rulesOverflow": false,
+    "titleLines": 2,
+    "ruleLines": 4
+  },
+  {
+    "engine": "webkit",
+    "width": 260,
+    "id": "vip.toast",
+    "frame": "c",
+    "titleOverflow": true,
+    "rulesOverflow": true,
+    "titleLines": 2,
+    "ruleLines": 7
+  },
+  {
+    "engine": "webkit",
+    "width": 260,
+    "id": "vip.toast",
+    "frame": "b",
+    "titleOverflow": false,
+    "rulesOverflow": true,
+    "titleLines": 1,
+    "ruleLines": 7
+  },
+  {
+    "engine": "webkit",
+    "width": 260,
+    "id": "vip.sidekick",
+    "frame": "c",
+    "titleOverflow": true,
+    "rulesOverflow": false,
+    "titleLines": 2,
+    "ruleLines": 6
+  },
+  {
+    "engine": "webkit",
+    "width": 260,
+    "id": "vip.tax",
+    "frame": "c",
+    "titleOverflow": false,
+    "rulesOverflow": true,
+    "titleLines": 1,
+    "ruleLines": 8
+  },
+  {
+    "engine": "webkit",
+    "width": 260,
+    "id": "vip.tax",
+    "frame": "b",
+    "titleOverflow": false,
+    "rulesOverflow": true,
+    "titleLines": 1,
+    "ruleLines": 8
+  },
+  {
+    "engine": "webkit",
+    "width": 260,
+    "id": "vip.fan-club",
+    "frame": "c",
+    "titleOverflow": true,
+    "rulesOverflow": true,
+    "titleLines": 2,
+    "ruleLines": 8
+  },
+  {
+    "engine": "webkit",
+    "width": 260,
+    "id": "vip.fan-club",
+    "frame": "b",
+    "titleOverflow": false,
+    "rulesOverflow": true,
+    "titleLines": 1,
+    "ruleLines": 8
+  },
+  {
+    "engine": "webkit",
+    "width": 260,
+    "id": "vip.standing-ovation",
+    "frame": "c",
+    "titleOverflow": true,
+    "rulesOverflow": true,
+    "titleLines": 2,
+    "ruleLines": 7
+  },
+  {
+    "engine": "webkit",
+    "width": 260,
+    "id": "vip.standing-ovation",
+    "frame": "b",
+    "titleOverflow": false,
+    "rulesOverflow": true,
+    "titleLines": 1,
+    "ruleLines": 7
+  },
+  {
+    "engine": "webkit",
+    "width": 260,
+    "id": "vip.favors",
+    "frame": "c",
+    "titleOverflow": true,
+    "rulesOverflow": true,
+    "titleLines": 2,
+    "ruleLines": 7
+  },
+  {
+    "engine": "webkit",
+    "width": 260,
+    "id": "vip.favors",
+    "frame": "b",
+    "titleOverflow": false,
+    "rulesOverflow": true,
+    "titleLines": 2,
+    "ruleLines": 7
+  },
+  {
+    "engine": "webkit",
+    "width": 260,
+    "id": "vip.gift",
+    "frame": "c",
+    "titleOverflow": true,
+    "rulesOverflow": true,
+    "titleLines": 2,
+    "ruleLines": 8
+  },
+  {
+    "engine": "webkit",
+    "width": 260,
+    "id": "vip.gift",
+    "frame": "b",
+    "titleOverflow": false,
+    "rulesOverflow": true,
+    "titleLines": 1,
+    "ruleLines": 8
+  },
+  {
+    "engine": "webkit",
+    "width": 260,
+    "id": "vip.superlatives",
+    "frame": "c",
+    "titleOverflow": true,
+    "rulesOverflow": true,
+    "titleLines": 2,
+    "ruleLines": 9
+  },
+  {
+    "engine": "webkit",
+    "width": 260,
+    "id": "vip.superlatives",
+    "frame": "b",
+    "titleOverflow": false,
+    "rulesOverflow": true,
+    "titleLines": 1,
+    "ruleLines": 9
+  },
+  {
+    "engine": "webkit",
+    "width": 260,
+    "id": "vip.roast",
+    "frame": "c",
+    "titleOverflow": true,
+    "rulesOverflow": true,
+    "titleLines": 2,
+    "ruleLines": 7
+  },
+  {
+    "engine": "webkit",
+    "width": 260,
+    "id": "vip.roast",
+    "frame": "b",
+    "titleOverflow": false,
+    "rulesOverflow": true,
+    "titleLines": 1,
+    "ruleLines": 7
+  },
+  {
+    "engine": "webkit",
+    "width": 260,
+    "id": "vip.title",
+    "frame": "c",
+    "titleOverflow": true,
+    "rulesOverflow": true,
+    "titleLines": 2,
+    "ruleLines": 8
+  },
+  {
+    "engine": "webkit",
+    "width": 260,
+    "id": "vip.title",
+    "frame": "b",
+    "titleOverflow": false,
+    "rulesOverflow": true,
+    "titleLines": 1,
+    "ruleLines": 8
+  },
+  {
+    "engine": "webkit",
+    "width": 260,
+    "id": "vip.excellency",
+    "frame": "c",
+    "titleOverflow": true,
+    "rulesOverflow": true,
+    "titleLines": 2,
+    "ruleLines": 7
+  },
+  {
+    "engine": "webkit",
+    "width": 260,
+    "id": "vip.excellency",
+    "frame": "b",
+    "titleOverflow": false,
+    "rulesOverflow": true,
+    "titleLines": 1,
+    "ruleLines": 7
+  },
+  {
+    "engine": "webkit",
+    "width": 260,
+    "id": "vip.never-alone",
+    "frame": "c",
+    "titleOverflow": true,
+    "rulesOverflow": true,
+    "titleLines": 2,
+    "ruleLines": 9
+  },
+  {
+    "engine": "webkit",
+    "width": 260,
+    "id": "vip.never-alone",
+    "frame": "b",
+    "titleOverflow": false,
+    "rulesOverflow": true,
+    "titleLines": 1,
+    "ruleLines": 9
+  },
+  {
+    "engine": "webkit",
+    "width": 330,
+    "id": "core.you-specifically",
+    "frame": "c",
+    "titleOverflow": true,
+    "rulesOverflow": false,
+    "titleLines": 2,
+    "ruleLines": 2
+  },
+  {
+    "engine": "webkit",
+    "width": 330,
+    "id": "core.fake-sick",
+    "frame": "c",
+    "titleOverflow": true,
+    "rulesOverflow": false,
+    "titleLines": 2,
+    "ruleLines": 2
+  },
+  {
+    "engine": "webkit",
+    "width": 330,
+    "id": "core.would-you",
+    "frame": "c",
+    "titleOverflow": true,
+    "rulesOverflow": false,
+    "titleLines": 2,
+    "ruleLines": 2
+  },
+  {
+    "engine": "webkit",
+    "width": 330,
+    "id": "core.fuck-around",
+    "frame": "c",
+    "titleOverflow": true,
+    "rulesOverflow": false,
+    "titleLines": 2,
+    "ruleLines": 2
+  },
+  {
+    "engine": "webkit",
+    "width": 330,
+    "id": "core.chosen-one",
+    "frame": "c",
+    "titleOverflow": true,
+    "rulesOverflow": false,
+    "titleLines": 2,
+    "ruleLines": 2
+  },
+  {
+    "engine": "webkit",
+    "width": 330,
+    "id": "core.no-names",
+    "frame": "c",
+    "titleOverflow": true,
+    "rulesOverflow": false,
+    "titleLines": 2,
+    "ruleLines": 2
+  },
+  {
+    "engine": "webkit",
+    "width": 330,
+    "id": "vip.favors",
+    "frame": "c",
+    "titleOverflow": true,
+    "rulesOverflow": false,
+    "titleLines": 2,
+    "ruleLines": 5
+  },
+  {
+    "engine": "webkit",
+    "width": 480,
+    "id": "core.you-specifically",
+    "frame": "c",
+    "titleOverflow": true,
+    "rulesOverflow": false,
+    "titleLines": 2,
+    "ruleLines": 1
+  },
+  {
+    "engine": "webkit",
+    "width": 480,
+    "id": "core.fake-sick",
+    "frame": "c",
+    "titleOverflow": true,
+    "rulesOverflow": false,
+    "titleLines": 2,
+    "ruleLines": 1
+  },
+  {
+    "engine": "webkit",
+    "width": 480,
+    "id": "core.would-you",
+    "frame": "c",
+    "titleOverflow": true,
+    "rulesOverflow": false,
+    "titleLines": 2,
+    "ruleLines": 1
+  },
+  {
+    "engine": "webkit",
+    "width": 480,
+    "id": "core.fuck-around",
+    "frame": "c",
+    "titleOverflow": true,
+    "rulesOverflow": false,
+    "titleLines": 2,
+    "ruleLines": 2
+  },
+  {
+    "engine": "webkit",
+    "width": 480,
+    "id": "core.chosen-one",
+    "frame": "c",
+    "titleOverflow": true,
+    "rulesOverflow": false,
+    "titleLines": 2,
+    "ruleLines": 2
+  },
+  {
+    "engine": "webkit",
+    "width": 480,
+    "id": "core.no-names",
+    "frame": "c",
+    "titleOverflow": true,
+    "rulesOverflow": false,
+    "titleLines": 2,
+    "ruleLines": 2
+  }
+]

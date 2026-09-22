@@ -58,36 +58,16 @@ test("Core instructions fit at 390x844 with ratio, pack mark and no CTA occlusio
     expect(m.mark, `${card.id} keeps its pack mark`).toBe(true);
   }
 });
-test("the imprint is decorative, clipped to the parchment, and under the rules", async ({
+test("card parchment stays plain without an icon lattice or tint", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await seed(page, revealed(samples[0]));
-  await expect(page.locator(".card-imprint-lattice")).toHaveCount(1);
-  const m = await page.evaluate(() => {
-    const lattice = document.querySelector(".card-imprint-lattice")!;
-    const rules = document.querySelector(".study-rules")!;
-    const body = document.querySelector(".study-body")!;
-    const style = getComputedStyle(lattice);
-    const box = lattice.getBoundingClientRect();
-    const bodyBox = body.getBoundingClientRect();
-    return {
-      pointer: style.pointerEvents,
-      opacity: Number(style.opacity),
-      latticeZ: Number(style.zIndex),
-      rulesZ: Number(getComputedStyle(rules).zIndex),
-      masked: style.maskImage !== "none" || style.webkitMaskImage !== "none",
-      // The lattice is clipped to the parchment panel, never over the frame.
-      inside: box.left >= bodyBox.left - 1 && box.right <= bodyBox.right + 1,
-      motifs: lattice.querySelectorAll("pattern").length,
-    };
-  });
-  expect(m.pointer).toBe("none");
-  expect(m.opacity).toBeLessThan(0.15);
-  expect(m.rulesZ).toBeGreaterThan(m.latticeZ);
-  expect(m.masked).toBe(true);
-  expect(m.inside).toBe(true);
-  expect(m.motifs).toBe(1);
+  await expect(page.locator(".study-rules p")).toHaveText(samples[0].rules);
+  await expect(
+    page.locator(".card-imprint-lattice, .card-imprint-tint"),
+  ).toHaveCount(0);
+  await expect(page.locator(".card-footer .pack-logo")).toBeVisible();
 });
 test("Previous Card owns the same 2:3 geometry as gameplay", async ({
   page,
@@ -133,74 +113,49 @@ test("a short phone scrolls long rules with a visible overflow affordance", asyn
     "bottom",
   );
 });
-test("artwork scene comes from the registry, not the card id", async ({
+test("legacy artwork references keep their saved text on the shared ornate front", async ({
   page,
 }) => {
-  const cheers = cards.find((c) => c.id === "core.cheers-idiots")!;
-  const placeholder = plain.find((c) => c.artwork === "art/tankard.webp")!;
-  await seed(page, revealed(cheers));
-  const image = page.locator(".study-illustration img");
-  await expect(image).toHaveClass(/painted-scene/);
-  await expect
-    .poll(() => image.evaluate((el) => (el as HTMLImageElement).naturalWidth))
-    .toBeGreaterThan(0);
-  await seed(page, revealed(placeholder));
-  await expect(page.locator(".study-illustration img")).toHaveClass(
-    /placeholder-scene/,
-  );
-});
-
-test("illustrations change inside the opening without painting over the frame", async ({
-  page,
-}) => {
-  await page.emulateMedia({ reducedMotion: "reduce" });
-  await seed(page, revealed(cards.find((c) => c.id === "core.cheers-idiots")!));
-  await page.addStyleTag({
-    content:
-      ".card-stage{transform:none}.study-illustration img{visibility:hidden}.study-illustration{background:red}",
-  });
-  const face = page.locator(".study-face");
-  const red = await face.screenshot();
-  await page.addStyleTag({ content: ".study-illustration{background:blue}" });
-  const blue = await face.screenshot();
-  const sharp = (await import("sharp")).default;
-  const a = await sharp(red)
-    .ensureAlpha()
-    .raw()
-    .toBuffer({ resolveWithObject: true });
-  const b = await sharp(blue).ensureAlpha().raw().toBuffer();
-  const pixel = (data: Buffer, x: number, y: number) => {
-    const offset =
-      (Math.floor(y * a.info.height) * a.info.width +
-        Math.floor(x * a.info.width)) *
-      4;
-    return [...data.subarray(offset, offset + 4)];
-  };
-  // The aperture changes, but the top ornament, side rails and title stay intact.
-  expect(pixel(a.data, 0.5, 0.2)).not.toEqual(pixel(b, 0.5, 0.2));
-  for (const [x, y] of [
-    [0.5, 0.065],
-    [0.05, 0.25],
-    [0.95, 0.25],
-    [0.5, 0.46],
+  for (const card of [
+    cards.find((c) => c.id === "core.cheers-idiots")!,
+    plain[0],
   ]) {
-    expect(pixel(a.data, x, y)).toEqual(pixel(b, x, y));
+    await seed(page, revealed(card));
+    await expect(page.locator(".study-title h2")).toHaveText(card.title);
+    await expect(page.locator(".study-rules p")).toHaveText(card.rules);
+    await expect(page.locator(".study-illustration")).toHaveCount(0);
+    expect(
+      await page
+        .locator(".study-face")
+        .evaluate((el) => getComputedStyle(el).backgroundImage),
+    ).toContain("ornate-teal-frame");
   }
 });
 
-test("failed scene and placeholder leave the original leather visible", async ({
+test("ornate surface loads as one complete frame", async ({ page }) => {
+  await seed(page, revealed(plain[0]));
+  const size = await page.locator(".study-face").evaluate(async (el) => {
+    const url = getComputedStyle(el).backgroundImage.match(
+      /url\(["']?(.*?)["']?\)/,
+    )![1];
+    const image = new Image();
+    image.src = url;
+    await image.decode();
+    return [image.naturalWidth, image.naturalHeight];
+  });
+  expect(size).toEqual([768, 1152]);
+});
+
+test("missing frame keeps readable leather and parchment fallback surfaces", async ({
   page,
 }) => {
-  await page.route("**/art/cheers.webp", (route) => route.abort());
-  await page.route("**/art/tankard.webp", (route) => route.abort());
-  await seed(page, revealed(cards.find((c) => c.id === "core.cheers-idiots")!));
-  await expect(page.locator(".study-illustration img")).toHaveCSS(
-    "visibility",
-    "hidden",
-  );
+  await page.route("**/*ornate-teal-frame*", (route) => route.abort());
+  await seed(page, revealed(plain[0]));
   const background = await page
     .locator(".study-face")
     .evaluate((el) => getComputedStyle(el).backgroundImage);
-  expect(background).toContain("continuous-frame");
-  await expect(page.locator(".study-rules")).toBeVisible();
+  expect(background).toContain("linear-gradient");
+  expect(background).toContain("rgb(244, 223, 180)");
+  await expect(page.locator(".study-title h2")).toHaveText(plain[0].title);
+  await expect(page.locator(".study-rules p")).toHaveText(plain[0].rules);
 });

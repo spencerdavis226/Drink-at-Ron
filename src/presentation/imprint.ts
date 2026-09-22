@@ -24,7 +24,7 @@ const CELL = 62;
 const ICON_SIZE = 42;
 const ORNAMENT_SIZE = 17;
 
-const QUARTER_TURNS = [0, 90, 180, 270] as const;
+const ICON_TURNS = [-12, 0, 0, 12] as const;
 const EIGHTH_TURNS = [0, 45, 90, 135, 180, 225, 270, 315] as const;
 
 export interface ResolvedImprint {
@@ -69,12 +69,12 @@ export function resolveImprint(cardId: string): ResolvedImprint {
     tint,
     tintColor: wash.color,
     tintOpacity: wash.opacity,
-    iconRotation: pick(QUARTER_TURNS, hash, 19),
+    iconRotation: pick(ICON_TURNS, hash, 19),
     ornamentRotation: pick(EIGHTH_TURNS, hash, 22),
     cell: CELL,
     iconSize: ICON_SIZE,
     ornamentSize: ORNAMENT_SIZE,
-    inkOpacity: 0.07 + ((hash >>> 26) % 4) / 100,
+    inkOpacity: 0.055 + ((hash >>> 26) % 4) / 100,
     phaseX: (hash >>> 11) % CELL,
     phaseY: (hash >>> 17) % CELL,
   };

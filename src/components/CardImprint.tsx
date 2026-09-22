@@ -69,6 +69,8 @@ export function Lattice({
         className="card-imprint-pattern"
         width="100%"
         height="100%"
+        viewBox="0 0 320 400"
+        preserveAspectRatio="xMidYMid slice"
         focusable="false"
       >
         <defs>

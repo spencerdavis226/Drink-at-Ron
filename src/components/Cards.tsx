@@ -1,10 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import type { CardDefinition, DiceRoll } from "../game/types";
-import { resolveArtwork } from "../presentation/artwork";
 import { diceResultText } from "../presentation/dice/result-text";
 import { CardPackMarks } from "./PackMarks";
-import { CardImprint } from "./CardImprint";
-import { Artwork } from "./UI";
 type Overflow = "none" | "top" | "bottom" | "both";
 export function CardFace({
   card,
@@ -56,7 +53,6 @@ export function CardFace({
     document.fonts?.ready.then(updateOverflow).catch(() => undefined);
     return () => observer.disconnect();
   }, [resolved, card.id]);
-  const art = resolveArtwork(card.artwork);
   return (
     <div
       className="study-face"
@@ -92,23 +88,10 @@ export function CardFace({
         }
       }}
     >
-      <div className="study-illustration">
-        <Artwork
-          key={art.url}
-          src={art.url}
-          fallback={art.fallbackUrl}
-          alt=""
-          className={
-            art.scene === "painted" ? "painted-scene" : "placeholder-scene"
-          }
-          style={{ objectFit: art.fit }}
-        />
-      </div>
       <div className="study-title" onScroll={cancelGestureByScroll}>
         <h2>{card.title}</h2>
       </div>
       <div className="study-body">
-        <CardImprint cardId={card.id} />
         <div
           ref={rulesRef}
           className={`study-rules ${resolved ? "rules-resolved" : ""}`}

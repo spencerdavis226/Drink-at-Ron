@@ -64,9 +64,39 @@ The player should read one actionable instruction without figuring out the layou
 - Large empty HUD-to-card gaps are not inherently premium. Balance the entire viewport before making the rules panel smaller. Ordinary play must not require scrolling past a mostly empty header.
 - Short-height landscape needs an intentional approved reading composition. Never shrink the full portrait card until text is tiny or leave the rule entirely below the initial screen. A compact card alongside an accessible reading area is a study candidate, not an already-approved new screen.
 
-## Typography
+## Approved C3 frame — title finish pending (2026-09-22)
 
-Use locally bundled **Grenze** throughout, with its existing license. No font swap as an expedient fix.
+Direct user feedback supersedes the older icon-imprint instructions: **plain painted parchment, no lattice, icon wallpaper, or per-card tint**. Retain the small pack identifier. Personality comes from the existing painted materials and bronze craftsmanship.
+
+C3 restores bronze hop-vine scrollwork around a moderately enlarged teal recess. The divider is about 28% down the complete card; the rest is predominantly parchment. Avoid the oversized, bare C2 treatment. Current study safe region: title x17–83%, y8.5–24.5%; rules container x12–88%, y32–89%. These regions are tied to `c3-ornate-quarter.png`, not universal coordinates for future generated images. Side ornaments must remain clear of title glyphs.
+
+**Embossed title recommendation:** opaque warm ivory `#f5ddb0`, Grenze bold; shallow upper highlight and lower bronze/contact shadow, e.g. `text-shadow: 0 -.5px 0 #fff5cfaa, 0 1px 0 #745431, 0 2px 1px #0009`. This suggests raised foil lettering seated in leather while preserving a solid readable face. No transparency on the glyph fill, thick outlines, broad glows, texture cutouts through letters, or moving highlights. Keep body text flat dark ink with no emboss/shadow. All lettering stays live, selectable DOM text; honor user contrast preferences when integrating. Emboss is an optional presentation treatment, never a condition for legibility.
+
+Typography bounds: normal title 24–36px, 1.04 line-height, two lines; enlarged study 36px. C3 fits all catalog titles at 330px with that enlarged setting, but **does not fit all enlarged titles at 260px**. Provide an explicit accessible full-text reading fallback before shipping; never hide this limitation with clipping or automated font shrinking. Rule scroll remains available. Source Serif remains an optional study, not a selected replacement.
+
+C3 frame is approved and integrated. Its current embossed title finish is explicitly not final: the next typography comparison and acceptance plan is in STATUS. Screenshots and measured failures are recorded in the study. Older directions below are historical when they conflict with this section.
+
+## Typography-first front study — proposed, awaiting selection (2026-09-22)
+
+Review `docs/studies/front-typography-2026-09-22/index.html` through the Vite dev server. This is an isolated development study using the **actual CardFace, imprint, pack mark and locally loaded fonts**. Editable title/rules and all 52 catalog cards; two frames; 260/330/480px card widths; 150% text. No changes to production rendering in this study. PNGs are browser captures of real HTML text, not generated lettering.
+
+**Recommendation:** refine C (recessed teal) around typography before adopting it. The sample's central crest rises into the title region. B (folded parchment) is the stronger unmodified option for title capacity. Do not approve a blank frame without its longest live titles.
+
+- Reserve a genuinely clear title zone approximately **x16–84%, y7.5–22%** of the whole card. Recess side ornaments outside it; move the center crest below y23%. These are proposed art constraints, not a claim that current C meets them. Test the final image against measured glyph bounds.
+- Titles: Grenze bold, normally 24–32px, balanced wrapping, at most two lines at a 260px-wide card. Default authoring target 2–4 words / roughly 12–24 characters; flag over 28 characters for visual review, not rejection. Wide letters and long unbroken words make character limits insufficient. No automatic tiny type, ellipsis, letter squeezing, or baked text.
+- Rules: compare current Grenze against **Source Serif 4 Regular**, 22px / 1.4 line height, dark brown on pale parchment. Source Serif is the proposed reading face, not yet approved. It uses more horizontal room, so density must be evaluated honestly. Center short actions; test left alignment for longer paragraphs before finalizing that behavior.
+- Copy: prefer one action, 8–24 words; review above 32 words or 180 characters. Fit checks are authoritative; counts are editorial guidance. Never silently truncate saved or supplied rules. Highlight resolved dice values semantically without a separate result badge.
+- Keep pattern ink faint, preserve quiet areas under letters, and evaluate contrast over actual textured pixels. Do not add outlines or heavy shadows to body text. Cream titles on teal need only a subtle contact shadow.
+- At 150% text, both current samples fail for sufficiently long titles. Production needs an explicit accessible reading layout / full-text fallback; shrinking the font is not an acceptable solution. Preserve 2:3 for the normal card and keep all long rules reachable. Do not mark accessibility complete based on these samples.
+- Acceptance before integration: all 52 current titles plus wide-letter/unbroken-word stress cases; short/long rules; resolved dice text; Chromium and WebKit; 260/330/480px card widths; enlarged text; then real iPhone/iPad. Existing saves and typography fallbacks remain readable. Offline font loading and release budgets are gates when the font moves into production.
+
+Study evidence: `measurements.json` records overflow only. At 260px, C exceeds the proposed title box on 22/52 current cards in both browsers; B on 0/52. At 330px C has 7 title-box failures and at 480px 6 (small endpoint overflows count as failures); B has none. Source Serif rules require inner scrolling for 8 Chromium / 11 WebKit cards at 260px, none at 330/480px. These are **study-layout measurements**, not production acceptance. Captured enlarged-text stress visibly fails both title treatments. Different browser wrapping warrants follow-up; do not conceal it with relaxed assertions.
+
+Source Serif 4 study font is vendored under the study directory only, from Adobe's official repository at commit `80d3f8894c09c937bebfa9011247d2e1c79fd6f4`, `WOFF2/TTF/SourceSerif4-Regular.ttf.woff2`, with `SOURCE-SERIF-LICENSE.md` (SIL OFL). Source: https://github.com/adobe-fonts/source-serif . No runtime CDN, font dependency, or production budget change introduced by this study.
+
+## Production typography baseline (pending study selection)
+
+The application currently uses locally bundled **Grenze** throughout, with its existing license. The user explicitly authorized font changes on 2026-09-22; the typography-first study above proposes the next direction. These older production ranges are historical defaults until that study is selected, not a prohibition on improving typography.
 
 | Role | Starting range | Treatment |
 | --- | --- | --- |

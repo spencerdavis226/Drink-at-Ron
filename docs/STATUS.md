@@ -1,6 +1,84 @@
 # Current state and implementation plan
 
-Updated 2026-09-21. **Single authoritative handoff for OpenCode Go, Codex, and other editors.** Read `AGENTS.md` first. This replaces the old numbered model-routing plan; historical studies are references, not new work orders. Direct user instructions win.
+Updated 2026-09-22. **Single authoritative handoff for OpenCode Go, Codex, and other editors.** Read `AGENTS.md` first. This replaces the old numbered model-routing plan; historical studies are references, not new work orders. Direct user instructions win.
+
+## Approved milestone — Ornate teal front (2026-09-22)
+
+User approved C3 and explicitly requested commit/push to the existing `codex/finish-v1` branch. **C3 is now the actual shared game/Previous Card/workshop front**, not only a study. Runtime master: `src/presentation/art/ornate-teal-frame.webp` (768×1152, ~184 KiB); source and generation prompts remain in `assets/source/front-studies-2026-09-22/`. Frame geometry is 2:3, title x17–83% / y8.5–24.5%, rules x12–88% / y32–89%. No new card illustration, no per-card tint/lattice. Icons workshop tab removed; historical icon sources retained but not shipped. Legacy artwork fields/saves remain compatible. Failed frame requests retain a simple leather/parchment gradient fallback. Title text remains live Grenze; its current finish is a checkpoint, **not approved final typography**.
+
+Changed areas: shared CardFace/CSS/preloads/frame manifest; optimized/source art and reproducible asset script; workshop; replacement legacy-art/frame-loading/offline/browser assertions; preserved typography studies and licensed study font; README/AGENTS/design/handoff. No engine, saved-state schema, dice outcomes or motion timing changes. Production screenshots at `docs/studies/front-typography-2026-09-22/approved-game-{320,390,768}.png` were inspected; emulation only.
+
+Verification: 89 unit tests passed; Pages build, content validation, TypeScript and budgets passed (2478 KiB runtime, 81.8 KiB initial + 146.7 KiB lazy gzip); Chromium/WebKit browser suite **113 passed / 3 explicit service-worker skips**, no retry failures. Two-build update passed (update deferred during play, offered between games, saved session preserved). **Workshop is not green:** first complete run was 12 passed / 6 WebKit navigation-context failures. Added explicit requested-iframe/document/font readiness checks without weakening geometry assertions; subsequent reruns encountered readiness/test timeouts during extreme host load (observed load averages 277.64 / 215.28 / 124.03). Stopped the serial rerun; a simple viewport test had slowed from ~0.4s to 17.8s. Re-run the full workshop suite when the machine is responsive and resolve any remaining failures before release. This is an explicitly requested checkpoint, not a release-ready claim. Physical iOS, group playtesting, and smallest-phone enlarged-title visual polish remain open. Push targets this development branch; no merge or main deployment is authorized.
+
+## Next assigned task — Title typography and finish
+
+**Goal:** make the title feel deliberately typeset and physically integrated with the approved teal leather, retaining immediate readability. Keep C3 artwork fixed for this pass. Do not compensate with more glow, transparent letters, a large stroke, black sticker-like outline, baked image text or another frame generation.
+
+### 0. Close checkpoint verification
+
+Re-run `npm run test:workshop -- --workers=1` on a responsive host before title edits. Verify the new iframe readiness helper and retain all assertions. The initial navigation-context race is reproducible evidence; later timing failures occurred under extreme load and are not a proven application regression. Do not dismiss persistent failures as load without investigation.
+
+### 1. Diagnose and build a controlled comparison
+
+- Start from the milestone above. Inspect `src/presentation/theme.css` @font-face declarations and the actual bundled Grenze font metadata: verify available weights, variable axes and whether browser synthesis is occurring. Do not assume declaring a weight range creates real font weights. Record findings before choosing a fix.
+- Extend the existing development-only typography study, reusing CardFace and the production title box. It must not touch real saves or enter the production bundle. Keep title wording, size, frame and lighting identical across comparisons.
+- Compare three bounded treatments: (A) current Grenze with a genuine medium/semibold face and no decorative effect; (B) that face with a restrained warm foil/pressed edge; (C) Source Serif 4 Semibold as a quieter alternative display treatment. If a face is missing, vendor it from its official source with its licence, initially only in the study. Source Serif body text remains optional; do not change rules/menu typography as collateral work.
+- Include short `House Special`, two-line `Fuck Around & Find Out`, wide-letter and long-unbroken-word stress titles, and the longest real catalog titles. Show normal and enlarged type, phone and tablet views. Default to fewer effects, not more.
+
+### 2. Set typography rules and get visual selection
+
+- Tune weight, visible letter height, balanced line breaks, line spacing and optical centering first. Compare 1.08–1.15 two-line leading against the cramped 1.04 baseline. Start near 28–34px at a 330px card; choose sizes from actual rendered evidence, never use a dynamic shrink-to-fit loop. Single-line titles should look intentional, not lost in the header. Use one shared optical offset, not per-card position hacks.
+- Keep normal titles at two lines. Editorial guidance: concise 2–4-word names; character counts are warnings only. Rendered bounds are the acceptance gate. Never silently rename existing content or truncate saved titles to make the study pass.
+- For material finish, retain an opaque warm ivory/gold face, one subtle light edge and a tight contact shadow. Compare against flat lettering. No broad blur, outer glow, high-contrast multi-pixel bevel, full-glyph transparency or glitter animation. Body text remains flat readable ink. Any texture/gradient enhancement must degrade to an equally readable solid fill.
+- Review texture contrast at the actual lettering pixels and after flip/rest, not just on an empty frame. Aim for at least 4.5:1 across sampled letter/background positions even where large-title rules permit less. Honor forced-colors/user contrast settings.
+- Present actual DOM-rendered samples for user selection **before replacing production title styling**. Update `docs/ART_DIRECTION.md` with the chosen font files/weights, tokens, safe zones, line spacing, color/shadow recipe and editorial fit rules.
+
+### 3. Implement the selected treatment and verify
+
+- Centralize the selected title tokens in theme CSS; apply the same title renderer to play, Previous Card and workshop. Avoid duplicated experimental selectors or per-title exception lists. Clean the approved study overrides after integration so it cannot misrepresent production.
+- Solve small-phone enlarged-title readability explicitly. Current study failures: at 260px card width and 36px titles, 36 of 52 titles exceed their box, 3 exceed two lines. Keep full text reachable and stationary taps/scroll cancellation intact; design an accessible full-title reading fallback if the fixed art cannot contain it. Do not call scrolling/clipping an elegant final treatment without review.
+- Wait for the actual font before measuring wrap; preload only the chosen font weight/subset and preserve a usable local fallback. Title geometry must not jump at flip completion, font arrival or resume. Keep engine persistence and animation timings unchanged.
+- Automate real glyph/block containment, horizontal overflow, line count and full-title access for all 52 cards at 260/330/480px card widths, normal and enlarged text, in Chromium/WebKit. Capture selected comparisons in both browsers. Check keyboard/screen readers, reduced motion, Previous Card and canceled/held-pointer gestures.
+- Run unit + Pages build/budgets + relevant browser/workshop tests, then the full browser suite and two-build update/offline flow when font integration changes release assets. Keep source licences, fonts and assets local. Measure production bundle changes; no budget increases by default.
+- Finish with physical iPhone/iPad review for rasterization, glare/readability, Home Screen and frame smoothness. Browser emulation is not device evidence. Record exact checks, remaining risks and commit in this same handoff.
+
+**Delivery:** one selected, documented title system; no engine/content rewrite or new visual framework. Source/reference art remains the approved ornate teal master. Historical plans below are superseded where they conflict.
+
+## Current direction — Ornate teal C3, plain parchment (2026-09-22)
+
+Latest user feedback supersedes the imprint direction and oversized C2: retain elegant bronze embroidery, title composition roughly one quarter of face, enough clear area for larger two-line live titles; **remove the iconography background**. C2 was rejected as oversized and too plain. Generated C3 from original C (`assets/source/front-studies-2026-09-22/c3-ornate-quarter.png`, exact built-in generation prompt in `C3-PROMPT.md`). Divider is about 28% down; bronze vines frame the lettering instead of filling its center. C3 is still a review study, not the production replacement.
+
+**Applied:** removed CardImprint from actual shared CardFace, so game/Previous Card/studies now show plain painted parchment without tint or lattice. Kept earlier source/library work intact; dormant icon-authoring tooling is historical and should be retired from the workshop during final integration. No engine/session change. Build no longer includes icon sprite chunk. Replaced the browser imprint assertion with a plain-parchment/retained-pack-mark check.
+
+**Preview:** existing `/docs/studies/front-typography-2026-09-22/` now compares C3 vs original C, defaults to the user's example title at 36px, has a subtle Embossed title toggle and optional Source Serif rules. Uses real DOM text. No production font switch. `audit-c3.ts`, `measurements-c3.json`, `c3-large-{chromium,webkit}.png`, and individual-card captures record this version; older captures remain historical.
+
+**Evidence:** all 52 normal-size titles fit within two lines at 260/330/480px card widths in Chromium/WebKit. At enlarged 36px, all titles fit at 330/480px; **36 title-box failures at 260px**, including 3 titles exceeding two lines. Normal rules scroll on 8 cards at 260px, none at 330/480; enlarged rules scroll on 25/27 cards at 260 and 10/11 at 330 (Chromium/WebKit), none at 480. These are study tests, not physical-device or full-app acceptance. Unit **89 passed**; Pages build passed (**2459 KiB runtime, 81.8 KiB initial / 146.7 KiB lazy gzip**); focused plain-parchment regression **2 passed**. Full browser/workshop/update suites not rerun; older illustration-specific assertions from earlier WIP still await adaptation. No all-green release claim.
+
+**Next:** user reviews C3 with real type. After selection, integrate its geometry, solve the smallest enlarged-title reading fallback without tiny type or truncation, remove dormant imprint workshop UI, adapt obsolete illustration tests and complete browser/workshop/offline gates. Preserve 2:3, saves, gestures, card motion, dice and all WIP. No commit/push/publication.
+
+## Latest task — Live typography proof (2026-09-22)
+
+User requested actual programmatic text on C/B and authorized font exploration. Added **isolated dev study**, not a production replacement: `docs/studies/front-typography-2026-09-22/` (HTML/React/CSS, local licensed Source Serif font, screenshots, reproducible `audit.ts`, overflow measurements). Open `/docs/studies/front-typography-2026-09-22/` on the running Vite server. Reuses real CardFace/imprints/pack marks; no saved-game access. Toggle Source Serif rules, edit text, select any card, choose card width and enlarged text. Excluded from the app entry/module graph; not a public menu.
+
+**Finding:** C looks good at ordinary sizes but its crest/title geometry is too restrictive; 22/52 titles exceed its box at 260px, versus none for B (Chromium and WebKit). Longer Source Serif rules scroll at 260px; both samples fail oversized title stress. **Recommendation: refine C's artwork around a clear 68%-wide, 14.5%-high title safe zone, move crest below it, keep Grenze titles, consider Source Serif rules.** Proposed typography/copy/acceptance guidelines added to ART_DIRECTION. No claim of perfect fit or physical-device validation. Production application/tests from earlier WIP remain unfinished as described below.
+
+**Next:** review the live samples/font comparison; choose refined C or B. Refine the selected master against the recorded safe zone, then integrate and complete the existing browser/workshop/offline gates. Preserve previous WIP. No commit, push or publication.
+
+## Latest visual feedback — Three alternative fronts (2026-09-22)
+
+The user rejected the first full-parchment master's bronze plaque as a slab attached to the paper and requested three new studies. Generated with the built-in image tool from the approved back and first parchment front; saved at `assets/source/front-studies-2026-09-22/` with exact prompts in `PROMPTS.md`:
+
+- **A — manuscript:** title and rules share one sheet; ornamental ink divider.
+- **B — folded parchment:** title on a scroll fold tied into the side rails.
+- **C — inlaid header (recommended):** teal title recess with curved brass boundary flowing into the parchment surround.
+
+These are review samples, not selected runtime assets. **Next: user chooses a direction, then integrate its geometry and verify live typography, imprints, scrolling and motion.** Prior implementation WIP remains intact: first parchment master, all 52 imprint assignments, scaled motifs, retired runtime illustration rendering/preloads, and unit coverage. Unit tests (89) and Pages build passed before this new feedback; browser/workshop tests have NOT been completed for that WIP. Old illustration-specific browser assertions still need replacement with equivalent new-front containment/fallback/offline checks. Do not describe the implementation as release-ready. No new sample has replaced the app's current front. No commit, push or publication.
+
+## Current task — Full parchment front integration (2026-09-22)
+
+User authorized implementation and revision of the new front plan. Starting HEAD `fea1978`, clean working tree on `codex/finish-v1`. Slice A is already committed; its older uncommitted note below is historical.
+
+Revised execution: generate one matched bronze-plaque/parchment master from existing references; integrate and inspect before further variants. Preserve the complete 2:3 silhouette, existing motion, gestures, dice, and saves. Retire hero art from CardFace and its speculative preloads, but **retain legacy artwork fields/resolver/assets as compatibility and provenance** rather than changing schemas or deleting historical content. Keep the master intact; clip runtime tint/lattice to the parchment contour, with quiet rules text above it. No extra parchment tile unless the master actually needs one. Enlarge the title region and rules space instead of shrinking type. Finish curated imprint assignments, preserve deterministic fallbacks and attribution, then run unit/build/Pages/browser/workshop checks. Physical-device verification remains separate. No push, commit or publication requested.
 
 ## Card imprint system — Slice A landed, front art pending — 2026-09-21
 

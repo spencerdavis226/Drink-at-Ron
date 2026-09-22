@@ -69,17 +69,17 @@ Re-export the generated UI sheet with `npx tsx scripts/chrome.ts`; regenerate ic
 
 ## Production workshop and release
 
-Open `/?workshop=1` on the development server for isolated card previews, seeded sessions, and dice fixtures. The `Icons` tab (`/?workshop=1&tab=icons`) browses the vendored icon library and previews an icon as a card imprint. Workshop code and fixtures are excluded from production; the approved shared frame and its assets are shipped. The `core` pack holds the 40-card sample collection (dice cards included) and `VIP night` is an additional themed pack; group balance remains untested.
+Open `/?workshop=1` on the development server for isolated card previews, seeded sessions, and dice fixtures. The approved ornate teal front uses plain parchment; the retired imprint browser is no longer exposed. Workshop code and fixtures are excluded from production; the approved shared frame and its assets are shipped. The `core` pack holds the 40-card sample collection (dice cards included) and `VIP night` is an additional themed pack; group balance remains untested.
 
 See [Game design](docs/GAME_DESIGN.md), [Playtest record](docs/PLAYTEST.md), and [GitHub Pages release](docs/GITHUB_PAGES.md). The unified front is approved and used throughout. Dice use the approved full-screen `@3d-dice/dice-box-threejs` overlay; dice cards are mixed into the `core` pack (see STATUS.md).
 
 Illustrations follow [Image creation guidelines](docs/ILLUSTRATION_GUIDELINES.md): centered, crop-safe, simple, original fantasy. Pack logos are registered separately and appear consistently in selection, pause, and card footers.
 
-## Card imprints
+## Card front
 
-Each card front carries a per-card icon lattice, imprinted into the parchment behind the rules, plus a paper tint. Both are generated at runtime from the card id: `src/content/imprint.ts` holds optional assignments, `src/presentation/imprint.ts` derives a stable icon, ornament, tint and geometry for anything unassigned, and `scripts/imprint.ts` compiles only the referenced icons into a lazy sprite. A card without an assignment still renders — new content is never blocked on art.
+The approved ornate teal master is shared by gameplay, Previous Card and the workshop. Titles and rules are real HTML text. Parchment is plain: the icon-lattice/tint experiment is retired. Its vendored sources and attribution remain as project history; they are not shipped in the runtime. Legacy card artwork fields remain compatible with saved sessions but do not produce individual scenes on the front.
 
-Assign an icon in the workshop's `Icons` tab (click a tile to copy its slug), add the entry to `src/content/imprint.ts`, then run `npm run imprint`. The build fails if the sprite is stale or a slug is missing.
+The next title-typography pass is specified in [STATUS.md](docs/STATUS.md). Development-only comparisons live at `/docs/studies/front-typography-2026-09-22/` when Vite is running.
 
 ## Credits and licences
 

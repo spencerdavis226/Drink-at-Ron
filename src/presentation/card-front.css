@@ -22,64 +22,28 @@
   isolation: isolate;
   padding: 0;
   overflow: hidden;
-  background: #213b39 url("./art/continuous-frame.webp") center / 100% 100%
-    no-repeat;
-}
-
-/* Same master above and below the artwork. Only the illustration aperture is
-   transparent in the upper surface; no independently scaled frame pieces. */
-.study-face::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
-  background: url("./art/continuous-frame.webp") center / 100% 100% no-repeat;
-  -webkit-mask: url("./art/frame-window.svg") center / 100% 100% no-repeat;
-  mask: url("./art/frame-window.svg") center / 100% 100% no-repeat;
-}
-
-.study-illustration {
-  position: absolute;
-  inset: 5% 8% auto;
-  height: 39%;
-  display: grid;
-  place-items: center;
-  overflow: hidden;
-  isolation: isolate;
-}
-
-.study-illustration img {
-  width: 100%;
-  height: 100%;
-  min-height: 0;
-  object-fit: cover;
-  display: block;
-  position: absolute;
-  inset: 0;
-  border-radius: 0;
-  z-index: 0;
-}
-
-.study-illustration img.placeholder-scene,
-.study-illustration img[data-fallback="true"] {
-  object-fit: contain !important;
-  padding: 20px;
+  background:
+    url("./art/ornate-teal-frame.webp") center / 100% 100% no-repeat,
+    linear-gradient(to bottom, #213b39 28%, #f4dfb4 28%);
 }
 
 .study-title {
   z-index: 2;
   position: absolute;
-  inset: 42.5% 11% auto;
-  height: 9%;
+  inset: 8.5% 17% auto;
+  height: 16%;
   display: grid;
-  place-items: center;
+  place-items: safe center;
+  overflow: auto;
   padding: 0 2px;
 }
 .study-title h2 {
-  font: 700 clamp(1.25rem, 6.8cqw, 2rem)/1.02 var(--font-tavern);
-  color: #ffe8ab;
-  text-shadow: 0 2px 2px #000;
+  font: 700 clamp(1.5rem, 8.4cqw, 2.25rem)/1.04 var(--font-tavern);
+  color: #f5ddb0;
+  text-shadow:
+    0 -0.5px 0 #fff5cfaa,
+    0 1px 0 #745431,
+    0 2px 1px #0009;
   text-wrap: balance;
   text-align: center;
   /* Grenze's visible lettering sits low within its line box. Center the ink
@@ -90,7 +54,7 @@
 .study-body {
   z-index: 2;
   position: absolute;
-  inset: 52.5% 11% 11%;
+  inset: 32% 12% 11%;
   display: flex;
   flex-direction: column;
   min-height: 0;
@@ -111,6 +75,7 @@
 .card-imprint-tint {
   mix-blend-mode: multiply;
 }
+.card-imprint-tint,
 .card-imprint-lattice {
   display: block;
   mix-blend-mode: multiply;
@@ -139,7 +104,7 @@
   position: relative;
   z-index: 1;
   border: 0;
-  padding: 10px 8px 6px;
+  padding: 18px 12px 12px;
   display: flex;
   flex-direction: column;
   align-items: center;

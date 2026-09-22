@@ -1,0 +1,30 @@
+*{box-sizing:border-box}body{margin:0;background:#17130f;color:#f8e7c3}main{padding:24px;max-width:1200px;margin:auto}header{text-align:center}h1{font-size:36px;margin:0}header p,.note{font:16px/1.5 system-ui;color:#d1c4b4}.controls{display:flex;gap:16px;flex-wrap:wrap;align-items:end;margin:24px 0}.controls label{display:grid;gap:6px;font:14px system-ui}.controls input,.controls select,.controls textarea{font:16px system-ui;padding:8px;background:#30291f;color:#fff;border:1px solid #77634a;border-radius:6px}.controls textarea{width:310px;height:62px}.controls input[type=checkbox]{width:22px;height:22px}.comparison{display:flex;align-items:start;justify-content:center;gap:32px;flex-wrap:wrap}.sample-label{font:600 18px system-ui;text-align:center;margin:0 0 16px}.preview-card{container-type:inline-size;width:var(--study-width);height:calc(var(--study-width)*1.5);max-width:none;text-align:center;filter:drop-shadow(0 12px 14px #0008)}
+[data-frame=c] .study-face{background-image:url('../../../assets/source/front-studies-2026-09-22/c-inlaid-header.png')}
+[data-frame=b] .study-face{background-image:url('../../../assets/source/front-studies-2026-09-22/b-folded-parchment.png')}
+.preview-card .study-title{inset:7% 22% auto;height:10%;padding:0;overflow:visible}
+.preview-card .study-title h2{font-size:clamp(1.5rem,7.8cqw,2.25rem);line-height:1.04;text-shadow:0 1px 1px #000b}
+[data-frame=b] .study-title{inset:9% 17% auto;height:12.5%}
+[data-frame=b] .study-title h2{color:#382414;text-shadow:0 1px #fff6}
+.preview-card .study-body{inset:27% 12% 11%}
+.preview-card .study-rules{padding:12px 8px;justify-content:safe center}
+.preview-card .study-rules p{font-size:1.375rem;line-height:1.35;text-align:center}
+.large-text .study-title h2{font-size:2.25rem}
+.large-text .study-rules p{font-size:2.0625rem}
+.note{text-align:center;margin-top:28px}
+@media(max-width:600px){main{padding:16px}.controls{display:none}.comparison{gap:24px}header p{font-size:14px}}
+
+@font-face{font-family:SourceSerifStudy;src:url('./source-serif-4.woff2') format('woff2');font-weight:400;font-style:normal;font-display:swap}
+.reading-serif .study-rules p{font-family:SourceSerifStudy,Georgia,serif;line-height:1.4}
+
+[data-frame=c2] .study-face{background-image:url('../../../assets/source/front-studies-2026-09-22/c2-text-first.png')}
+[data-frame=c2] .study-title{inset:9% 12% auto;height:25%}
+[data-frame=c2] .study-title h2{font-size:clamp(1.625rem,9cqw,2.5rem);line-height:1.06}
+.large-text [data-frame=c2] .study-title h2{font-size:2.25rem}
+[data-frame=c2] .study-body{inset:41% 12% 11%}
+
+[data-frame=c3] .study-face{background-image:url('../../../assets/source/front-studies-2026-09-22/c3-ornate-quarter.png')}
+[data-frame=c3] .study-title{inset:8.5% 17% auto;height:16%}
+[data-frame=c3] .study-title h2{font-size:clamp(1.5rem,8.4cqw,2.25rem);line-height:1.04}
+.large-text [data-frame=c3] .study-title h2{font-size:2.25rem}
+[data-frame=c3] .study-body{inset:32% 12% 11%}
+.embossed .study-title h2{color:#f5ddb0;text-shadow:0 -.5px 0 #fff5cfaa,0 1px 0 #745431,0 2px 1px #0009}

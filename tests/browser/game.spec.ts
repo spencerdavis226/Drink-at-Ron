@@ -198,11 +198,16 @@ test("offline reload keeps the same revealed card", async ({
   await context.setOffline(true);
   await page.reload();
   await expect(page.locator(".study-title h2")).toHaveText(title);
-  expect(
-    await page
-      .locator(".study-illustration img")
-      .evaluate((el) => (el as HTMLImageElement).naturalWidth),
-  ).toBeGreaterThan(0);
+  const frameLoaded = await page.locator(".study-face").evaluate(async (el) => {
+    const url = getComputedStyle(el).backgroundImage.match(
+      /url\(["']?(.*?)["']?\)/,
+    )![1];
+    const image = new Image();
+    image.src = url;
+    await image.decode();
+    return image.naturalWidth;
+  });
+  expect(frameLoaded).toBeGreaterThan(0);
 });
 
 test("Core cards keep edge clearance and a 2:3 frame across device sizes", async ({
