@@ -18,6 +18,39 @@ See [visual audit evidence](studies/visual-audit-2026-09-20/README.md) for curre
 - Illustration sits behind the frame. Plaque reads as attached to the same frame. Parchment sits inside/behind the inner lip; its square edges must not overlay carved hardware.
 - One consistent lighting direction (warm upper-left), one dark contact edge and restrained outer shadow. Do not stack arbitrary inner glows and dark outlines to conceal poor assembly.
 - Pack identity occupies a small dedicated footer position, outside the rules scroller, without covering rules. It appears in setup and pause using the same mark. No category label above the rule, decorative stats, or symbols implying mechanics.
+- **Per-card imprint (approved direction).** Personality comes from a programmatic imprint rather than commissioned scene art: the card's icon repeated as a two-motif lattice (main icon in each cell, a smaller ornament on the intersections) at low ink opacity with `multiply`, fading radially from the middle of the parchment toward the frame lip, plus a restrained paper tint. It must read as material woven into the paper — never as a stamped logo, never as a high-contrast texture under individual letters, and never in the title plaque.
+- **Planned plain-parchment front.** The teal illustration window is being retired in favour of a plain parchment field with a bronze title plaque; individual hero illustrations are retired with it. Keep the 2:3 outer ratio, the card back as the visual anchor, and the walnut/bronze materials identical to the back.
+
+### Front replacement — asset brief for image generation
+
+One opaque master plus one optional tile. Do **not** ask for transparency: the interior window is punched deterministically with an SVG mask, the way `src/presentation/art/frame-window.svg` already does for the current front. Nothing per-card may be baked in — the icon lattice and the tint are applied at runtime, so any emblem, text or colour variation in the artwork defeats the system.
+
+Attach `assets/source/card-back.png` (materials, ornament, lighting) and `assets/source/card-front.png` (plain-parchment direction) as references, generate several variants, pick one, then re-run the choice at full resolution.
+
+**Front master (1024×1536, portrait 2:3):**
+
+> Create a production game asset: one full-bleed portrait 2:3 fantasy tavern playing CARD FRONT. It is the matched front for the ATTACHED card back — same deck, same materials, same craftsmanship. Edge-to-edge, straight-on orthographic, perfectly flat, no perspective, no tilt, no surrounding scene, no tabletop, no drop shadow, no mockup, no rounded outer corners cut away (keep corners almost square with gently rounded tips).
+>
+> Composition, top to bottom: (1) a slim carved perimeter frame — weathered dark walnut wood with chunky antique bronze bevels and corner caps, subtle deep teal enamel inlays in the corner ornaments, the same construction, ornament language, border thickness (about 7% of the width), wear and finish as the attached back; (2) immediately below the top of the frame, ONE wide horizontal bronze title banner, sculpted bevelled bar with curling ornamental ends and a single small deep-teal enamel accent, attached to the frame as hardware rather than pasted over it, and COMPLETELY EMPTY — no text, letters, numbers or runes; (3) below the banner, one large completely plain, empty parchment field filling the remaining inner area inside the frame's inner lip. No ornament, no lines, no marks, no focal stains, no creases. Clean warm aged paper with only very subtle fiber grain and gentle edge darkening, so it reads as a sheet seated inside and behind the frame — do not paint a square sheet overlapping or covering the carved hardware. The parchment must be uniform and neutral enough that a low-opacity colour tint can be overlaid on it later.
+>
+> Lighting: single warm light from the upper left, deep crevices, tiny chips and scuffs on the bevels, worn old-gold highlights, lovingly handled rather than filthy.
+>
+> Palette strictly: walnut #17100c, leather teal #16312e, bronze #bd9457, parchment #f4dfb4, warm shadow. No other hues.
+>
+> Absolutely NO text, NO letters, NO numbers, NO logo, NO runes, NO symbols, NO monogram, NO emblem, NO icon, NO illustration, NO character, NO watermark, NO repeating pattern, NO stamp, NO seal, NO dice, NO borders inside borders. NO photorealism, NO sharp clean vector lines, NO gradient UI chrome.
+>
+> Output: 1024×1536, portrait 2:3.
+
+**Seamless parchment tile (1024×1024, optional — only if the tint reads muddy over the baked parchment):**
+
+> Create a seamless 4-way tileable texture of blank aged parchment for a fantasy game card interior, matching the parchment material in the ATTACHED card back and front. Square 1024×1024. Completely even, flat, uniform lighting across the entire image — no directional light, no vignette, no shadows, no dark corners, no border, no frame, no fold. The tile must repeat invisibly in all directions, including along all four edges. Warm cream to light tan paper (#f4dfb4 base with faint #e8cd9b mottling), realistic but subtle paper fiber grain, slight blotchy aging, a few tiny dark specks and faint water marks — all very low contrast. Slightly desaturated so it can be colour-tinted in CSS. No text, letters, numbers, symbols, illustration, character, stamp, seal, emblem or pattern motif.
+>
+> Output: 1024×1024, seamless.
+
+**Variant explorer (use first to choose a direction):**
+
+> Produce a single 2×2 grid image containing four distinct design variants of the same fantasy tavern card FRONT, all matching the ATTACHED card back's materials and lighting. Every variant is a full 2:3 front with a carved walnut-and-bronze perimeter frame, an empty bronze title banner near the top, and a plain empty parchment field below. Vary the frame ornament density, the banner silhouette and the corner hardware style. Identical palette, identical straight-on orthographic lighting, thin grey gutters between quadrants. All the same NO-text / NO-symbol / NO-illustration restrictions as the final asset.
+
 
 ## Reading comes before illustration acreage
 

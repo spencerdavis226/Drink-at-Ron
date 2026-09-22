@@ -98,8 +98,46 @@
   /* Parchment is part of the continuous painted surface, not a second panel. */
   background: none;
 }
+/* Programmatic personalisation, painted onto the parchment behind the rules:
+   a paper wash, then the card's icon repeated as a lattice. Purely decorative,
+   never pointer-facing, and never part of the saved session. */
+.card-imprint-tint,
+.card-imprint-lattice {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+.card-imprint-tint {
+  mix-blend-mode: multiply;
+}
+.card-imprint-lattice {
+  display: block;
+  mix-blend-mode: multiply;
+  /* Strongest through the middle of the parchment, falling away toward the
+     frame lip so the lattice reads as material rather than a stamped logo. */
+  -webkit-mask-image: radial-gradient(
+    120% 100% at 50% 46%,
+    #000 0%,
+    rgb(0 0 0 / 0.5) 46%,
+    transparent 80%
+  );
+  mask-image: radial-gradient(
+    120% 100% at 50% 46%,
+    #000 0%,
+    rgb(0 0 0 / 0.5) 46%,
+    transparent 80%
+  );
+}
+.card-imprint-pattern {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
 .study-rules {
   flex: 1;
+  position: relative;
+  z-index: 1;
   border: 0;
   padding: 10px 8px 6px;
   display: flex;
@@ -143,6 +181,8 @@
 }
 .card-footer {
   flex-shrink: 0;
+  position: relative;
+  z-index: 1;
   display: flex;
   justify-content: center;
   padding: 4px 0 2px;

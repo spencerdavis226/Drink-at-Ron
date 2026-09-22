@@ -2,6 +2,7 @@ import { useState } from "react";
 import { validateCatalog } from "../content/catalog";
 import { workshopCards as cards, workshopPacks as packs } from "./session";
 import { Button } from "../components/UI";
+import { IconBrowser } from "./IconBrowser";
 
 import "./workshop.css";
 const sizes = {
@@ -26,7 +27,12 @@ export default function Workshop() {
     [large, setLarge] = useState(false),
     [revealed, setRevealed] = useState(true),
     [outcome, setOutcome] = useState("Seeded"),
-    [nonce, setNonce] = useState(0);
+    [nonce, setNonce] = useState(0),
+    [tab, setTab] = useState<"card" | "icons">(() =>
+      new URLSearchParams(location.search).get("tab") === "icons"
+        ? "icons"
+        : "card",
+    );
   let validation = "All cards validate";
   try {
     validateCatalog(cards, packs);
@@ -59,6 +65,22 @@ export default function Workshop() {
       <header>
         <h1>Card workshop</h1>
         <p>Approved frame · production preview</p>
+        <nav aria-label="Workshop sections">
+          <button
+            type="button"
+            aria-pressed={tab === "card"}
+            onClick={() => setTab("card")}
+          >
+            Card preview
+          </button>
+          <button
+            type="button"
+            aria-pressed={tab === "icons"}
+            onClick={() => setTab("icons")}
+          >
+            Icons
+          </button>
+        </nav>
         <a href="?">Return to game</a>
       </header>
       <aside>
@@ -182,33 +204,39 @@ export default function Workshop() {
         </nav>
       </aside>
       <main>
-        <div className="workshop-actions">
-          <Button
-            onClick={() => {
-              setRevealed(false);
-              setNonce((n) => n + 1);
-            }}
-          >
-            Replay reveal
-          </Button>
-          <Button
-            onClick={() => {
-              setRevealed(true);
-              setNonce((n) => n + 1);
-            }}
-          >
-            Front
-          </Button>
-        </div>
-        <div className="workshop-viewport" style={{ width, height }}>
-          <iframe
-            className="workshop-frame"
-            title={`${card.title} preview`}
-            src={src}
-            width={width}
-            height={height}
-          />
-        </div>
+        {tab === "icons" ? (
+          <IconBrowser cardId={selected} />
+        ) : (
+          <>
+            <div className="workshop-actions">
+              <Button
+                onClick={() => {
+                  setRevealed(false);
+                  setNonce((n) => n + 1);
+                }}
+              >
+                Replay reveal
+              </Button>
+              <Button
+                onClick={() => {
+                  setRevealed(true);
+                  setNonce((n) => n + 1);
+                }}
+              >
+                Front
+              </Button>
+            </div>
+            <div className="workshop-viewport" style={{ width, height }}>
+              <iframe
+                className="workshop-frame"
+                title={`${card.title} preview`}
+                src={src}
+                width={width}
+                height={height}
+              />
+            </div>
+          </>
+        )}
       </main>
     </div>
   );

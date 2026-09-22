@@ -3,6 +3,7 @@ import type { CardDefinition, DiceRoll } from "../game/types";
 import { resolveArtwork } from "../presentation/artwork";
 import { diceResultText } from "../presentation/dice/result-text";
 import { CardPackMarks } from "./PackMarks";
+import { CardImprint } from "./CardImprint";
 import { Artwork } from "./UI";
 type Overflow = "none" | "top" | "bottom" | "both";
 export function CardFace({
@@ -107,6 +108,7 @@ export function CardFace({
         <h2>{card.title}</h2>
       </div>
       <div className="study-body">
+        <CardImprint cardId={card.id} />
         <div
           ref={rulesRef}
           className={`study-rules ${resolved ? "rules-resolved" : ""}`}

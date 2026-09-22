@@ -58,6 +58,37 @@ test("Core instructions fit at 390x844 with ratio, pack mark and no CTA occlusio
     expect(m.mark, `${card.id} keeps its pack mark`).toBe(true);
   }
 });
+test("the imprint is decorative, clipped to the parchment, and under the rules", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await seed(page, revealed(samples[0]));
+  await expect(page.locator(".card-imprint-lattice")).toHaveCount(1);
+  const m = await page.evaluate(() => {
+    const lattice = document.querySelector(".card-imprint-lattice")!;
+    const rules = document.querySelector(".study-rules")!;
+    const body = document.querySelector(".study-body")!;
+    const style = getComputedStyle(lattice);
+    const box = lattice.getBoundingClientRect();
+    const bodyBox = body.getBoundingClientRect();
+    return {
+      pointer: style.pointerEvents,
+      opacity: Number(style.opacity),
+      latticeZ: Number(style.zIndex),
+      rulesZ: Number(getComputedStyle(rules).zIndex),
+      masked: style.maskImage !== "none" || style.webkitMaskImage !== "none",
+      // The lattice is clipped to the parchment panel, never over the frame.
+      inside: box.left >= bodyBox.left - 1 && box.right <= bodyBox.right + 1,
+      motifs: lattice.querySelectorAll("pattern").length,
+    };
+  });
+  expect(m.pointer).toBe("none");
+  expect(m.opacity).toBeLessThan(0.15);
+  expect(m.rulesZ).toBeGreaterThan(m.latticeZ);
+  expect(m.masked).toBe(true);
+  expect(m.inside).toBe(true);
+  expect(m.motifs).toBe(1);
+});
 test("Previous Card owns the same 2:3 geometry as gameplay", async ({
   page,
 }) => {
