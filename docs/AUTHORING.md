@@ -31,6 +31,8 @@ export const examplePack: PackDefinition = {
 
 Use stable namespaced IDs; never recycle one for an unrelated card. Supported categories: `sip`, `group`, `category`, `challenge`, and `rule`. Rules are plain text, not HTML. Keep one clear instruction, generally under 45 words. Long text stays inside the fixed 2:3 card and scrolls within the rules panel at enlarged settings; the card never grows for content. Illustration briefs remain authoring metadata. Do not bake rule text into artwork.
 
+Card titles have a hard authoring limit of 22 characters and 12 characters per word. The title starts at a size proportional to card width and shrinks only if its rendered text would exceed the two-line teal band, down to 18px. The workshop/browser fit check is still required because equal-length words can render at different widths. Existing saved titles are never shortened or renamed; unusually long legacy titles remain scrollable.
+
 Overlapping packs share a card by ID; it enters the shuffle pool only once. New packs are off until selected. Pack choices affect the next game; an active session retains its snapshot. Keep previously published artwork available when possible. Ship expansions with a new build, not a remote download service.
 
 Before the production content session: review variety, repetition, category stopping conditions, and ongoing-rule duration. Agree on final copy and stable IDs before commissioning or generating artwork.

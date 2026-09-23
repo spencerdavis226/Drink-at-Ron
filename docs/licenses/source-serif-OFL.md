@@ -1,8 +1,5 @@
-Current comparison file: `source-serif-4-bold.woff2`, from the official Adobe Source Serif release at
+Bundled title font: `public/fonts/source-serif-4-bold.woff2`, from the official Adobe Source Serif release at
 https://github.com/adobe-fonts/source-serif/blob/release/WOFF2/TTF/SourceSerif4-Bold.ttf.woff2.
-Previous study file: `source-serif-4-display-semibold.woff2`, from the official Adobe Source Serif release at
-https://github.com/adobe-fonts/source-serif/blob/release/WOFF2/TTF/SourceSerif4Display-Semibold.ttf.woff2.
-The older `source-serif-4.woff2` regular study file remains as historical material.
 
 Copyright 2014 - 2023 Adobe (http://www.adobe.com/), with Reserved Font Name ‘Source’. All Rights Reserved. Source is a trademark of Adobe in the United States and/or other countries.
 

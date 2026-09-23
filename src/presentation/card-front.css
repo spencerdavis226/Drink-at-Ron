@@ -38,16 +38,14 @@
   padding: 0 2px;
 }
 .study-title h2 {
-  font: 700 clamp(1.5rem, 8.4cqw, 2.25rem)/1.04 var(--font-tavern);
-  color: #f5ddb0;
-  text-shadow:
-    0 -0.5px 0 #fff5cfaa,
-    0 1px 0 #745431,
-    0 2px 1px #0009;
+  font: 700 clamp(22px, 8.8cqw, 36px)/1.12 var(--font-card-title);
+  font-synthesis: none;
+  color: var(--color-card-title);
+  text-shadow: none;
   text-wrap: balance;
+  overflow-wrap: anywhere;
   text-align: center;
-  /* Grenze's visible lettering sits low within its line box. Center the ink
-     optically on the painted band; em units keep the correction proportional. */
+  /* One optical adjustment keeps the live ink centered on the painted band. */
   transform: translateY(-0.08em);
   margin: 0;
 }
@@ -186,12 +184,11 @@
   font-size: 2.0625rem;
 }
 
-/* Titles can scroll at accessibility sizes instead of escaping the plaque. */
-.enlarged .study-title {
-  overflow: auto;
-}
-.enlarged .study-title h2 {
-  font-size: 1.75rem;
+@media (forced-colors: active) {
+  .study-title h2 {
+    color: CanvasText;
+    background: Canvas;
+  }
 }
 
 .card-pack-marks {

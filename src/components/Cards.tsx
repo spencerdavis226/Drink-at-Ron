@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import type { CardDefinition, DiceRoll } from "../game/types";
 import { diceResultText } from "../presentation/dice/result-text";
 import { CardPackMarks } from "./PackMarks";
@@ -22,6 +22,7 @@ export function CardFace({
     cancelClick: boolean;
   } | null>(null);
   const rulesRef = useRef<HTMLDivElement>(null);
+  const titleRef = useRef<HTMLDivElement>(null);
   const [overflow, setOverflow] = useState<Overflow>("none");
   const markGesture = (pointerId: number) => {
     if (gesture.current?.pointerId === pointerId)
@@ -41,6 +42,52 @@ export function CardFace({
   };
   // Show the resolved outcome once the dice settle (the overlay owns the roll).
   const resolved = !!roll && !rolling;
+  useLayoutEffect(() => {
+    const title = titleRef.current;
+    const heading = title?.querySelector<HTMLElement>("h2");
+    if (!title || !heading) return;
+    let live = true;
+    const fits = (size: number) => {
+      heading.style.fontSize = `${size}px`;
+      const lineHeight = parseFloat(getComputedStyle(heading).lineHeight);
+      return (
+        heading.offsetHeight <= title.clientHeight + 1 &&
+        heading.scrollWidth <= title.clientWidth + 1 &&
+        heading.offsetHeight / lineHeight <= 2.1
+      );
+    };
+    const measure = () => {
+      if (!live) return;
+      heading.style.removeProperty("font-size");
+      const base = parseFloat(getComputedStyle(heading).fontSize);
+      if (fits(base)) {
+        heading.style.removeProperty("font-size");
+        return;
+      }
+      const minimum = Math.min(base, 18);
+      if (!fits(minimum)) return; // Keep the full title scrollable for old saves.
+      let low = minimum;
+      let high = base;
+      for (let i = 0; i < 8; i++) {
+        const middle = (low + high) / 2;
+        if (fits(middle)) low = middle;
+        else high = middle;
+      }
+      heading.style.fontSize = `${Math.floor(low * 10) / 10}px`;
+    };
+    measure();
+    const observer =
+      typeof ResizeObserver === "undefined" ? null : new ResizeObserver(measure);
+    observer?.observe(title);
+    document.fonts
+      ?.load('700 30px "Source Serif 4 Title"')
+      .then(measure)
+      .catch(() => undefined);
+    return () => {
+      live = false;
+      observer?.disconnect();
+    };
+  }, [card.title]);
   useEffect(() => {
     updateOverflow();
     const el = rulesRef.current;
@@ -88,7 +135,11 @@ export function CardFace({
         }
       }}
     >
-      <div className="study-title" onScroll={cancelGestureByScroll}>
+      <div
+        ref={titleRef}
+        className="study-title"
+        onScroll={cancelGestureByScroll}
+      >
         <h2>{card.title}</h2>
       </div>
       <div className="study-body">

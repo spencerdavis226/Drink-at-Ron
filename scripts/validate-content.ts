@@ -21,6 +21,10 @@ if (generated !== expected)
 // or a missing file fails the build, while old saved strings still render at
 // runtime through the same resolver.
 for (const c of cards) {
+  if ([...c.title].length > 22)
+    throw Error(`Card title exceeds 22 characters: ${c.id}`);
+  if (Math.max(...c.title.split(/\s+/u).map((word) => [...word].length)) > 12)
+    throw Error(`Card title has a word over 12 characters: ${c.id}`);
   const spec = artworkRegistry[normalizeArtwork(c.artwork)];
   if (!spec) throw Error(`Unregistered artwork for ${c.id}: ${c.artwork}`);
   if (spec.publicPath && !existsSync(`public/${spec.publicPath}`))
@@ -41,6 +45,7 @@ for (const path of [
   ...Object.values(theme.assets),
   "fonts/grenze.woff2",
   "fonts/grenze-italic.woff2",
+  "fonts/source-serif-4-bold.woff2",
   "fonts/OFL.txt",
 ])
   if (!existsSync(`public/${path}`))

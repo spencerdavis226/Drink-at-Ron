@@ -1,6 +1,6 @@
 # Drink at Ron — current visual design standards
 
-Updated 2026-09-20 after a production-browser visual audit. **This section is normative; the historical generation prompts below are archival.** Implementation tasks and priorities live only in [STATUS.md](STATUS.md). These standards refine the approved art direction; they do not authorize replacing the frame, characters or renderer wholesale.
+Updated 2026-09-23 for the selected title system. **This section is normative; the historical generation prompts below are archival.** Implementation tasks and priorities live only in [STATUS.md](STATUS.md). These standards refine the approved art direction; they do not authorize replacing the frame, characters or renderer wholesale.
 
 ## Creative direction and quality bar
 
@@ -9,6 +9,12 @@ An original, mischievous fantasy tavern collectible-card game. Weathered walnut,
 The approved card back, continuous-front silhouette, cheers illustration and tankard remain anchors. **Premium means coherent construction and effortless reading before it means more detail.** A visible seam, hidden instruction, stretched frame, unclear control or detached shadow fails the quality bar even when the source art is excellent. Automated functional tests alone cannot approve a visual release.
 
 See [visual audit evidence](studies/visual-audit-2026-09-20/README.md) for current failures. Those captures are not approved golden images.
+
+## Card title system
+
+The approved ornate teal front remains fixed. Live titles use the locally bundled Source Serif 4 Bold (`public/fonts/source-serif-4-bold.woff2`, [licence](licenses/source-serif-OFL.md)) at weight 700. The solid face is bright ivory `#fff0cf`, with no stroke, blur, bevel or text shadow; the frame supplies the material depth. Forced colors use system Canvas/CanvasText. The body and menus retain Grenze.
+
+The title safe zone is x17–83% and y8.5–24.5% of the 2:3 card. Start at `clamp(22px, 8.8cqw, 36px)`, 1.12 line spacing, balanced wrapping, centered with one shared `-0.08em` optical offset. The title size follows card width. If actual glyphs exceed the two-line box, the renderer reduces that title only to the largest fitting size, with an 18px floor. It never truncates text. Authored titles are limited to 22 characters and 12 per word; the browser fit audit at 260/330/480px remains the acceptance gate because character counts cannot predict glyph widths. Older saved titles retain their full text and can scroll if the floor cannot fit them.
 
 ## Card construction
 
