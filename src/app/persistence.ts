@@ -4,15 +4,19 @@ import { validConfig } from "../game/engine";
 import type { GameConfig, SessionState } from "../game/types";
 export const SAVE_KEY = "drink-at-ron.session.v1";
 export const SETTINGS_KEY = "drink-at-ron.settings.v1";
+export type DeckChoice = "short" | "long" | "infinite";
+export const MODE_LIMITS: Record<DeckChoice, number | null> = {
+  short: 30,
+  long: 60,
+  infinite: null,
+};
 export interface Preferences {
   config: GameConfig;
-  choice: string;
-  customSize: string;
+  choice: DeckChoice;
 }
 export const defaults: Preferences = {
-  config: { version: 1, packIds: ["core"], limit: 40 },
-  choice: "40",
-  customSize: "40",
+  config: { version: 1, packIds: ["core"], limit: 30 },
+  choice: "short",
 };
 export function parseSession(raw: string): SessionState {
   const parsed = JSON.parse(raw);
@@ -114,19 +118,35 @@ export function loadPreferences(): Preferences {
   try {
     const p = JSON.parse(localStorage.getItem(SETTINGS_KEY) || "null");
     // Legacy saves may still carry sound/ambience/atmosphere; they are ignored.
-    if (
-      p &&
-      validConfig(p.config) &&
-      ["20", "40", "60", "custom", "endless"].includes(p.choice)
-    )
+    if (p && validConfig(p.config)) {
+      let choice: DeckChoice;
+      if (["short", "long", "infinite"].includes(p.choice)) {
+        choice = p.choice;
+      } else if (p.choice === "endless") {
+        choice = "infinite";
+      } else if (["20", "40", "60", "custom"].includes(p.choice)) {
+        const size =
+          p.choice === "custom" ? Number(p.customSize) : Number(p.choice);
+        const finite =
+          Number.isInteger(size) && size >= 1 && size <= 500
+            ? size
+            : p.config.limit;
+        choice = finite === null ? "infinite" : finite <= 45 ? "short" : "long";
+      } else {
+        return defaults;
+      }
       return {
-        config: p.config,
-        choice: p.choice,
-        customSize:
-          typeof p.customSize === "string"
-            ? p.customSize
-            : String(p.config.limit ?? 40),
+        config: {
+          ...p.config,
+          packIds: [
+            "core",
+            ...p.config.packIds.filter((id: string) => id !== "core"),
+          ],
+          limit: MODE_LIMITS[choice],
+        },
+        choice,
       };
+    }
   } catch {
     /* defaults */
   }

@@ -162,6 +162,14 @@
 .study-rules p.resolved-instruction {
   font-weight: 700;
   color: #2b1c0d;
+  margin-block: 0;
+}
+.dice-continue-hint {
+  display: block;
+  flex-shrink: 0;
+  margin-block: 0;
+  color: #704e27;
+  font: 600 clamp(16px, 5cqw, 20px)/1.1 var(--font-tavern);
 }
 .study-rules.rules-resolved {
   padding-top: 16px;
@@ -182,6 +190,9 @@
 .enlarged .study-rules p,
 .enlarged .card-copy p {
   font-size: 2.0625rem;
+}
+.enlarged .dice-continue-hint {
+  font-size: 1.5rem;
 }
 
 @media (forced-colors: active) {
@@ -218,4 +229,10 @@
 
 .previous-card .study-face {
   width: 100%;
+}
+
+@media (max-height: 620px) and (orientation: portrait) {
+  .previous-card {
+    width: min(100%, calc(50svh * 2 / 3), 306.667px);
+  }
 }

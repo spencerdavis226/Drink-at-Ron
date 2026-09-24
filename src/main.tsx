@@ -6,6 +6,7 @@ import { createSession, replaySession } from "./game/engine";
 import {
   loadPreferences,
   loadSession,
+  MODE_LIMITS,
   save,
   SAVE_KEY,
   SETTINGS_KEY,
@@ -65,15 +66,13 @@ function App() {
   const start = () => {
     const config = {
       ...prefs.config,
-      packIds: prefs.config.packIds.filter((id) =>
-        packs.some((p) => p.id === id),
-      ),
-      limit:
-        prefs.choice === "endless"
-          ? null
-          : prefs.choice === "custom"
-            ? Number(prefs.customSize)
-            : Number(prefs.choice),
+      packIds: [
+        "core",
+        ...prefs.config.packIds.filter(
+          (id) => id !== "core" && packs.some((p) => p.id === id),
+        ),
+      ],
+      limit: MODE_LIMITS[prefs.choice],
     };
     setPrefs({ ...prefs, config });
     controller.start(createSession(config, cards, packs));

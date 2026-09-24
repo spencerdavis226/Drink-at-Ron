@@ -44,13 +44,13 @@ Browser tests exercise Chromium and WebKit. Installed Safari Home Screen behavio
 - `src/main.tsx`: saved preferences, visibility handling, and PWA orchestration.
 - `public/art`: bundled original placeholder artwork; no remote asset dependency.
 
-Finite decks contain 1–500 draws. Every shuffle cycle exhausts the selected unique cards before repeating, including when a finite deck is longer than the catalog. Endless cycles have bounded storage. The group handles turns and ongoing rules. All cards have equal frequency per cycle.
+Setup offers Short (30 draws), Long (60 draws), and Infinite. Core is always included; optional packs are chosen in the Card packs dialog. Every shuffle cycle exhausts the selected unique cards before repeating, including when Long exceeds the catalog. Infinite cycles have bounded storage. Existing active saves keep their original length, including older custom limits. The group handles turns and ongoing rules. All cards have equal frequency per cycle.
 
-Saves snapshot card content and order. Invalid/unsupported saves require explicit reset; storage failures leave play available with a notice. Settings and saves are local to the browser installation; Safari and Home Screen storage may differ. App updates are offered outside active games. Card artwork resolves through the local registry; unknown or historical references fall back to the bundled tankard.
+Saves snapshot card content and order. Invalid/unsupported saves require explicit reset; storage failures leave play available with a notice. Settings and saves are local to the browser installation; Safari and Home Screen storage may differ. App updates are offered outside active games. The artwork registry remains for validation and older saved content; current card fronts use the approved ornate frame with plain parchment.
 
 ## Add content
 
-See [the pack authoring guide](docs/AUTHORING.md). The current standard set is the 40-card sample collection in `src/content/sample.ts` (pack `core`), with dice cards mixed in; `VIP night` is an additional themed pack. It is supplied sample content awaiting playtesting, not a permanent brief. Most cards share a painted tankard placeholder; Cheers, Idiots uses an individual illustrated scene selected through the artwork registry. This visual pass adds original weathered card skins, a walnut tabletop, and a two-sided lift/flip/discard animation. Production card-specific illustrations and the full content collection remain for a later session.
+See [the pack authoring guide](docs/AUTHORING.md). The current standard set is the 40-card sample collection in `src/content/sample.ts` (pack `core`), with dice cards mixed in; `VIP night` is an additional themed pack. It is supplied sample content awaiting playtesting, not a permanent brief. The approved front keeps live titles and rules over plain parchment inside the ornate teal frame. The next content session will review the incoming CSV against the title, rule, pack, and dice guardrails before adding cards.
 
 ## Static deployment
 

@@ -77,7 +77,9 @@ export function CardFace({
     };
     measure();
     const observer =
-      typeof ResizeObserver === "undefined" ? null : new ResizeObserver(measure);
+      typeof ResizeObserver === "undefined"
+        ? null
+        : new ResizeObserver(measure);
     observer?.observe(title);
     document.fonts
       ?.load('700 30px "Source Serif 4 Title"')
@@ -158,9 +160,16 @@ export function CardFace({
           }}
         >
           {resolved ? (
-            <p className="resolved-instruction">
-              {diceResultText(card, roll!)}
-            </p>
+            <>
+              <p className="resolved-instruction">
+                {diceResultText(card, roll!)}
+              </p>
+              {!roll?.returned && (
+                <span className="dice-continue-hint" aria-hidden="true">
+                  Tap card to continue
+                </span>
+              )}
+            </>
           ) : (
             <p>{card.rules}</p>
           )}

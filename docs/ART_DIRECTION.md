@@ -1,12 +1,12 @@
 # Drink at Ron — current visual design standards
 
-Updated 2026-09-23 for the selected title system. **This section is normative; the historical generation prompts below are archival.** Implementation tasks and priorities live only in [STATUS.md](STATUS.md). These standards refine the approved art direction; they do not authorize replacing the frame, characters or renderer wholesale.
+Updated 2026-09-23 for launch setup, controls, and dice. **The current-state sections here are normative; older studies and generation prompts below are archival when they conflict.** Implementation tasks and priorities live only in [STATUS.md](STATUS.md).
 
 ## Creative direction and quality bar
 
 An original, mischievous fantasy tavern collectible-card game. Weathered walnut, sculpted worn bronze, deep teal leather, warm parchment and painted expressive characters. Hearthstone is a craftsmanship/rendering reference, not a source of characters, symbols, compositions or copied UI. Humor can be broad and goofy in the spirit of tabletop fantasy parody; retain one immediately readable gag or action.
 
-The approved card back, continuous-front silhouette, cheers illustration and tankard remain anchors. **Premium means coherent construction and effortless reading before it means more detail.** A visible seam, hidden instruction, stretched frame, unclear control or detached shadow fails the quality bar even when the source art is excellent. Automated functional tests alone cannot approve a visual release.
+The approved card back and ornate teal front remain anchors. The current card front uses live text over plain parchment. **Premium means coherent construction and effortless reading before it means more detail.** A visible seam, hidden instruction, stretched frame, unclear control or detached shadow fails the quality bar even when the source art is excellent. Automated functional tests alone cannot approve a visual release.
 
 See [visual audit evidence](studies/visual-audit-2026-09-20/README.md) for current failures. Those captures are not approved golden images.
 
@@ -16,16 +16,23 @@ The approved ornate teal front remains fixed. Live titles use the locally bundle
 
 The title safe zone is x17–83% and y8.5–24.5% of the 2:3 card. Start at `clamp(22px, 8.8cqw, 36px)`, 1.12 line spacing, balanced wrapping, centered with one shared `-0.08em` optical offset. The title size follows card width. If actual glyphs exceed the two-line box, the renderer reduces that title only to the largest fitting size, with an 18px floor. It never truncates text. Authored titles are limited to 22 characters and 12 per word; the browser fit audit at 260/330/480px remains the acceptance gate because character counts cannot predict glyph widths. Older saved titles retain their full text and can scroll if the floor cannot fit them.
 
+## Launch setup, controls, and dice
+
+Setup offers Short (30 cards), Long (60 cards), and Infinite. Core is always included; a separate Card packs dialog toggles add-ons. Selected add-ons persist for the next game, while an active game's card order and text remain its saved snapshot. The setup selector, dialogs, completion, pause, install, recovery, and update surfaces share the same quiet walnut, bronze, and teal control language, clear focus treatment, and reachable targets.
+
+The single full-screen dice renderer uses deep teal enamel, warm ivory markings, worn bronze edges, restrained lighting, and contact shadows. After a verified physical roll, dice ease into clear space above the card so the resolved instruction remains readable. Reduced Motion places them immediately. The engine supplies results; visual treatment cannot change those outcomes.
+
+For authored rules, target 120 characters and 24 words. Review copy above either target, and reject copy over 180 characters or 35 words until edited. Keep one clear action, and keep the card rules panel scrollable for enlarged text and saved edge cases.
+
 ## Card construction
 
 - One physical card, one outer **2:3 ratio** in play, back, Previous Card and workshop. Title or rule length cannot determine outer height. Correct ratio must be measured on the untransformed box; allow for rotation when checking viewport clearance.
 - Use shared stage/frame geometry, not separate approximations per screen. Reserve safe areas, HUD and any bottom control before sizing the stage. Target roughly 20–24 CSS px side clearance on small portrait phones, consistent with the approved current margins.
 - Continuous perimeter: no hard horizontal rail joints, doubled bevels, abrupt wood-grain changes or visible rectangular masking cuts. Corners and sculpted ornaments retain their proportions; stretch only deliberately plain runs. Check at actual 1× display size and at 2× inspection.
-- Illustration sits behind the frame. Plaque reads as attached to the same frame. Parchment sits inside/behind the inner lip; its square edges must not overlay carved hardware.
+- The current front is plain parchment under the approved ornate teal frame. Parchment sits inside/behind the inner lip; its square edges must not overlay carved hardware.
 - One consistent lighting direction (warm upper-left), one dark contact edge and restrained outer shadow. Do not stack arbitrary inner glows and dark outlines to conceal poor assembly.
 - Pack identity occupies a small dedicated footer position, outside the rules scroller, without covering rules. It appears in setup and pause using the same mark. No category label above the rule, decorative stats, or symbols implying mechanics.
-- **Per-card imprint (approved direction).** Personality comes from a programmatic imprint rather than commissioned scene art: the card's icon repeated as a two-motif lattice (main icon in each cell, a smaller ornament on the intersections) at low ink opacity with `multiply`, fading radially from the middle of the parchment toward the frame lip, plus a restrained paper tint. It must read as material woven into the paper — never as a stamped logo, never as a high-contrast texture under individual letters, and never in the title plaque.
-- **Planned plain-parchment front.** The teal illustration window is being retired in favour of a plain parchment field with a bronze title plaque; individual hero illustrations are retired with it. Keep the 2:3 outer ratio, the card back as the visual anchor, and the walnut/bronze materials identical to the back.
+- Do not restore the historical imprint lattice, tint, or illustration window. Keep the small pack identity outside the rules scroller.
 
 ### Front replacement — asset brief for image generation
 

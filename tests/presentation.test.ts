@@ -95,9 +95,9 @@ describe("presentation transactions", () => {
   });
 });
 describe("preferences compatibility", () => {
-  it("keeps game choices and ignores legacy audio/atmosphere flags", () => {
+  it("maps legacy finite choices to the nearest mode and always includes Core", () => {
     const old = {
-      config: defaults.config,
+      config: { version: 1, packIds: ["vip"], limit: 37 },
       sound: true,
       ambience: true,
       atmosphere: false,
@@ -106,9 +106,32 @@ describe("preferences compatibility", () => {
     };
     vi.stubGlobal("localStorage", { getItem: () => JSON.stringify(old) });
     expect(loadPreferences()).toEqual({
-      config: defaults.config,
-      choice: "custom",
-      customSize: "37",
+      config: { version: 1, packIds: ["core", "vip"], limit: 30 },
+      choice: "short",
+    });
+    for (const [size, choice, limit] of [
+      [46, "long", 60],
+      [20, "short", 30],
+    ] as const) {
+      vi.stubGlobal("localStorage", {
+        getItem: () =>
+          JSON.stringify({
+            ...old,
+            choice: "custom",
+            customSize: String(size),
+          }),
+      });
+      expect(loadPreferences()).toMatchObject({ choice, config: { limit } });
+    }
+  });
+  it("maps Endless to Infinite while leaving active saves outside preferences", () => {
+    vi.stubGlobal("localStorage", {
+      getItem: () =>
+        JSON.stringify({ config: defaults.config, choice: "endless" }),
+    });
+    expect(loadPreferences()).toEqual({
+      choice: "infinite",
+      config: { version: 1, packIds: ["core"], limit: null },
     });
   });
   it("falls back to defaults for unusable preferences", () => {

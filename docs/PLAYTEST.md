@@ -4,20 +4,20 @@ Status: **prepared, no results recorded.** Kit prepared 2026-09-21 at commit `3e
 
 ## How to run
 
-- Two sessions, ideally one group. Session A is the finite `The house collection` (40 cards). Session B is Endless through at least two complete cycles.
+- Two sessions, ideally one group. Session A is Short (30 cards) with Core. Session B is Infinite through at least two complete cycles.
 - Dice cards are mixed into `The house collection` (14 of the 40 carry a roll), so any game can reach a roll — there is no separate dice pack to select.
 - Use the game without coaching beyond choosing a first drawer and clockwise turns. Record confusion rather than steering players to the intended answer.
 - After each session ask: which cards would you remove, which do you want more of, and was the next action ever unclear?
 - Keep automation results separate from these observations. Do not mark a check passed from an emulated screenshot.
 
-## Session A — The house collection (40, finite)
+## Session A — Short (30, Core)
 
 - Date / build commit:
 - Device / OS / Safari or installed Home Screen:
 - People / approximate session length:
-- Deck: `The house collection`, 40 cards.
+- Deck: Short, Core only (30 cards from the 40-card pool).
 
-## Session B — Endless (at least two cycles)
+## Session B — Infinite (at least two cycles)
 
 - Date / build commit:
 - Device / OS:
@@ -26,11 +26,11 @@ Status: **prepared, no results recorded.** Kit prepared 2026-09-21 at commit `3e
 
 ## Dice and roll checks
 
-- Was the **Roll** control obvious without coaching on the first dice card? Was **Continue** obvious once the dice settled?
-- Did the settled dice ever cover the title, illustration or rules so the result was hard to read?
-- Did the saved total match the faces you saw? Did Continue avoid discarding (the later card action discards)?
+- Was tapping the card to roll obvious without coaching on the first dice card? Was tapping it again to return to the resolved rule obvious once the dice settled?
+- Did the settled dice ever cover the title or rules so the result was hard to read?
+- Did the saved total match the faces you saw? Did returning to the card avoid discarding (the later card action discards)?
 - Roll at least 20 times across the session: any lag, frozen canvas, or a roll that would not settle?
-- On a platform without WebGL, or with the renderer failing: does the saved result still show and Continue still work?
+- On a platform without WebGL, or with the renderer failing: does the saved result still show and the card tap still work?
 
 ## Temporary-rule checks
 
@@ -43,7 +43,7 @@ Status: **prepared, no results recorded.** Kit prepared 2026-09-21 at commit `3e
 - **Dice cards.** They currently live inside `The house collection` (no separate dice pack, no dice pack logo). Decide: keep them mixed, or split them into a named dice pack with its own logo and copy. Do not add more dice mechanics by inference.
 - **`VIP night` name/copy.** Keep, or rename? The pack mark is `art/packs/vip.svg`.
 - **Card wording.** The sample text is supplied as-is, including the crude language. Note any line you want changed; unchanged concepts keep their IDs, unrelated replacements get new IDs. Keep the category distribution until an explicit balance decision.
-- **Illustration briefs.** Lock text and briefs before finished art is commissioned (task 9).
+- **Future art.** The launch card front stays plain parchment inside the approved frame. Discuss any new illustration work separately after copy is locked.
 
 ## Observations
 

@@ -21,8 +21,11 @@ test("unselected packs stay readable and selection is unambiguous", async ({
   page,
 }) => {
   await page.goto("./");
-  const core = page.getByRole("button", { name: /house collection/ });
-  const other = page.getByRole("button", { name: /VIP night/ });
+  await page.getByRole("button", { name: "Choose add-ons" }).click();
+  const core = page.locator(".included-pack");
+  const other = page
+    .getByRole("dialog")
+    .getByRole("button", { name: "VIP night", exact: true });
   const unselected = await other.evaluate((el) => {
     const style = getComputedStyle(el);
     return {
@@ -35,11 +38,10 @@ test("unselected packs stay readable and selection is unambiguous", async ({
   expect(unselected.opacity).toBe(1);
   expect(unselected.filter).toBe("none");
   expect(unselected.mark).toBe("+");
-  expect(await core.locator(".checkbox").innerText()).toBe("✓");
-  // The title and pack mark share one copy slot, so a wrapping name cannot
-  // displace the identity mark.
+  await expect(core).toContainText("Always included");
+  // The add-on title and mark share one copy slot when a name wraps.
   expect(
-    await core.evaluate((el) => {
+    await other.evaluate((el) => {
       const copy = el.querySelector(".pack-copy")!;
       return (
         copy.querySelector("strong")!.parentElement === copy &&
@@ -55,7 +57,10 @@ test("selecting VIP night reveals its one-line setup reminder", async ({
   page,
 }) => {
   await page.goto("./");
-  const vip = page.getByRole("button", { name: /VIP night/ });
+  await page.getByRole("button", { name: "Choose add-ons" }).click();
+  const vip = page
+    .getByRole("dialog")
+    .getByRole("button", { name: "VIP night", exact: true });
   await expect(page.locator(".pack-hint")).toHaveCount(0);
   await vip.click();
   const hint = page.locator(".pack-hint");

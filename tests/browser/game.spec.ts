@@ -35,7 +35,7 @@ async function forcePlainFirst(
   );
   await page.reload();
 }
-test("full custom game, rapid taps, restore, previous card, replay and settings", async ({
+test("legacy finite game, rapid taps, restore, previous card, replay and settings", async ({
   page,
 }) => {
   // Multi-step flow; Linux WebKit on CI is slow enough to exceed the default.
@@ -43,9 +43,13 @@ test("full custom game, rapid taps, restore, previous card, replay and settings"
   const errors: string[] = [];
   page.on("pageerror", (error) => errors.push(error.message));
   await page.goto("./");
-  await page.getByRole("button", { name: "Custom deck size" }).click();
-  await page.getByLabel("Number of cards").fill("2");
   await page.getByRole("button", { name: "Play", exact: true }).click();
+  // An in-progress game with a former custom limit keeps its original finish.
+  await page.evaluate((k) => {
+    const s = JSON.parse(localStorage.getItem(k)!);
+    s.config.limit = 2;
+    localStorage.setItem(k, JSON.stringify(s));
+  }, key);
   await forcePlainFirst(page, 2);
   await page.getByRole("button", { name: "Reveal card" }).click();
   await page.locator(".game-card").evaluate((el) => {
@@ -88,20 +92,48 @@ test("full custom game, rapid taps, restore, previous card, replay and settings"
   await expect(page.locator(".game-card")).toBeVisible();
   expect(errors).toEqual([]);
 });
-test("empty pack and invalid custom size prevent play", async ({ page }) => {
+test("only three modes appear and Core cannot be disabled", async ({
+  page,
+}) => {
   await page.goto("./");
-  await page.getByRole("button", { name: /The house collection/ }).click();
+  await expect(page.locator(".lengths button")).toHaveCount(3);
+  await expect(
+    page.getByRole("button", { name: "Short, 30 cards" }),
+  ).toHaveAttribute("aria-pressed", "true");
+  await page.getByRole("button", { name: "Choose add-ons" }).click();
+  await expect(page.getByRole("dialog")).toContainText("Always included");
+  await expect(
+    page.getByRole("button", { name: /The house collection/ }),
+  ).toHaveCount(0);
+  await page.getByRole("button", { name: "Done" }).click();
   await expect(
     page.getByRole("button", { name: "Play", exact: true }),
-  ).toBeDisabled();
-  await page.getByRole("button", { name: /The house collection/ }).click();
-  await page.getByRole("button", { name: "Custom deck size" }).click();
-  for (const value of ["0", "501", "1.5"]) {
-    await page.getByLabel("Number of cards").fill(value);
-    await expect(
-      page.getByRole("button", { name: "Play", exact: true }),
-    ).toBeDisabled();
-  }
+  ).toBeEnabled();
+});
+test("Short and Infinite create the advertised limits", async ({ page }) => {
+  await page.goto("./");
+  await page.getByRole("button", { name: "Play", exact: true }).click();
+  expect(
+    await page.evaluate(
+      (k) => JSON.parse(localStorage.getItem(k)!).config.limit,
+      key,
+    ),
+  ).toBe(30);
+  await ready(page);
+  await page.getByRole("button", { name: "Open game menu" }).click();
+  await page.getByRole("button", { name: "End game", exact: true }).click();
+  await page
+    .getByRole("dialog")
+    .getByRole("button", { name: "End game", exact: true })
+    .click();
+  await page.getByRole("button", { name: "Infinite, Keeps going" }).click();
+  await page.getByRole("button", { name: "Play", exact: true }).click();
+  expect(
+    await page.evaluate(
+      (k) => JSON.parse(localStorage.getItem(k)!).config.limit,
+      key,
+    ),
+  ).toBeNull();
 });
 test("corrupt save recovery", async ({ page }) => {
   await page.goto("./");
@@ -377,15 +409,25 @@ test("rules taps discard, while scrolling and cancelled gestures keep the card",
   expect(saved.phase).toBe("hidden");
   expect(saved.discarded).toBe(1);
 });
-test("custom size persists before starting and interruption restores a stable card", async ({
+test("mode and add-ons persist while interruption restores a stable card", async ({
   page,
 }) => {
   await page.goto("./");
-  await page.getByRole("button", { name: "Custom deck size" }).click();
-  await page.getByLabel("Number of cards").fill("37");
+  await page.getByRole("button", { name: "Long, 60 cards" }).click();
+  await page.getByRole("button", { name: "Choose add-ons" }).click();
+  await page.getByRole("button", { name: /VIP night/ }).click();
+  await page.getByRole("button", { name: "Done" }).click();
   await page.reload();
-  await expect(page.getByLabel("Number of cards")).toHaveValue("37");
+  await expect(
+    page.getByRole("button", { name: "Long, 60 cards" }),
+  ).toHaveAttribute("aria-pressed", "true");
+  await expect(page.locator(".pack-selector")).toContainText("VIP night");
   await page.getByRole("button", { name: "Play", exact: true }).click();
+  const config = await page.evaluate(
+    (k) => JSON.parse(localStorage.getItem(k)!).config,
+    key,
+  );
+  expect(config).toEqual({ version: 1, packIds: ["core", "vip"], limit: 60 });
   await forcePlainFirst(page, 1);
   await page.getByRole("button", { name: "Reveal card" }).click();
   await page.reload();
@@ -431,7 +473,7 @@ test("minimal interface and a real two-sided flip", async ({ page }) => {
     "aria-hidden",
     "true",
   );
-  await expect(page.locator(".progress")).toContainText("2 / 40");
+  await expect(page.locator(".progress")).toContainText("2 / 30");
 });
 
 test("legacy audio and atmosphere preferences are ignored and toggles are gone", async ({
@@ -483,7 +525,7 @@ test("canceled animations and backgrounding settle without additional draws", as
   await expect(page.locator(".card-stage")).not.toHaveClass(
     /flip|discard|settle|deal/,
   );
-  await expect(page.locator(".progress")).toContainText("2 / 40");
+  await expect(page.locator(".progress")).toContainText("2 / 30");
   await expect(page.locator(".atmosphere")).toHaveClass(/suspended/);
   await page.evaluate(() => {
     Object.defineProperty(document, "hidden", {
@@ -492,9 +534,9 @@ test("canceled animations and backgrounding settle without additional draws", as
     });
     document.dispatchEvent(new Event("visibilitychange"));
   });
-  await expect(page.locator(".progress")).toContainText("2 / 40");
+  await expect(page.locator(".progress")).toContainText("2 / 30");
   await page.reload();
-  await expect(page.locator(".progress")).toContainText("2 / 40");
+  await expect(page.locator(".progress")).toContainText("2 / 30");
 });
 test("offline uses local Grenze and painted controls", async ({
   page,
@@ -519,13 +561,15 @@ test("offline uses local Grenze and painted controls", async ({
       .locator(".primary")
       .evaluate((el) => getComputedStyle(el).borderImageSource),
   ).toContain("button.webp");
-  expect(
-    await page
-      .locator(".pack-copy")
-      .filter({ hasText: "The house collection" })
-      .locator(".pack-logo img")
-      .evaluate((el) => (el as HTMLImageElement).naturalWidth),
-  ).toBeGreaterThan(0);
+  await page.getByRole("button", { name: "Choose add-ons" }).click();
+  await expect
+    .poll(() =>
+      page
+        .locator(".included-pack .pack-logo img")
+        .evaluate((el) => (el as HTMLImageElement).naturalWidth),
+    )
+    .toBeGreaterThan(0);
+  await page.getByRole("button", { name: "Done" }).click();
   await page.getByRole("button", { name: "Install app" }).click();
   await expect(page.getByText("Ready for offline play")).toBeVisible();
 });

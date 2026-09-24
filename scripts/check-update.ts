@@ -6,6 +6,8 @@ import { tmpdir } from "node:os";
 import { join, resolve, extname } from "node:path";
 import { createServer } from "node:http";
 import assert from "node:assert/strict";
+import { createSession } from "../src/game/engine";
+import { cards, packs } from "../src/content/catalog";
 const base = process.env.BASE_PATH || "/";
 const temp = await mkdtemp(join(tmpdir(), "ron-update-"));
 let directory = resolve("dist");
@@ -58,9 +60,24 @@ try {
   await page.goto(`http://127.0.0.1:${address.port}${base}`);
   await page.evaluate(() => navigator.serviceWorker.ready);
   await page.reload();
-  await page.getByRole("button", { name: "Custom deck size" }).click();
-  await page.getByLabel("Number of cards").fill("1");
-  await page.getByRole("button", { name: "Play", exact: true }).click();
+  // An active custom-length save from the earlier setup must still complete
+  // normally after the three-mode setup replaces the Custom control.
+  const legacyCustom = createSession(
+    { version: 1, packIds: ["core"], limit: 1 },
+    cards,
+    packs,
+  );
+  const plainCard = legacyCustom.cards.find((card) => !card.dice)!;
+  legacyCustom.order = [
+    plainCard.id,
+    ...legacyCustom.order.filter((id) => id !== plainCard.id),
+  ];
+  await page.evaluate(
+    (session) =>
+      localStorage.setItem("drink-at-ron.session.v1", JSON.stringify(session)),
+    legacyCustom,
+  );
+  await page.reload();
   await page.getByRole("button", { name: "Reveal card" }).click();
   await page.waitForFunction(
     () => !document.querySelector(".card-stage.flip,.card-stage.settle"),

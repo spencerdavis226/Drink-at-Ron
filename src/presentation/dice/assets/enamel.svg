@@ -1,13 +1,13 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
   <defs>
     <filter id="glaze" x="0" y="0" width="100%" height="100%">
-      <feTurbulence type="fractalNoise" baseFrequency=".015" numOctaves="3" seed="19"/>
+      <feTurbulence type="fractalNoise" baseFrequency=".025" numOctaves="3" seed="19"/>
       <feColorMatrix type="saturate" values="0"/>
-      <feComponentTransfer><feFuncR type="linear" slope=".55" intercept=".55"/><feFuncG type="linear" slope=".55" intercept=".55"/><feFuncB type="linear" slope=".55" intercept=".55"/><feFuncA type="linear" slope="0" intercept="1"/></feComponentTransfer>
+      <feComponentTransfer><feFuncR type="linear" slope=".22" intercept=".77"/><feFuncG type="linear" slope=".22" intercept=".75"/><feFuncB type="linear" slope=".18" intercept=".69"/><feFuncA type="linear" slope="0" intercept="1"/></feComponentTransfer>
     </filter>
-    <radialGradient id="polish" cx="35%" cy="25%" r="90%"><stop stop-color="white" stop-opacity=".15"/><stop offset="1" stop-color="#53605a" stop-opacity=".12"/></radialGradient>
+    <radialGradient id="polish" cx="35%" cy="25%" r="90%"><stop stop-color="#f6ebcd" stop-opacity=".08"/><stop offset="1" stop-color="#31453c" stop-opacity=".14"/></radialGradient>
   </defs>
-  <path fill="#eee" d="M0 0H512V512H0z"/>
+  <path fill="#ddd7bf" d="M0 0H512V512H0z"/>
   <path filter="url(#glaze)" d="M0 0H512V512H0z"/>
   <path fill="url(#polish)" d="M0 0H512V512H0z"/>
 </svg>
