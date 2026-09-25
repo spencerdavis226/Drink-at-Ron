@@ -4,6 +4,8 @@ import { cards } from "../../src/content/catalog";
 test("every authored title fits the two-line band at supported card widths", async ({
   page,
 }) => {
+  // Six complete catalog passes now cover 262 cards in each browser.
+  test.setTimeout(120000);
   await page.setViewportSize({ width: 1200, height: 900 });
   await page.goto("/docs/studies/front-typography-2026-09-22/");
   await page.evaluate(() => document.fonts.ready);
@@ -46,9 +48,7 @@ test("every authored title fits the two-line band at supported card widths", asy
 test("a wide title under the character limit shrinks without truncation", async ({
   page,
 }) => {
-  await page.goto(
-    "/docs/studies/front-typography-2026-09-22/?width=260",
-  );
+  await page.goto("/docs/studies/front-typography-2026-09-22/?width=260");
   await page.evaluate(() => document.fonts.ready);
   const wide = "WWWWWWWW WWWWWWWW";
   await page.getByLabel("Try a title").fill(wide);
@@ -76,5 +76,7 @@ test("a wide title under the character limit shrinks without truncation", async 
     .poll(() => title.evaluate((el) => el.scrollHeight > el.clientHeight + 2))
     .toBe(true);
   await title.evaluate((el) => el.scrollTo({ top: el.scrollHeight }));
-  await expect.poll(() => title.evaluate((el) => el.scrollTop)).toBeGreaterThan(0);
+  await expect
+    .poll(() => title.evaluate((el) => el.scrollTop))
+    .toBeGreaterThan(0);
 });

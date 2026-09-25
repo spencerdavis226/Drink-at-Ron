@@ -1,3 +1,5 @@
+import { standardExpansionCards } from "./standard-expansion";
+
 /**
  * Card imprint content: which icon and paper tint a card carries.
  *
@@ -36,12 +38,29 @@ export interface ImprintAssignment {
   tint?: TintName;
 }
 
+// The current front is plain parchment; these retained imprint assignments
+// support saved/study content. The expansion uses a stable category motif from
+// the already-shipped icon set, so adding 145 cards does not grow that sprite.
+const expansionMotifs: Record<string, ImprintAssignment> = {
+  sip: { icon: "lorc/beer-stein", tint: "amber" },
+  group: { icon: "lorc/conversation", tint: "rose" },
+  category: { icon: "lorc/book-cover", tint: "sage" },
+  challenge: { icon: "lorc/crossed-swords", tint: "teal" },
+  rule: { icon: "lorc/scroll-unfurled", tint: "sepia" },
+};
+
 /**
  * Per-card overrides. Empty is a valid, intentional state: every card still
  * gets a deterministic lattice. Add an entry when a card deserves a specific
  * icon; the current catalog below has curated assignments.
  */
 export const imprintAssignments: Record<string, ImprintAssignment> = {
+  ...Object.fromEntries(
+    standardExpansionCards.map((card) => [
+      card.id,
+      expansionMotifs[card.category],
+    ]),
+  ),
   "core.house-special": { icon: "lorc/beer-stein", tint: "amber" },
   "core.bar-tab": { icon: "delapouite/coins-pile", tint: "sepia" },
   "core.bad-influence": { icon: "lorc/poison-bottle", tint: "plum" },

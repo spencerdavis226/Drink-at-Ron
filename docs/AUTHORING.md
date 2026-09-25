@@ -45,7 +45,7 @@ Packs can optionally specify `artwork: 'art/your-pack.webp'`. The file must exis
 
 Cards are plain typed objects in `src/content` (build the common shape with `cardFactory(namespace)` from `src/content/author.ts`). A dice card is not a boolean flag: it carries a structured `dice` definition — `count`, `sides` (6 or 20), and either one `instruction` template with `{total}` or `outcomes` that cover every total exactly once. `roll()` and `rollTable()` in `author.ts` cover both cases and `validateDice` enforces them at build time.
 
-For a human review pass, run `npm run cards:review`. It regenerates `docs/CARD_REVIEW.md` (readable table with a blank Review column) and `docs/card-review.csv` from the live catalog, so the sheet can never drift from what ships. Edit the source and regenerate; do not hand-edit either file. `src/content/classics.ts` holds the classic / King's Cup basics; new cards need a curated entry in `src/content/imprint.ts` (the build and `tests/imprint.test.ts` require one).
+For a human review pass, run `npm run cards:review`. It regenerates `docs/CARD_REVIEW.md` (readable table with a blank Review column) and `docs/card-review.csv` from the live catalog, so the sheet can never drift from what ships. Edit the source and regenerate; do not hand-edit either file. `src/content/classics.ts` holds the classic / King's Cup basics and `standard-expansion.ts` holds the larger standard-deck expansion. New cards need an assignment in `src/content/imprint.ts` (the build and `tests/imprint.test.ts` require one); the expansion uses stable category motifs from the existing sprite while its new copy is reviewed.
 
 ## Card workshop
 

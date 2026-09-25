@@ -40,6 +40,6 @@ Sound has been removed; there are no audio checks. Verify the visual and dice it
 Automated evidence is recorded in `docs/studies/README.md`. Keep the following pending until observed on physical hardware:
 
 - [ ] Approve the short, long, and temporary-rule front studies on an iPhone and iPad.
-- [ ] Play Short (30 cards from the `core` sample collection) using the playtest record, then check Infinite through two cycles.
+- [ ] Play Short (30 cards from the 250-card Core deck) using the playtest record, then sample more cards in Infinite. Engine tests cover the full shuffle cycle.
 - [ ] Verify the published `/Drink-at-Ron/` URL, Home Screen installation, offline relaunch, and updates on iOS.
 - [ ] Evaluate the approved frame and live title sharpness, scrolling with enlarged text, and flip smoothness on physical devices.

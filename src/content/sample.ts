@@ -1,6 +1,7 @@
 import type { CardDefinition, PackDefinition } from "../game/types";
 import { cardFactory } from "./author";
 import { classicCards } from "./classics";
+import { standardExpansionCards } from "./standard-expansion";
 
 // The house collection: the supplied 40-card sample set plus the classic /
 // King's Cup basics in `classics.ts`, all under the always-included `core`
@@ -383,7 +384,11 @@ export const sampleCards: CardDefinition[] = [
 
 // The always-included Core deck combines the supplied sample set with the
 // classic / King's Cup basics so no game starts without "Give Two" and friends.
-export const coreCards: CardDefinition[] = [...sampleCards, ...classicCards];
+export const coreCards: CardDefinition[] = [
+  ...sampleCards,
+  ...classicCards,
+  ...standardExpansionCards,
+];
 
 export const samplePack: PackDefinition = {
   version: 1,

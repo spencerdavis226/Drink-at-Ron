@@ -50,7 +50,7 @@ Saves snapshot card content and order. Invalid/unsupported saves require explici
 
 ## Add content
 
-See [the pack authoring guide](docs/AUTHORING.md). The always-included `core` deck is the 40-card sample collection in `src/content/sample.ts` plus 65 classic / King's Cup basics in `src/content/classics.ts`, with dice cards mixed in; `VIP night` is an additional themed pack. It is supplied sample content awaiting playtesting, not a permanent brief. The approved front keeps live titles and rules over plain parchment inside the ornate teal frame. Run `npm run cards:review` to regenerate the human review sheet (`docs/CARD_REVIEW.md` and `docs/card-review.csv`) from the live catalog before locking copy.
+See [the pack authoring guide](docs/AUTHORING.md). The always-included `core` deck has 250 cards across `src/content/sample.ts`, `classics.ts`, and `standard-expansion.ts`, with dice cards mixed in; `VIP night` adds 12 themed cards. The new material awaits group playtesting and copy review. The approved front keeps live titles and rules over plain parchment inside the ornate teal frame. Run `npm run cards:review` to regenerate the human review sheet (`docs/CARD_REVIEW.md` and `docs/card-review.csv`) from the live catalog before locking copy.
 
 ## Static deployment
 
@@ -69,7 +69,7 @@ Re-export the generated UI sheet with `npx tsx scripts/chrome.ts`; regenerate ic
 
 ## Production workshop and release
 
-Open `/?workshop=1` on the development server for isolated card previews, seeded sessions, and dice fixtures. The approved ornate teal front uses plain parchment; the retired imprint browser is no longer exposed. Workshop code and fixtures are excluded from production; the approved shared frame and its assets are shipped. The `core` pack holds the 40-card sample collection (dice cards included) and `VIP night` is an additional themed pack; group balance remains untested.
+Open `/?workshop=1` on the development server for isolated card previews, seeded sessions, and dice fixtures. The approved ornate teal front uses plain parchment; the retired imprint browser is no longer exposed. Workshop code and fixtures are excluded from production; the approved shared frame and its assets are shipped. The `core` pack holds 250 cards (dice cards included) and `VIP night` is an additional themed pack; group balance remains untested.
 
 See [Game design](docs/GAME_DESIGN.md), [Playtest record](docs/PLAYTEST.md), and [GitHub Pages release](docs/GITHUB_PAGES.md). The unified front is approved and used throughout. Dice use the approved full-screen `@3d-dice/dice-box-threejs` overlay; dice cards are mixed into the `core` pack (see STATUS.md).
 
