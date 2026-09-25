@@ -1,4 +1,5 @@
 import { test, expect } from "@playwright/test";
+import type { CardDefinition } from "../../src/game/types";
 const key = "drink-at-ron.session.v1";
 async function ready(page: import("@playwright/test").Page) {
   await expect(page.locator(".card-stage")).not.toHaveClass(
@@ -242,7 +243,7 @@ test("offline reload keeps the same revealed card", async ({
   expect(frameLoaded).toBeGreaterThan(0);
 });
 
-test("Core cards keep edge clearance and a 2:3 frame across device sizes", async ({
+test("representative Core cards keep edge clearance and a 2:3 frame across device sizes", async ({
   page,
 }) => {
   test.setTimeout(180000);
@@ -254,6 +255,23 @@ test("Core cards keep edge clearance and a 2:3 frame across device sizes", async
     (k) => JSON.parse(localStorage.getItem(k)!),
     key,
   );
+  // The workshop checks every card at five viewport presets and both text
+  // sizes. Keep this production-session check focused on each card kind and
+  // the content extremes; reloading all 250 cards at four widths duplicates
+  // that sweep and exceeds the browser test budget.
+  const pool = original.cards as CardDefinition[];
+  const sampled = [
+    ...(["sip", "group", "category", "challenge", "rule"] as const).map(
+      (category) => pool.find((card) => card.category === category)!,
+    ),
+    [...pool].sort((a, b) => b.title.length - a.title.length)[0],
+    [...pool].sort((a, b) => b.rules.length - a.rules.length)[0],
+    pool.find((card) => card.dice?.sides === 20)!,
+    pool.at(-1)!,
+  ];
+  const uniqueSamples = [
+    ...new Map(sampled.map((card) => [card.id, card])).values(),
+  ];
   for (const viewport of [
     { width: 320, height: 700 },
     { width: 390, height: 844 },
@@ -261,7 +279,7 @@ test("Core cards keep edge clearance and a 2:3 frame across device sizes", async
     { width: 844, height: 390 },
   ]) {
     await page.setViewportSize(viewport);
-    for (const card of original.cards) {
+    for (const card of uniqueSamples) {
       const state = {
         ...original,
         order: [
