@@ -33,7 +33,10 @@ async function seed(page: Page, session: unknown) {
 // A CSS transform matrix parsed without a browser DOM (the specs run in Node).
 const geometry = (transform: string) => {
   if (transform === "none") return { x: 0, y: 0, rotate: 0, scale: 1 };
-  const n = transform.match(/-?\d*\.?\d+(?:e[-+]?\d+)?/gi)!.map(Number);
+  const n = transform
+    .slice(transform.indexOf("(") + 1, -1)
+    .split(",")
+    .map(Number);
   const [a, b, e, f] = transform.startsWith("matrix3d(")
     ? [n[0], n[1], n[12], n[13]]
     : [n[0], n[1], n[4], n[5]];
@@ -192,23 +195,20 @@ test("flip lands on the same transform as its resting state", async ({
   page,
 }) => {
   await seed(page, sessionFor(cheers, "hidden"));
-  await page.getByRole("button", { name: "Reveal card", exact: true }).click();
   const frames = await page.evaluate(async () => {
     const card = document.querySelector(".game-card") as HTMLElement;
     const stage = () => document.querySelector(".card-stage")!.className;
-    await new Promise<void>((resolve) => {
-      const poll = () => {
-        if (stage().includes("flip")) resolve();
-        else requestAnimationFrame(poll);
-      };
-      poll();
-    });
     const end = await new Promise<string>((resolve) => {
-      card.addEventListener(
-        "animationend",
-        () => resolve(getComputedStyle(card).transform),
-        { once: true },
-      );
+      const onEnd = (event: AnimationEvent) => {
+        if (event.target !== card || event.animationName !== "lift-turn")
+          return;
+        card.removeEventListener("animationend", onEnd);
+        resolve(getComputedStyle(card).transform);
+      };
+      card.addEventListener("animationend", onEnd);
+      // Register before activating; WebKit can finish the animation before a
+      // second Playwright call attaches a listener.
+      card.click();
     });
     await new Promise<void>((resolve) => {
       const poll = () => {
@@ -227,18 +227,22 @@ test("flip lands on the same transform as its resting state", async ({
 test("returning a rolled card settles without a positional jump", async ({
   page,
 }) => {
-  const rolled = rollDice(sessionFor(diceCard, "revealed", [cheers]), () => 0.5);
+  const rolled = rollDice(
+    sessionFor(diceCard, "revealed", [cheers]),
+    () => 0.5,
+  );
   await seed(page, rolled);
-  // The overlay is pointer-transparent; the card button returns the roll.
-  await page.locator(".game-card").click();
   const frames = await page.evaluate(async () => {
     const card = document.querySelector(".game-card") as HTMLElement;
     const end = await new Promise<string>((resolve) => {
-      card.addEventListener(
-        "animationend",
-        () => resolve(getComputedStyle(card).transform),
-        { once: true },
-      );
+      const onEnd = (event: AnimationEvent) => {
+        if (event.target !== card || event.animationName !== "card-settle")
+          return;
+        card.removeEventListener("animationend", onEnd);
+        resolve(getComputedStyle(card).transform);
+      };
+      card.addEventListener("animationend", onEnd);
+      card.click();
     });
     await new Promise<void>((resolve) => {
       const poll = () => {

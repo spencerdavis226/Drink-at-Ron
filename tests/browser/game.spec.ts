@@ -480,10 +480,15 @@ test("minimal interface and a real two-sided flip", async ({ page }) => {
     "aria-hidden",
     "false",
   );
-  const rotation = await page
-    .locator(".card-rotator")
-    .evaluate((el) => getComputedStyle(el).transform);
-  expect(rotation).toContain("matrix3d(-1");
+  await expect
+    .poll(() =>
+      page
+        .locator(".card-rotator")
+        .evaluate(
+          (el) => new DOMMatrixReadOnly(getComputedStyle(el).transform).m11,
+        ),
+    )
+    .toBeLessThan(-0.99);
   await page.locator(".game-card").click();
   await ready(page);
   await expect(page.getByRole("button", { name: "Reveal card" })).toBeVisible();
