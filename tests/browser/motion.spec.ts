@@ -198,18 +198,27 @@ test("flip lands on the same transform as its resting state", async ({
   const frames = await page.evaluate(async () => {
     const card = document.querySelector(".game-card") as HTMLElement;
     const stage = () => document.querySelector(".card-stage")!.className;
-    const end = await new Promise<string>((resolve) => {
-      const onEnd = (event: AnimationEvent) => {
-        if (event.target !== card || event.animationName !== "lift-turn")
-          return;
-        card.removeEventListener("animationend", onEnd);
-        resolve(getComputedStyle(card).transform);
+    card.click();
+    const animation = await new Promise<CSSAnimation>((resolve) => {
+      const poll = () => {
+        const current = card
+          .getAnimations()
+          .find(
+            (item): item is CSSAnimation =>
+              item instanceof CSSAnimation &&
+              item.animationName === "lift-turn",
+          );
+        if (current) resolve(current);
+        else requestAnimationFrame(poll);
       };
-      card.addEventListener("animationend", onEnd);
-      // Register before activating; WebKit can finish the animation before a
-      // second Playwright call attaches a listener.
-      card.click();
+      poll();
     });
+    // Seek to the authored landing frame. WebKit may drop the CSS animation
+    // when React clears the phase class before dispatching animationend.
+    animation.pause();
+    animation.currentTime = animation.effect!.getComputedTiming().endTime;
+    const end = getComputedStyle(card).transform;
+    animation.play();
     await new Promise<void>((resolve) => {
       const poll = () => {
         if (!stage().includes("flip") && card.getAnimations().length === 0)
@@ -234,16 +243,25 @@ test("returning a rolled card settles without a positional jump", async ({
   await seed(page, rolled);
   const frames = await page.evaluate(async () => {
     const card = document.querySelector(".game-card") as HTMLElement;
-    const end = await new Promise<string>((resolve) => {
-      const onEnd = (event: AnimationEvent) => {
-        if (event.target !== card || event.animationName !== "card-settle")
-          return;
-        card.removeEventListener("animationend", onEnd);
-        resolve(getComputedStyle(card).transform);
+    card.click();
+    const animation = await new Promise<CSSAnimation>((resolve) => {
+      const poll = () => {
+        const current = card
+          .getAnimations()
+          .find(
+            (item): item is CSSAnimation =>
+              item instanceof CSSAnimation &&
+              item.animationName === "card-settle",
+          );
+        if (current) resolve(current);
+        else requestAnimationFrame(poll);
       };
-      card.addEventListener("animationend", onEnd);
-      card.click();
+      poll();
     });
+    animation.pause();
+    animation.currentTime = animation.effect!.getComputedTiming().endTime;
+    const end = getComputedStyle(card).transform;
+    animation.play();
     await new Promise<void>((resolve) => {
       const poll = () => {
         if (card.getAnimations().length === 0) resolve();
