@@ -3,6 +3,7 @@
 Automated browser emulation is not evidence of actual iOS Home Screen behavior. Complete this on a real small iPhone, a large iPhone, and an iPad before sharing a polished release.
 
 - [ ] Open HTTPS site in Safari. Check safe areas, browser toolbar expansion, no horizontal overflow, readable rules, and reachable controls.
+- [ ] Set the phone on a table and read short and long rules from the far seat and side seats in bright and dim light. Check whether any rule needs the phone passed around or a forced scroll.
 - [ ] Install through Share → Add to Home Screen; open from icon and check standalone launch appearance.
 - [ ] Wait for offline readiness, enable airplane mode, close and reopen. Reveal/discard multiple cards and verify artwork works.
 - [ ] Reveal a card, switch apps, lock/unlock, and reopen. Same card and count persist.

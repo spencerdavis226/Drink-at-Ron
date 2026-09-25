@@ -27,9 +27,9 @@ for (const c of cards) {
     throw Error(`Card title has a word over 12 characters: ${c.id}`);
   const ruleChars = [...c.rules.trim()].length;
   const ruleWords = c.rules.trim().split(/\s+/u).length;
-  if (ruleChars > 180 || ruleWords > 35)
-    throw Error(`Card rule exceeds 180 characters or 35 words: ${c.id}`);
   if (ruleChars > 120 || ruleWords > 24)
+    throw Error(`Card rule exceeds 120 characters or 24 words: ${c.id}`);
+  if (ruleChars > 90 || ruleWords > 18)
     console.warn(
       `Review long card rule (${ruleChars} characters, ${ruleWords} words): ${c.id}`,
     );

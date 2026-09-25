@@ -16,7 +16,7 @@ Choose anyone to draw first. Pass the device clockwise unless a card names the n
 
 The standard deck is the always-included `core` pack: 40 original sample cards, 65 classic / King's Cup basics (`src/content/classics.ts`), and 145 new prompts (`src/content/standard-expansion.ts`). Its 250 cards comprise 47 sip, 54 group, 41 category, 75 challenge, and 33 rule cards; 20 have dice definitions. `VIP night` adds a 12-card themed pack. This distribution is an editorial starting point, not validated balance. All cards are equally likely per shuffle cycle; a deck longer than the pool repeats cards only after exhausting it, and the cycle boundary never repeats immediately when the pool has multiple cards. Classic formats and icebreakers informed the new prompts; the text is original and adapted to this game's one-card flow. Traditional speed-drinking and forced-consumption rules are not carried over.
 
-Keep one primary instruction. Aim for 120 characters and 24 words; the build flags longer rules and rejects those over 180 characters or 35 words. Specify who starts and when an activity stops where relevant. Avoid prompts that assume knowledge of a particular franchise or demographic makeup. Preserve stable IDs for unchanged concepts. Text revisions affect new sessions only; active sessions keep their snapshot.
+Keep one primary instruction. Aim for 90 characters and 18 words; the build flags longer rules and rejects those over 120 characters or 24 words. Specify who starts and when an activity stops where relevant. Avoid prompts that assume knowledge of a particular franchise or demographic makeup. Preserve stable IDs for unchanged concepts. Text revisions affect new sessions only; active sessions keep their snapshot.
 
 ## Review gate
 

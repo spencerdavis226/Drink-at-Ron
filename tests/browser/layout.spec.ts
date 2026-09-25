@@ -49,11 +49,17 @@ test("Core instructions fit at 390x844 with ratio, pack mark and no CTA occlusio
       return {
         // 2px tolerance matches the overflow-affordance threshold (subpixel).
         fit: rules.scrollHeight <= rules.clientHeight + 2,
+        fontSize: parseFloat(
+          getComputedStyle(rules.querySelector("p")!).fontSize,
+        ),
         ratio: card.width / card.height,
         mark: !!document.querySelector(".card-footer .card-pack-marks img"),
       };
     });
     expect(m.fit, `${card.id} rules should fit at 390x844`).toBe(true);
+    expect(m.fontSize, `${card.id} readable table text`).toBeGreaterThanOrEqual(
+      26,
+    );
     expect(Math.abs(m.ratio - 2 / 3), `${card.id} ratio`).toBeLessThan(0.01);
     expect(m.mark, `${card.id} keeps its pack mark`).toBe(true);
   }
@@ -119,6 +125,11 @@ test("a short phone scrolls long rules with a visible overflow affordance", asyn
     "data-overflow",
     "bottom",
   );
+  expect(
+    await page
+      .locator(".study-rules p")
+      .evaluate((el) => parseFloat(getComputedStyle(el).fontSize)),
+  ).toBeGreaterThanOrEqual(39);
 });
 test("legacy artwork references keep their saved text on the shared ornate front", async ({
   page,

@@ -812,7 +812,7 @@ const drafts: Draft[] = [
     "sound-effect",
     "Sound Effects",
     "challenge",
-    "Make a sound effect for a nearby object. Each player gets one guess; first correct guess gives 1.",
+    "Make a sound for a nearby object. One guess each; first correct guess assigns 1 sip.",
     "an object sending out exaggerated sound waves",
   ],
   [

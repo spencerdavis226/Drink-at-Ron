@@ -152,7 +152,7 @@
 }
 
 .study-rules p {
-  font: 400 1.375rem/1.4 var(--font-tavern);
+  font: 400 clamp(1.625rem, 7.8cqw, 2.125rem)/1.28 var(--font-tavern);
   margin: 0;
   text-wrap: pretty;
   color: #372412;
@@ -189,7 +189,7 @@
 
 .enlarged .study-rules p,
 .enlarged .card-copy p {
-  font-size: 2.0625rem;
+  font-size: clamp(2.125rem, 9.5cqw, 2.625rem);
 }
 .enlarged .dice-continue-hint {
   font-size: 1.5rem;

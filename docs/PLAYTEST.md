@@ -7,6 +7,7 @@ Status: **prepared, no results recorded.** Kit prepared 2026-09-21 at commit `3e
 - Two sessions, ideally one group. Session A is Short (30 cards) with Core. Session B is Infinite for another 30–60 cards; use more sessions to cover the deck.
 - Dice cards are mixed into `The house collection` (20 of the 250 carry a roll), so any game can reach a roll — there is no separate dice pack to select.
 - Use the game without coaching beyond choosing a first drawer and clockwise turns. Record confusion rather than steering players to the intended answer.
+- Place the phone where the group will actually play. Ask people across the table and at side angles to read each revealed rule without passing the phone; note when they must lean in, turn the phone, or scroll.
 - After each session ask: which cards would you remove, which do you want more of, and was the next action ever unclear?
 - Keep automation results separate from these observations. Do not mark a check passed from an emulated screenshot.
 
@@ -58,6 +59,7 @@ Use the generated [card review sheet](CARD_REVIEW.md) or [CSV](card-review.csv) 
 - Test larger text and reduced motion; try portrait, landscape, and iPad split view.
 - Reach a dice card and roll; note whether Roll/Continue is obvious without coaching and whether the settled result is readable.
 - Note unintended taps, slow frames, clipped content, and anything hard to read.
+- Repeat a few short and long rules in both bright and dim light; record whether the larger body text is enough at normal table distance.
 - Confirm a new release waits until the game ends before offering Update game.
 
 ## Done when

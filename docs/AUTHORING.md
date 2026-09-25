@@ -29,7 +29,9 @@ export const examplePack: PackDefinition = {
 };
 ```
 
-Use stable namespaced IDs; never recycle one for an unrelated card. Supported categories: `sip`, `group`, `category`, `challenge`, and `rule`. Rules are plain text, not HTML. Keep one clear instruction. Aim for 120 characters and 24 words or less; the build flags longer copy for review and rejects rules over 180 characters or 35 words. Specify who starts and when the activity ends. Long text stays inside the fixed 2:3 card and scrolls within the rules panel at enlarged settings; the card never grows for content. Illustration briefs remain authoring metadata. Do not bake rule text into artwork.
+Use stable namespaced IDs; never recycle one for an unrelated card. Supported categories: `sip`, `group`, `category`, `challenge`, and `rule`. Rules are plain text, not HTML. Keep one clear instruction. Aim for 90 characters and 18 words or less; the build flags longer copy for review and rejects rules over 120 characters or 24 words. Specify who starts and when the activity ends. Long text stays inside the fixed 2:3 card and scrolls within the rules panel at enlarged settings; the card never grows for content. Illustration briefs remain authoring metadata. Do not bake rule text into artwork.
+
+The rule text scales from 26px on a phone card to 34px on a wide card at the default browser text size. Enlarged mode uses 34–42px. Review the actual rendered card at 320px and 390px viewport widths; character counts cannot predict where words wrap. Keep a short lead sentence so a group across the table can grasp the action before anyone scrolls.
 
 Card titles have a hard authoring limit of 22 characters and 12 characters per word. The title starts at a size proportional to card width and shrinks only if its rendered text would exceed the two-line teal band, down to 18px. The workshop/browser fit check is still required because equal-length words can render at different widths. Existing saved titles are never shortened or renamed; unusually long legacy titles remain scrollable.
 

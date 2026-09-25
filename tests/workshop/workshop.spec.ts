@@ -159,9 +159,8 @@ for (const size of [
         expect(
           await frame.locator(".game-card").evaluate((el) => {
             const box = el.getBoundingClientRect();
-            const rules = el
-              .querySelector(".study-rules")!
-              .getBoundingClientRect();
+            const rulesElement = el.querySelector(".study-rules")!;
+            const rules = rulesElement.getBoundingClientRect();
             return (
               Math.abs(el.clientWidth / el.clientHeight - 2 / 3) < 0.01 &&
               Math.abs(
@@ -175,6 +174,7 @@ for (const size of [
               rules.left >= box.left - 2 &&
               rules.right <= box.right + 2 &&
               rules.bottom <= box.bottom + 2 &&
+              rulesElement.scrollWidth <= rulesElement.clientWidth + 2 &&
               [...el.querySelectorAll(".study-title h2")].every((e) => {
                 const r = e.getBoundingClientRect();
                 return (

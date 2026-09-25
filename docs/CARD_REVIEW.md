@@ -209,7 +209,7 @@ the Review column is intentionally blank so you can mark it up.
 | ☐ | What Do I Do? | `core.charade-job` | challenge | Act out a job silently. Each player gets one guess; first correct guess gives 1. |  |
 | ☐ | Invisible Prop | `core.charade-object` | challenge | Mime using an object. Each player gets one guess; first correct guess gives 1. |  |
 | ☐ | Everyone But You | `core.reverse-charade` | challenge | Table acts out one animal together. Drawer gets one guess. |  |
-| ☐ | Sound Effects | `core.sound-effect` | challenge | Make a sound effect for a nearby object. Each player gets one guess; first correct guess gives 1. |  |
+| ☐ | Sound Effects | `core.sound-effect` | challenge | Make a sound for a nearby object. One guess each; first correct guess assigns 1 sip. |  |
 | ☐ | Hum It | `core.hum-a-song` | challenge | Hum a song without lyrics. Each player gets one guess; first correct guess gives 1. |  |
 | ☐ | Finish the Line | `core.finish-the-line` | challenge | Start a familiar saying. First person to finish it gives 1. |  |
 | ☐ | Two Word Story | `core.two-word-story` | challenge | Begin a story with two words. Each player adds two; stop after one lap. |  |
@@ -267,25 +267,25 @@ the Review column is intentionally blank so you can mark it up.
 
 | Review | Title | ID | Cat | Rules | Dice |
 | --- | --- | --- | --- | --- | --- |
-| ☐ | A toast to the VIP | `vip.toast` | sip | Everyone raises a glass and toasts the VIP by name. The VIP takes one sip, and everyone joins them. |  |
+| ☐ | A toast to the VIP | `vip.toast` | sip | Toast the VIP by name. The VIP takes 1 sip; everyone joins them. |  |
 | ☐ | Choose a sidekick | `vip.sidekick` | sip | The VIP picks a sidekick until the next card is revealed. They both take one sip now. |  |
-| ☐ | The VIP tax | `vip.tax` | sip | Even the VIP pays taxes. The VIP takes one sip and names one privilege they would trade away for the night. |  |
-| ☐ | Instant fan club | `vip.fan-club` | group | Going clockwise, each person shares one reason they are glad the VIP is here. The VIP takes one sip at the end. |  |
-| ☐ | Standing ovation | `vip.standing-ovation` | group | Everyone gives the VIP a standing ovation. The last person left sitting takes one sip, and the VIP takes one too. |  |
-| ☐ | Outstanding favors | `vip.favors` | group | Anyone who owes the VIP a favor takes one sip. The VIP takes one sip in happy anticipation. |  |
-| ☐ | A gift for the VIP | `vip.gift` | category | Name a gift fit for the VIP, going clockwise. No repeats. The first person to repeat or pass takes one sip; the round ends. |  |
-| ☐ | Class superlatives | `vip.superlatives` | category | Name a superlative the VIP should win, going clockwise. No repeats. The first person to repeat or pass takes one sip; the round ends. |  |
-| ☐ | The loving roast | `vip.roast` | challenge | Going clockwise, give the VIP one affectionate roast each. The VIP picks the closest hit and takes one sip. |  |
-| ☐ | A title for the VIP | `vip.title` | challenge | Grant the VIP a ridiculous new title for the night. The VIP accepts it with one sip and uses it in their next sentence. |  |
-| ☐ | Your Excellency | `vip.excellency` | rule | Until the next card is revealed, address the VIP as Your Excellency. Whoever forgets takes one sip. |  |
-| ☐ | Never drink alone | `vip.never-alone` | rule | Until the next card is revealed, the VIP never drinks alone: whenever the VIP takes a sip, they choose someone to join them. |  |
+| ☐ | The VIP tax | `vip.tax` | sip | The VIP takes 1 sip and names a privilege they'd trade away tonight. |  |
+| ☐ | Instant fan club | `vip.fan-club` | group | Clockwise, say why you're glad the VIP is here. Then the VIP takes 1 sip. |  |
+| ☐ | Standing ovation | `vip.standing-ovation` | group | Give the VIP a standing ovation. Last to stand takes 1 sip; so does the VIP. |  |
+| ☐ | Outstanding favors | `vip.favors` | group | Anyone who owes the VIP a favor takes 1 sip. The VIP takes 1 too. |  |
+| ☐ | A gift for the VIP | `vip.gift` | category | Clockwise, name gifts for the VIP. No repeats. First to repeat or pass takes 1 sip. |  |
+| ☐ | Class superlatives | `vip.superlatives` | category | Clockwise, name awards for the VIP. No repeats. First to repeat or pass takes 1 sip. |  |
+| ☐ | The loving roast | `vip.roast` | challenge | Clockwise, give the VIP a gentle roast. The VIP picks a favorite and takes 1 sip. |  |
+| ☐ | A title for the VIP | `vip.title` | challenge | Give the VIP a silly title. They take 1 sip and use it next time they speak. |  |
+| ☐ | Your Excellency | `vip.excellency` | rule | Call the VIP Your Excellency until the next card. Forget and take 1 sip. |  |
+| ☐ | Never drink alone | `vip.never-alone` | rule | Until the next card, the VIP picks someone to join each sip they take. |  |
 
 ## Notes for review
 
 - Dice cards are ordinary cards with a `dice` definition (which dice plus how
   to read the total); the engine pauses the deck until the roll is resolved.
-- Rules target 120 characters / 24 words; the build warns above that and
-  rejects over 180 characters / 35 words.
+- Rules target 90 characters / 18 words; the build warns above that and
+  rejects over 120 characters / 24 words.
 - Rank cards for 9 / 10 / Jack / Queen are intentionally covered by the
   existing Rhyme Time, Categories, Rulemaster and Questions Only cards.
 
