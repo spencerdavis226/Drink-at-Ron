@@ -13,7 +13,8 @@ test("seeded workshop preserves the pool and reproduces order", () => {
 test("Core composition matches the content brief", () => {
   const core = packs.find((p) => p.id === "core")!;
   const coreCards = cards.filter((c) => core.cardIds.includes(c.id));
-  expect(coreCards).toHaveLength(40);
+  // Supplied sample set (40) plus the classic / King's Cup basics (65).
+  expect(coreCards).toHaveLength(105);
   expect(
     Object.fromEntries(
       ["sip", "group", "category", "challenge", "rule"].map((c) => [
@@ -21,6 +22,6 @@ test("Core composition matches the content brief", () => {
         coreCards.filter((card) => card.category === c).length,
       ]),
     ),
-  ).toEqual({ sip: 8, group: 6, category: 6, challenge: 14, rule: 6 });
-  expect(cards.filter((c) => c.dice)).toHaveLength(14);
+  ).toEqual({ sip: 17, group: 24, category: 11, challenge: 35, rule: 18 });
+  expect(cards.filter((c) => c.dice)).toHaveLength(20);
 });

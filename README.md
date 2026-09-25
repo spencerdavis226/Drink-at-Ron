@@ -50,7 +50,7 @@ Saves snapshot card content and order. Invalid/unsupported saves require explici
 
 ## Add content
 
-See [the pack authoring guide](docs/AUTHORING.md). The current standard set is the 40-card sample collection in `src/content/sample.ts` (pack `core`), with dice cards mixed in; `VIP night` is an additional themed pack. It is supplied sample content awaiting playtesting, not a permanent brief. The approved front keeps live titles and rules over plain parchment inside the ornate teal frame. The next content session will review the incoming CSV against the title, rule, pack, and dice guardrails before adding cards.
+See [the pack authoring guide](docs/AUTHORING.md). The always-included `core` deck is the 40-card sample collection in `src/content/sample.ts` plus 65 classic / King's Cup basics in `src/content/classics.ts`, with dice cards mixed in; `VIP night` is an additional themed pack. It is supplied sample content awaiting playtesting, not a permanent brief. The approved front keeps live titles and rules over plain parchment inside the ornate teal frame. Run `npm run cards:review` to regenerate the human review sheet (`docs/CARD_REVIEW.md` and `docs/card-review.csv`) from the live catalog before locking copy.
 
 ## Static deployment
 

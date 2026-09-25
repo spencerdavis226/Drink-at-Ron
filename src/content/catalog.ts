@@ -1,12 +1,13 @@
 import { validateDice } from "../game/dice";
-import { sampleCards, samplePack } from "./sample";
+import { coreCards, samplePack } from "./sample";
 import { vipCards, vipPack } from "./vip";
 import type { CardDefinition, PackDefinition } from "../game/types";
 
-// The runtime catalog. `samplePack` holds the current standard 40-card set
-// (dice cards included); VIP night is an additional themed pack. Card content
-// is provided sample material and is expected to change.
-export const cards: CardDefinition[] = [...sampleCards, ...vipCards];
+// The runtime catalog. `samplePack` (Core) holds the supplied sample set plus
+// the classic / King's Cup basics, and is always included; VIP night is an
+// additional themed pack. Card content is provided sample material and is
+// expected to change.
+export const cards: CardDefinition[] = [...coreCards, ...vipCards];
 export const packs: PackDefinition[] = [samplePack, vipPack];
 
 export function validateCatalog(cs: CardDefinition[], ps: PackDefinition[]) {

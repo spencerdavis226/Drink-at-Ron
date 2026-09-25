@@ -41,6 +41,12 @@ For an incoming CSV, review column mapping, stable IDs, duplicate concepts, pack
 
 Packs can optionally specify `artwork: 'art/your-pack.webp'`. The file must exist and follow the same local path rules as card artwork. Omit it to use the painted tankard. Shared pack controls and card frames are automatic; packs do not carry UI components, animation logic, or fonts.
 
+## Card data and bulk review
+
+Cards are plain typed objects in `src/content` (build the common shape with `cardFactory(namespace)` from `src/content/author.ts`). A dice card is not a boolean flag: it carries a structured `dice` definition — `count`, `sides` (6 or 20), and either one `instruction` template with `{total}` or `outcomes` that cover every total exactly once. `roll()` and `rollTable()` in `author.ts` cover both cases and `validateDice` enforces them at build time.
+
+For a human review pass, run `npm run cards:review`. It regenerates `docs/CARD_REVIEW.md` (readable table with a blank Review column) and `docs/card-review.csv` from the live catalog, so the sheet can never drift from what ships. Edit the source and regenerate; do not hand-edit either file. `src/content/classics.ts` holds the classic / King's Cup basics; new cards need a curated entry in `src/content/imprint.ts` (the build and `tests/imprint.test.ts` require one).
+
 ## Card workshop
 
 Run `npm run dev`, then open `http://127.0.0.1:5173/?workshop=1`. Search and filter the catalog, pick a card, set the preview viewport width and height or enlarged text, and tap the card to exercise the actual flip/discard controller. The preview renders the real shipping `Play` component and frame — there is no separate front-study toggle. Replay reveal deals the selected card facedown. The seed reproduces shuffle order and dice outcomes; the chosen card is moved to the front without changing pool membership. No workshop actions write game saves or preferences. See GAME_DESIGN.md for the editorial rubric and PLAYTEST.md before commissioning the full collection.
