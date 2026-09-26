@@ -121,7 +121,7 @@ for (const size of [
   "Split view",
 ]) {
   test(`all study cards retain their ratio at ${size}`, async ({ page }) => {
-    // 117 main, 102 House, 16 VIP and 116 Pokémon cards; each iteration
+    // 117 main, 102 House, 16 VIP and 134 Pokémon cards; each iteration
     // re-reads the preview, and software-rendered WebKit is the slow case.
     test.setTimeout(600000);
     await page.setViewportSize({ width: 1400, height: 1100 });
