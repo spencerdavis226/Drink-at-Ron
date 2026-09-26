@@ -10,11 +10,17 @@ The approved card back and ornate teal front remain anchors. The current card fr
 
 See [visual audit evidence](studies/visual-audit-2026-09-20/README.md) for current failures. Those captures are not approved golden images.
 
+## Matched rounded card pair
+
+The current production pair is `assets/source/card-back-symmetric.png` and `assets/source/card-front-symmetric.png`, exported to `public/art/card-back.webp` and `src/presentation/art/ornate-teal-frame.webp`. Treat them as two sides of one physical card. Preserve the rounded, sculpted playing-card silhouette, curved brass corner armor, irregular walnut rails, aligned perimeter rivets, worn teal leather, and matched top/bottom visual weight. Never add an exterior background strip or a second wooden plank below the lower rail. Avoid square picture-frame corners and generic straight molding.
+
+The front retains a blank teal title recess above one uninterrupted parchment rules field. Live DOM title/rules, dice result chips, and the small pack seal provide all card-specific content. Current safe regions are title x17–83% / y11–24.5% and rules x12–88% / y32–87.5%; changes to the painted openings require rerunning the complete title and every-card geometry sweeps before these coordinates move.
+
 ## Card title system
 
 The approved ornate teal front remains fixed. Live titles use the locally bundled Source Serif 4 Bold (`public/fonts/source-serif-4-bold.woff2`, [licence](licenses/source-serif-OFL.md)) at weight 700. The solid face is bright ivory `#fff0cf`, with no stroke, blur, bevel or text shadow; the frame supplies the material depth. Forced colors use system Canvas/CanvasText. The body and menus retain Grenze.
 
-The title safe zone is x17–83% and y8.5–24.5% of the 2:3 card. Start at `clamp(22px, 8.8cqw, 36px)`, 1.12 line spacing, balanced wrapping, centered with one shared `-0.08em` optical offset. The title size follows card width. If actual glyphs exceed the two-line box, the renderer reduces that title only to the largest fitting size, with an 18px floor. It never truncates text. Authored titles are limited to 22 characters and 12 per word; the browser fit audit at 260/330/480px remains the acceptance gate because character counts cannot predict glyph widths. Older saved titles retain their full text and can scroll if the floor cannot fit them.
+The title safe zone is x17–83% and y11–24.5% of the 2:3 card. Start at `clamp(22px, 8.8cqw, 36px)`, 1.12 line spacing, balanced wrapping, centered with one shared optical lift. The title size follows card width. If actual glyphs exceed the two-line box, the renderer reduces that title only to the largest fitting size, with an 18px floor. It never truncates text. Authored titles are limited to 22 characters and 12 per word; the browser fit audit at 260/330/480px remains the acceptance gate because character counts cannot predict glyph widths. Older saved titles retain their full text and can scroll if the floor cannot fit them.
 
 ## Launch setup, controls, and dice
 
