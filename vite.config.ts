@@ -7,7 +7,12 @@ export default defineConfig({
   plugins: [
     react(),
     VitePWA({
-      registerType: "prompt",
+      // An installed Home Screen app has no refresh control, so a waiting
+      // worker would strand the icon on an old build until a reinstall.
+      // autoUpdate activates the new worker (skipWaiting + clientsClaim) as
+      // soon as it is fully cached: the running page keeps its session and
+      // offers a reload, while every later launch or refresh serves the latest.
+      registerType: "autoUpdate",
       includeAssets: ["apple-touch-icon.png", "art/*.svg"],
       manifest: {
         id: base,

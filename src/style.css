@@ -11,6 +11,12 @@
   font-size: 16px;
   --gold: #dfb76f;
   --cream: #f5e6c8;
+  /* One flat colour the system can match. Installed iOS web apps paint the
+     Home Screen strip below the web view from the page background and cache it
+     at launch, so this value, the top band and the manifest stay identical. */
+  --chrome: #17100c;
+  /* Top safe-area inset; a custom property so tests can pose an inset. */
+  --top-safe: env(safe-area-inset-top, 0px);
 }
 * {
   box-sizing: border-box;
@@ -38,6 +44,18 @@ body:before {
   inset: 0;
   z-index: -1;
   background:
+    /* Installed iOS web apps reserve a system strip at the bottom that no DOM
+       element can paint. The system fills it from our cached page background,
+       so the table fades into exactly that colour instead of ending on a seam. */
+    linear-gradient(to top, var(--chrome) 0, var(--chrome) 6px, #17100c00 72px),
+    /* iOS 27 frosts the status-bar edge of installed web apps. A flat band
+       there keeps the frost invisible instead of smearing the table grain. */
+    linear-gradient(
+        to bottom,
+        var(--chrome) 0,
+        var(--chrome) calc(var(--top-safe) + 6px),
+        #17100c00 calc(var(--top-safe) + 64px)
+      ),
     radial-gradient(ellipse at 50% 40%, #110c0760, #100c0ac9),
     url("/art/table.webp") center/cover no-repeat;
   background-color: #211811;
@@ -81,8 +99,8 @@ p {
 .app {
   width: min(100%, 560px);
   margin: auto;
-  padding: max(16px, env(safe-area-inset-top))
-    max(24px, env(safe-area-inset-right)) max(24px, env(safe-area-inset-bottom));
+  padding: max(16px, var(--top-safe)) max(24px, env(safe-area-inset-right))
+    max(24px, env(safe-area-inset-bottom));
   min-height: 100svh;
 }
 .topbar {
@@ -90,6 +108,10 @@ p {
   align-items: center;
   justify-content: space-between;
   min-height: 48px;
+  /* Clearance under the status bar: on iOS 27 the system frosts the top edge
+     of installed web apps, so controls stay below the inset where they are
+     never rendered soft. Zero without a top inset (desktop, SE-sized phones). */
+  margin-top: min(20px, var(--top-safe));
 }
 .wordmark {
   font:
@@ -692,7 +714,7 @@ dialog p {
 }
 @media (min-width: 700px) {
   .app {
-    padding-top: max(26px, env(safe-area-inset-top));
+    padding-top: max(26px, var(--top-safe));
   }
   .intro {
     padding-top: 35px;

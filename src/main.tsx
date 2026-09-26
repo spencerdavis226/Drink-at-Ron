@@ -32,6 +32,7 @@ function App() {
     [notice, setNotice] = useState(loaded.unavailable),
     [prefs, setPrefs] = useState(loadPreferences),
     [cachedReady, setCachedReady] = useState(false),
+    [updateReady, setUpdateReady] = useState(false),
     [modal, setModal] = useState<DialogName>(null),
     [hidden, setHidden] = useState(document.hidden);
   const { controller, session, outgoing, motion, transition, finishingRoll } =
@@ -45,13 +46,50 @@ function App() {
   const active = !!display && display.phase !== "complete";
   const {
     offlineReady: [offlineReady],
-    needRefresh: [needRefresh],
-    updateServiceWorker,
   } = useRegisterSW({
+    // A newer worker already controls the page; keep playing on this build and
+    // offer the reload between games. Every navigation from now on is served
+    // by the new release, so closing or refreshing the app also updates it.
+    onNeedReload: () => setUpdateReady(true),
     onRegisteredSW(_url, registration) {
       if (registration?.active) setCachedReady(true);
     },
   });
+  useEffect(() => {
+    if (!("serviceWorker" in navigator)) return;
+    const check = () => {
+      navigator.serviceWorker
+        .getRegistration()
+        .then((registration) => registration?.update())
+        .catch(() => {});
+    };
+    const onResume = () => {
+      if (!document.hidden) check();
+    };
+    // Installed apps are rarely navigated, so look for a new release when the
+    // app starts, comes back to the foreground, and periodically while open.
+    const timer = window.setInterval(check, 15 * 60 * 1000);
+    check();
+    window.addEventListener("pageshow", onResume);
+    document.addEventListener("visibilitychange", onResume);
+    return () => {
+      window.clearInterval(timer);
+      window.removeEventListener("pageshow", onResume);
+      document.removeEventListener("visibilitychange", onResume);
+    };
+  }, []);
+  useEffect(() => {
+    // An update can replace this page's hashed chunks while it is still open.
+    // The active worker already serves the new release, so a single reload
+    // repairs the mismatch instead of stranding a dead lazy import.
+    const onPreloadError = (event: Event) => {
+      event.preventDefault();
+      location.reload();
+    };
+    window.addEventListener("vite:preloadError", onPreloadError);
+    return () =>
+      window.removeEventListener("vite:preloadError", onPreloadError);
+  }, []);
   useEffect(() => {
     if (!save(SETTINGS_KEY, prefs)) setNotice(true);
   }, [prefs]);
@@ -171,11 +209,11 @@ function App() {
             onFinish={finish}
           />
         )}
-        {!active && !motion && needRefresh && (
+        {!active && !motion && updateReady && (
           <Button
             variant="text-button"
             className="update"
-            onClick={() => void updateServiceWorker(true)}
+            onClick={() => location.reload()}
           >
             Update game
           </Button>

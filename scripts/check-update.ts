@@ -1,5 +1,5 @@
-/** Exercise two actual production builds on one origin without touching the deploy artifact. */
-import { chromium } from "@playwright/test";
+/** Exercise real production builds on one origin without touching the deploy artifact. */
+import { chromium, type Page } from "@playwright/test";
 import { execFileSync } from "node:child_process";
 import { mkdtemp, readFile, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
@@ -11,12 +11,16 @@ import { cards, packs } from "../src/content/catalog";
 const base = process.env.BASE_PATH || "/";
 const temp = await mkdtemp(join(tmpdir(), "ron-update-"));
 let directory = resolve("dist");
-const second = join(temp, "second");
-execFileSync(
-  "node",
-  ["node_modules/vite/bin/vite.js", "build", "--outDir", second],
-  { env: { ...process.env, VITE_RELEASE_ID: "update-test-B" }, stdio: "pipe" },
-);
+const releases = ["update-test-B", "update-test-C"];
+const builds = releases.map((release) => {
+  const outDir = join(temp, release);
+  execFileSync(
+    "node",
+    ["node_modules/vite/bin/vite.js", "build", "--outDir", outDir],
+    { env: { ...process.env, VITE_RELEASE_ID: release }, stdio: "pipe" },
+  );
+  return outDir;
+});
 const types: Record<string, string> = {
   ".html": "text/html",
   ".js": "text/javascript",
@@ -54,6 +58,39 @@ const server = createServer(async (req, res) => {
 });
 await new Promise<void>((r) => server.listen(0, "127.0.0.1", r));
 const address = server.address() as { port: number };
+/**
+ * A new worker activating under the open page fires controllerchange. Set a
+ * flag before forcing the check so the script can wait for the takeover
+ * itself: with autoUpdate the worker never waits, it claims the page.
+ */
+async function switched(page: Page) {
+  await page.evaluate(() => {
+    (window as unknown as { __swSwitched?: boolean }).__swSwitched = false;
+    navigator.serviceWorker.addEventListener("controllerchange", () => {
+      (window as unknown as { __swSwitched?: boolean }).__swSwitched = true;
+    });
+  });
+}
+async function forceUpdate(page: Page) {
+  await page.evaluate(async () => {
+    const registration = await navigator.serviceWorker.ready;
+    await registration.update();
+  });
+  await page.waitForFunction(
+    () => (window as unknown as { __swSwitched?: boolean }).__swSwitched,
+  );
+}
+const release = (page: Page) =>
+  page.locator("html").getAttribute("data-release");
+const stored = (page: Page) =>
+  page.evaluate(() => localStorage.getItem("drink-at-ron.session.v1"));
+const settled = (page: Page) =>
+  page.waitForFunction(
+    () =>
+      !document.querySelector(
+        ".card-stage.flip,.card-stage.settle,.card-stage.deal",
+      ),
+  );
 const browser = await chromium.launch();
 try {
   const page = await browser.newPage();
@@ -79,48 +116,49 @@ try {
   );
   await page.reload();
   await page.getByRole("button", { name: "Reveal card" }).click();
-  await page.waitForFunction(
-    () => !document.querySelector(".card-stage.flip,.card-stage.settle"),
-  );
-  const saved = await page.evaluate(() =>
-    localStorage.getItem("drink-at-ron.session.v1"),
-  );
-  directory = second;
-  await page.evaluate(async () => {
-    const r = await navigator.serviceWorker.ready;
-    await r.update();
-  });
-  await page.waitForFunction(
-    async () => !!(await navigator.serviceWorker.ready).waiting,
-  );
+  await settled(page);
+  const original = await release(page);
+  const saved = await stored(page);
+
+  // Build B ships while the card sits on the table: the open page keeps
+  // playing, and the new worker takes control so every navigation is current.
+  directory = builds[0];
+  await switched(page);
+  await forceUpdate(page);
   assert.equal(
     await page.getByRole("button", { name: "Update game" }).count(),
     0,
   );
+  assert.equal(await stored(page), saved);
+  assert.equal(await release(page), original);
+
+  // A refresh mid-game already serves the new release, with the save intact.
+  await page.reload();
+  await settled(page);
+  assert.equal(await release(page), releases[0]);
+  assert.equal(await stored(page), saved);
+
+  // Build C ships mid-game too, then the game finishes and Update game reloads.
+  directory = builds[1];
+  await switched(page);
+  await forceUpdate(page);
   assert.equal(
-    await page.evaluate(() => localStorage.getItem("drink-at-ron.session.v1")),
-    saved,
+    await page.getByRole("button", { name: "Update game" }).count(),
+    0,
   );
-  assert.notEqual(
-    await page.locator("html").getAttribute("data-release"),
-    "update-test-B",
-  );
+  assert.equal(await release(page), releases[0]);
   await page.locator(".game-card").click();
   await page.getByRole("button", { name: "Update game" }).waitFor();
-  const complete = await page.evaluate(() =>
-    localStorage.getItem("drink-at-ron.session.v1"),
-  );
+  const complete = await stored(page);
   await page.getByRole("button", { name: "Update game" }).click();
   await page.waitForFunction(
-    () => document.documentElement.dataset.release === "update-test-B",
+    (release) => document.documentElement.dataset.release === release,
+    releases[1],
   );
-  assert.equal(
-    await page.evaluate(() => localStorage.getItem("drink-at-ron.session.v1")),
-    complete,
-  );
+  assert.equal(await stored(page), complete);
   await page.getByRole("button", { name: "Play again" }).waitFor();
   console.log(
-    "Two-build update passed: waits during play, offered between games, saves preserved.",
+    "Update flow passed: no mid-game reload, a refresh serves the latest, and the between-games update keeps the save.",
   );
 } finally {
   await browser.close();

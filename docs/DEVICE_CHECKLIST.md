@@ -5,6 +5,7 @@ Automated browser emulation is not evidence of actual iOS Home Screen behavior. 
 - [ ] Open HTTPS site in Safari. Check safe areas, browser toolbar expansion, no horizontal overflow, readable rules, and reachable controls.
 - [ ] Set the phone on a table and read short and long rules from the far seat and side seats in bright and dim light. Check whether any rule needs the phone passed around or a forced scroll.
 - [ ] Install through Share → Add to Home Screen; open from icon and check standalone launch appearance.
+- [ ] In the installed app, check the status-bar area: nothing interactive (Install, wordmark, menu) sits inside the system's frosted top edge on iOS 27, and the top band fades into the table without a hard line. Check the bottom of the screen above the home indicator: the table blends into the system strip instead of ending on a dark bar. Rotate to landscape and back and re-check both edges.
 - [ ] Wait for offline readiness, enable airplane mode, close and reopen. Reveal/discard multiple cards and verify artwork works.
 - [ ] Reveal a card, switch apps, lock/unlock, and reopen. Same card and count persist.
 - [ ] Rapidly tap during reveal and discard. Exactly one action occurs per transition.
@@ -15,12 +16,12 @@ Automated browser emulation is not evidence of actual iOS Home Screen behavior. 
 - [ ] Enlarge text and zoom, enable Reduce Motion and VoiceOver. Read full rules and operate all controls.
 - [ ] In phone and iPad landscape, confirm the rotate prompt blocks play and Escape; rotate back and confirm the same card, menu, and count return. Desktop landscape should remain usable. Check iPad split view and hardware keyboard where available.
 - [ ] Reach a dice card: first tap rolls; second tap during motion finishes through the landing, holds briefly, then dismisses. Confirm faces match the saved values and only the later tap discards.
-- [ ] Publish an update while a game is active: no mid-game reload. Finish/end game, apply offered update, then check offline relaunch.
+- [ ] Publish an update while a game is active: no mid-game reload. Then force-quit and reopen the app (or reload in Safari) and confirm the new build loads on its own, with the saved game intact. Finish/end a game after another update and apply the offered Update game, then check offline relaunch.
 - [ ] Measure interaction smoothness on real devices; target 60 fps. No performance claim until measured.
 
 ## Automated evidence
 
-`npm test` covers shuffle cycles, finite/endless behavior, catalog validation and saved-state invariants. `npm run test:e2e` covers browser interaction, restoration, malformed saves, denied storage, responsive layouts, keyboard/reduced motion, and Chromium offline reload. WebKit service-worker testing is excluded from automation and belongs to the physical checks above.
+`npm test` covers shuffle cycles, finite/endless behavior, catalog validation and saved-state invariants. `npm run test:e2e` covers browser interaction, restoration, malformed saves, denied storage, responsive layouts, keyboard/reduced motion, and Chromium offline reload. `npm run test:update` serves three real builds and checks that an update never reloads an active game, that a refresh or relaunch already serves the new release, and that the between-games update keeps the save. WebKit service-worker testing is excluded from automation and belongs to the physical checks above.
 
 ## Unified tavern presentation
 

@@ -52,6 +52,25 @@ test("@release Pages manifest, assets and production exclusion", async ({
   expect(manifest.start_url).toBe(base);
   expect(manifest.scope).toBe(base);
   expect(manifest.orientation).toBe("portrait");
+  // The installed Home Screen strip, the launch background and the app's top
+  // band are all painted from this colour, so the page root must agree.
+  const background = manifest.background_color as string;
+  const asRgb = `rgb(${[1, 3, 5]
+    .map((index) => parseInt(background.slice(index, index + 2), 16))
+    .join(", ")})`;
+  expect(background).toBe(manifest.theme_color);
+  expect(
+    await page.evaluate(
+      () => getComputedStyle(document.documentElement).backgroundColor,
+    ),
+  ).toBe(asRgb);
+  expect(
+    await page.evaluate(() =>
+      getComputedStyle(document.documentElement)
+        .getPropertyValue("--chrome")
+        .trim(),
+    ),
+  ).toBe(background);
   for (const icon of manifest.icons)
     expect(
       (await request.get(new URL(icon.src, response.url()).href)).ok(),

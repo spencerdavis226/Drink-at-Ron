@@ -173,6 +173,44 @@ test("Previous Card owns the same 2:3 geometry as gameplay", async ({
   expect(back!.y).toBeGreaterThanOrEqual(0);
   expect(back!.y + back!.height).toBeLessThanOrEqual(568);
 });
+test("an iOS top inset keeps topbar controls below the status-bar frost", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 393, height: 852 });
+  await page.goto("./");
+  // Browser emulation cannot produce env() insets; pose an iPhone 15 Pro
+  // inset so the Home Screen layout is measurable.
+  await page.addStyleTag({ content: ":root { --top-safe: 59px }" });
+  const install = await page
+    .getByRole("button", { name: "Install app" })
+    .boundingBox();
+  expect(install, "Install control is laid out").not.toBeNull();
+  // 59px inset + 20px clearance keeps the control out of the iOS 27 frost.
+  expect(install!.y).toBeGreaterThanOrEqual(79);
+  const chrome = await page.evaluate(() => {
+    const root = getComputedStyle(document.documentElement);
+    return {
+      chrome: root.getPropertyValue("--chrome").trim(),
+      html: root.backgroundColor,
+      layers: getComputedStyle(document.body, "::before").backgroundImage,
+    };
+  });
+  expect(chrome.chrome).toBe("#17100c");
+  expect(chrome.html).toBe("rgb(23, 16, 12)");
+  // The flat status-bar band and the bottom blend into the system strip use
+  // the same page colour the installed app is sampled from.
+  expect(
+    chrome.layers.match(/rgb\(23, 16, 12\)/g)?.length ?? 0,
+  ).toBeGreaterThanOrEqual(2);
+
+  await seed(page, revealed(longestRule));
+  await page.addStyleTag({ content: ":root { --top-safe: 59px }" });
+  const menu = await page
+    .getByRole("button", { name: "Open game menu" })
+    .boundingBox();
+  expect(menu, "game menu is laid out").not.toBeNull();
+  expect(menu!.y).toBeGreaterThanOrEqual(79);
+});
 test("@release a short phone scrolls long rules with a visible overflow affordance", async ({
   page,
 }) => {

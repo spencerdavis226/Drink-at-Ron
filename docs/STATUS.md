@@ -2,6 +2,20 @@
 
 Updated 2026-09-26. **Single authoritative handoff for OpenCode Go, Codex, and other editors.** Read `AGENTS.md` first. This replaces the old numbered model-routing plan; historical studies are references, not new work orders. Direct user instructions win.
 
+## Current handoff — Home Screen edges and refresh-to-update (2026-09-26)
+
+Implemented and published on `main` together with the concurrent reference/copy sweep once the user authorized release; the release note records the run and the live IDs.
+
+**Installed iOS edges.** Spencer's Home Screen screenshot showed the status-bar strip smeared by iOS 27's forced top-edge frost (the `apple-mobile-web-app-status-bar-style` meta no longer sets a colour) and a black chin where the standalone web view is shorter than the screen by the status-bar height; the system paints the leftover strip from the cached page background and no DOM element can reach it (WebKit bug 301994, reproducible on 26.5.2 and 27). `src/style.css` now keeps the frosted strip over a flat band of `--chrome` (`#17100c`, identical to the manifest `background_color`/`theme_color`), fades that band into the table, adds 20px of top clearance under `env(safe-area-inset-top)` so the Install pill, wordmark and menu are never frosted, and fades the bottom of the table into the same `--chrome` so the unreachable system strip continues the background. `--top-safe` exposes the inset so browser tests can pose it (59px/50px used).
+
+**Refresh always updates.** `registerType` moved from `prompt` to `autoUpdate`: a new worker precaches, activates immediately (`skipWaiting` + `clientsClaim`) and claims the open page, so every later launch, reload or refresh serves the new release without reinstalling the Home Screen app. The running game is never reloaded: the app reacts to the takeover (`onNeedReload`), offers the existing Update game button only when no game is active, and checks for releases on start, `pageshow`, foreground and every 15 minutes. A `vite:preloadError` guard reloads once if an update evicts a chunk a stale page still needs. Session schema, storage key, engine, catalog, frame, dice and saved orders are unchanged.
+
+**Files.** `src/style.css`, `src/main.tsx`, `vite.config.ts`, `scripts/check-update.ts` (three builds: no mid-game reload, a mid-game refresh serves the new release, the between-games update keeps the save), `tests/browser/layout.spec.ts` (posed iOS inset), `tests/browser/pages.spec.ts` (manifest/page colour agreement), `docs/DEVICE_CHECKLIST.md`.
+
+**Verification.** `npm test` **98 passed**; `BASE_PATH=/Drink-at-Ron/ npm run build` passed content validation, TypeScript, PWA generation and unchanged budgets (**2627 KiB runtime; 87.7 KiB initial + 147.8 KiB lazy gzip JavaScript**); full production E2E **143 passed / 3 explicit WebKit offline skips**; routine release smoke **20/20**; `npm run test:update` passed. Chromium and WebKit captures at 393×852 (59px inset) and 375×812 (50px inset) were inspected: Install at y=80/71, game menu at y=79/70, and the 2:3 card still fits with no page scroll. Emulation cannot reproduce the system strip or the frost itself.
+
+**Use / risk / next task.** Physical-device checks stay open and gate acceptance: in the installed app confirm nothing interactive sits inside the frosted top strip, the bottom blends into the home-indicator area, and that closing/reopening (or refreshing in Safari) picks up a new release without reinstalling; record it in `docs/DEVICE_CHECKLIST.md`. iOS 27 frosts every installed web app, so the app can only keep controls out of it. Next: run the remaining WebKit every-card workshop sweep on a responsive host, then playtest and revise copy from observations.
+
 ## Card logic sweep — who acts and how long rules last (2026-09-26)
 
 Implemented locally on `main` without commit, push, or publication, alongside the concurrent reference-folder work below. Audited all 235 cards for two user-set rules: every card says who acts (the drawing player, everyone, or a named subset), and every lasting rule runs either the rest of the game or until the drawing player's next turn — never until the next card.
