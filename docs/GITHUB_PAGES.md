@@ -2,7 +2,7 @@
 
 Repository: `spencerdavis226/Drink-at-Ron`.
 Live URL: https://spencerdavis226.github.io/Drink-at-Ron/
-Published via **GitHub Actions** on 2026-09-20 (commit `ed41b7a`, workflow run `35540922087`). The repository's Pages source is set to "GitHub Actions", not a branch. This is recorded publish history, not a claim about the current live build: the live deployment can lag branch HEAD, and local reviews do not re-verify remote settings. Confirm the live release ID and service worker before describing a specific build as deployed.
+Published via **GitHub Actions** on 2026-09-25 (merge commit `7dad3ee`, workflow run `36210874943`). The repository's Pages source is "GitHub Actions". A fresh browser confirmed that release ID, the three packs, a controlling service worker, and an offline reload. Later documentation commits can advance the live release ID without changing the game; verify the live ID before naming a specific build as deployed.
 
 In repository Settings → Pages, select GitHub Actions as the build source. The workflow checks pull requests and main. Only main can publish, and only after all checks succeed. No backend, environment secrets, remote fonts, or paid services are needed. Enable required status checks for the build job in repository branch protection if desired.
 
