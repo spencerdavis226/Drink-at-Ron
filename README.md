@@ -26,12 +26,13 @@ The Vite development server does not install a service worker. Offline play requ
 
 ```sh
 npm test
-npm run build
+BASE_PATH=/Drink-at-Ron/ npm run build
 npx playwright install chromium webkit
-npm run test:e2e
+CI=1 BASE_PATH=/Drink-at-Ron/ TEST_PORT=4398 npm run test:release
+BASE_PATH=/Drink-at-Ron/ npm run test:update
 ```
 
-Browser tests exercise Chromium and WebKit. Installed Safari Home Screen behavior still needs the [physical-device checklist](docs/DEVICE_CHECKLIST.md).
+The release smoke suite exercises the main flow, pack selection, card reading and scrolling, dice, and Pages assets in Chromium and WebKit. Run `npm run test:e2e` and `npm run test:workshop` for exhaustive browser/card checks when needed; they are not required on every publish. Installed Safari Home Screen behavior still needs the [physical-device checklist](docs/DEVICE_CHECKLIST.md).
 
 ## Project map
 

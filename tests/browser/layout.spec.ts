@@ -30,7 +30,7 @@ async function seed(page: Page, session: unknown) {
   await page.reload();
   await page.evaluate(() => document.fonts.ready);
 }
-test("Core instructions fit at 390x844 with ratio, pack mark and no CTA occlusion", async ({
+test("@release Core instructions fit at 390x844 with ratio, pack mark and no CTA occlusion", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
@@ -114,7 +114,7 @@ test("Previous Card owns the same 2:3 geometry as gameplay", async ({
   expect(back!.y).toBeGreaterThanOrEqual(0);
   expect(back!.y + back!.height).toBeLessThanOrEqual(568);
 });
-test("a short phone scrolls long rules with a visible overflow affordance", async ({
+test("@release a short phone scrolls long rules with a visible overflow affordance", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 320, height: 568 });

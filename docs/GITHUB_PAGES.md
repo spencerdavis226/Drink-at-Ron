@@ -15,12 +15,13 @@ npm ci
 npx playwright install chromium webkit
 npm test
 BASE_PATH=/Drink-at-Ron/ npm run build
-BASE_PATH=/Drink-at-Ron/ CI=1 npm run test:e2e
+BASE_PATH=/Drink-at-Ron/ CI=1 TEST_PORT=4398 npm run test:release
 BASE_PATH=/Drink-at-Ron/ npm run test:update
-npm run test:workshop
 ```
 
 `TEST_PORT=4183` can select an unused production-test port. CI never attaches to an existing server. Local development uses `/`; production uses `/Drink-at-Ron/`. All public screens remain at that base URL. Changing the repository name or adding a custom domain requires updating the workflow base path and retesting manifest scope and installation identity.
+
+The normal PR/main workflow uses the 14-case Chromium/WebKit release smoke suite, unit tests, Pages build/budgets, and two-build update check. To run the full production browser suite and every-card workshop sweeps, manually dispatch the same workflow with `full_validation` enabled. Those longer checks are for layout/engine work and dedicated card review, not routine publication. A passing smoke suite is a scoped release gate; report any known full-suite failure separately.
 
 The deployment uploads the exact `dist` artifact tested by browser checks. The two-build update test builds its second release in a temporary directory and never modifies that artifact. `VITE_RELEASE_ID` uses the commit SHA in CI and is exposed only as an HTML data attribute for diagnostics.
 

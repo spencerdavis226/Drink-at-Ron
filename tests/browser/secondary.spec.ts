@@ -69,7 +69,7 @@ test("selecting VIP night reveals its one-line setup reminder", async ({
   await vip.click();
   await expect(page.locator(".pack-hint")).toHaveCount(0);
 });
-test("the supplied house cards are an optional pack in a new game", async ({
+test("@release the supplied house cards are an optional pack in a new game", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 320, height: 568 });

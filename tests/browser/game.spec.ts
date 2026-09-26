@@ -36,7 +36,7 @@ async function forcePlainFirst(
   );
   await page.reload();
 }
-test("legacy finite game, rapid taps, restore, previous card, replay and settings", async ({
+test("@release legacy finite game, rapid taps, restore, previous card, replay and settings", async ({
   page,
 }) => {
   // Multi-step flow; Linux WebKit on CI is slow enough to exceed the default.
@@ -332,7 +332,7 @@ test("representative Core cards keep edge clearance and a 2:3 frame across devic
   }
 });
 
-test("rules taps discard, while scrolling and cancelled gestures keep the card", async ({
+test("@release rules taps discard, while scrolling and cancelled gestures keep the card", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 320, height: 700 });

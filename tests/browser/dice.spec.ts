@@ -72,7 +72,7 @@ for (const index of [0, 1])
     expect((await saved(page)).roll.returned).toBe(true);
     expect((await saved(page)).discarded).toBe(0);
   });
-test("a restored unrolled dice card rolls by tapping the card", async ({
+test("@release a restored unrolled dice card rolls by tapping the card", async ({
   page,
 }) => {
   test.skip(!(await webgl(page)), "WebGL unavailable (headless Linux WebKit)");

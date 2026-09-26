@@ -19,7 +19,7 @@ async function seedPlain(page: import("@playwright/test").Page) {
   );
   await page.reload();
 }
-test("Pages manifest, assets and production exclusion", async ({
+test("@release Pages manifest, assets and production exclusion", async ({
   page,
   request,
   baseURL,

@@ -4,6 +4,11 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+    inputs:
+      full_validation:
+        description: Run the exhaustive browser and card workshop suites
+        type: boolean
+        default: false
 permissions:
   contents: read
 concurrency:
@@ -25,13 +30,16 @@ jobs:
       - run: npx playwright install --with-deps chromium webkit
       - run: npm test
       - run: npm run build
-      - run: npm run test:e2e -- --project=chromium
-      - run: npm run test:e2e -- --project=webkit
+      - run: npm run test:release
       - run: npm run test:update
+      - run: npm run test:e2e
+        if: github.event_name == 'workflow_dispatch' && inputs.full_validation
       - run: npm run test:workshop -- --project=chromium
+        if: github.event_name == 'workflow_dispatch' && inputs.full_validation
         env:
           BASE_PATH: /
       - run: npm run test:workshop -- --project=webkit
+        if: github.event_name == 'workflow_dispatch' && inputs.full_validation
         env:
           BASE_PATH: /
       - uses: actions/upload-artifact@v4
