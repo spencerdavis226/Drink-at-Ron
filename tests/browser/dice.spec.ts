@@ -193,7 +193,16 @@ test("@release a second tap finishes the moving dice, then reveals the bold amou
   await seed(page);
   const errors: string[] = [];
   page.on("pageerror", (error) => errors.push(error.message));
-  await page.locator(".game-card").click();
+  // Deliver taps as raw input. locator.click() waits for the card to hold
+  // still for two frames, and on a software-rendered CI WebKit the dice
+  // animation starves the main thread long enough for the roll to finish on
+  // its own before the finish tap lands; the tap is still a stationary press
+  // on the card, which is exactly what the gesture code expects.
+  const tapCard = async () => {
+    const box = (await page.locator(".game-card").boundingBox())!;
+    await page.mouse.click(box.x + box.width / 2, box.y + box.height / 2);
+  };
+  await tapCard();
   const committed = await saved(page);
   await expect(page.locator(".roll-stage")).toHaveAttribute(
     "data-renderer",
@@ -202,7 +211,7 @@ test("@release a second tap finishes the moving dice, then reveals the bold amou
   await expect(page.locator(".game-card")).toHaveAccessibleName(
     "Finish dice roll",
   );
-  await page.locator(".game-card").click();
+  await tapCard();
   await expect(page.locator(".roll-layer")).toBeVisible();
   await expect(page.locator(".roll-stage")).toHaveAttribute(
     "data-face-values",
