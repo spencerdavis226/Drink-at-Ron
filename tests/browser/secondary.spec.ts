@@ -21,8 +21,11 @@ test("unselected packs stay readable and selection is unambiguous", async ({
   page,
 }) => {
   await page.goto("./");
-  const core = page.getByRole("button", { name: /house collection/ });
-  const other = page.getByRole("button", { name: /VIP night/ });
+  await page.getByRole("button", { name: "Choose add-ons" }).click();
+  const core = page.locator(".included-pack");
+  const other = page
+    .getByRole("dialog")
+    .getByRole("button", { name: "VIP night", exact: true });
   const unselected = await other.evaluate((el) => {
     const style = getComputedStyle(el);
     return {
@@ -35,11 +38,10 @@ test("unselected packs stay readable and selection is unambiguous", async ({
   expect(unselected.opacity).toBe(1);
   expect(unselected.filter).toBe("none");
   expect(unselected.mark).toBe("+");
-  expect(await core.locator(".checkbox").innerText()).toBe("✓");
-  // The title and pack mark share one copy slot, so a wrapping name cannot
-  // displace the identity mark.
+  await expect(core).toContainText("Always included");
+  // The add-on title and mark share one copy slot when a name wraps.
   expect(
-    await core.evaluate((el) => {
+    await other.evaluate((el) => {
       const copy = el.querySelector(".pack-copy")!;
       return (
         copy.querySelector("strong")!.parentElement === copy &&
@@ -55,7 +57,10 @@ test("selecting VIP night reveals its one-line setup reminder", async ({
   page,
 }) => {
   await page.goto("./");
-  const vip = page.getByRole("button", { name: /VIP night/ });
+  await page.getByRole("button", { name: "Choose add-ons" }).click();
+  const vip = page
+    .getByRole("dialog")
+    .getByRole("button", { name: "VIP night", exact: true });
   await expect(page.locator(".pack-hint")).toHaveCount(0);
   await vip.click();
   const hint = page.locator(".pack-hint");
@@ -64,21 +69,46 @@ test("selecting VIP night reveals its one-line setup reminder", async ({
   await vip.click();
   await expect(page.locator(".pack-hint")).toHaveCount(0);
 });
-test("the Roll control reuses the painted surface and keeps a 44px target", async ({
+test("@release the supplied house cards are an optional pack in a new game", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 320, height: 568 });
+  await page.goto("./");
+  await page.getByRole("button", { name: "Choose add-ons" }).click();
+  const house = page
+    .getByRole("dialog")
+    .getByRole("button", { name: "Ron’s house cards", exact: true });
+  await expect(house).toHaveAttribute("aria-pressed", "false");
+  await house.click();
+  await expect(house).toHaveAttribute("aria-pressed", "true");
+  expect(
+    await page.getByRole("dialog").evaluate((dialog) => {
+      const rect = dialog.getBoundingClientRect();
+      return rect.left >= 0 && rect.right <= innerWidth;
+    }),
+  ).toBe(true);
+  await page.getByRole("button", { name: "Done" }).click();
+  await page.getByRole("button", { name: "Play", exact: true }).click();
+  const session = await page.evaluate(
+    (key) => JSON.parse(localStorage.getItem(key)!),
+    key,
+  );
+  expect(session.config.packIds).toEqual(["core", "house"]);
+  expect(session.cards).toHaveLength(353);
+  expect(
+    session.cards.some((card: { id: string }) => card.id === "house.sheet-106"),
+  ).toBe(true);
+});
+test("the card is the only dice control and keeps a generous target", async ({
   page,
 }) => {
   await seedDice(page);
-  const cta = page.locator(".roll-cta");
-  await expect(cta).toBeVisible();
-  const metrics = await cta.evaluate((el) => {
-    const style = getComputedStyle(el);
-    return {
-      source: style.borderImageSource,
-      height: el.getBoundingClientRect().height,
-    };
-  });
-  expect(metrics.source).toContain("button.webp");
-  expect(metrics.height).toBeGreaterThanOrEqual(44);
+  await expect(page.locator(".roll-cta")).toHaveCount(0);
+  const card = page.locator(".game-card");
+  await expect(card).toHaveAccessibleName(/^Roll /);
+  const box = await card.boundingBox();
+  expect(box!.width).toBeGreaterThanOrEqual(44);
+  expect(box!.height).toBeGreaterThanOrEqual(44);
 });
 test("dialog copy sits on a quiet panel surface", async ({ page }) => {
   await page.goto("./");

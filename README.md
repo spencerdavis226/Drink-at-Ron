@@ -26,12 +26,13 @@ The Vite development server does not install a service worker. Offline play requ
 
 ```sh
 npm test
-npm run build
+BASE_PATH=/Drink-at-Ron/ npm run build
 npx playwright install chromium webkit
-npm run test:e2e
+CI=1 BASE_PATH=/Drink-at-Ron/ TEST_PORT=4398 npm run test:release
+BASE_PATH=/Drink-at-Ron/ npm run test:update
 ```
 
-Browser tests exercise Chromium and WebKit. Installed Safari Home Screen behavior still needs the [physical-device checklist](docs/DEVICE_CHECKLIST.md).
+The release smoke suite exercises the main flow, pack selection, card reading and scrolling, dice, and Pages assets in Chromium and WebKit. Run `npm run test:e2e` and `npm run test:workshop` for exhaustive browser/card checks when needed; they are not required on every publish. Installed Safari Home Screen behavior still needs the [physical-device checklist](docs/DEVICE_CHECKLIST.md).
 
 ## Project map
 
@@ -44,13 +45,13 @@ Browser tests exercise Chromium and WebKit. Installed Safari Home Screen behavio
 - `src/main.tsx`: saved preferences, visibility handling, and PWA orchestration.
 - `public/art`: bundled original placeholder artwork; no remote asset dependency.
 
-Finite decks contain 1–500 draws. Every shuffle cycle exhausts the selected unique cards before repeating, including when a finite deck is longer than the catalog. Endless cycles have bounded storage. The group handles turns and ongoing rules. All cards have equal frequency per cycle.
+Setup offers Short (30 draws), Long (60 draws), and Infinite. Core is always included; optional packs are chosen in the Card packs dialog. Every shuffle cycle exhausts the selected unique cards before repeating, including when Long exceeds the catalog. Infinite cycles have bounded storage. Existing active saves keep their original length, including older custom limits. The group handles turns and ongoing rules. All cards have equal frequency per cycle.
 
-Saves snapshot card content and order. Invalid/unsupported saves require explicit reset; storage failures leave play available with a notice. Settings and saves are local to the browser installation; Safari and Home Screen storage may differ. App updates are offered outside active games. Card artwork resolves through the local registry; unknown or historical references fall back to the bundled tankard.
+Saves snapshot card content and order. Invalid/unsupported saves require explicit reset; storage failures leave play available with a notice. Settings and saves are local to the browser installation; Safari and Home Screen storage may differ. App updates are offered outside active games. The artwork registry remains for validation and older saved content; current card fronts use the approved ornate frame with plain parchment.
 
 ## Add content
 
-See [the pack authoring guide](docs/AUTHORING.md). The current standard set is the 40-card sample collection in `src/content/sample.ts` (pack `core`), with dice cards mixed in; `VIP night` is an additional themed pack. It is supplied sample content awaiting playtesting, not a permanent brief. Most cards share a painted tankard placeholder; Cheers, Idiots uses an individual illustrated scene selected through the artwork registry. This visual pass adds original weathered card skins, a walnut tabletop, and a two-sided lift/flip/discard animation. Production card-specific illustrations and the full content collection remain for a later session.
+See [the pack authoring guide](docs/AUTHORING.md). The always-included `core` deck has 250 cards across `src/content/sample.ts`, `classics.ts`, and `standard-expansion.ts`, with dice cards mixed in. The optional `Ron’s house cards` pack adds all 103 nonblank Main cards from the supplied sheet; `VIP night` has 16 cards, including its four supplied VIP entries. The new material awaits group playtesting and copy review. The approved front keeps live titles and rules over plain parchment inside the ornate teal frame. Run `npm run cards:review` to regenerate the human review sheet (`docs/CARD_REVIEW.md` and `docs/card-review.csv`) from the live catalog before locking copy.
 
 ## Static deployment
 
@@ -69,8 +70,21 @@ Re-export the generated UI sheet with `npx tsx scripts/chrome.ts`; regenerate ic
 
 ## Production workshop and release
 
-Open `/?workshop=1` on the development server for isolated card previews, seeded sessions, and dice fixtures. Workshop code and fixtures are excluded from production; the approved shared frame and its assets are shipped. The `core` pack holds the 40-card sample collection (dice cards included) and `VIP night` is an additional themed pack; group balance remains untested.
+Open `/?workshop=1` on the development server for isolated card previews, seeded sessions, and dice fixtures. The approved ornate teal front uses plain parchment; the retired imprint browser is no longer exposed. Workshop code and fixtures are excluded from production; the approved shared frame and its assets are shipped. The `core` pack holds 250 cards (dice cards included), while `Ron’s house cards` and `VIP night` are optional packs; group balance remains untested.
 
 See [Game design](docs/GAME_DESIGN.md), [Playtest record](docs/PLAYTEST.md), and [GitHub Pages release](docs/GITHUB_PAGES.md). The unified front is approved and used throughout. Dice use the approved full-screen `@3d-dice/dice-box-threejs` overlay; dice cards are mixed into the `core` pack (see STATUS.md).
 
 Illustrations follow [Image creation guidelines](docs/ILLUSTRATION_GUIDELINES.md): centered, crop-safe, simple, original fantasy. Pack logos are registered separately and appear consistently in selection, pause, and card footers.
+
+## Card front
+
+The approved ornate teal master is shared by gameplay, Previous Card and the workshop. Titles and rules are real HTML text. Parchment is plain: the icon-lattice/tint experiment is retired. Its vendored sources and attribution remain as project history; they are not shipped in the runtime. Legacy card artwork fields remain compatible with saved sessions but do not produce individual scenes on the front.
+
+The next title-typography pass is specified in [STATUS.md](docs/STATUS.md). Development-only comparisons live at `/docs/studies/front-typography-2026-09-22/` when Vite is running.
+
+## Credits and licences
+
+- **Game icons** — [game-icons.net](https://game-icons.net) contributors, CC BY 3.0 (some CC0). Icons made by Lorc, Delapouite, Sbed, Skoll and the other artists listed in [the licence copy](docs/licenses/game-icons-CC-BY-3.0.txt). The vendored library lives in `assets/icons/game-icons` at a pinned commit (`PINNED.txt`) and is never served to the browser.
+- **Grenze** — Omnibus-Type, SIL Open Font License (`public/fonts/OFL.txt`).
+- **Three.js, cannon-es, @3d-dice/dice-box-threejs** — see `docs/licenses/`.
+- Painted card surfaces, the tabletop and the placeholder tankard were generated with an image-generation tool; source PNGs are kept in `assets/source`.

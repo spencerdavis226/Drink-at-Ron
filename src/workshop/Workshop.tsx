@@ -182,33 +182,35 @@ export default function Workshop() {
         </nav>
       </aside>
       <main>
-        <div className="workshop-actions">
-          <Button
-            onClick={() => {
-              setRevealed(false);
-              setNonce((n) => n + 1);
-            }}
-          >
-            Replay reveal
-          </Button>
-          <Button
-            onClick={() => {
-              setRevealed(true);
-              setNonce((n) => n + 1);
-            }}
-          >
-            Front
-          </Button>
-        </div>
-        <div className="workshop-viewport" style={{ width, height }}>
-          <iframe
-            className="workshop-frame"
-            title={`${card.title} preview`}
-            src={src}
-            width={width}
-            height={height}
-          />
-        </div>
+        <>
+          <div className="workshop-actions">
+            <Button
+              onClick={() => {
+                setRevealed(false);
+                setNonce((n) => n + 1);
+              }}
+            >
+              Replay reveal
+            </Button>
+            <Button
+              onClick={() => {
+                setRevealed(true);
+                setNonce((n) => n + 1);
+              }}
+            >
+              Front
+            </Button>
+          </div>
+          <div className="workshop-viewport" style={{ width, height }}>
+            <iframe
+              className="workshop-frame"
+              title={`${card.title} preview`}
+              src={src}
+              width={width}
+              height={height}
+            />
+          </div>
+        </>
       </main>
     </div>
   );

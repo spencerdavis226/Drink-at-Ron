@@ -1,35 +1,15 @@
-import type {
-  CardDefinition,
-  PackDefinition,
-  Category,
-  DiceDefinition,
-} from "../game/types";
+import type { CardDefinition, PackDefinition } from "../game/types";
+import { cardFactory } from "./author";
+import { classicCards } from "./classics";
+import { standardExpansionCards } from "./standard-expansion";
 
-// The current standard set, replacing the old 30-card house pack and the
-// provisional dice pack with one combined 40-card collection. It is a supplied
-// sample, not a permanent content brief: expect card text, categories and art
-// to be revised. Cards with a `dice` definition pause the deck until the roll
-// is resolved. Most cards stay on the placeholder tankard until finished
-// scenes land through the artwork registry; Cheers, Idiots uses its individual
+// The house collection: the supplied 40-card sample set plus the classic /
+// King's Cup basics in `classics.ts`, all under the always-included `core`
+// pack. Cards with a `dice` definition pause the deck until the roll is
+// resolved. Most cards stay on the placeholder tankard until finished scenes
+// land through the artwork registry; Cheers, Idiots uses its individual
 // illustrated scene.
-const card = (
-  id: string,
-  title: string,
-  category: Category,
-  rules: string,
-  illustrationBrief: string,
-  dice?: DiceDefinition,
-  artwork = "art/tankard.webp",
-): CardDefinition => ({
-  version: 1,
-  id: `core.${id}`,
-  title,
-  category,
-  rules,
-  illustrationBrief,
-  artwork,
-  ...(dice ? { dice } : {}),
-});
+const card = cardFactory("core");
 
 export const sampleCards: CardDefinition[] = [
   card(
@@ -384,7 +364,7 @@ export const sampleCards: CardDefinition[] = [
       version: 1,
       count: 1,
       sides: 6,
-      instruction: "That number is banned. Say it: drink 2.",
+      instruction: "{total} is banned. Say it: drink 2.",
     },
   ),
   card(
@@ -402,12 +382,20 @@ export const sampleCards: CardDefinition[] = [
   ),
 ];
 
+// The always-included Core deck combines the supplied sample set with the
+// classic / King's Cup basics so no game starts without "Give Two" and friends.
+export const coreCards: CardDefinition[] = [
+  ...sampleCards,
+  ...classicCards,
+  ...standardExpansionCards,
+];
+
 export const samplePack: PackDefinition = {
   version: 1,
   id: "core",
   logo: "art/packs/core.svg",
   title: "The house collection",
   description:
-    "The standard 40-card set: quick drinks, group dares, and a few dice rolls.",
-  cardIds: sampleCards.map((card) => card.id),
+    "The always-on deck: classic give-and-drink prompts, King's Cup rules, group games, and a few dice rolls.",
+  cardIds: coreCards.map((card) => card.id),
 };

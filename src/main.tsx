@@ -6,6 +6,7 @@ import { createSession, replaySession } from "./game/engine";
 import {
   loadPreferences,
   loadSession,
+  MODE_LIMITS,
   save,
   SAVE_KEY,
   SETTINGS_KEY,
@@ -13,7 +14,7 @@ import {
 import { PresentationController } from "./presentation/controller";
 import { usePresentation } from "./presentation/usePresentation";
 import { theme } from "./presentation/theme";
-import { preloadArt, preloadUrl } from "./presentation/artwork";
+import { preloadUrl } from "./presentation/artwork";
 import { coreFrameSurfaces } from "./presentation/frame-surfaces";
 import { Button, IconButton, Notice } from "./components/UI";
 import { Atmosphere } from "./components/Atmosphere";
@@ -53,38 +54,25 @@ function App() {
     if (!save(SETTINGS_KEY, prefs)) setNotice(true);
   }, [prefs]);
   useEffect(() => {
-    // Frame surfaces first, then shared theme assets; card illustrations load
-    // on demand through the artwork registry.
+    // Shared surfaces only: hero illustrations are retired from card fronts.
     for (const src of coreFrameSurfaces) void preloadUrl(src);
-    for (const path of Object.values(theme.assets)) void preloadArt(path);
+    for (const path of Object.values(theme.assets)) void preloadUrl(path);
     const onVisibility = () => setHidden(document.hidden);
     document.addEventListener("visibilitychange", onVisibility);
     return () => {
       document.removeEventListener("visibilitychange", onVisibility);
     };
   }, []);
-  useEffect(() => {
-    if (!session) return;
-    for (const index of [
-      session.position,
-      (session.position + 1) % session.order.length,
-    ]) {
-      const card = session.cards.find((c) => c.id === session.order[index]);
-      if (card) void preloadArt(card.artwork);
-    }
-  }, [session]);
   const start = () => {
     const config = {
       ...prefs.config,
-      packIds: prefs.config.packIds.filter((id) =>
-        packs.some((p) => p.id === id),
-      ),
-      limit:
-        prefs.choice === "endless"
-          ? null
-          : prefs.choice === "custom"
-            ? Number(prefs.customSize)
-            : Number(prefs.choice),
+      packIds: [
+        "core",
+        ...prefs.config.packIds.filter(
+          (id) => id !== "core" && packs.some((p) => p.id === id),
+        ),
+      ],
+      limit: MODE_LIMITS[prefs.choice],
     };
     setPrefs({ ...prefs, config });
     controller.start(createSession(config, cards, packs));

@@ -1,0 +1,18 @@
+game-icons.net — vendored icon library
+======================================
+
+Source:  https://github.com/game-icons/icons
+Commit:  82d948812bfe3f269ef8f731dcdb07b08160edc4  (2026-04-23, master)
+Fetched: 2026-09-21
+Icons:   4180 SVG files, laid out as <artist>/<icon>.svg
+
+Only the artist folders and the upstream `license.txt` are kept; the site
+scripts, badges and repository docs were removed. Nothing here is served to the
+browser — `scripts/imprint.ts` reads these files at build time and emits a small
+generated sprite containing only the icons the game actually uses.
+
+Licence: CC BY 3.0 (a few icons are CC0 per the artist list in `license.txt`).
+Copy:    docs/licenses/game-icons-CC-BY-3.0.txt
+Credit:  "Icons made by {author}" — see README.md.
+
+Do not edit these files in place. Re-fetch at a pinned commit instead.

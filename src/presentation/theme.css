@@ -12,8 +12,17 @@
   font-style: italic;
   font-display: swap;
 }
+@font-face {
+  font-family: "Source Serif 4 Title";
+  src: url("/fonts/source-serif-4-bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: block;
+}
 :root {
   --font-tavern: Grenze, Georgia, serif;
+  --font-card-title: "Source Serif 4 Title", Georgia, serif;
+  --color-card-title: #fff0cf;
   --walnut: #17100c;
   --leather: #16312e;
   --bronze: #bd9457;
@@ -104,44 +113,59 @@ dialog p,
   position: relative;
   background: #bc8c49;
   border: solid transparent;
-  border-width: 18px 28px;
-  border-image: url("/art/button.webp") 110 210 fill / 18px 28px stretch;
+  border-width: 14px 22px;
+  border-image: url("/art/button.webp") 110 210 fill / 14px 22px stretch;
   border-radius: 0;
-  padding: 0 8px;
-  min-height: 76px;
-  font-size: 1.8rem;
+  padding: 0 12px;
+  min-height: 68px;
+  font-size: 1.65rem;
   font-weight: 700;
   line-height: 1.05;
-  box-shadow: 0 6px 7px #0008;
-  text-shadow: 0 1px #ffe7b0;
+  box-shadow: 0 5px 10px #0008;
+  text-shadow: 0 1px #ffe7b080;
 }
 .primary:active:not(:disabled) {
   box-shadow: 0 2px 4px #0008;
 }
 .lengths .choice {
-  background: #1b322d;
-  border: 12px solid transparent;
-  border-image: url("/art/panel.webp") 120 fill / 12px stretch;
-  border-radius: 0;
-  padding: 0 2px;
-  font-size: 1.45rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2px;
+  background: linear-gradient(145deg, #26463e, #172a27);
+  border: 1px solid #916f43;
+  border-image: none;
+  border-radius: 12px;
+  padding: 8px 3px;
+  font-size: 1.35rem;
   font-weight: 600;
-  min-height: 62px;
-  box-shadow: 0 4px 5px #0007;
+  min-height: 82px;
+  color: #f4dfb4;
+  box-shadow:
+    inset 0 1px #fff2,
+    0 4px 8px #0007;
 }
 .lengths .choice[aria-pressed="true"] {
-  border-image-source: url("/art/button.webp");
-  border-image-slice: 110 210;
-  background: #b48a4e;
-  color: #302013;
-  box-shadow: 0 4px 5px #0007;
+  background: linear-gradient(145deg, #b58b50, #7f5c30);
+  border-color: #f1ce87;
+  color: #fff3d7;
+  box-shadow:
+    inset 0 0 0 2px #22150c99,
+    inset 0 1px #fff6,
+    0 5px 10px #0008;
 }
-.lengths button:nth-child(4) {
-  flex: 1.55;
-  font-size: 1.3rem;
+.lengths .choice strong {
+  font-size: 1.2em;
+  line-height: 1;
+}
+.lengths .choice small {
+  font-size: 0.75em;
+  font-weight: 400;
+  line-height: 1.15;
 }
 .lengths {
-  gap: 5px;
+  gap: 8px;
 }
 .icon-button {
   background: #19322c url("/art/bezel.webp") center/100% 100%;
@@ -154,13 +178,15 @@ dialog p,
   font-weight: 600;
 }
 .pack {
-  border: 18px solid transparent;
-  border-image: url("/art/panel.webp") 120 fill / 18px stretch;
-  border-radius: 0;
-  background: #17312b;
-  padding: 0 0 0 0;
-  box-shadow: 0 5px 7px #0008;
-  min-height: 108px;
+  border: 1px solid #916f43;
+  border-image: none;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #29463c, #172823);
+  padding: 10px 14px;
+  box-shadow:
+    inset 0 1px #fff2,
+    0 5px 10px #0008;
+  min-height: 96px;
 }
 .pack-copy strong {
   font-size: 1.65rem;
@@ -186,8 +212,9 @@ dialog p,
 }
 /* Selection shows on the tile ring and mark; unselected stays fully readable. */
 .pack[aria-pressed="true"] {
+  border-color: #e1ba73;
   box-shadow:
-    inset 0 0 0 2px #ffd98caa,
+    inset 0 0 0 2px #d6ab6888,
     0 5px 7px #0008;
 }
 .pack[aria-pressed="false"] {
@@ -195,6 +222,97 @@ dialog p,
 }
 .pack:active {
   transform: translateY(1px);
+}
+.setup {
+  max-width: 480px;
+  margin: 0 auto;
+  padding-top: clamp(8px, 3svh, 30px);
+}
+.setup .intro {
+  padding-bottom: clamp(26px, 5svh, 48px);
+}
+.setup .setup-section {
+  margin-bottom: clamp(24px, 4svh, 36px);
+}
+.setup .section-label h2 {
+  font-size: 1.45rem;
+  color: #e9cc91;
+}
+.pack-selector {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 76px;
+  padding: 10px 16px;
+  border: 1px solid #8f7046;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #284339, #172823);
+  box-shadow:
+    inset 0 1px #fff2,
+    0 4px 8px #0007;
+}
+.pack-selector > span:first-child {
+  display: grid;
+  gap: 1px;
+  min-width: 0;
+}
+.pack-selector strong {
+  color: #f5e4be;
+  font-size: 1.25rem;
+}
+.pack-selector small {
+  color: #ceb48a;
+  font-size: 1rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.pack-selector > span:last-child {
+  margin-left: auto;
+  font-size: 2rem;
+  color: #e5ba70;
+}
+.included-pack {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+  padding: 10px 2px 12px;
+  border-bottom: 1px solid #c7a57066;
+  font-size: 1.3rem;
+}
+.included-pack small {
+  margin-left: auto;
+  color: #dec390;
+  font-size: 1rem;
+}
+.addon-list {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 22px;
+}
+.addon-list .pack-hint {
+  margin-top: 8px;
+}
+@media (max-height: 620px) {
+  .setup .intro {
+    padding-bottom: 10px;
+  }
+  .setup .setup-section {
+    margin-bottom: 12px;
+  }
+  .setup .section-label {
+    margin-bottom: 8px;
+  }
+  .lengths .choice {
+    min-height: 66px;
+  }
+  .pack-selector {
+    min-height: 64px;
+  }
+  .setup > .primary {
+    min-height: 60px;
+  }
 }
 .card-front {
   background: var(--parchment);
@@ -282,28 +400,6 @@ dialog.closing {
 }
 .complete.celebrate {
   animation: celebration var(--motion-complete, 600ms) ease-out;
-}
-.reveal-glint {
-  display: none;
-  pointer-events: none;
-  position: absolute;
-  inset: 0;
-  /* Lives on the front surface so the highlight turns and clips with the card. */
-  border-radius: inherit;
-  background: linear-gradient(
-    105deg,
-    transparent 42%,
-    #fff0c466 50%,
-    transparent 58%
-  );
-  opacity: 0;
-  transform: translateX(-55%) skewX(-6deg);
-  will-change: transform, opacity;
-  z-index: 5;
-}
-.flip .reveal-glint {
-  display: block;
-  animation: glint var(--motion-flip, 560ms) ease-out both;
 }
 .atmosphere {
   position: fixed;
@@ -469,10 +565,13 @@ dialog.closing {
   }
 }
 @keyframes card-settle {
-  from {
+  0% {
+    transform: none;
+  }
+  45% {
     transform: translateY(-2px);
   }
-  to {
+  100% {
     transform: none;
   }
 }
@@ -487,19 +586,6 @@ dialog.closing {
   }
   100% {
     transform: none;
-  }
-}
-@keyframes glint {
-  0% {
-    opacity: 0;
-    transform: translateX(-55%) skewX(-6deg);
-  }
-  45% {
-    opacity: 0.72;
-  }
-  100% {
-    opacity: 0;
-    transform: translateX(55%) skewX(-6deg);
   }
 }
 @keyframes fire-breathe {
@@ -574,11 +660,8 @@ dialog.closing {
 }
 @media (max-width: 360px) {
   .lengths .choice {
-    font-size: 1.25rem;
-    border-width: 10px;
-  }
-  .lengths button:nth-child(4) {
-    font-size: 1.125rem;
+    font-size: 1.12rem;
+    min-height: 74px;
   }
   .pack-copy strong {
     font-size: 1.4rem;
@@ -615,8 +698,7 @@ dialog.closing {
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .atmosphere,
-  .reveal-glint {
+  .atmosphere {
     display: none !important;
   }
   *,

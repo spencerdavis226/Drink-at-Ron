@@ -3,12 +3,13 @@
 Automated browser emulation is not evidence of actual iOS Home Screen behavior. Complete this on a real small iPhone, a large iPhone, and an iPad before sharing a polished release.
 
 - [ ] Open HTTPS site in Safari. Check safe areas, browser toolbar expansion, no horizontal overflow, readable rules, and reachable controls.
+- [ ] Set the phone on a table and read short and long rules from the far seat and side seats in bright and dim light. Check whether any rule needs the phone passed around or a forced scroll.
 - [ ] Install through Share → Add to Home Screen; open from icon and check standalone launch appearance.
 - [ ] Wait for offline readiness, enable airplane mode, close and reopen. Reveal/discard multiple cards and verify artwork works.
 - [ ] Reveal a card, switch apps, lock/unlock, and reopen. Same card and count persist.
 - [ ] Rapidly tap during reveal and discard. Exactly one action occurs per transition.
 - [ ] Interrupt a transition by closing the app. It restores the latest committed stable state, never a broken animation.
-- [ ] Check 20, 40, 60, Custom, Endless, no selected packs, and numeric keyboard validation.
+- [ ] Check Short (30), Long (60), Infinite, Core always included, and add-on toggles in the pack dialog. Confirm an existing custom-length active save retains its original limit.
 - [ ] Confirm final card stays visible until dismissed; replay starts a fresh shuffle with the same setup.
 - [ ] Previous Card is read-only; menu close restores focus; End Game can be canceled.
 - [ ] Enlarge text and zoom, enable Reduce Motion and VoiceOver. Read full rules and operate all controls.
@@ -26,7 +27,7 @@ Automated browser emulation is not evidence of actual iOS Home Screen behavior. 
 Sound has been removed; there are no audio checks. Verify the visual and dice items below.
 
 - [ ] Check the new painted Home Screen icons and dark launch colors on actual iOS.
-- [ ] Roll a dice card: the Roll/Continue control reuses the painted surface, keeps a 44px+ target, and never covers the rules or pack mark.
+- [ ] Roll a dice card: the card tap target remains usable, dice settle above the card, and neither dice nor controls cover rules or the pack mark.
 - [ ] Roll 20+ times across a session; watch for accumulating lag, a frozen canvas, or a lost WebGL context.
 - [ ] Simulate a platform without WebGL: the saved result still appears and Continue remains usable (no forced replay).
 - [ ] Rotate the device and let the Safari toolbar expand/collapse during and after a roll; the settled dice stay readable.
@@ -40,6 +41,6 @@ Sound has been removed; there are no audio checks. Verify the visual and dice it
 Automated evidence is recorded in `docs/studies/README.md`. Keep the following pending until observed on physical hardware:
 
 - [ ] Approve the short, long, and temporary-rule front studies on an iPhone and iPad.
-- [ ] Play the 40-card `core` sample collection using the playtest record.
+- [ ] Play Short (30 cards from the 250-card Core deck) using the playtest record, then sample more cards in Infinite. Engine tests cover the full shuffle cycle.
 - [ ] Verify the published `/Drink-at-Ron/` URL, Home Screen installation, offline relaunch, and updates on iOS.
-- [ ] Evaluate full-frame illustration sharpness, scrolling with enlarged text, and flip smoothness on physical devices.
+- [ ] Evaluate the approved frame and live title sharpness, scrolling with enlarged text, and flip smoothness on physical devices.

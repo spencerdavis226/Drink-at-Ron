@@ -1,0 +1,1127 @@
+[
+  {
+    "engine": "chromium",
+    "width": 260,
+    "large": false,
+    "id": "vip.tax",
+    "titleOverflow": false,
+    "rulesOverflow": true,
+    "lines": 1
+  },
+  {
+    "engine": "chromium",
+    "width": 260,
+    "large": false,
+    "id": "vip.fan-club",
+    "titleOverflow": false,
+    "rulesOverflow": true,
+    "lines": 1
+  },
+  {
+    "engine": "chromium",
+    "width": 260,
+    "large": false,
+    "id": "vip.standing-ovation",
+    "titleOverflow": false,
+    "rulesOverflow": true,
+    "lines": 1
+  },
+  {
+    "engine": "chromium",
+    "width": 260,
+    "large": false,
+    "id": "vip.gift",
+    "titleOverflow": false,
+    "rulesOverflow": true,
+    "lines": 1
+  },
+  {
+    "engine": "chromium",
+    "width": 260,
+    "large": false,
+    "id": "vip.superlatives",
+    "titleOverflow": false,
+    "rulesOverflow": true,
+    "lines": 1
+  },
+  {
+    "engine": "chromium",
+    "width": 260,
+    "large": false,
+    "id": "vip.roast",
+    "titleOverflow": false,
+    "rulesOverflow": true,
+    "lines": 1
+  },
+  {
+    "engine": "chromium",
+    "width": 260,
+    "large": false,
+    "id": "vip.title",
+    "titleOverflow": false,
+    "rulesOverflow": true,
+    "lines": 1
+  },
+  {
+    "engine": "chromium",
+    "width": 260,
+    "large": false,
+    "id": "vip.never-alone",
+    "titleOverflow": false,
+    "rulesOverflow": true,
+    "lines": 1
+  },
+  {
+    "engine": "chromium",
+    "width": 260,
+    "large": true,
+    "id": "core.house-special",
+    "titleOverflow": true,
+    "rulesOverflow": false,
+    "lines": 2
+  },
+  {
+    "engine": "chromium",
+    "width": 260,
+    "large": true,
+    "id": "core.bad-influence",
+    "titleOverflow": true,
+    "rulesOverflow": false,
+    "lines": 2
+  },
+  {
+    "engine": "chromium",
+    "width": 260,
+    "large": true,
+    "id": "core.you-specifically",
+    "titleOverflow": true,
+    "rulesOverflow": false,
+    "lines": 2
+  },
+  {
+    "engine": "chromium",
+    "width": 260,
+    "large": true,
+    "id": "core.group-project",
+    "titleOverflow": true,
+    "rulesOverflow": false,
+    "lines": 2
+  },
+  {
+    "engine": "chromium",
+    "width": 260,
+    "large": true,
+    "id": "core.bad-text",
+    "titleOverflow": false,
+    "rulesOverflow": true,
+    "lines": 1
+  },
+  {
+    "engine": "chromium",
+    "width": 260,
+    "large": true,
+    "id": "core.hr-violation",
+    "titleOverflow": true,
+    "rulesOverflow": true,
+    "lines": 2
+  },
+  {
+    "engine": "chromium",
+    "width": 260,
+    "large": true,
+    "id": "core.fake-sick",
+    "titleOverflow": true,
+    "rulesOverflow": false,
+    "lines": 2
+  },
+  {
+    "engine": "chromium",
+    "width": 260,
+    "large": true,
+    "id": "core.crypto-bro",
+    "titleOverflow": true,
+    "rulesOverflow": false,
+    "lines": 2
+  },
+  {
+    "engine": "chromium",
+    "width": 260,
+    "large": true,
+    "id": "core.deez-nuts",
+    "titleOverflow": false,
+    "rulesOverflow": true,
+    "lines": 1
+  },
+  {
+    "engine": "chromium",
+    "width": 260,
+    "large": true,
+    "id": "core.smooth-brain",
+    "titleOverflow": true,
+    "rulesOverflow": true,
+    "lines": 2
+  },
+  {
+    "engine": "chromium",
+    "width": 260,
+    "large": true,
+    "id": "core.would-you",
+    "titleOverflow": true,
+    "rulesOverflow": false,
+    "lines": 2
+  },
+  {
+    "engine": "chromium",
+    "width": 260,
+    "large": true,
+    "id": "core.cheers-idiots",
+    "titleOverflow": true,
+    "rulesOverflow": false,
+    "lines": 2
+  },
+  {
+    "engine": "chromium",
+    "width": 260,
+    "large": true,
+    "id": "core.fuckin-math",
+    "titleOverflow": true,
+    "rulesOverflow": false,
+    "lines": 2
+  },
+  {
+    "engine": "chromium",
+    "width": 260,
+    "large": true,
+    "id": "core.high-roller",
+    "titleOverflow": true,
+    "rulesOverflow": false,
+    "lines": 2
+  },
+  {
+    "engine": "chromium",
+    "width": 260,
+    "large": true,
+    "id": "core.same-shit",
+    "titleOverflow": false,
+    "rulesOverflow": true,
+    "lines": 1
+  },
+  {
+    "engine": "chromium",
+    "width": 260,
+    "large": true,
+    "id": "core.two-beers-math",
+    "titleOverflow": true,
+    "rulesOverflow": false,
+    "lines": 2
+  },
+  {
+    "engine": "chromium",
+    "width": 260,
+    "large": true,
+    "id": "core.snake-eyes",
+    "titleOverflow": false,
+    "rulesOverflow": true,
+    "lines": 1
+  },
+  {
+    "engine": "chromium",
+    "width": 260,
+    "large": true,
+    "id": "core.lucky-bastard",
+    "titleOverflow": true,
+    "rulesOverflow": false,
+    "lines": 2
+  },
+  {
+    "engine": "chromium",
+    "width": 260,
+    "large": true,
+    "id": "core.fuck-around",
+    "titleOverflow": true,
+    "rulesOverflow": true,
+    "lines": 3
+  },
+  {
+    "engine": "chromium",
+    "width": 260,
+    "large": true,
+    "id": "core.crit-fail",
+    "titleOverflow": true,
+    "rulesOverflow": false,
+    "lines": 2
+  },
+  {
+    "engine": "chromium",
+    "width": 260,
+    "large": true,
+    "id": "core.chosen-one",
+    "titleOverflow": true,
+    "rulesOverflow": true,
+    "lines": 3
+  },
+  {
+    "engine": "chromium",
+    "width": 260,
+    "large": true,
+    "id": "core.categories",
+    "titleOverflow": false,
+    "rulesOverflow": true,
+    "lines": 1
+  },
+  {
+    "engine": "chromium",
+    "width": 260,
+    "large": true,
+    "id": "core.rhyme-time",
+    "titleOverflow": true,
+    "rulesOverflow": false,
+    "lines": 2
+  },
+  {
+    "engine": "chromium",
+    "width": 260,
+    "large": true,
+    "id": "core.questions-only",
+    "titleOverflow": true,
+    "rulesOverflow": false,
+    "lines": 2
+  },
+  {
+    "engine": "chromium",
+    "width": 260,
+    "large": true,
+    "id": "core.rock-paper-drink",
+    "titleOverflow": true,
+    "rulesOverflow": false,
+    "lines": 2
+  },
+  {
+    "engine": "chromium",
+    "width": 260,
+    "large": true,
+    "id": "core.never-have-i",
+    "titleOverflow": true,
+    "rulesOverflow": false,
+    "lines": 2
+  },
+  {
+    "engine": "chromium",
+    "width": 260,
+    "large": true,
+    "id": "core.rulemaster",
+    "titleOverflow": false,
+    "rulesOverflow": true,
+    "lines": 1
+  },
+  {
+    "engine": "chromium",
+    "width": 260,
+    "large": true,
+    "id": "core.no-names",
+    "titleOverflow": true,
+    "rulesOverflow": false,
+    "lines": 3
+  },
+  {
+    "engine": "chromium",
+    "width": 260,
+    "large": true,
+    "id": "core.potty-mouth",
+    "titleOverflow": true,
+    "rulesOverflow": false,
+    "lines": 2
+  },
+  {
+    "engine": "chromium",
+    "width": 260,
+    "large": true,
+    "id": "core.captain-dumbass",
+    "titleOverflow": true,
+    "rulesOverflow": true,
+    "lines": 2
+  },
+  {
+    "engine": "chromium",
+    "width": 260,
+    "large": true,
+    "id": "core.cursed-number",
+    "titleOverflow": true,
+    "rulesOverflow": true,
+    "lines": 2
+  },
+  {
+    "engine": "chromium",
+    "width": 260,
+    "large": true,
+    "id": "core.dice-lord",
+    "titleOverflow": false,
+    "rulesOverflow": true,
+    "lines": 1
+  },
+  {
+    "engine": "chromium",
+    "width": 260,
+    "large": true,
+    "id": "vip.toast",
+    "titleOverflow": true,
+    "rulesOverflow": true,
+    "lines": 2
+  },
+  {
+    "engine": "chromium",
+    "width": 260,
+    "large": true,
+    "id": "vip.sidekick",
+    "titleOverflow": true,
+    "rulesOverflow": true,
+    "lines": 2
+  },
+  {
+    "engine": "chromium",
+    "width": 260,
+    "large": true,
+    "id": "vip.tax",
+    "titleOverflow": false,
+    "rulesOverflow": true,
+    "lines": 1
+  },
+  {
+    "engine": "chromium",
+    "width": 260,
+    "large": true,
+    "id": "vip.fan-club",
+    "titleOverflow": true,
+    "rulesOverflow": true,
+    "lines": 2
+  },
+  {
+    "engine": "chromium",
+    "width": 260,
+    "large": true,
+    "id": "vip.standing-ovation",
+    "titleOverflow": true,
+    "rulesOverflow": true,
+    "lines": 2
+  },
+  {
+    "engine": "chromium",
+    "width": 260,
+    "large": true,
+    "id": "vip.favors",
+    "titleOverflow": true,
+    "rulesOverflow": true,
+    "lines": 2
+  },
+  {
+    "engine": "chromium",
+    "width": 260,
+    "large": true,
+    "id": "vip.gift",
+    "titleOverflow": true,
+    "rulesOverflow": true,
+    "lines": 2
+  },
+  {
+    "engine": "chromium",
+    "width": 260,
+    "large": true,
+    "id": "vip.superlatives",
+    "titleOverflow": true,
+    "rulesOverflow": true,
+    "lines": 2
+  },
+  {
+    "engine": "chromium",
+    "width": 260,
+    "large": true,
+    "id": "vip.roast",
+    "titleOverflow": true,
+    "rulesOverflow": true,
+    "lines": 2
+  },
+  {
+    "engine": "chromium",
+    "width": 260,
+    "large": true,
+    "id": "vip.title",
+    "titleOverflow": true,
+    "rulesOverflow": true,
+    "lines": 2
+  },
+  {
+    "engine": "chromium",
+    "width": 260,
+    "large": true,
+    "id": "vip.excellency",
+    "titleOverflow": true,
+    "rulesOverflow": true,
+    "lines": 2
+  },
+  {
+    "engine": "chromium",
+    "width": 260,
+    "large": true,
+    "id": "vip.never-alone",
+    "titleOverflow": true,
+    "rulesOverflow": true,
+    "lines": 2
+  },
+  {
+    "engine": "chromium",
+    "width": 330,
+    "large": true,
+    "id": "vip.toast",
+    "titleOverflow": false,
+    "rulesOverflow": true,
+    "lines": 2
+  },
+  {
+    "engine": "chromium",
+    "width": 330,
+    "large": true,
+    "id": "vip.tax",
+    "titleOverflow": false,
+    "rulesOverflow": true,
+    "lines": 1
+  },
+  {
+    "engine": "chromium",
+    "width": 330,
+    "large": true,
+    "id": "vip.fan-club",
+    "titleOverflow": false,
+    "rulesOverflow": true,
+    "lines": 2
+  },
+  {
+    "engine": "chromium",
+    "width": 330,
+    "large": true,
+    "id": "vip.standing-ovation",
+    "titleOverflow": false,
+    "rulesOverflow": true,
+    "lines": 2
+  },
+  {
+    "engine": "chromium",
+    "width": 330,
+    "large": true,
+    "id": "vip.gift",
+    "titleOverflow": false,
+    "rulesOverflow": true,
+    "lines": 2
+  },
+  {
+    "engine": "chromium",
+    "width": 330,
+    "large": true,
+    "id": "vip.superlatives",
+    "titleOverflow": false,
+    "rulesOverflow": true,
+    "lines": 2
+  },
+  {
+    "engine": "chromium",
+    "width": 330,
+    "large": true,
+    "id": "vip.roast",
+    "titleOverflow": false,
+    "rulesOverflow": true,
+    "lines": 2
+  },
+  {
+    "engine": "chromium",
+    "width": 330,
+    "large": true,
+    "id": "vip.title",
+    "titleOverflow": false,
+    "rulesOverflow": true,
+    "lines": 2
+  },
+  {
+    "engine": "chromium",
+    "width": 330,
+    "large": true,
+    "id": "vip.excellency",
+    "titleOverflow": false,
+    "rulesOverflow": true,
+    "lines": 2
+  },
+  {
+    "engine": "chromium",
+    "width": 330,
+    "large": true,
+    "id": "vip.never-alone",
+    "titleOverflow": false,
+    "rulesOverflow": true,
+    "lines": 2
+  },
+  {
+    "engine": "webkit",
+    "width": 260,
+    "large": false,
+    "id": "vip.tax",
+    "titleOverflow": false,
+    "rulesOverflow": true,
+    "lines": 1
+  },
+  {
+    "engine": "webkit",
+    "width": 260,
+    "large": false,
+    "id": "vip.fan-club",
+    "titleOverflow": false,
+    "rulesOverflow": true,
+    "lines": 1
+  },
+  {
+    "engine": "webkit",
+    "width": 260,
+    "large": false,
+    "id": "vip.standing-ovation",
+    "titleOverflow": false,
+    "rulesOverflow": true,
+    "lines": 1
+  },
+  {
+    "engine": "webkit",
+    "width": 260,
+    "large": false,
+    "id": "vip.gift",
+    "titleOverflow": false,
+    "rulesOverflow": true,
+    "lines": 1
+  },
+  {
+    "engine": "webkit",
+    "width": 260,
+    "large": false,
+    "id": "vip.superlatives",
+    "titleOverflow": false,
+    "rulesOverflow": true,
+    "lines": 1
+  },
+  {
+    "engine": "webkit",
+    "width": 260,
+    "large": false,
+    "id": "vip.roast",
+    "titleOverflow": false,
+    "rulesOverflow": true,
+    "lines": 1
+  },
+  {
+    "engine": "webkit",
+    "width": 260,
+    "large": false,
+    "id": "vip.title",
+    "titleOverflow": false,
+    "rulesOverflow": true,
+    "lines": 1
+  },
+  {
+    "engine": "webkit",
+    "width": 260,
+    "large": false,
+    "id": "vip.never-alone",
+    "titleOverflow": false,
+    "rulesOverflow": true,
+    "lines": 1
+  },
+  {
+    "engine": "webkit",
+    "width": 260,
+    "large": true,
+    "id": "core.house-special",
+    "titleOverflow": true,
+    "rulesOverflow": false,
+    "lines": 2
+  },
+  {
+    "engine": "webkit",
+    "width": 260,
+    "large": true,
+    "id": "core.bad-influence",
+    "titleOverflow": true,
+    "rulesOverflow": false,
+    "lines": 2
+  },
+  {
+    "engine": "webkit",
+    "width": 260,
+    "large": true,
+    "id": "core.you-specifically",
+    "titleOverflow": true,
+    "rulesOverflow": false,
+    "lines": 2
+  },
+  {
+    "engine": "webkit",
+    "width": 260,
+    "large": true,
+    "id": "core.group-project",
+    "titleOverflow": true,
+    "rulesOverflow": false,
+    "lines": 2
+  },
+  {
+    "engine": "webkit",
+    "width": 260,
+    "large": true,
+    "id": "core.bad-text",
+    "titleOverflow": false,
+    "rulesOverflow": true,
+    "lines": 1
+  },
+  {
+    "engine": "webkit",
+    "width": 260,
+    "large": true,
+    "id": "core.hr-violation",
+    "titleOverflow": true,
+    "rulesOverflow": true,
+    "lines": 2
+  },
+  {
+    "engine": "webkit",
+    "width": 260,
+    "large": true,
+    "id": "core.fake-sick",
+    "titleOverflow": true,
+    "rulesOverflow": false,
+    "lines": 2
+  },
+  {
+    "engine": "webkit",
+    "width": 260,
+    "large": true,
+    "id": "core.crypto-bro",
+    "titleOverflow": true,
+    "rulesOverflow": false,
+    "lines": 2
+  },
+  {
+    "engine": "webkit",
+    "width": 260,
+    "large": true,
+    "id": "core.deez-nuts",
+    "titleOverflow": false,
+    "rulesOverflow": true,
+    "lines": 1
+  },
+  {
+    "engine": "webkit",
+    "width": 260,
+    "large": true,
+    "id": "core.smooth-brain",
+    "titleOverflow": true,
+    "rulesOverflow": true,
+    "lines": 2
+  },
+  {
+    "engine": "webkit",
+    "width": 260,
+    "large": true,
+    "id": "core.would-you",
+    "titleOverflow": true,
+    "rulesOverflow": false,
+    "lines": 2
+  },
+  {
+    "engine": "webkit",
+    "width": 260,
+    "large": true,
+    "id": "core.cheers-idiots",
+    "titleOverflow": true,
+    "rulesOverflow": false,
+    "lines": 2
+  },
+  {
+    "engine": "webkit",
+    "width": 260,
+    "large": true,
+    "id": "core.fuckin-math",
+    "titleOverflow": true,
+    "rulesOverflow": false,
+    "lines": 2
+  },
+  {
+    "engine": "webkit",
+    "width": 260,
+    "large": true,
+    "id": "core.high-roller",
+    "titleOverflow": true,
+    "rulesOverflow": false,
+    "lines": 2
+  },
+  {
+    "engine": "webkit",
+    "width": 260,
+    "large": true,
+    "id": "core.same-shit",
+    "titleOverflow": false,
+    "rulesOverflow": true,
+    "lines": 1
+  },
+  {
+    "engine": "webkit",
+    "width": 260,
+    "large": true,
+    "id": "core.two-beers-math",
+    "titleOverflow": true,
+    "rulesOverflow": false,
+    "lines": 2
+  },
+  {
+    "engine": "webkit",
+    "width": 260,
+    "large": true,
+    "id": "core.snake-eyes",
+    "titleOverflow": false,
+    "rulesOverflow": true,
+    "lines": 1
+  },
+  {
+    "engine": "webkit",
+    "width": 260,
+    "large": true,
+    "id": "core.lucky-bastard",
+    "titleOverflow": true,
+    "rulesOverflow": false,
+    "lines": 2
+  },
+  {
+    "engine": "webkit",
+    "width": 260,
+    "large": true,
+    "id": "core.fuck-around",
+    "titleOverflow": true,
+    "rulesOverflow": true,
+    "lines": 3
+  },
+  {
+    "engine": "webkit",
+    "width": 260,
+    "large": true,
+    "id": "core.crit-fail",
+    "titleOverflow": true,
+    "rulesOverflow": false,
+    "lines": 2
+  },
+  {
+    "engine": "webkit",
+    "width": 260,
+    "large": true,
+    "id": "core.chosen-one",
+    "titleOverflow": true,
+    "rulesOverflow": true,
+    "lines": 3
+  },
+  {
+    "engine": "webkit",
+    "width": 260,
+    "large": true,
+    "id": "core.categories",
+    "titleOverflow": false,
+    "rulesOverflow": true,
+    "lines": 1
+  },
+  {
+    "engine": "webkit",
+    "width": 260,
+    "large": true,
+    "id": "core.rhyme-time",
+    "titleOverflow": true,
+    "rulesOverflow": false,
+    "lines": 2
+  },
+  {
+    "engine": "webkit",
+    "width": 260,
+    "large": true,
+    "id": "core.questions-only",
+    "titleOverflow": true,
+    "rulesOverflow": true,
+    "lines": 2
+  },
+  {
+    "engine": "webkit",
+    "width": 260,
+    "large": true,
+    "id": "core.rock-paper-drink",
+    "titleOverflow": true,
+    "rulesOverflow": false,
+    "lines": 2
+  },
+  {
+    "engine": "webkit",
+    "width": 260,
+    "large": true,
+    "id": "core.never-have-i",
+    "titleOverflow": true,
+    "rulesOverflow": false,
+    "lines": 2
+  },
+  {
+    "engine": "webkit",
+    "width": 260,
+    "large": true,
+    "id": "core.rulemaster",
+    "titleOverflow": false,
+    "rulesOverflow": true,
+    "lines": 1
+  },
+  {
+    "engine": "webkit",
+    "width": 260,
+    "large": true,
+    "id": "core.no-names",
+    "titleOverflow": true,
+    "rulesOverflow": true,
+    "lines": 3
+  },
+  {
+    "engine": "webkit",
+    "width": 260,
+    "large": true,
+    "id": "core.potty-mouth",
+    "titleOverflow": true,
+    "rulesOverflow": false,
+    "lines": 2
+  },
+  {
+    "engine": "webkit",
+    "width": 260,
+    "large": true,
+    "id": "core.captain-dumbass",
+    "titleOverflow": true,
+    "rulesOverflow": true,
+    "lines": 2
+  },
+  {
+    "engine": "webkit",
+    "width": 260,
+    "large": true,
+    "id": "core.cursed-number",
+    "titleOverflow": true,
+    "rulesOverflow": true,
+    "lines": 2
+  },
+  {
+    "engine": "webkit",
+    "width": 260,
+    "large": true,
+    "id": "core.dice-lord",
+    "titleOverflow": false,
+    "rulesOverflow": true,
+    "lines": 1
+  },
+  {
+    "engine": "webkit",
+    "width": 260,
+    "large": true,
+    "id": "vip.toast",
+    "titleOverflow": true,
+    "rulesOverflow": true,
+    "lines": 2
+  },
+  {
+    "engine": "webkit",
+    "width": 260,
+    "large": true,
+    "id": "vip.sidekick",
+    "titleOverflow": true,
+    "rulesOverflow": true,
+    "lines": 2
+  },
+  {
+    "engine": "webkit",
+    "width": 260,
+    "large": true,
+    "id": "vip.tax",
+    "titleOverflow": false,
+    "rulesOverflow": true,
+    "lines": 1
+  },
+  {
+    "engine": "webkit",
+    "width": 260,
+    "large": true,
+    "id": "vip.fan-club",
+    "titleOverflow": true,
+    "rulesOverflow": true,
+    "lines": 2
+  },
+  {
+    "engine": "webkit",
+    "width": 260,
+    "large": true,
+    "id": "vip.standing-ovation",
+    "titleOverflow": true,
+    "rulesOverflow": true,
+    "lines": 2
+  },
+  {
+    "engine": "webkit",
+    "width": 260,
+    "large": true,
+    "id": "vip.favors",
+    "titleOverflow": true,
+    "rulesOverflow": true,
+    "lines": 2
+  },
+  {
+    "engine": "webkit",
+    "width": 260,
+    "large": true,
+    "id": "vip.gift",
+    "titleOverflow": true,
+    "rulesOverflow": true,
+    "lines": 2
+  },
+  {
+    "engine": "webkit",
+    "width": 260,
+    "large": true,
+    "id": "vip.superlatives",
+    "titleOverflow": true,
+    "rulesOverflow": true,
+    "lines": 2
+  },
+  {
+    "engine": "webkit",
+    "width": 260,
+    "large": true,
+    "id": "vip.roast",
+    "titleOverflow": true,
+    "rulesOverflow": true,
+    "lines": 2
+  },
+  {
+    "engine": "webkit",
+    "width": 260,
+    "large": true,
+    "id": "vip.title",
+    "titleOverflow": true,
+    "rulesOverflow": true,
+    "lines": 2
+  },
+  {
+    "engine": "webkit",
+    "width": 260,
+    "large": true,
+    "id": "vip.excellency",
+    "titleOverflow": true,
+    "rulesOverflow": true,
+    "lines": 2
+  },
+  {
+    "engine": "webkit",
+    "width": 260,
+    "large": true,
+    "id": "vip.never-alone",
+    "titleOverflow": true,
+    "rulesOverflow": true,
+    "lines": 2
+  },
+  {
+    "engine": "webkit",
+    "width": 330,
+    "large": true,
+    "id": "vip.toast",
+    "titleOverflow": false,
+    "rulesOverflow": true,
+    "lines": 2
+  },
+  {
+    "engine": "webkit",
+    "width": 330,
+    "large": true,
+    "id": "vip.tax",
+    "titleOverflow": false,
+    "rulesOverflow": true,
+    "lines": 1
+  },
+  {
+    "engine": "webkit",
+    "width": 330,
+    "large": true,
+    "id": "vip.fan-club",
+    "titleOverflow": false,
+    "rulesOverflow": true,
+    "lines": 2
+  },
+  {
+    "engine": "webkit",
+    "width": 330,
+    "large": true,
+    "id": "vip.standing-ovation",
+    "titleOverflow": false,
+    "rulesOverflow": true,
+    "lines": 2
+  },
+  {
+    "engine": "webkit",
+    "width": 330,
+    "large": true,
+    "id": "vip.favors",
+    "titleOverflow": false,
+    "rulesOverflow": true,
+    "lines": 2
+  },
+  {
+    "engine": "webkit",
+    "width": 330,
+    "large": true,
+    "id": "vip.gift",
+    "titleOverflow": false,
+    "rulesOverflow": true,
+    "lines": 2
+  },
+  {
+    "engine": "webkit",
+    "width": 330,
+    "large": true,
+    "id": "vip.superlatives",
+    "titleOverflow": false,
+    "rulesOverflow": true,
+    "lines": 2
+  },
+  {
+    "engine": "webkit",
+    "width": 330,
+    "large": true,
+    "id": "vip.roast",
+    "titleOverflow": false,
+    "rulesOverflow": true,
+    "lines": 2
+  },
+  {
+    "engine": "webkit",
+    "width": 330,
+    "large": true,
+    "id": "vip.title",
+    "titleOverflow": false,
+    "rulesOverflow": true,
+    "lines": 2
+  },
+  {
+    "engine": "webkit",
+    "width": 330,
+    "large": true,
+    "id": "vip.excellency",
+    "titleOverflow": false,
+    "rulesOverflow": true,
+    "lines": 2
+  },
+  {
+    "engine": "webkit",
+    "width": 330,
+    "large": true,
+    "id": "vip.never-alone",
+    "titleOverflow": false,
+    "rulesOverflow": true,
+    "lines": 2
+  }
+]

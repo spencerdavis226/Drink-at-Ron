@@ -19,7 +19,7 @@ async function seedPlain(page: import("@playwright/test").Page) {
   );
   await page.reload();
 }
-test("Pages manifest, assets and production exclusion", async ({
+test("@release Pages manifest, assets and production exclusion", async ({
   page,
   request,
   baseURL,
@@ -56,12 +56,12 @@ test("Core logo matches selection, card, pause legend and previous card", async 
   page,
 }) => {
   await page.goto("./");
-  await expect(
-    page
-      .locator(".pack-copy")
-      .filter({ hasText: "The house collection" })
-      .locator(".pack-logo img"),
-  ).toHaveAttribute("src", /art\/packs\/core.svg$/);
+  await page.getByRole("button", { name: "Choose add-ons" }).click();
+  await expect(page.locator(".included-pack .pack-logo img")).toHaveAttribute(
+    "src",
+    /art\/packs\/core.svg$/,
+  );
+  await page.getByRole("button", { name: "Done" }).click();
   await page.getByRole("button", { name: "Play", exact: true }).click();
   await seedPlain(page);
   await page.getByRole("button", { name: "Reveal card", exact: true }).click();

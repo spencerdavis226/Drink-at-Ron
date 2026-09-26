@@ -1,7 +1,6 @@
 import { useEffect, useId, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import type { CardDefinition, DiceRoll } from "../game/types";
-import { diceNotation } from "../game/dice";
 import { forceMotion } from "../presentation/motion";
 import "./fullscreen-dice.css";
 
@@ -29,7 +28,7 @@ const supportsWebGL = () => {
 /**
  * Card-forward roll overlay. There is no dialog and no dimming: the live 2:3
  * card stays readable behind a transparent 3D stage, dice tumble over it, and a
- * single control drives the whole interaction. The card button remains the
+ * tap on the card drives the whole interaction. The card button remains the
  * accessible control; this layer only adds the visual affordance and result.
  */
 export default function FullScreenDice({
@@ -192,14 +191,6 @@ export default function FullScreenDice({
           data-roll-ms={rollMs}
         />
       </div>
-      <button
-        type="button"
-        className="roll-cta"
-        disabled={rolling}
-        onClick={onTap}
-      >
-        {rolling ? "Rolling…" : roll ? "Continue" : `Roll ${diceNotation(card.dice!)}`}
-      </button>
     </div>,
     document.body,
   );

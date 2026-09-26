@@ -55,25 +55,21 @@ test("dialog enter and exit share the motion tokens", async ({ page }) => {
 test("an exiting dialog is inert and cannot trigger its controls", async ({
   page,
 }) => {
+  await page.clock.install();
   await seed(page, game());
   await page.getByRole("button", { name: "Open game menu" }).click();
-  await expect(page.getByRole("dialog")).toBeVisible();
-  // Capture the transient exit state in-page; a round-trip after the close
-  // click can miss the short exit window on slow runners.
-  const exiting = (await page.evaluate(`new Promise((resolve) => {
-    const dialog = document.querySelector("dialog[open]");
-    const observer = new MutationObserver(() => {
-      if (!dialog.classList.contains("closing")) return;
-      observer.disconnect();
-      resolve({
-        inert: dialog.hasAttribute("inert"),
-        pointerEvents: getComputedStyle(dialog).pointerEvents,
-      });
-    });
-    observer.observe(dialog, { attributes: true });
-    dialog.querySelector("button[aria-label='Close']").click();
-  })`)) as { inert: boolean; pointerEvents: string };
-  expect(exiting).toEqual({ inert: true, pointerEvents: "none" });
+  const dialog = page.locator("dialog[open]");
+  await expect(dialog).toBeVisible();
+  // Freeze the exit timer so WebKit cannot unmount the short-lived dialog
+  // before the inert state is inspected across the Playwright round-trip.
+  await page.clock.pauseAt(new Date());
+  await page.getByRole("button", { name: "Close" }).click();
+  await expect(dialog).toHaveClass(/closing/);
+  await expect(dialog).toHaveAttribute("inert", "");
+  expect(
+    await dialog.evaluate((el) => getComputedStyle(el).pointerEvents),
+  ).toBe("none");
+  await page.clock.runFor(220);
   await expect(page.getByRole("dialog")).toHaveCount(0);
 });
 

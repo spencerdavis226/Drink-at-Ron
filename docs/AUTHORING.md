@@ -29,13 +29,25 @@ export const examplePack: PackDefinition = {
 };
 ```
 
-Use stable namespaced IDs; never recycle one for an unrelated card. Supported categories: `sip`, `group`, `category`, `challenge`, and `rule`. Rules are plain text, not HTML. Keep one clear instruction, generally under 45 words. Long text stays inside the fixed 2:3 card and scrolls within the rules panel at enlarged settings; the card never grows for content. Illustration briefs remain authoring metadata. Do not bake rule text into artwork.
+Use stable namespaced IDs; never recycle one for an unrelated card. Supported categories: `sip`, `group`, `category`, `challenge`, and `rule`. Rules are plain text, not HTML. Keep one clear instruction. Aim for 90 characters and 18 words or less; the build flags longer copy for review and rejects rules over 120 characters or 24 words. Specify who starts and when the activity ends. Long text stays inside the fixed 2:3 card and scrolls within the rules panel at enlarged settings; the card never grows for content. Illustration briefs remain authoring metadata. Do not bake rule text into artwork.
+
+The rule text scales from 26px on a phone card to 34px on a wide card at the default browser text size. Enlarged mode uses 34–42px. Review the actual rendered card at 320px and 390px viewport widths; character counts cannot predict where words wrap. Keep a short lead sentence so a group across the table can grasp the action before anyone scrolls.
+
+Card titles have a hard authoring limit of 22 characters and 12 characters per word. The title starts at a size proportional to card width and shrinks only if its rendered text would exceed the two-line teal band, down to 18px. The workshop/browser fit check is still required because equal-length words can render at different widths. Existing saved titles are never shortened or renamed; unusually long legacy titles remain scrollable.
 
 Overlapping packs share a card by ID; it enters the shuffle pool only once. New packs are off until selected. Pack choices affect the next game; an active session retains its snapshot. Keep previously published artwork available when possible. Ship expansions with a new build, not a remote download service.
 
 Before the production content session: review variety, repetition, category stopping conditions, and ongoing-rule duration. Agree on final copy and stable IDs before commissioning or generating artwork.
 
+The supplied Sheet1 CSV has Main title/description columns and separate VIP title/description columns. `src/content/custom.ts` includes all 103 nonblank Main rows as an optional `house` pack and all four VIP rows in `vip`; blank row 75 is excluded. IDs contain the 1-based sheet row number for audit, including duplicate headings. Row 106 (“Debate”) had no rule, so its released rule is a short silly debate and vote. Wording was edited to fit the game's one-sip, no-speed-drinking rules and the larger table-readable text; compare the generated review sheet with the source before final copy approval. Preview every card in the workshop at small-phone width and enlarged text. An active game's saved snapshot is never rewritten by catalog changes.
+
 Packs can optionally specify `artwork: 'art/your-pack.webp'`. The file must exist and follow the same local path rules as card artwork. Omit it to use the painted tankard. Shared pack controls and card frames are automatic; packs do not carry UI components, animation logic, or fonts.
+
+## Card data and bulk review
+
+Cards are plain typed objects in `src/content` (build the common shape with `cardFactory(namespace)` from `src/content/author.ts`). A dice card is not a boolean flag: it carries a structured `dice` definition — `count`, `sides` (6 or 20), and either one `instruction` template with `{total}` or `outcomes` that cover every total exactly once. `roll()` and `rollTable()` in `author.ts` cover both cases and `validateDice` enforces them at build time.
+
+For a human review pass, run `npm run cards:review`. It regenerates `docs/CARD_REVIEW.md` (readable table with a blank Review column) and `docs/card-review.csv` from the live catalog, so the sheet can never drift from what ships. Edit the source and regenerate; do not hand-edit either file. `src/content/classics.ts` holds the classic / King's Cup basics and `standard-expansion.ts` holds the larger standard-deck expansion. New cards need an assignment in `src/content/imprint.ts` (the build and `tests/imprint.test.ts` require one); the expansion uses stable category motifs from the existing sprite while its new copy is reviewed.
 
 ## Card workshop
 

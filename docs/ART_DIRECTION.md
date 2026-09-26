@@ -1,23 +1,71 @@
 # Drink at Ron — current visual design standards
 
-Updated 2026-09-20 after a production-browser visual audit. **This section is normative; the historical generation prompts below are archival.** Implementation tasks and priorities live only in [STATUS.md](STATUS.md). These standards refine the approved art direction; they do not authorize replacing the frame, characters or renderer wholesale.
+Updated 2026-09-23 for launch setup, controls, and dice. **The current-state sections here are normative; older studies and generation prompts below are archival when they conflict.** Implementation tasks and priorities live only in [STATUS.md](STATUS.md).
 
 ## Creative direction and quality bar
 
 An original, mischievous fantasy tavern collectible-card game. Weathered walnut, sculpted worn bronze, deep teal leather, warm parchment and painted expressive characters. Hearthstone is a craftsmanship/rendering reference, not a source of characters, symbols, compositions or copied UI. Humor can be broad and goofy in the spirit of tabletop fantasy parody; retain one immediately readable gag or action.
 
-The approved card back, continuous-front silhouette, cheers illustration and tankard remain anchors. **Premium means coherent construction and effortless reading before it means more detail.** A visible seam, hidden instruction, stretched frame, unclear control or detached shadow fails the quality bar even when the source art is excellent. Automated functional tests alone cannot approve a visual release.
+The approved card back and ornate teal front remain anchors. The current card front uses live text over plain parchment. **Premium means coherent construction and effortless reading before it means more detail.** A visible seam, hidden instruction, stretched frame, unclear control or detached shadow fails the quality bar even when the source art is excellent. Automated functional tests alone cannot approve a visual release.
 
 See [visual audit evidence](studies/visual-audit-2026-09-20/README.md) for current failures. Those captures are not approved golden images.
+
+## Card title system
+
+The approved ornate teal front remains fixed. Live titles use the locally bundled Source Serif 4 Bold (`public/fonts/source-serif-4-bold.woff2`, [licence](licenses/source-serif-OFL.md)) at weight 700. The solid face is bright ivory `#fff0cf`, with no stroke, blur, bevel or text shadow; the frame supplies the material depth. Forced colors use system Canvas/CanvasText. The body and menus retain Grenze.
+
+The title safe zone is x17–83% and y8.5–24.5% of the 2:3 card. Start at `clamp(22px, 8.8cqw, 36px)`, 1.12 line spacing, balanced wrapping, centered with one shared `-0.08em` optical offset. The title size follows card width. If actual glyphs exceed the two-line box, the renderer reduces that title only to the largest fitting size, with an 18px floor. It never truncates text. Authored titles are limited to 22 characters and 12 per word; the browser fit audit at 260/330/480px remains the acceptance gate because character counts cannot predict glyph widths. Older saved titles retain their full text and can scroll if the floor cannot fit them.
+
+## Launch setup, controls, and dice
+
+Setup offers Short (30 cards), Long (60 cards), and Infinite. Core is always included; a separate Card packs dialog toggles add-ons. Selected add-ons persist for the next game, while an active game's card order and text remain its saved snapshot. The setup selector, dialogs, completion, pause, install, recovery, and update surfaces share the same quiet walnut, bronze, and teal control language, clear focus treatment, and reachable targets.
+
+The single full-screen dice renderer uses deep teal enamel, warm ivory markings, worn bronze edges, restrained lighting, and contact shadows. After a verified physical roll, dice ease into clear space above the card so the resolved instruction remains readable. Reduced Motion places them immediately. The engine supplies results; visual treatment cannot change those outcomes.
+
+For authored rules, target 90 characters and 18 words. Review copy above either target, and reject copy over 120 characters or 24 words until edited. Keep one clear action, and keep the card rules panel scrollable for enlarged text and saved edge cases.
+
+The shipped rule face starts at 26px on phone cards and grows to 34px on wide cards; enlarged mode spans 34–42px. The font stays in `rem` bounds so browser text scaling can increase it. Use the actual 2:3 frame at 320px and 390px viewport widths to judge reading distance and scroll affordance.
 
 ## Card construction
 
 - One physical card, one outer **2:3 ratio** in play, back, Previous Card and workshop. Title or rule length cannot determine outer height. Correct ratio must be measured on the untransformed box; allow for rotation when checking viewport clearance.
 - Use shared stage/frame geometry, not separate approximations per screen. Reserve safe areas, HUD and any bottom control before sizing the stage. Target roughly 20–24 CSS px side clearance on small portrait phones, consistent with the approved current margins.
 - Continuous perimeter: no hard horizontal rail joints, doubled bevels, abrupt wood-grain changes or visible rectangular masking cuts. Corners and sculpted ornaments retain their proportions; stretch only deliberately plain runs. Check at actual 1× display size and at 2× inspection.
-- Illustration sits behind the frame. Plaque reads as attached to the same frame. Parchment sits inside/behind the inner lip; its square edges must not overlay carved hardware.
+- The current front is plain parchment under the approved ornate teal frame. Parchment sits inside/behind the inner lip; its square edges must not overlay carved hardware.
 - One consistent lighting direction (warm upper-left), one dark contact edge and restrained outer shadow. Do not stack arbitrary inner glows and dark outlines to conceal poor assembly.
 - Pack identity occupies a small dedicated footer position, outside the rules scroller, without covering rules. It appears in setup and pause using the same mark. No category label above the rule, decorative stats, or symbols implying mechanics.
+- Do not restore the historical imprint lattice, tint, or illustration window. Keep the small pack identity outside the rules scroller.
+
+### Front replacement — asset brief for image generation
+
+One opaque master plus one optional tile. Do **not** ask for transparency: the interior window is punched deterministically with an SVG mask, the way `src/presentation/art/frame-window.svg` already does for the current front. Nothing per-card may be baked in — the icon lattice and the tint are applied at runtime, so any emblem, text or colour variation in the artwork defeats the system.
+
+Attach `assets/source/card-back.png` (materials, ornament, lighting) and `assets/source/card-front.png` (plain-parchment direction) as references, generate several variants, pick one, then re-run the choice at full resolution.
+
+**Front master (1024×1536, portrait 2:3):**
+
+> Create a production game asset: one full-bleed portrait 2:3 fantasy tavern playing CARD FRONT. It is the matched front for the ATTACHED card back — same deck, same materials, same craftsmanship. Edge-to-edge, straight-on orthographic, perfectly flat, no perspective, no tilt, no surrounding scene, no tabletop, no drop shadow, no mockup, no rounded outer corners cut away (keep corners almost square with gently rounded tips).
+>
+> Composition, top to bottom: (1) a slim carved perimeter frame — weathered dark walnut wood with chunky antique bronze bevels and corner caps, subtle deep teal enamel inlays in the corner ornaments, the same construction, ornament language, border thickness (about 7% of the width), wear and finish as the attached back; (2) immediately below the top of the frame, ONE wide horizontal bronze title banner, sculpted bevelled bar with curling ornamental ends and a single small deep-teal enamel accent, attached to the frame as hardware rather than pasted over it, and COMPLETELY EMPTY — no text, letters, numbers or runes; (3) below the banner, one large completely plain, empty parchment field filling the remaining inner area inside the frame's inner lip. No ornament, no lines, no marks, no focal stains, no creases. Clean warm aged paper with only very subtle fiber grain and gentle edge darkening, so it reads as a sheet seated inside and behind the frame — do not paint a square sheet overlapping or covering the carved hardware. The parchment must be uniform and neutral enough that a low-opacity colour tint can be overlaid on it later.
+>
+> Lighting: single warm light from the upper left, deep crevices, tiny chips and scuffs on the bevels, worn old-gold highlights, lovingly handled rather than filthy.
+>
+> Palette strictly: walnut #17100c, leather teal #16312e, bronze #bd9457, parchment #f4dfb4, warm shadow. No other hues.
+>
+> Absolutely NO text, NO letters, NO numbers, NO logo, NO runes, NO symbols, NO monogram, NO emblem, NO icon, NO illustration, NO character, NO watermark, NO repeating pattern, NO stamp, NO seal, NO dice, NO borders inside borders. NO photorealism, NO sharp clean vector lines, NO gradient UI chrome.
+>
+> Output: 1024×1536, portrait 2:3.
+
+**Seamless parchment tile (1024×1024, optional — only if the tint reads muddy over the baked parchment):**
+
+> Create a seamless 4-way tileable texture of blank aged parchment for a fantasy game card interior, matching the parchment material in the ATTACHED card back and front. Square 1024×1024. Completely even, flat, uniform lighting across the entire image — no directional light, no vignette, no shadows, no dark corners, no border, no frame, no fold. The tile must repeat invisibly in all directions, including along all four edges. Warm cream to light tan paper (#f4dfb4 base with faint #e8cd9b mottling), realistic but subtle paper fiber grain, slight blotchy aging, a few tiny dark specks and faint water marks — all very low contrast. Slightly desaturated so it can be colour-tinted in CSS. No text, letters, numbers, symbols, illustration, character, stamp, seal, emblem or pattern motif.
+>
+> Output: 1024×1024, seamless.
+
+**Variant explorer (use first to choose a direction):**
+
+> Produce a single 2×2 grid image containing four distinct design variants of the same fantasy tavern card FRONT, all matching the ATTACHED card back's materials and lighting. Every variant is a full 2:3 front with a carved walnut-and-bronze perimeter frame, an empty bronze title banner near the top, and a plain empty parchment field below. Vary the frame ornament density, the banner silhouette and the corner hardware style. Identical palette, identical straight-on orthographic lighting, thin grey gutters between quadrants. All the same NO-text / NO-symbol / NO-illustration restrictions as the final asset.
+
 
 ## Reading comes before illustration acreage
 
@@ -31,9 +79,39 @@ The player should read one actionable instruction without figuring out the layou
 - Large empty HUD-to-card gaps are not inherently premium. Balance the entire viewport before making the rules panel smaller. Ordinary play must not require scrolling past a mostly empty header.
 - Short-height landscape needs an intentional approved reading composition. Never shrink the full portrait card until text is tiny or leave the rule entirely below the initial screen. A compact card alongside an accessible reading area is a study candidate, not an already-approved new screen.
 
-## Typography
+## Approved C3 frame — title finish pending (2026-09-22)
 
-Use locally bundled **Grenze** throughout, with its existing license. No font swap as an expedient fix.
+Direct user feedback supersedes the older icon-imprint instructions: **plain painted parchment, no lattice, icon wallpaper, or per-card tint**. Retain the small pack identifier. Personality comes from the existing painted materials and bronze craftsmanship.
+
+C3 restores bronze hop-vine scrollwork around a moderately enlarged teal recess. The divider is about 28% down the complete card; the rest is predominantly parchment. Avoid the oversized, bare C2 treatment. Current study safe region: title x17–83%, y8.5–24.5%; rules container x12–88%, y32–89%. These regions are tied to `c3-ornate-quarter.png`, not universal coordinates for future generated images. Side ornaments must remain clear of title glyphs.
+
+**Embossed title recommendation:** opaque warm ivory `#f5ddb0`, Grenze bold; shallow upper highlight and lower bronze/contact shadow, e.g. `text-shadow: 0 -.5px 0 #fff5cfaa, 0 1px 0 #745431, 0 2px 1px #0009`. This suggests raised foil lettering seated in leather while preserving a solid readable face. No transparency on the glyph fill, thick outlines, broad glows, texture cutouts through letters, or moving highlights. Keep body text flat dark ink with no emboss/shadow. All lettering stays live, selectable DOM text; honor user contrast preferences when integrating. Emboss is an optional presentation treatment, never a condition for legibility.
+
+Typography bounds: normal title 24–36px, 1.04 line-height, two lines; enlarged study 36px. C3 fits all catalog titles at 330px with that enlarged setting, but **does not fit all enlarged titles at 260px**. Provide an explicit accessible full-text reading fallback before shipping; never hide this limitation with clipping or automated font shrinking. Rule scroll remains available. Source Serif remains an optional study, not a selected replacement.
+
+C3 frame is approved and integrated. Its current embossed title finish is explicitly not final: the next typography comparison and acceptance plan is in STATUS. Screenshots and measured failures are recorded in the study. Older directions below are historical when they conflict with this section.
+
+## Typography-first front study — proposed, awaiting selection (2026-09-22)
+
+Review `docs/studies/front-typography-2026-09-22/index.html` through the Vite dev server. This is an isolated development study using the **actual CardFace, imprint, pack mark and locally loaded fonts**. Editable title/rules and all 52 catalog cards; two frames; 260/330/480px card widths; 150% text. No changes to production rendering in this study. PNGs are browser captures of real HTML text, not generated lettering.
+
+**Recommendation:** refine C (recessed teal) around typography before adopting it. The sample's central crest rises into the title region. B (folded parchment) is the stronger unmodified option for title capacity. Do not approve a blank frame without its longest live titles.
+
+- Reserve a genuinely clear title zone approximately **x16–84%, y7.5–22%** of the whole card. Recess side ornaments outside it; move the center crest below y23%. These are proposed art constraints, not a claim that current C meets them. Test the final image against measured glyph bounds.
+- Titles: Grenze bold, normally 24–32px, balanced wrapping, at most two lines at a 260px-wide card. Default authoring target 2–4 words / roughly 12–24 characters; flag over 28 characters for visual review, not rejection. Wide letters and long unbroken words make character limits insufficient. No automatic tiny type, ellipsis, letter squeezing, or baked text.
+- Rules: compare current Grenze against **Source Serif 4 Regular**, 22px / 1.4 line height, dark brown on pale parchment. Source Serif is the proposed reading face, not yet approved. It uses more horizontal room, so density must be evaluated honestly. Center short actions; test left alignment for longer paragraphs before finalizing that behavior.
+- Copy: prefer one action, 8–18 words; review above 18 words or 90 characters. Fit checks are authoritative; the build rejects over 120 characters or 24 words. Never silently truncate saved or supplied rules. Highlight resolved dice values semantically without a separate result badge.
+- Keep pattern ink faint, preserve quiet areas under letters, and evaluate contrast over actual textured pixels. Do not add outlines or heavy shadows to body text. Cream titles on teal need only a subtle contact shadow.
+- At 150% text, both current samples fail for sufficiently long titles. Production needs an explicit accessible reading layout / full-text fallback; shrinking the font is not an acceptable solution. Preserve 2:3 for the normal card and keep all long rules reachable. Do not mark accessibility complete based on these samples.
+- Acceptance before integration: all 52 current titles plus wide-letter/unbroken-word stress cases; short/long rules; resolved dice text; Chromium and WebKit; 260/330/480px card widths; enlarged text; then real iPhone/iPad. Existing saves and typography fallbacks remain readable. Offline font loading and release budgets are gates when the font moves into production.
+
+Study evidence: `measurements.json` records overflow only. At 260px, C exceeds the proposed title box on 22/52 current cards in both browsers; B on 0/52. At 330px C has 7 title-box failures and at 480px 6 (small endpoint overflows count as failures); B has none. Source Serif rules require inner scrolling for 8 Chromium / 11 WebKit cards at 260px, none at 330/480px. These are **study-layout measurements**, not production acceptance. Captured enlarged-text stress visibly fails both title treatments. Different browser wrapping warrants follow-up; do not conceal it with relaxed assertions.
+
+Source Serif 4 study font is vendored under the study directory only, from Adobe's official repository at commit `80d3f8894c09c937bebfa9011247d2e1c79fd6f4`, `WOFF2/TTF/SourceSerif4-Regular.ttf.woff2`, with `SOURCE-SERIF-LICENSE.md` (SIL OFL). Source: https://github.com/adobe-fonts/source-serif . No runtime CDN, font dependency, or production budget change introduced by this study.
+
+## Production typography baseline (pending study selection)
+
+The application currently uses locally bundled **Grenze** throughout, with its existing license. The user explicitly authorized font changes on 2026-09-22; the typography-first study above proposes the next direction. These older production ranges are historical defaults until that study is selected, not a prohibition on improving typography.
 
 | Role | Starting range | Treatment |
 | --- | --- | --- |
@@ -136,7 +214,7 @@ The approved card back, parchment, tankard, and tabletop remain the permanent re
 
 - Shared asset, color, and motion definitions: `src/presentation/theme.ts`; shared CSS: `src/presentation/theme.css`.
 - Grenze throughout: variable upright and italic WOFF2 files from the official Omnibus-Type repository, bundled locally with `public/fonts/OFL.txt`. Titles use 700–800, controls 500–700, and rules 400. Rule text is 20–24 px at normal scale and grows with text enlargement.
-- Nine-slice borders preserve the painted frame corners on buttons, choice tiles, pack tiles, dialogs, recovery panels, and card fronts. Do not stretch a whole panel image around long content.
+- Nine-slice borders preserve the painted frame corners on buttons, choice tiles, pack tiles, dialogs, and recovery panels. Fixed-ratio card fronts use the intact approved master. Do not stretch a whole panel image around long content.
 - Primary controls use worn gold. Secondary surfaces use quiet teal leather. Functional icon symbols sit inside the generated bezel and retain accessible names.
 - (Historical) Motion durations from an earlier pass were deal 620 ms, flip 680 ms, discard 460 ms, settle 140 ms, completion 650 ms. Current tokens are listed in the normative standards above and in `src/presentation/theme.ts`.
 - (Historical) An earlier pass had Effects/Ambience preferences and an Atmosphere toggle. Sound was removed entirely and the atmosphere is now always on; see the normative standards above.
@@ -186,7 +264,9 @@ Create an ORIGINAL whimsical storybook fantasy card illustration, landscape 3:2 
 
 The user reaffirmed the cohesive Hearthstone-inspired material/rendering language, with more goofy tavern and dungeon-crawl humor where appropriate (Heroes of Barcadia / Munchkin as tone references). Original character identity is required, not a departure into quiet woodland storybook art. The mouse is superseded by an original enchanted copper armor toast study. The old assets remain checkpoint history, not the current direction.
 
-The new master has one outer perimeter. The illustrated region and parchment are inset; a teal band attaches to the side rails with bronze brackets. `scripts/front-continuous.ts` exports top/bottom/side rails, band, and parchment from `assets/source/front-continuous-v3.png`. CSS masks interior portions of the perimeter exports so they do not cover art or the pack mark. No whole-card texture stretching; text remains DOM. The user approved this unified frame on 2026-09-14. The shared CardFace now supplies gameplay, Previous Card, and workshop previews.
+The master has one outer perimeter. The illustrated region and parchment are inset; a teal band attaches to the side rails with bronze brackets. `scripts/front-continuous.ts` now exports a single optimized 768×1152 surface from `assets/source/front-continuous-v3.png`. Because the outer card is always 2:3, uniform scaling preserves every original painted joint and corner. Do not independently stretch rails, title strips, or paper over this surface. The live illustration is clipped inside the upper opening; title and rules are accessible DOM text placed within the original plaque and parchment. The shared CardFace supplies gameplay, Previous Card, and workshop previews.
+
+Inspection gates: compare 320px, 390px and iPad screenshots; no square art/paper corners may cover bronze hardware. Previous Card must fit both its dialog width and viewport height. Inspect actual painted flip frames in Chromium and WebKit: hidden fronts must never show mirrored text. Browser backface CSS alone is insufficient evidence; Play culls the reverse side using the rendered rotation angle only while turning. Preserve readable 22px rules and a contained scroll fallback for long content.
 
 Built-in image generation was used for both new assets and the illustration correction. Final source illustration: `assets/source/cheers-armor-v3.png`; continuous frame surfaces are optimized into `src/presentation/art` (continuous-* names) and the card illustration into `public/art/cheers.webp`, resolved through the artwork registry. Reproduce with `npx tsx scripts/front-continuous.ts`.
 
@@ -207,3 +287,19 @@ Revise this original enchanted armor illustration. Keep the same character, expr
 The unified front is approved and promoted to the shared `CardFace`: gameplay, Previous Card, and the workshop now render the same components and CSS. Frame surfaces live in `src/presentation/art` and the individual illustration in `public/art/cheers.webp`, resolved through the artwork registry; `src/presentation/card-front.css` loads after the legacy theme so old parchment borders cannot show through. The illustration stays centered, rules stay real text, and the Core diamond retains its footer position. Source artwork remains archived under `assets/source`.
 
 Front surfaces are preloaded/decoded and included in the production offline cache. (Historical figures from this rollout: 1,931 KiB runtime, 80.8 KiB gzip JavaScript, 36 unit tests, 30 workshop cards.) The dice milestone has since shipped as the full-screen library overlay, mixed into the `core` pack. Physical iPhone/iPad Home Screen and performance checks remain outstanding.
+
+
+## Layered illustration aperture — 2026-09-21
+
+Render the same approved 2:3 master beneath and above the illustration. The lower surface supplies the original textured teal leather. The upper surface uses `src/presentation/art/frame-window.svg` as an alpha mask: only the illustration opening is transparent. Image pixels extend underneath the perimeter and title band, so their rectangular bounds never form a visible seam. Keep the mask in the master's 1024×1536 coordinates; update it only against the approved source. This is a rendering mask, not replacement vector decoration or regenerated artwork.
+
+Keep the artwork container transparent. Finished scenes use their registry fit, while transparent tankard placeholders and failed-scene fallback images use `contain`. If both assets fail, the leather remains. Never introduce an opaque flat green panel over that texture. Keep focal subjects centered within the aperture and reserve space below the central top ornament.
+
+Dice interaction follows the same card gesture: reveal → tap card to roll → tap card to return to its saved result → tap to discard. There is no separate Roll/Continue button. Accessible action labels, input locks, rules-scroll gesture handling, and Escape interruption remain. The full-screen dice layer is pointer-transparent.
+
+
+## Dice surfaces and outcome copy — 2026-09-21
+
+Dice use deep teal enamel, warm gold numerals in the bundled Grenze font, bronze bevels and subtle broad surface variation. Keep grain fine and low contrast; strong sand/paper noise looks cheap at this scale. Use restrained specular highlights and shallow bump so face values stay readable during and after motion. Texture and material work must never change forced-result simulation/replay settings.
+
+After rolling, show one resolved instruction on the parchment, with the result embedded in its sentence. Do not add a separate “Rolled N” heading. New templates should use `{total}` when that number is part of the rule; avoid ambiguous references such as “that number.” Existing saves remain authoritative and are formatted for reading without mutating their outcomes.

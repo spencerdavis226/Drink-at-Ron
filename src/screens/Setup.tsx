@@ -1,6 +1,9 @@
+import { useState } from "react";
 import type { Preferences } from "../app/persistence";
 import type { PackDefinition } from "../game/types";
-import { Button, DeckChoices, Notice, PackTile } from "../components/UI";
+import { Button, DeckChoices, Modal, PackTile } from "../components/UI";
+import { PackLogo } from "../components/PackMarks";
+
 export function Setup({
   prefs,
   packs,
@@ -12,13 +15,29 @@ export function Setup({
   onChange: (prefs: Preferences) => void;
   onStart: () => void;
 }) {
-  const selected = prefs.config.packIds.filter((id) =>
-    packs.some((p) => p.id === id),
+  const [packsOpen, setPacksOpen] = useState(false);
+  const core = packs.find((pack) => pack.id === "core");
+  const addons = packs.filter((pack) => pack.id !== "core");
+  const selected = addons.filter((pack) =>
+    prefs.config.packIds.includes(pack.id),
   );
-  const valid =
-    /^\d+$/.test(prefs.customSize) &&
-    Number(prefs.customSize) >= 1 &&
-    Number(prefs.customSize) <= 500;
+  const toggle = (id: string) => {
+    const addonIds = new Set(selected.map((pack) => pack.id));
+    if (addonIds.has(id)) addonIds.delete(id);
+    else addonIds.add(id);
+    onChange({
+      ...prefs,
+      config: {
+        ...prefs.config,
+        packIds: [
+          "core",
+          ...addons
+            .filter((pack) => addonIds.has(pack.id))
+            .map((pack) => pack.id),
+        ],
+      },
+    });
+  };
   return (
     <section className="setup">
       <div className="intro">
@@ -30,69 +49,60 @@ export function Setup({
       </div>
       <div className="setup-section">
         <div className="section-label">
-          <h2>Deck size</h2>
+          <h2>How long?</h2>
         </div>
         <DeckChoices
           value={prefs.choice}
           onChange={(choice) => onChange({ ...prefs, choice })}
         />
-        {prefs.choice === "custom" && (
-          <label className="custom-label">
-            Number of cards
-            <input
-              type="number"
-              inputMode="numeric"
-              min="1"
-              max="500"
-              value={prefs.customSize}
-              onChange={(e) =>
-                onChange({ ...prefs, customSize: e.target.value })
-              }
-              aria-invalid={!valid}
-            />
-            {!valid && (
-              <span role="alert">Enter a whole number from 1 to 500.</span>
-            )}
-          </label>
-        )}
       </div>
-      <div className="setup-section">
+      <div className="setup-section setup-packs">
         <div className="section-label">
-          <h2>Packs</h2>
+          <h2>Card packs</h2>
         </div>
-        {packs.map((pack) => (
-          <PackTile
-            key={pack.id}
-            pack={pack}
-            selected={selected.includes(pack.id)}
-            onToggle={() =>
-              onChange({
-                ...prefs,
-                config: {
-                  ...prefs.config,
-                  packIds: selected.includes(pack.id)
-                    ? selected.filter((id) => id !== pack.id)
-                    : [...selected, pack.id],
-                },
-              })
-            }
-          />
-        ))}
-        {packs
-          .filter((pack) => selected.includes(pack.id) && pack.setupHint)
-          .map((pack) => (
-            <p className="pack-hint" key={`${pack.id}-hint`}>
-              {pack.setupHint}
-            </p>
-          ))}
+        <Button
+          variant="menu-row"
+          className="pack-selector"
+          onClick={() => setPacksOpen(true)}
+        >
+          <span>
+            <strong>Choose add-ons</strong>
+            <small>
+              {selected.length
+                ? selected.map((pack) => pack.title).join(", ")
+                : "Core deck only"}
+            </small>
+          </span>
+          <span aria-hidden="true">›</span>
+        </Button>
       </div>
-      <Button
-        disabled={!selected.length || (prefs.choice === "custom" && !valid)}
-        onClick={onStart}
-      >
-        Play
-      </Button>
-      {!selected.length && <Notice>Choose at least one pack to play.</Notice>}
+      <Button onClick={onStart}>Play</Button>
+      {packsOpen && (
+        <Modal title="Card packs" onClose={() => setPacksOpen(false)}>
+          {core && (
+            <div className="included-pack">
+              <PackLogo pack={core} decorative />
+              <span>{core.title}</span>
+              <small>Always included</small>
+            </div>
+          )}
+          <div className="addon-list">
+            {addons.map((pack) => (
+              <div key={pack.id}>
+                <PackTile
+                  pack={pack}
+                  selected={selected.includes(pack)}
+                  onToggle={() => toggle(pack.id)}
+                />
+                {selected.includes(pack) && pack.setupHint && (
+                  <p className="pack-hint">{pack.setupHint}</p>
+                )}
+              </div>
+            ))}
+          </div>
+          <Button onClick={() => setPacksOpen(false)}>Done</Button>
+        </Modal>
+      )}
     </section>
   );
 }

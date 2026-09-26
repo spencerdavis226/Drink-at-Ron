@@ -8,6 +8,7 @@ import {
 import { PackLogo } from "./PackMarks";
 import { asset, theme } from "../presentation/theme";
 import type { PackDefinition } from "../game/types";
+import type { DeckChoice } from "../app/persistence";
 export function Button({
   variant = "primary",
   className = "",
@@ -101,32 +102,25 @@ export function DeckChoices({
   value,
   onChange,
 }: {
-  value: string;
-  onChange: (value: string) => void;
+  value: DeckChoice;
+  onChange: (value: DeckChoice) => void;
 }) {
   return (
-    <div className="lengths">
+    <div className="lengths" role="group" aria-label="Game length">
       {[
-        ["20", "20"],
-        ["40", "40"],
-        ["60", "60"],
-        ["custom", "Custom"],
-        ["endless", "∞"],
-      ].map(([id, label]) => (
+        ["short", "Short", "30 cards"],
+        ["long", "Long", "60 cards"],
+        ["infinite", "Infinite", "Keeps going"],
+      ].map(([id, label, detail]) => (
         <Button
           variant="choice"
           key={id}
-          aria-label={
-            id === "endless"
-              ? "Endless"
-              : id === "custom"
-                ? "Custom deck size"
-                : `${id} cards`
-          }
+          aria-label={`${label}, ${detail}`}
           aria-pressed={id === value}
-          onClick={() => onChange(id)}
+          onClick={() => onChange(id as DeckChoice)}
         >
-          {label}
+          <strong>{label}</strong>
+          <small>{detail}</small>
         </Button>
       ))}
     </div>

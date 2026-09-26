@@ -1,6 +1,5 @@
 import DiceBox from "@3d-dice/dice-box-threejs";
-import paperBumpUrl from "./assets/paper-bump.webp";
-import paperUrl from "./assets/paper.webp";
+import enamelUrl from "./assets/enamel.svg";
 
 /**
  * Roll feel. Tuned for a craps-table toss: dice cross the screen and carom off
@@ -18,6 +17,83 @@ const WALL_FRICTION = 0.3;
 // runs before pre-simulation so the replay and its forced faces stay in sync.
 const MIN_THROW_SPEED = 1250;
 const MIN_SPIN = 6;
+
+/** Ease the physical dice into the clear table space above the card. */
+async function parkDiceAboveCard(
+  box: any,
+  container: HTMLElement,
+  isDisposed: () => boolean,
+) {
+  const progress = document
+    .querySelector<HTMLElement>(".progress")
+    ?.getBoundingClientRect();
+  const card = document
+    .querySelector<HTMLElement>(".card-stage")
+    ?.getBoundingClientRect();
+  if (!progress || !card || !box.camera) return;
+  const gap = card.top - progress.bottom;
+  const targetY =
+    gap >= 70
+      ? (progress.bottom + card.top) / 2
+      : Math.max(64, Math.min(container.clientHeight * 0.22, card.top - 35));
+  const dice = box.diceList ?? [];
+  const positions: {
+    die: any;
+    fromX: number;
+    fromY: number;
+    x: number;
+    y: number;
+  }[] = [];
+  for (let index = 0; index < dice.length; index++) {
+    const die = dice[index];
+    if (!die?.position || !die.body?.position) continue;
+    const z = die.position.z;
+    const px =
+      container.clientWidth / 2 +
+      (index - (dice.length - 1) / 2) *
+        Math.min(104, container.clientWidth * 0.3);
+    const desiredX = (px / container.clientWidth) * 2 - 1;
+    const desiredY = 1 - (targetY / container.clientHeight) * 2;
+    const near = die.position
+      .clone()
+      .set(desiredX, desiredY, -1)
+      .unproject(box.camera);
+    const far = die.position
+      .clone()
+      .set(desiredX, desiredY, 1)
+      .unproject(box.camera);
+    const depth = (z - near.z) / (far.z - near.z);
+    const x = near.x + (far.x - near.x) * depth;
+    const y = near.y + (far.y - near.y) * depth;
+    if (!Number.isFinite(x) || !Number.isFinite(y)) continue;
+    positions.push({ die, fromX: die.position.x, fromY: die.position.y, x, y });
+  }
+  const paint = (amount: number) => {
+    for (const { die, fromX, fromY, x, y } of positions) {
+      die.position.x = die.body.position.x = fromX + (x - fromX) * amount;
+      die.position.y = die.body.position.y = fromY + (y - fromY) * amount;
+    }
+    box.renderer?.render(box.scene, box.camera);
+  };
+  if (
+    matchMedia("(prefers-reduced-motion: reduce)").matches ||
+    document.hidden
+  ) {
+    paint(1);
+    return;
+  }
+  await new Promise<void>((resolve) => {
+    const start = performance.now();
+    const tick = (now: number) => {
+      if (isDisposed()) return resolve();
+      const progress = Math.min(1, (now - start) / 220);
+      paint(1 - (1 - progress) ** 3);
+      if (progress < 1) requestAnimationFrame(tick);
+      else resolve();
+    };
+    requestAnimationFrame(tick);
+  });
+}
 
 /**
  * Snap every die to the face nearest to straight up once physics has stopped.
@@ -75,17 +151,17 @@ export async function createDiceStage(selector: string) {
     // cost. Disabling it is the single largest perf win on phones.
     shadows: false,
     // Size dice to a share of the box so two can travel and carom.
-    baseScale: Math.min(260, Math.max(110, container.clientHeight * 0.24)),
+    baseScale: Math.min(140, Math.max(105, container.clientHeight * 0.15)),
     strength: THROW_FORCE,
     gravity_multiplier: GRAVITY_MULTIPLIER,
-    light_intensity: 0.85,
-    color_spotlight: 0xfff1d6,
+    light_intensity: 0.55,
+    color_spotlight: 0xe6f0e8,
     theme_customColorset: {
       name: "Ron",
-      foreground: "#3a2712",
-      background: "#e6d3a8",
-      outline: "#7a5a2e",
-      edge: "#c9a15c",
+      foreground: "#f7e7bd",
+      background: "#062a2e",
+      outline: "#16302a",
+      edge: "#c28b48",
       texture: "paper",
       material: "none",
     },
@@ -94,11 +170,12 @@ export async function createDiceStage(selector: string) {
   // instead settles on resize, then disposes this entire stage.
   box.resizeWorld = () => {};
   // The library resolves textures through its bundled assetPath, but our dice
-  // textures are Vite assets: they ship only inside this (tree-shaken) chunk
+  // texture is an original procedural enamel surface, replacing the paper maps.
+  // Vite assets: they ship only inside this (tree-shaken) chunk
   // instead of the production public folder. Redirect those two sources.
   const textureUrls: Record<string, string> = {
-    "textures/paper.webp": paperUrl,
-    "textures/paper-bump.webp": paperBumpUrl,
+    "textures/paper.webp": enamelUrl,
+    "textures/paper-bump.webp": enamelUrl,
   };
   const loadImage = box.DiceColors.loadImage.bind(box.DiceColors);
   box.DiceColors.loadImage = (source: string) => {
@@ -164,6 +241,7 @@ export async function createDiceStage(selector: string) {
   let disposed = false;
   let shadowFrame = 0;
   let shadowCanvas: HTMLCanvasElement | null = null;
+  let repaintShadows = () => {};
   const stopShadows = () => {
     if (shadowFrame) cancelAnimationFrame(shadowFrame);
     shadowFrame = 0;
@@ -207,7 +285,31 @@ export async function createDiceStage(selector: string) {
     }
   };
   try {
+    await document.fonts.load("400 32px Grenze");
     await box.initialize();
+    // A shallow camera angle exposes the crafted sides at rest. Physics and
+    // predetermined faces still use the original world coordinates.
+    box.camera.position.set(
+      box.cameraHeight.far * 0.26,
+      -box.cameraHeight.far * 0.14,
+      box.cameraHeight.far,
+    );
+    box.camera.lookAt(0, 0, 0);
+    box.camera.updateMatrixWorld();
+    for (const shape of ["d6", "d20"])
+      box.DiceFactory.get(shape).font = "Grenze";
+    // Material-only tuning: no changes to simulation, geometry or forced faces.
+    const makeMaterials = box.DiceFactory.createMaterials.bind(box.DiceFactory);
+    box.DiceFactory.createMaterials = (...args: unknown[]) => {
+      const materials = makeMaterials(...args);
+      for (const [index, material] of materials.entries()) {
+        material.color.set(index === 0 ? "#fff0d0" : "#c4d7cb");
+        material.specular?.set(index === 0 ? "#b88e58" : "#344c4b");
+        material.shininess = index === 0 ? 42 : 55;
+        material.bumpScale = index === 0 ? 0.04 : 0.08;
+      }
+      return materials;
+    };
     box.renderer.setPixelRatio(Math.min(devicePixelRatio, 1.5));
     box.renderer.setSize(box.container.clientWidth, box.container.clientHeight);
     // Tune contacts: grippy floor, lively walls so dice rebound off the
@@ -230,15 +332,14 @@ export async function createDiceStage(selector: string) {
     // Dependency-free contact shadows: project each die onto the floor plane
     // and paint a soft blob beneath it. Grounds the dice without dimming the
     // card or bundling a second Three copy for ShadowMaterial.
-    const context = (shadowCanvas = document.createElement("canvas")).getContext(
-      "2d",
-    );
+    const context = (shadowCanvas =
+      document.createElement("canvas")).getContext("2d");
     shadowCanvas.className = "dice-shadow-layer";
     const pixelRatio = Math.min(devicePixelRatio, 1.5);
     shadowCanvas.width = Math.round(container.clientWidth * pixelRatio);
     shadowCanvas.height = Math.round(container.clientHeight * pixelRatio);
     container.insertBefore(shadowCanvas, container.firstChild);
-    const paintShadows = () => {
+    repaintShadows = () => {
       if (disposed || !context || !shadowCanvas) return;
       const { width, height } = shadowCanvas;
       context.clearRect(0, 0, width, height);
@@ -274,9 +375,9 @@ export async function createDiceStage(selector: string) {
         context.ellipse(cx, cy, spread, spread * 0.6, 0, 0, Math.PI * 2);
         context.fill();
       }
-      shadowFrame = requestAnimationFrame(paintShadows);
+      shadowFrame = requestAnimationFrame(repaintShadows);
     };
-    shadowFrame = requestAnimationFrame(paintShadows);
+    shadowFrame = requestAnimationFrame(repaintShadows);
   } catch (error) {
     dispose();
     throw error;
@@ -287,9 +388,7 @@ export async function createDiceStage(selector: string) {
       // pre-simulates the throw to fix the result, then replays it; altering
       // the bodies between those runs makes the animation diverge and land on
       // a different face.
-      const rolling = box.roll(
-        `${values.length}d${sides}@${values.join(",")}`,
-      );
+      const rolling = box.roll(`${values.length}d${sides}@${values.join(",")}`);
       const result = await rolling;
       snapDiceFlat(box);
       // Verify the actual rendered upward face after the flat-snap, not only the
@@ -307,7 +406,9 @@ export async function createDiceStage(selector: string) {
         rendered.join(",") !== values.join(",")
       )
         throw new Error("Dice rendered face mismatch");
+      await parkDiceAboveCard(box, container, () => disposed);
       // Dice are at rest; stop repainting shadows every frame.
+      repaintShadows();
       stopShadows();
       const actual = result.sets.flatMap(
         (set: { rolls: { value: number }[] }) =>

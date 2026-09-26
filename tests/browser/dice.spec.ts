@@ -22,7 +22,7 @@ async function seed(page: Page, index = 0) {
     { key, session },
   );
   await page.reload();
-  await expect(page.locator(".roll-cta")).toHaveText(/^Roll /);
+  await expect(page.locator(".game-card")).toHaveAccessibleName(/^Roll /);
 }
 const saved = (page: Page) =>
   page.evaluate((key) => JSON.parse(localStorage.getItem(key)!), key);
@@ -31,7 +31,10 @@ for (const index of [0, 1])
     page,
   }, info) => {
     // Only the tests that must actually render need WebGL.
-    test.skip(!(await webgl(page)), "WebGL unavailable (headless Linux WebKit)");
+    test.skip(
+      !(await webgl(page)),
+      "WebGL unavailable (headless Linux WebKit)",
+    );
     const external: string[] = [];
     page.on("request", (request) => {
       if (
@@ -45,7 +48,7 @@ for (const index of [0, 1])
     await expect(page.locator(".game-card")).toBeVisible();
     const bounds = await page.locator(".roll-layer").boundingBox();
     expect(bounds!.width).toBe(page.viewportSize()!.width);
-    await page.locator(".roll-cta").click();
+    await page.locator(".game-card").click();
     const committed = await saved(page);
     await expect(page.locator(".roll-stage")).toHaveAttribute(
       "data-renderer",
@@ -61,27 +64,33 @@ for (const index of [0, 1])
     await page.screenshot({ path: info.outputPath(`settled-${index}.png`) });
     expect((await saved(page)).roll).toEqual(committed.roll);
     expect(external).toEqual([]);
-    await expect(page.locator(".roll-cta")).toHaveText("Continue");
-    await page.locator(".roll-cta").click();
+    await expect(page.locator(".game-card")).toHaveAccessibleName(
+      /Return to card$/,
+    );
+    await page.locator(".game-card").click();
     await expect(page.locator(".roll-layer")).toHaveCount(0);
     expect((await saved(page)).roll.returned).toBe(true);
     expect((await saved(page)).discarded).toBe(0);
   });
-test("a restored unrolled dice card rolls from the CTA", async ({ page }) => {
+test("@release a restored unrolled dice card rolls by tapping the card", async ({
+  page,
+}) => {
   test.skip(!(await webgl(page)), "WebGL unavailable (headless Linux WebKit)");
   await seed(page);
-  const cta = page.locator(".roll-cta");
-  await expect(cta).toHaveText(/^Roll /);
+  const cta = page.locator(".game-card");
+  await expect(cta).toHaveAccessibleName(/^Roll /);
   await cta.click();
   await expect(page.locator(".roll-stage")).toHaveAttribute(
     "data-renderer",
     /^settled:/,
     { timeout: 15000 },
   );
-  await expect(page.locator(".roll-cta")).toHaveText("Continue");
-  expect(await page.locator(".roll-stage").getAttribute("data-stop-reason")).toBe(
-    "",
+  await expect(page.locator(".game-card")).toHaveAccessibleName(
+    /Return to card$/,
   );
+  expect(
+    await page.locator(".roll-stage").getAttribute("data-stop-reason"),
+  ).toBe("");
 });
 test("repeated rolls settle, never fall back, and are never a weak plop", async ({
   page,
@@ -93,7 +102,7 @@ test("repeated rolls settle, never fall back, and are never a weak plop", async 
   const durations: number[] = [];
   for (let i = 0; i < 6; i++) {
     await seed(page, i % 2);
-    await page.locator(".roll-cta").click();
+    await page.locator(".game-card").click();
     await expect(page.locator(".roll-stage")).toHaveAttribute(
       "data-renderer",
       /^settled:/,
@@ -120,19 +129,27 @@ test("reload and reduced motion restore static saved result without replay", asy
   await page.emulateMedia({ reducedMotion: "reduce" });
   await seed(page);
   // Reduced motion commits the roll with no dice animation.
-  await page.locator(".roll-cta").click();
-  await expect(page.locator(".roll-cta")).toHaveText("Continue");
+  await page.locator(".game-card").click();
+  await expect(page.locator(".game-card")).toHaveAccessibleName(
+    /Return to card$/,
+  );
   const committed = await saved(page);
   await page.reload();
-  await expect(page.locator(".roll-cta")).toHaveText("Continue");
+  await expect(page.locator(".game-card")).toHaveAccessibleName(
+    /Return to card$/,
+  );
   await expect(page.locator(".roll-stage canvas")).toHaveCount(0);
   expect((await saved(page)).roll).toEqual(committed.roll);
 });
-test("dragging the resolved rules does not return or discard", async ({ page }) => {
+test("dragging the resolved rules does not return or discard", async ({
+  page,
+}) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
   await seed(page);
-  await page.locator(".roll-cta").click();
-  await expect(page.locator(".roll-cta")).toHaveText("Continue");
+  await page.locator(".game-card").click();
+  await expect(page.locator(".game-card")).toHaveAccessibleName(
+    /Return to card$/,
+  );
   const box = (await page.locator(".study-rules").boundingBox())!;
   await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
   await page.mouse.down();
@@ -140,7 +157,9 @@ test("dragging the resolved rules does not return or discard", async ({ page }) 
     steps: 5,
   });
   await page.mouse.up();
-  await expect(page.locator(".roll-cta")).toHaveText("Continue");
+  await expect(page.locator(".game-card")).toHaveAccessibleName(
+    /Return to card$/,
+  );
   expect((await saved(page)).roll.returned).toBe(false);
   expect((await saved(page)).discarded).toBe(0);
   // A stationary tap on the card still returns, then the next action discards.
@@ -155,12 +174,14 @@ test("Escape interrupts safely and preserves the committed roll", async ({
 }) => {
   test.skip(!(await webgl(page)), "WebGL unavailable (headless Linux WebKit)");
   await seed(page);
-  await page.locator(".roll-cta").click();
+  await page.locator(".game-card").click();
   const committed = await saved(page);
   await page.keyboard.press("Escape");
-  await expect(page.locator(".roll-cta")).toHaveText("Continue");
+  await expect(page.locator(".game-card")).toHaveAccessibleName(
+    /Return to card$/,
+  );
   expect((await saved(page)).roll).toEqual(committed.roll);
-  await page.locator(".roll-cta").click();
+  await page.locator(".game-card").click();
   await expect(page.locator(".roll-layer")).toHaveCount(0);
   await expect(page.locator(".game-card")).toBeFocused();
 });
@@ -182,17 +203,22 @@ test("offline dice roll and relaunch preserve result", async ({
     .toBe(true);
   await context.setOffline(true);
   await page.reload();
-  await page.locator(".roll-cta").click();
-  await expect(page.locator(".roll-cta")).toHaveText("Continue", {
-    timeout: 15000,
-  });
+  await page.locator(".game-card").click();
+  await expect(page.locator(".game-card")).toHaveAccessibleName(
+    /Return to card$/,
+    {
+      timeout: 15000,
+    },
+  );
   await expect(page.locator(".roll-stage")).toHaveAttribute(
     "data-renderer",
     /^settled:/,
   );
   const committed = await saved(page);
   await page.reload();
-  await expect(page.locator(".roll-cta")).toHaveText("Continue");
+  await expect(page.locator(".game-card")).toHaveAccessibleName(
+    /Return to card$/,
+  );
   expect((await saved(page)).roll).toEqual(committed.roll);
   await context.setOffline(false);
 });
@@ -212,7 +238,7 @@ test("WebGL failure uses a static result without blocking return", async ({
     } as typeof original;
   });
   await seed(page);
-  await page.locator(".roll-cta").click();
+  await page.locator(".game-card").click();
   await expect(page.locator(".roll-stage")).toHaveAttribute(
     "data-renderer",
     "fallback",
@@ -221,7 +247,9 @@ test("WebGL failure uses a static result without blocking return", async ({
     "data-stop-reason",
     "webgl",
   );
-  await expect(page.locator(".roll-cta")).toHaveText("Continue");
+  await expect(page.locator(".game-card")).toHaveAccessibleName(
+    /Return to card$/,
+  );
   const committed = await saved(page);
   expect(committed.roll.returned).toBe(false);
   await page.reload();
@@ -229,10 +257,12 @@ test("WebGL failure uses a static result without blocking return", async ({
 });
 test("resize interruption settles without another roll", async ({ page }) => {
   await seed(page);
-  await page.locator(".roll-cta").click();
+  await page.locator(".game-card").click();
   const committed = await saved(page);
   await page.setViewportSize({ width: 844, height: 390 });
-  await expect(page.locator(".roll-cta")).toHaveText("Continue");
+  await expect(page.locator(".game-card")).toHaveAccessibleName(
+    /Return to card$/,
+  );
   expect((await saved(page)).roll).toEqual(committed.roll);
   await page.reload();
   await expect(page.locator(".roll-stage canvas")).toHaveCount(0);
@@ -241,7 +271,7 @@ test("backgrounding stops animation and preserves the saved outcome", async ({
   page,
 }) => {
   await seed(page);
-  await page.locator(".roll-cta").click();
+  await page.locator(".game-card").click();
   const committed = await saved(page);
   await page.evaluate(() => {
     Object.defineProperty(document, "hidden", {
@@ -250,7 +280,46 @@ test("backgrounding stops animation and preserves the saved outcome", async ({
     });
     document.dispatchEvent(new Event("visibilitychange"));
   });
-  await expect(page.locator(".roll-cta")).toHaveText("Continue");
+  await expect(page.locator(".game-card")).toHaveAccessibleName(
+    /Return to card$/,
+  );
   await expect(page.locator(".roll-stage canvas")).toHaveCount(0);
   expect((await saved(page)).roll).toEqual(committed.roll);
+});
+
+test("legacy cursed-number saves show the number in the rule without a Rolled heading", async ({
+  page,
+}) => {
+  const { rollDice } = await import("../../src/game/dice");
+  const source = cards.find((c) => c.title === "Cursed Number")!;
+  const card = {
+    ...source,
+    dice: {
+      ...source.dice!,
+      instruction: "That number is banned. Say it: drink 2.",
+    },
+  };
+  let state = createSession(
+    { version: 1, packIds: ["core"], limit: 1 },
+    [card],
+    [{ ...packs[0], cardIds: [card.id] }],
+  );
+  state.phase = "revealed";
+  state = rollDice(state, () => 1 / 6);
+  await page.goto("./");
+  await page.evaluate(
+    ({ key, state }) => localStorage.setItem(key, JSON.stringify(state)),
+    { key, state },
+  );
+  await page.reload();
+  await expect(page.locator(".resolved-instruction")).toHaveText(
+    "2 is banned. Say it: drink 2.",
+  );
+  await expect(page.locator(".rolled-total")).toHaveCount(0);
+  await page.locator(".game-card").click();
+  await expect(page.locator(".roll-layer")).toHaveCount(0);
+  await expect(page.locator(".resolved-instruction")).toHaveText(
+    "2 is banned. Say it: drink 2.",
+  );
+  expect((await saved(page)).roll.instruction).toBe(state.roll!.instruction);
 });

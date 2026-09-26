@@ -2,6 +2,42 @@ import { test, expect } from "@playwright/test";
 import { packs } from "../../src/content/catalog";
 const preview = (page: import("@playwright/test").Page) =>
   page.frameLocator("iframe");
+// Changing card/text size navigates the preview iframe. Wait for the requested
+// document before reading geometry; WebKit can otherwise evaluate the old page
+// as its execution context is destroyed.
+async function waitForPreview(
+  page: import("@playwright/test").Page,
+  id: string,
+  large: boolean,
+) {
+  await expect
+    .poll(
+      async () => {
+        try {
+          return await preview(page)
+            .locator("html")
+            .evaluate(() => {
+              const params = new URLSearchParams(location.search);
+              return {
+                ready: document.readyState,
+                card: params.get("card"),
+                large: params.get("enlarged"),
+                fonts: document.fonts.status,
+              };
+            });
+        } catch {
+          return { navigating: true };
+        }
+      },
+      { timeout: 15000, message: `Preview ready: ${id}, enlarged=${large}` },
+    )
+    .toEqual({
+      ready: "complete",
+      card: id,
+      large: large ? "1" : "0",
+      fonts: "loaded",
+    });
+}
 test("workshop previews are isolated, readable, and use real motion", async ({
   page,
 }) => {
@@ -23,6 +59,7 @@ test("workshop previews are isolated, readable, and use real motion", async ({
     await page.getByLabel("Card", { exact: true }).selectOption(id);
     await expect(frame.locator(".study-rules p")).toBeVisible();
     await page.getByLabel("Enlarged text").check();
+    await waitForPreview(page, id, true);
     expect(
       await frame
         .locator(".study-rules")
@@ -39,6 +76,7 @@ test("workshop previews are isolated, readable, and use real motion", async ({
     });
     expect(fits).toBe(true);
     await page.getByLabel("Enlarged text").uncheck();
+    await waitForPreview(page, id, false);
   }
   await page.getByRole("button", { name: "Replay reveal" }).click();
   await expect(
@@ -83,7 +121,7 @@ for (const size of [
   "Split view",
 ]) {
   test(`all study cards retain their ratio at ${size}`, async ({ page }) => {
-    // 40 sample cards (14 with dice) plus the VIP pack; each iteration
+    // 250 Core, 103 house, and 16 VIP cards; each iteration
     // re-reads the preview, and software-rendered WebKit is the slow case.
     test.setTimeout(600000);
     await page.setViewportSize({ width: 1400, height: 1100 });
@@ -101,6 +139,7 @@ for (const size of [
       await picker.selectOption(id);
       for (const large of [false, true]) {
         await page.getByLabel("Enlarged text").setChecked(large);
+        await waitForPreview(page, id, large);
         if (!large) {
           const height = await frame
             .locator(".game-card")
@@ -120,9 +159,8 @@ for (const size of [
         expect(
           await frame.locator(".game-card").evaluate((el) => {
             const box = el.getBoundingClientRect();
-            const rules = el
-              .querySelector(".study-rules")!
-              .getBoundingClientRect();
+            const rulesElement = el.querySelector(".study-rules")!;
+            const rules = rulesElement.getBoundingClientRect();
             return (
               Math.abs(el.clientWidth / el.clientHeight - 2 / 3) < 0.01 &&
               Math.abs(
@@ -136,6 +174,7 @@ for (const size of [
               rules.left >= box.left - 2 &&
               rules.right <= box.right + 2 &&
               rules.bottom <= box.bottom + 2 &&
+              rulesElement.scrollWidth <= rulesElement.clientWidth + 2 &&
               [...el.querySelectorAll(".study-title h2")].every((e) => {
                 const r = e.getBoundingClientRect();
                 return (
@@ -203,8 +242,8 @@ test("the production overlay is contained and seeded replay repeats outcomes", a
     await page.getByRole("button", { name: "Replay reveal" }).click();
     await navigated;
     await frame.getByRole("button", { name: "Reveal card" }).click();
-    await expect(frame.locator(".roll-cta")).toHaveText(/^Roll /);
-    await frame.locator(".roll-cta").click();
+    await expect(frame.locator(".game-card")).toHaveAccessibleName(/^Roll /);
+    await frame.locator(".game-card").click();
     await expect(frame.locator(".resolved-instruction")).toBeVisible();
     return frame.locator(".resolved-instruction").innerText();
   };

@@ -33,10 +33,10 @@ test("VIP night keeps a spread of card categories", () => {
     ]),
   );
   expect(byCategory).toEqual({
-    sip: 3,
-    group: 3,
+    sip: 5,
+    group: 4,
     category: 2,
-    challenge: 2,
+    challenge: 3,
     rule: 2,
   });
 });

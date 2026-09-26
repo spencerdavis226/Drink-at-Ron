@@ -1,8 +1,7 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import type { CardDefinition, DiceRoll } from "../game/types";
-import { resolveArtwork } from "../presentation/artwork";
+import { diceResultText } from "../presentation/dice/result-text";
 import { CardPackMarks } from "./PackMarks";
-import { Artwork } from "./UI";
 type Overflow = "none" | "top" | "bottom" | "both";
 export function CardFace({
   card,
@@ -15,7 +14,7 @@ export function CardFace({
   roll?: DiceRoll | null;
   rolling?: boolean;
 }) {
-  const rulesGesture = useRef<{
+  const gesture = useRef<{
     pointerId: number;
     startX: number;
     startY: number;
@@ -23,10 +22,14 @@ export function CardFace({
     cancelClick: boolean;
   } | null>(null);
   const rulesRef = useRef<HTMLDivElement>(null);
+  const titleRef = useRef<HTMLDivElement>(null);
   const [overflow, setOverflow] = useState<Overflow>("none");
-  const markRulesGesture = (pointerId: number) => {
-    if (rulesGesture.current?.pointerId === pointerId)
-      rulesGesture.current.cancelClick = true;
+  const markGesture = (pointerId: number) => {
+    if (gesture.current?.pointerId === pointerId)
+      gesture.current.cancelClick = true;
+  };
+  const cancelGestureByScroll = () => {
+    if (gesture.current) gesture.current.cancelClick = true;
   };
   const updateOverflow = () => {
     const el = rulesRef.current;
@@ -39,6 +42,54 @@ export function CardFace({
   };
   // Show the resolved outcome once the dice settle (the overlay owns the roll).
   const resolved = !!roll && !rolling;
+  useLayoutEffect(() => {
+    const title = titleRef.current;
+    const heading = title?.querySelector<HTMLElement>("h2");
+    if (!title || !heading) return;
+    let live = true;
+    const fits = (size: number) => {
+      heading.style.fontSize = `${size}px`;
+      const lineHeight = parseFloat(getComputedStyle(heading).lineHeight);
+      return (
+        heading.offsetHeight <= title.clientHeight + 1 &&
+        heading.scrollWidth <= title.clientWidth + 1 &&
+        heading.offsetHeight / lineHeight <= 2.1
+      );
+    };
+    const measure = () => {
+      if (!live) return;
+      heading.style.removeProperty("font-size");
+      const base = parseFloat(getComputedStyle(heading).fontSize);
+      if (fits(base)) {
+        heading.style.removeProperty("font-size");
+        return;
+      }
+      const minimum = Math.min(base, 18);
+      if (!fits(minimum)) return; // Keep the full title scrollable for old saves.
+      let low = minimum;
+      let high = base;
+      for (let i = 0; i < 8; i++) {
+        const middle = (low + high) / 2;
+        if (fits(middle)) low = middle;
+        else high = middle;
+      }
+      heading.style.fontSize = `${Math.floor(low * 10) / 10}px`;
+    };
+    measure();
+    const observer =
+      typeof ResizeObserver === "undefined"
+        ? null
+        : new ResizeObserver(measure);
+    observer?.observe(title);
+    document.fonts
+      ?.load('700 30px "Source Serif 4 Title"')
+      .then(measure)
+      .catch(() => undefined);
+    return () => {
+      live = false;
+      observer?.disconnect();
+    };
+  }, [card.title]);
   useEffect(() => {
     updateOverflow();
     const el = rulesRef.current;
@@ -51,21 +102,46 @@ export function CardFace({
     document.fonts?.ready.then(updateOverflow).catch(() => undefined);
     return () => observer.disconnect();
   }, [resolved, card.id]);
-  const art = resolveArtwork(card.artwork);
   return (
-    <div className={`study-face ${card.dice && !roll ? "dice-ready" : ""}`}>
-      <div className="study-illustration">
-        <Artwork
-          src={art.url}
-          fallback={art.fallbackUrl}
-          alt=""
-          className={
-            art.scene === "painted" ? "painted-scene" : "placeholder-scene"
-          }
-          style={{ objectFit: art.fit }}
-        />
-      </div>
-      <div className="study-title">
+    <div
+      className="study-face"
+      // A drag anywhere on the face (rules or an enlarged title) must scroll or
+      // scrub, never activate the card action. A stationary tap still passes.
+      onPointerDown={(event) => {
+        gesture.current = {
+          pointerId: event.pointerId,
+          startX: event.clientX,
+          startY: event.clientY,
+          startScrollTop: rulesRef.current?.scrollTop ?? 0,
+          cancelClick: false,
+        };
+      }}
+      onPointerMove={(event) => {
+        const active = gesture.current;
+        if (
+          active?.pointerId === event.pointerId &&
+          Math.hypot(
+            event.clientX - active.startX,
+            event.clientY - active.startY,
+          ) > 8
+        )
+          active.cancelClick = true;
+      }}
+      onPointerCancel={(event) => markGesture(event.pointerId)}
+      onClick={(event) => {
+        const cancelClick = gesture.current?.cancelClick;
+        gesture.current = null;
+        if (cancelClick) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+      }}
+    >
+      <div
+        ref={titleRef}
+        className="study-title"
+        onScroll={cancelGestureByScroll}
+      >
         <h2>{card.title}</h2>
       </div>
       <div className="study-body">
@@ -73,51 +149,26 @@ export function CardFace({
           ref={rulesRef}
           className={`study-rules ${resolved ? "rules-resolved" : ""}`}
           data-overflow={overflow}
-          onPointerDown={(event) => {
-            rulesGesture.current = {
-              pointerId: event.pointerId,
-              startX: event.clientX,
-              startY: event.clientY,
-              startScrollTop: event.currentTarget.scrollTop,
-              cancelClick: false,
-            };
-          }}
-          onPointerMove={(event) => {
-            const gesture = rulesGesture.current;
-            if (
-              gesture?.pointerId === event.pointerId &&
-              Math.hypot(
-                event.clientX - gesture.startX,
-                event.clientY - gesture.startY,
-              ) > 8
-            )
-              gesture.cancelClick = true;
-          }}
-          onPointerCancel={(event) => markRulesGesture(event.pointerId)}
           onScroll={(event) => {
-            const gesture = rulesGesture.current;
+            const active = gesture.current;
             if (
-              gesture &&
-              event.currentTarget.scrollTop !== gesture.startScrollTop
+              active &&
+              event.currentTarget.scrollTop !== active.startScrollTop
             )
-              gesture.cancelClick = true;
+              active.cancelClick = true;
             updateOverflow();
-          }}
-          onClick={(event) => {
-            const cancelClick = rulesGesture.current?.cancelClick;
-            rulesGesture.current = null;
-            if (cancelClick) {
-              event.preventDefault();
-              event.stopPropagation();
-            }
           }}
         >
           {resolved ? (
             <>
-              <strong className="rolled-total">
-                Rolled <span className="roll-number">{roll!.total}</span>
-              </strong>
-              <p className="resolved-instruction">{roll!.instruction}</p>
+              <p className="resolved-instruction">
+                {diceResultText(card, roll!)}
+              </p>
+              {!roll?.returned && (
+                <span className="dice-continue-hint" aria-hidden="true">
+                  Tap card to continue
+                </span>
+              )}
             </>
           ) : (
             <p>{card.rules}</p>

@@ -10,7 +10,10 @@
     "preview": "vite preview --host 127.0.0.1",
     "test": "vitest run",
     "test:e2e": "playwright test",
+    "test:release": "playwright test --grep @release",
     "format": "prettier --write src scripts tests *.ts *.json index.html",
+    "imprint": "tsx scripts/imprint.ts",
+    "cards:review": "tsx scripts/cards-review.ts",
     "generate:icons": "tsx scripts/icons.ts",
     "test:workshop": "playwright test --config playwright.workshop.config.ts",
     "test:update": "tsx scripts/check-update.ts"

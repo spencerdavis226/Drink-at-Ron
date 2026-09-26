@@ -1,21 +1,24 @@
 import sharp from "sharp";
 const source = "assets/source/front-continuous-v3.png";
-const pieces: [string, number, number, number, number][] = [
-  ["top", 0, 0, 1024, 220],
-  ["bottom", 0, 1286, 1024, 250],
-  // Full-height rails: extracting the exact source columns avoids the vertical
-  // stretch that made the side rails streak and break the corner grain.
-  ["left", 0, 0, 100, 1536],
-  ["right", 924, 0, 100, 1536],
-  ["band", 0, 654, 1024, 142],
-  ["paper", 160, 850, 700, 400],
-];
-for (const [name, left, top, width, height] of pieces)
-  await sharp(source)
-    .extract({ left, top, width, height })
-    .webp({ quality: 85 })
-    .toFile(`src/presentation/art/continuous-${name}.webp`);
+// Runtime front preserves the original 2:3 composition in one surface.
+// Old slices remain source-history assets but are no longer shipped by CSS.
+await sharp(source)
+  .resize(768, 1152)
+  .webp({ quality: 85 })
+  .toFile("src/presentation/art/continuous-frame.webp");
 await sharp("assets/source/cheers-armor-v3.png")
   .resize(768)
   .webp({ quality: 84 })
   .toFile("public/art/cheers.webp");
+
+// Current plain parchment front; preserve the complete painted composition.
+await sharp("assets/source/front-parchment-v1.png")
+  .resize(768, 1152)
+  .webp({ quality: 85 })
+  .toFile("src/presentation/art/parchment-frame.webp");
+
+// Approved ornate teal master, 2026-09-22. Typography remains live HTML.
+await sharp("assets/source/front-studies-2026-09-22/c3-ornate-quarter.png")
+  .resize(768, 1152)
+  .webp({ quality: 85 })
+  .toFile("src/presentation/art/ornate-teal-frame.webp");
