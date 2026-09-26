@@ -6,9 +6,10 @@ Use this as creative context whenever suggesting, drafting, or reviewing cards f
 
 ## Source material in the repo
 
-- `docs/cabiin-2/cards.csv` — the full sheet as supplied (one card per cell, `Title\nBody`).
-- `docs/cabiin-2/cards.json` — the same 97 cards parsed to `{ index, title, body }`. Regenerate with `npm run cabiin:reference`. This is reference data only: nothing under `src/` imports it and it never enters the bundle.
-- `docs/drink_at_ron_sample_cards_40_v3.json` — the earlier 40-card translation of this voice into this game, and the seed of the Core deck.
+- `reference/cabiin-2/cards.csv` — the full sheet as supplied (one card per cell, `Title\nBody`).
+- `reference/cabiin-2/cards.json` — the same 97 cards parsed to `{ index, title, body }`. Regenerate with `npm run cabiin:reference`. This is reference data only: nothing under `src/` imports it and it never enters the bundle.
+- `reference/drink_at_ron_sample_cards_40_v3.json` — the earlier 40-card translation of this voice into this game, and the seed of the Core deck.
+- `reference/Drink at Ron - Sheet1.csv` (+ `drink-at-ron-sheet1.json`) — the supplied house sheet kept raw; the shipping copy is `src/content/custom.ts` / `vip.ts`. See `reference/README.md`.
 
 Read the parsed set before writing copy. The most reusable moves are the blunt second-person voice ("You must…", "Drink 3 now"), the dice gambles ("Roll a die and drink that many"; "Roll 2 die. If they match, give the total. Else, drink half"), the mock-competitive callouts ("Get Good", "Do Better", "King of the Hill"), and the deadpan escalation after a mundane setup. Ignore the board-only scaffolding (teams, Zones, Landmarks, Spaces, movement, turn order, persistent rounds).
 
@@ -37,7 +38,7 @@ When proposing a new card, aim for this shape:
 4. End the activity clearly. Keep app bookkeeping unnecessary.
 5. Write the consequence plainly: the app never enforces a pour, any drink can be nonalcoholic, and card copy does not carry permission-seeking language.
 
-A suggestion can borrow the source collection's comic rhythm without copying its exact mechanic. For example, a board-space penalty can become a one-card challenge; a multi-round status can become a rule lasting only until the next reveal; a high drink count can become one sip, giving a sip, or a non-drinking social consequence.
+A suggestion can borrow the source collection's comic rhythm without copying its exact mechanic. For example, a board-space penalty can become a one-card challenge; a multi-round status can become a rule lasting the rest of the game or until the drawing player's next turn; a high drink count can become one sip, giving a sip, or a non-drinking social consequence.
 
 ## CABIIN-specific material that does not carry over
 

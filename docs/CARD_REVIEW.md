@@ -14,9 +14,9 @@ the Review column is intentionally blank so you can mark it up.
 | ☐ | Bar Tab | `core.bar-tab` | sip | Give 3. |  |
 | ☐ | Bad Influence | `core.bad-influence` | sip | Pick someone. Both drink 2. |  |
 | ☐ | Fuck You In Particular | `core.you-specifically` | sip | Pick someone. They drink 6. |  |
-| ☐ | U Up? | `core.bad-text` | sip | Sent a regrettable late-night text? Drink 3. |  |
-| ☐ | Corporate Wellness | `core.fake-sick` | sip | Faked sick to skip work? Drink 3. |  |
-| ☐ | Financial Genius | `core.crypto-bro` | sip | Own crypto? Drink 2. Don't? Give 2. |  |
+| ☐ | U Up? | `core.bad-text` | sip | Anyone who sent a regrettable late-night text drinks 3. |  |
+| ☐ | Corporate Wellness | `core.fake-sick` | sip | Anyone who faked sick to skip work drinks 3. |  |
+| ☐ | Financial Genius | `core.crypto-bro` | sip | Crypto owners drink 2. Everyone else gives 2. |  |
 | ☐ | Give One | `core.give-one` | sip | Give 1 sip to anyone. Make eye contact. |  |
 | ☐ | Drink Two | `core.drink-two` | sip | Drink 2. No explanation owed. |  |
 | ☐ | Give and Take | `core.give-take` | sip | Give 2 sips to someone. Take 1 yourself. Balanced. |  |
@@ -31,7 +31,7 @@ the Review column is intentionally blank so you can mark it up.
 | ☐ | Last Call | `core.last-call` | group | Everyone drinks 2. |  |
 | ☐ | Cheap Date | `core.cheap-date` | group | Cheapest drink at the table drinks 3. |  |
 | ☐ | Big Money | `core.baller` | group | Priciest drink at the table gives 4. |  |
-| ☐ | Group Project | `core.group-project` | group | Last hand in the air drinks 3. |  |
+| ☐ | Group Project | `core.group-project` | group | Hands up. Last hand up drinks 3. |  |
 | ☐ | Would You Though? | `core.would-you` | group | Most likely to text an ex drinks 3. |  |
 | ☐ | Cheers, Idiots | `core.cheers-idiots` | group | Cheers. Everyone drinks 2. |  |
 | ☐ | Social Sip | `core.social-sip` | group | Everyone drinks 2. Cheers! |  |
@@ -44,7 +44,7 @@ the Review column is intentionally blank so you can mark it up.
 | ☐ | New Blood | `core.new-blood` | group | First time Drink-at-Ron players drink 13. Get absolutely fucked. |  |
 | ☐ | Fashionably Late | `core.late-arrival` | group | Last to arrive drinks 2. Sinner. |  |
 | ☐ | Couples Drink | `core.couples` | group | Couples drink 2. Singles give 2 and sulk. |  |
-| ☐ | Birthday Month | `core.birthday` | group | Birthday this month? Drink 2. Everyone else toasts you. |  |
+| ☐ | Birthday Month | `core.birthday` | group | Your birthday this month? Drink 2. Everyone else toasts you. |  |
 | ☐ | Ace Is Waterfall | `core.waterfall` | group | Start a waterfall. Everyone sips in turn and stops in turn. |  |
 | ☐ | Tavern Brawl | `core.tavern-brawl` | group | On three, everyone points at someone. Most pointed drinks 3. |  |
 | ☐ | Round for the Table | `core.round-for-the-table` | group | Roll d6. Everyone drinks your roll. You just watch. | 1d6 — Everyone but you drinks {total}. |
@@ -104,7 +104,7 @@ the Review column is intentionally blank so you can mark it up.
 | ☐ | What an Idiot | `core.what-an-idiot` | challenge | Call someone an idiot. They give 3, or you drink 3. |  |
 | ☐ | Get Good | `core.get-good` | challenge | Insult someone's skills. They prove you wrong or drink 3. |  |
 | ☐ | It's Gotta Go | `core.its-gotta-go` | challenge | Finish your drink. Or pass and drink 3. |  |
-| ☐ | Accent Off | `core.accent-off` | challenge | Talk in an accent. If you laugh first, drink 2. |  |
+| ☐ | Accent Off | `core.accent-off` | challenge | Everyone talks in an accent. First to laugh drinks 2. |  |
 | ☐ | Loud and Proud | `core.loud-and-proud` | challenge | Say your next sentence too loud. If it lands, give 2. |  |
 | ☐ | Useless Fact | `core.useless-fact` | challenge | Share an impressive useless fact. If nobody reacts, drink 2. |  |
 | ☐ | The Receipt | `core.the-receipt` | challenge | Read your last purchase aloud. Cringe? Drink 3. |  |
@@ -112,21 +112,21 @@ the Review column is intentionally blank so you can mark it up.
 | ☐ | Runway | `core.runway` | challenge | Do a runway walk. Table scores it: under 7, drink 3. |  |
 | ☐ | Debate Club | `core.debate-club` | challenge | Defend an opinion nobody shares. Lose the vote: drink 3. |  |
 | ☐ | Rulemaster | `core.rulemaster` | rule | Make a rule until the end of the game. Breaker drinks 2. |  |
-| ☐ | Who the Fuck Are You? | `core.no-names` | rule | Until next card: no names. Slip = drink 2. |  |
-| ☐ | Church Mode | `core.potty-mouth` | rule | Until next card: no swearing. Slip = drink 2. |  |
-| ☐ | Cursed Number | `core.cursed-number` | rule | Roll d6. That number is banned. Say it = drink 2. | 1d6 — {total} is banned. Say it: drink 2. |
-| ☐ | Sober Talk | `core.sober-talk` | rule | Until your next turn: no saying drink, drank or drunk. Slip = drink 2. |  |
+| ☐ | Who the Fuck Are You? | `core.no-names` | rule | Until your next turn, nobody uses names. Slip = drink 2. |  |
+| ☐ | Church Mode | `core.potty-mouth` | rule | Until your next turn, nobody swears. Slip = drink 2. |  |
+| ☐ | Cursed Number | `core.cursed-number` | rule | Roll d6. Nobody may say that number until your next turn. Slip = drink 2. | 1d6 — {total} is banned until your next turn. Say it: drink 2. |
+| ☐ | Sober Talk | `core.sober-talk` | rule | Until your next turn, you can't say drink, drank or drunk. Slip = drink 2. |  |
 | ☐ | Buffalo | `core.buffalo` | rule | It's gotta go. |  |
 | ☐ | Accent Lock | `core.accent` | rule | Until your next turn: everyone talks in an accent. Slip = drink 2. |  |
-| ☐ | Library Mode | `core.library` | rule | Until your next turn: whisper everything. Slip = drink 2. |  |
-| ☐ | Little Green Man | `core.little-green-man` | rule | Until your next turn: remove the tiny man first. Slip = drink 2. |  |
+| ☐ | Library Mode | `core.library` | rule | Until your next turn, everyone whispers. Slip = drink 2. |  |
+| ☐ | Little Green Man | `core.little-green-man` | rule | Until your next turn, everyone removes the tiny man before drinking. Slip = drink 2. |  |
 | ☐ | Question Master | `core.question-master` | rule | Until your next turn: anyone who answers your question drinks 2. |  |
 | ☐ | Eight Is Mate | `core.kings-eight` | rule | Pick a mate until your next turn. When one of you drinks, both drink. |  |
-| ☐ | Dungeon Master | `core.dungeon-master` | rule | Until your next turn: narrate in third person. Slip = drink 2. |  |
-| ☐ | Banned Number | `core.banned-number` | rule | Roll d6. Nobody may say it. Slip: drink 3. | 1d6 — {total} is banned. Say it: drink 3. |
-| ☐ | Heavy Hand | `core.heavy-hand` | rule | Roll d6. All drinks are doubled until the next card. | 1d6 — Double every drink until the next card. |
-| ☐ | Personal Space | `core.personal-space` | rule | Until next card: sit on your own hands. Slip: drink 2. |  |
-| ☐ | Formal Night | `core.formal-night` | rule | Until next card: address everyone as my liege. Slip: drink 2. |  |
+| ☐ | Dungeon Master | `core.dungeon-master` | rule | Until your next turn, you narrate in third person. Slip = drink 2. |  |
+| ☐ | Banned Number | `core.banned-number` | rule | Roll d6. Nobody may say it until your next turn. Slip: drink 3. | 1d6 — {total} is banned until your next turn. Slip: drink 3. |
+| ☐ | Heavy Hand | `core.heavy-hand` | rule | Roll d6. All drinks are doubled until your next turn. | 1d6 — Double every drink until your next turn. |
+| ☐ | Personal Space | `core.personal-space` | rule | Until your next turn, everyone sits on their own hands. Slip: drink 2. |  |
+| ☐ | Formal Night | `core.formal-night` | rule | Until your next turn, everyone addresses others as my liege. Slip: drink 2. |  |
 
 ## The House deck (`house`)
 
@@ -166,17 +166,17 @@ the Review column is intentionally blank so you can mark it up.
 | ☐ | Split the G | `house.sheet-079` | sip | You fucking blew it, drink 1d6 drinks | 1d6 — Drink {total}. |
 | ☐ | Blessing & a Curse | `house.sheet-094` | sip | Give 1d6 drinks and take a different 1d6 drinks | 2d6 — Give {first} and drink {second}. |
 | ☐ | Vowels | `house.sheet-102` | sip | Drink for every vowel in your name |  |
-| ☐ | Dog Vision | `house.sheet-005` | group | If you're wearing blue or yellow, give 2 |  |
+| ☐ | Dog Vision | `house.sheet-005` | group | Anyone wearing blue or yellow gives 2 |  |
 | ☐ | Ron Stop | `house.sheet-013` | group | Everyone drinks for as long as you can say "Ron stop" |  |
 | ☐ | And the Chicks | `house.sheet-019` | group | 1 guy drinks. All girls drink |  |
 | ☐ | Weinerschnitzel | `house.sheet-020` | group | All dudes drink |  |
-| ☐ | Technophoria | `house.sheet-034` | group | If you've ever touched a phone, drink 1d6 | 1d6 — Drink {total}. |
+| ☐ | Technophoria | `house.sheet-034` | group | Anyone who has touched a phone drinks 1d6 | 1d6 — Everyone drinks {total}. |
 | ☐ | QUICK | `house.sheet-043` | group | Both hands up, last person to do it drinks |  |
 | ☐ | Points | `house.sheet-044` | group | Count to 3 and everyone points at a person to drink. Drink how many points you get |  |
 | ☐ | Mexico v China | `house.sheet-049` | group | Thumbs up for Mexican food, thumbs down for chinese. Minority drinks |  |
 | ☐ | Damn, you're old | `house.sheet-061` | group | Oldest takes a drink |  |
 | ☐ | Big Baby | `house.sheet-076` | group | Drink if you're the youngest |  |
-| ☐ | GOALLLL | `house.sheet-082` | group | Drink as long as the person to your left can say GOAAAAALLLLL |  |
+| ☐ | GOALLLL | `house.sheet-082` | group | Everyone drinks while the person on your left says GOAAAAALLLLL |  |
 | ☐ | Call Out | `house.sheet-083` | group | Who would overpack for a 1 night stay? They drink |  |
 | ☐ | Call Out | `house.sheet-084` | group | Who reads the group chat but never replies? They drink |  |
 | ☐ | Call Out | `house.sheet-085` | group | Who uses their notes app the most? They drink |  |
@@ -230,11 +230,11 @@ the Review column is intentionally blank so you can mark it up.
 | ☐ | Potty Mouth | `house.sheet-030` | rule | No more cursing for the rest of the game. Drink when you fuck up. |  |
 | ☐ | Rawr XD | `house.sheet-032` | rule | You have to use T-Rex arms until your next turn |  |
 | ☐ | This Sucks | `house.sheet-039` | rule | Buffalo switches hands for the rest of the game |  |
-| ☐ | Pokemon | `house.sheet-040` | rule | Speak only your first name for 2 rounds |  |
-| ☐ | Abra like a Slut | `house.sheet-053` | rule | Reverse the turn order |  |
+| ☐ | Pokemon | `house.sheet-040` | rule | Speak only your first name until your next turn |  |
+| ☐ | Abra like a Slut | `house.sheet-053` | rule | Reverse the turn order for the rest of the game |  |
 | ☐ | Goof Dog | `house.sheet-091` | rule | Keep your eyes as open as possible until your next turn |  |
 | ☐ | Da Rulez | `house.sheet-097` | rule | Until your next turn, you can't use your hands to drink |  |
-| ☐ | Da Rulez | `house.sheet-099` | rule | Next person who says "beer" has to drink |  |
+| ☐ | Da Rulez | `house.sheet-099` | rule | Until your next turn, the next person to say "beer" drinks |  |
 | ☐ | Da Rulez | `house.sheet-101` | rule | Until your next turn, you have to peel your drink like a banana |  |
 
 ## VIP night (`vip`)
@@ -243,8 +243,8 @@ the Review column is intentionally blank so you can mark it up.
 
 | Review | Title | ID | Cat | Rules | Dice |
 | --- | --- | --- | --- | --- | --- |
-| ☐ | A toast to the VIP | `vip.toast` | sip | Toast the VIP by name. The VIP takes 1 sip; everyone joins them. |  |
-| ☐ | Choose a sidekick | `vip.sidekick` | sip | The VIP picks a sidekick until the next card. They both take one sip now. |  |
+| ☐ | A toast to the VIP | `vip.toast` | sip | Everyone toasts the VIP by name, then takes 1 sip. |  |
+| ☐ | Choose a sidekick | `vip.sidekick` | sip | The VIP picks a sidekick for the rest of the game. The sidekick drinks when the VIP does. |  |
 | ☐ | The VIP tax | `vip.tax` | sip | The VIP takes 1 sip and names a privilege they'd trade away tonight. |  |
 | ☐ | One Year Older | `vip.sheet-005` | sip | Give out the ones place of your new age |  |
 | ☐ | It's Gotta Go | `vip.sheet-006` | sip | Congrats, the VIP finishes their drink |  |
@@ -257,8 +257,8 @@ the Review column is intentionally blank so you can mark it up.
 | ☐ | The loving roast | `vip.roast` | challenge | Clockwise, give the VIP a roast. The VIP picks a favorite and takes 1 sip. |  |
 | ☐ | A title for the VIP | `vip.title` | challenge | Give the VIP a silly title. They take 1 sip and use it next time they speak. |  |
 | ☐ | Fast as Fuck Boi | `vip.sheet-003` | challenge | VIP gives 3x what they can drink in 1 minute. |  |
-| ☐ | Your Excellency | `vip.excellency` | rule | Call the VIP Your Excellency until the next card. Forget and take 1 sip. |  |
-| ☐ | Never drink alone | `vip.never-alone` | rule | Until the next card, the VIP picks someone to join each sip they take. |  |
+| ☐ | Your Excellency | `vip.excellency` | rule | Everyone calls the VIP Your Excellency for the rest of the game. Forget: take 1 sip. |  |
+| ☐ | Never drink alone | `vip.never-alone` | rule | For the rest of the game, the VIP picks someone to join every sip they take. |  |
 
 ## Notes for review
 

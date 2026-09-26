@@ -24,13 +24,13 @@ export const vipCards: CardDefinition[] = [
     "toast",
     "A toast to the VIP",
     "sip",
-    "Toast the VIP by name. The VIP takes 1 sip; everyone joins them.",
+    "Everyone toasts the VIP by name, then takes 1 sip.",
   ),
   vipCard(
     "sidekick",
     "Choose a sidekick",
     "sip",
-    "The VIP picks a sidekick until the next card. They both take one sip now.",
+    "The VIP picks a sidekick for the rest of the game. The sidekick drinks when the VIP does.",
   ),
   vipCard(
     "tax",
@@ -84,13 +84,13 @@ export const vipCards: CardDefinition[] = [
     "excellency",
     "Your Excellency",
     "rule",
-    "Call the VIP Your Excellency until the next card. Forget and take 1 sip.",
+    "Everyone calls the VIP Your Excellency for the rest of the game. Forget: take 1 sip.",
   ),
   vipCard(
     "never-alone",
     "Never drink alone",
     "rule",
-    "Until the next card, the VIP picks someone to join each sip they take.",
+    "For the rest of the game, the VIP picks someone to join every sip they take.",
   ),
   ...customVipCards,
 ];

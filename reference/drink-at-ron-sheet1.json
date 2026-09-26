@@ -1,0 +1,547 @@
+{
+  "$comment": "Reference material parsed from the supplied Sheet1 house sheet. Not game content and not imported at runtime; the shipping copy lives in src/content/custom.ts and src/content/vip.ts. Rows are 1-based sheet row numbers (card IDs derive from them). Fully blank rows are omitted; the title-only row 106 is kept as supplied. Never edit this file to match the game: replace the CSV and rerun npm run house:reference.",
+  "source": "reference/Drink at Ron - Sheet1.csv",
+  "counts": {
+    "house": 103,
+    "vip": 4
+  },
+  "house": [
+    {
+      "row": 3,
+      "title": "That's Two Beers?",
+      "description": "Give 4d6 drinks"
+    },
+    {
+      "row": 4,
+      "title": "California Sober",
+      "description": "Get pitted and smoke something, then drink 1d6 water. Else, take a shot."
+    },
+    {
+      "row": 5,
+      "title": "Dog Vision",
+      "description": "If you're wearing blue or yellow, give 2"
+    },
+    {
+      "row": 6,
+      "title": "The Game Giveth",
+      "description": "Give 3 drinks. If \"The Game Taketh\" was already played, multiply by 1d6."
+    },
+    {
+      "row": 7,
+      "title": "The Game Taketh",
+      "description": "Take 3 drinks. If \"The Game Giveth\" was already played, multiply by 1d6."
+    },
+    {
+      "row": 8,
+      "title": "Fetch",
+      "description": "Get something from outside in under 30 seconds or drink 1d20"
+    },
+    {
+      "row": 9,
+      "title": "Steve's Beans",
+      "description": "Text Steve and tell them his beans are good. Else drink 2d6"
+    },
+    {
+      "row": 10,
+      "title": "Caveman",
+      "description": "You can only grunt until your next turn"
+    },
+    {
+      "row": 11,
+      "title": "Drink at Ron",
+      "description": "If Ron is there, drink at him. Else, call and drink at him. Else else, drink 2"
+    },
+    {
+      "row": 12,
+      "title": "Maddy Booty",
+      "description": "Roll 1d20. You drink until the group counts to it, or you finish your drink."
+    },
+    {
+      "row": 13,
+      "title": "Ron Stop",
+      "description": "Everyone drinks for as long as you can say \"Ron stop\""
+    },
+    {
+      "row": 14,
+      "title": "Medusa",
+      "description": "The first person you make eye contact with must get stoned."
+    },
+    {
+      "row": 15,
+      "title": "Mr Freeze",
+      "description": "Anyone you touch can't move or talk until you stop touching them"
+    },
+    {
+      "row": 16,
+      "title": "Ursaring",
+      "description": "Give 13 and apologize"
+    },
+    {
+      "row": 17,
+      "title": "Send Help",
+      "description": "Convince someone to drink 1. Else, take a shot."
+    },
+    {
+      "row": 18,
+      "title": "Story Time",
+      "description": "Say a word. The next person repeats and adds on. Loser drink 4."
+    },
+    {
+      "row": 19,
+      "title": "And the Chicks",
+      "description": "1 guy drinks. All girls drink"
+    },
+    {
+      "row": 20,
+      "title": "Weinerschnitzel",
+      "description": "All dudes drink"
+    },
+    {
+      "row": 21,
+      "title": "Categories",
+      "description": "Disney Movies"
+    },
+    {
+      "row": 22,
+      "title": "Categories",
+      "description": "Taco Bell menu items"
+    },
+    {
+      "row": 23,
+      "title": "Headache Simulator",
+      "description": "Wear Becca's glasses for a round. Else drink 2d6"
+    },
+    {
+      "row": 24,
+      "title": "Wench",
+      "description": "You are the drink wench until your next turn"
+    },
+    {
+      "row": 25,
+      "title": "Categories",
+      "description": "Things you lick"
+    },
+    {
+      "row": 26,
+      "title": "Never Have I Ever",
+      "description": "Drink if you've been to Mexico"
+    },
+    {
+      "row": 27,
+      "title": "Michael Mouse",
+      "description": "How many distinct Disney parks have you been to? Drink that many"
+    },
+    {
+      "row": 28,
+      "title": "No take, Give",
+      "description": "Give d6 drinks"
+    },
+    {
+      "row": 29,
+      "title": "FMK",
+      "description": "Blink 182, Green Day, Weezer"
+    },
+    {
+      "row": 30,
+      "title": "Potty Mouth",
+      "description": "No more cursing for the rest of the game. Drink when you fuck up."
+    },
+    {
+      "row": 31,
+      "title": "Batrick",
+      "description": "Take a (rabies) shot"
+    },
+    {
+      "row": 32,
+      "title": "Rawr XD",
+      "description": "You have to use T-Rex arms until your next turn"
+    },
+    {
+      "row": 33,
+      "title": "Categories",
+      "description": "Trilogy movies"
+    },
+    {
+      "row": 34,
+      "title": "Technophoria",
+      "description": "If you've ever touched a phone, drink 1d6"
+    },
+    {
+      "row": 35,
+      "title": "Categories",
+      "description": "Countries"
+    },
+    {
+      "row": 36,
+      "title": "Same",
+      "description": "You called Same, give d6"
+    },
+    {
+      "row": 37,
+      "title": "Same",
+      "description": "You didn't call Same, take d6"
+    },
+    {
+      "row": 38,
+      "title": "The Rock",
+      "description": "Finish your drink, you don't get to pass it along"
+    },
+    {
+      "row": 39,
+      "title": "This Sucks",
+      "description": "Buffalo switches hands for the rest of the game"
+    },
+    {
+      "row": 40,
+      "title": "Pokemon",
+      "description": "Speak only your first name for 2 rounds"
+    },
+    {
+      "row": 41,
+      "title": "Categories",
+      "description": "Hockey players"
+    },
+    {
+      "row": 42,
+      "title": "Pet that dog",
+      "description": "Better pet any dog in the room, or take 1d6"
+    },
+    {
+      "row": 43,
+      "title": "QUICK",
+      "description": "Both hands up, last person to do it drinks"
+    },
+    {
+      "row": 44,
+      "title": "Points",
+      "description": "Count to 3 and everyone points at a person to drink. Drink how many points you get"
+    },
+    {
+      "row": 45,
+      "title": "Drink, bitch",
+      "description": "If you drank last card, drink again, bitch"
+    },
+    {
+      "row": 46,
+      "title": "Fiend",
+      "description": "Pop in a fresh zyn, velo, nic pouch"
+    },
+    {
+      "row": 47,
+      "title": "Battery Life",
+      "description": "Closest guess to your phone's battery gives 2 drinks"
+    },
+    {
+      "row": 48,
+      "title": "Rock, Paper, Scissors",
+      "description": "Challenge a player, loser drinks 1d6"
+    },
+    {
+      "row": 49,
+      "title": "Mexico v China",
+      "description": "Thumbs up for Mexican food, thumbs down for chinese. Minority drinks"
+    },
+    {
+      "row": 50,
+      "title": "Never Have I Ever",
+      "description": "Drink if you've flown First Class"
+    },
+    {
+      "row": 51,
+      "title": "The Cino",
+      "description": "Drink if you've lost money in the casino"
+    },
+    {
+      "row": 52,
+      "title": "Categories",
+      "description": "Name those Pokémon"
+    },
+    {
+      "row": 53,
+      "title": "Abra like a Slut",
+      "description": "Reverse the turn order"
+    },
+    {
+      "row": 54,
+      "title": "Whinnie the Pooh",
+      "description": "Pooh-bear 1d6 drinks"
+    },
+    {
+      "row": 55,
+      "title": "Could ya just",
+      "description": "Drink 1"
+    },
+    {
+      "row": 56,
+      "title": "Mt. Krumpit",
+      "description": "Dump out your drink and get a fresh one"
+    },
+    {
+      "row": 57,
+      "title": "I'm an Idiot",
+      "description": "Say I'm an idiot. Whoever replies \"you're an idiot\" drinks"
+    },
+    {
+      "row": 58,
+      "title": "Accent",
+      "description": "Speak like a high lord and give 1d6 drinks"
+    },
+    {
+      "row": 59,
+      "title": "Bu-bu-buff..",
+      "description": "Drink 1d6 for almost getting buffaloed"
+    },
+    {
+      "row": 60,
+      "title": "Spirit airlines",
+      "description": "Tell your worst vacation story. If team agrees it's bad, give 2 drinks. If team agrees it's not bad, drink 2 drinks."
+    },
+    {
+      "row": 61,
+      "title": "Damn, you're old",
+      "description": "Oldest takes a drink"
+    },
+    {
+      "row": 62,
+      "title": "What was that?",
+      "description": "Read the last text message you said out loud. Else, drink 1d6."
+    },
+    {
+      "row": 63,
+      "title": "Straight to jail",
+      "description": "Finish your drink"
+    },
+    {
+      "row": 64,
+      "title": "Singles",
+      "description": "Drink if you're single"
+    },
+    {
+      "row": 65,
+      "title": "Couples",
+      "description": "Take 1 drink for every year you've been in a relationship"
+    },
+    {
+      "row": 66,
+      "title": "Categories",
+      "description": "Reality TV series"
+    },
+    {
+      "row": 67,
+      "title": "Never Have I Ever",
+      "description": "Drink if you've been to Germany"
+    },
+    {
+      "row": 68,
+      "title": "Never Have I Ever",
+      "description": "Drink if you've been to Ireland"
+    },
+    {
+      "row": 69,
+      "title": "Never Have I Ever",
+      "description": "Drink if you've been to Italy"
+    },
+    {
+      "row": 70,
+      "title": "Never Have I Ever",
+      "description": "Drink if you've been to Paris"
+    },
+    {
+      "row": 71,
+      "title": "Never Have I Ever",
+      "description": "Drink if you've been to Canada"
+    },
+    {
+      "row": 72,
+      "title": "Never Have I Ever",
+      "description": "Drink if you've been to Thailand"
+    },
+    {
+      "row": 73,
+      "title": "Never Have I Ever",
+      "description": "Drink if you've been to Japan"
+    },
+    {
+      "row": 74,
+      "title": "Never Have I Ever",
+      "description": "Drink if you've literally shit your pants. Drink 2 if you've shit yourself at the cabin."
+    },
+    {
+      "row": 76,
+      "title": "Big Baby",
+      "description": "Drink if you're the youngest"
+    },
+    {
+      "row": 77,
+      "title": "Nicetitties",
+      "description": "Say something geninuely nice about the person to your right"
+    },
+    {
+      "row": 78,
+      "title": "Split the G",
+      "description": "Congrats ya nailed it, give 1d6 drinks"
+    },
+    {
+      "row": 79,
+      "title": "Split the G",
+      "description": "You fucking blew it, drink 1d6 drinks"
+    },
+    {
+      "row": 80,
+      "title": "Work it",
+      "description": "Do a runway walk"
+    },
+    {
+      "row": 81,
+      "title": "ABC's",
+      "description": "Say the alphabet backwards, every mistake is a drink"
+    },
+    {
+      "row": 82,
+      "title": "GOALLLL",
+      "description": "Drink as long as the person to your left can say GOAAAAALLLLL"
+    },
+    {
+      "row": 83,
+      "title": "Call Out",
+      "description": "Who would overpack for a 1 night stay? They drink"
+    },
+    {
+      "row": 84,
+      "title": "Call Out",
+      "description": "Who reads the group chat but never replies? They drink"
+    },
+    {
+      "row": 85,
+      "title": "Call Out",
+      "description": "Who uses their notes app the most? They drink"
+    },
+    {
+      "row": 86,
+      "title": "Categories",
+      "description": "Animated movies"
+    },
+    {
+      "row": 87,
+      "title": "Categories",
+      "description": "Sales at Freddies"
+    },
+    {
+      "row": 88,
+      "title": "Tin Hat Society",
+      "description": "One conspiracy theory you really believe"
+    },
+    {
+      "row": 89,
+      "title": "Happy Holidays",
+      "description": "You have 10 seconds to come up with a fake holiday. Drink 2 if you blow it"
+    },
+    {
+      "row": 90,
+      "title": "Stare down",
+      "description": "Challenge someone to a stairing contest. Loser drinks"
+    },
+    {
+      "row": 91,
+      "title": "Goof Dog",
+      "description": "Keep your eyes as open as possible until your next turn"
+    },
+    {
+      "row": 92,
+      "title": "Call Out",
+      "description": "Who is most likely to suggest shots? They drink (a shot if they're not scared)"
+    },
+    {
+      "row": 93,
+      "title": "Spelling Contest",
+      "description": "The person to your left gives you a word to spell. U wrong U drink. U right, they drink"
+    },
+    {
+      "row": 94,
+      "title": "Blessing & a Curse",
+      "description": "Give 1d6 drinks and take a different 1d6 drinks"
+    },
+    {
+      "row": 95,
+      "title": "Categories",
+      "description": "Things in a kitchen"
+    },
+    {
+      "row": 96,
+      "title": "Knickers",
+      "description": "Guess the person to your rights underwear color. You right, they drink. You wrong, you drink"
+    },
+    {
+      "row": 97,
+      "title": "Da Rulez",
+      "description": "Until your next turn, you can't use your hands to drink"
+    },
+    {
+      "row": 98,
+      "title": "Weatherman",
+      "description": "Give your best weather forecast for the vibes for the rest of the day/night"
+    },
+    {
+      "row": 99,
+      "title": "Da Rulez",
+      "description": "Next person who says \"beer\" has to drink"
+    },
+    {
+      "row": 100,
+      "title": "Dare",
+      "description": "Balance your drink on your head for 10 seconds"
+    },
+    {
+      "row": 101,
+      "title": "Da Rulez",
+      "description": "Until your next turn, you have to peel your drink like a banana"
+    },
+    {
+      "row": 102,
+      "title": "Vowels",
+      "description": "Drink for evey vowel in your name"
+    },
+    {
+      "row": 103,
+      "title": "Categories",
+      "description": "US Capitols"
+    },
+    {
+      "row": 104,
+      "title": "Opinions",
+      "description": "Give your most Joe/Becca opinion"
+    },
+    {
+      "row": 105,
+      "title": "Categories",
+      "description": "Things you should never say to a police officer"
+    },
+    {
+      "row": 106,
+      "title": "Debate",
+      "description": ""
+    }
+  ],
+  "vip": [
+    {
+      "row": 3,
+      "title": "Fast as Fuck Boi",
+      "description": "VIP gives 3x what they can drink in 1 minute."
+    },
+    {
+      "row": 4,
+      "title": "Your Big Night",
+      "description": "Everyone has to say something nice about the VIP. Then everyone drinks."
+    },
+    {
+      "row": 5,
+      "title": "One Year Older",
+      "description": "Give out the ones place of your new age"
+    },
+    {
+      "row": 6,
+      "title": "It's Gotta Go",
+      "description": "Congrats, the VIP finishes their drink"
+    }
+  ]
+}

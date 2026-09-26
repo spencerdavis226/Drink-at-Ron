@@ -30,8 +30,11 @@
 .study-title {
   z-index: 2;
   position: absolute;
-  inset: 8.5% 17% auto;
-  height: 16%;
+  /* Safe area inside the painted teal recess: the bronze arch dips to ~9% at
+     the centre and the ornament vines reach ~11.5% at the sides, so glyph
+     tops and quote marks stay clear with the box starting below that. */
+  inset: 11% 17% auto;
+  height: 13.5%;
   display: grid;
   place-items: safe center;
   overflow: auto;
@@ -45,8 +48,8 @@
   text-wrap: balance;
   overflow-wrap: anywhere;
   text-align: center;
-  /* One optical adjustment keeps the live ink centered on the painted band. */
-  transform: translateY(-0.08em);
+  /* A hair of optical lift keeps the ink centred on the painted band. */
+  transform: translateY(-0.02em);
   margin: 0;
 }
 .study-body {

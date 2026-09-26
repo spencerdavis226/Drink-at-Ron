@@ -247,6 +247,7 @@ p {
   text-shadow: 0 2px #000;
 }
 .checkbox {
+  position: relative;
   display: grid;
   place-items: center;
   flex-shrink: 0;
@@ -256,9 +257,39 @@ p {
   border-radius: 50%;
   background: var(--pack-mark-bg, #cba464);
   border: 2px solid var(--pack-mark-border, #e4c68c);
-  color: var(--pack-mark-ink, #2b301f);
   box-shadow: 0 2px 4px #0008;
-  font-size: 1.2rem;
+  /* The glyph stays in the DOM for tests; the visible mark is drawn so the
+     plus and the check are geometrically centred rather than font-dependent. */
+  color: transparent;
+}
+.checkbox::before,
+.checkbox::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  background: var(--pack-mark-ink, #2b301f);
+}
+/* Unselected: a drawn plus, two equal bars. */
+[aria-pressed="false"] .checkbox::before {
+  width: 14px;
+  height: 2px;
+}
+[aria-pressed="false"] .checkbox::after {
+  width: 2px;
+  height: 14px;
+}
+/* Selected: a drawn check. */
+[aria-pressed="true"] .checkbox::before {
+  width: 6px;
+  height: 11px;
+  background: none;
+  border-right: 2px solid var(--pack-mark-ink, #2b301f);
+  border-bottom: 2px solid var(--pack-mark-ink, #2b301f);
+  transform: translate(-1px, -3px) rotate(45deg);
+}
+[aria-pressed="true"] .checkbox::after {
+  display: none;
 }
 .primary {
   width: 100%;

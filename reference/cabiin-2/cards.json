@@ -1,6 +1,6 @@
 {
   "$comment": "Reference material parsed from Spencer's CABIIN 2.0 board game. Not game content and not imported at runtime. Board/team/zone/movement rules are intentionally not carried into Drink at Ron; see docs/CARD_VOICE_REFERENCE.md.",
-  "source": "docs/cabiin-2/cards.csv",
+  "source": "reference/cabiin-2/cards.csv",
   "count": 97,
   "cards": [
     {

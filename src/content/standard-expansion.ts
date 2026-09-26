@@ -205,15 +205,15 @@ const drafts: Draft[] = [
     "banned-number",
     "Banned Number",
     "rule",
-    "Roll d6. Nobody may say it. Slip: drink 3.",
-    roll(1, 6, "{total} is banned. Say it: drink 3."),
+    "Roll d6. Nobody may say it until your next turn. Slip: drink 3.",
+    roll(1, 6, "{total} is banned until your next turn. Slip: drink 3."),
   ],
   [
     "heavy-hand",
     "Heavy Hand",
     "rule",
-    "Roll d6. All drinks are doubled until the next card.",
-    roll(1, 6, "Double every drink until the next card."),
+    "Roll d6. All drinks are doubled until your next turn.",
+    roll(1, 6, "Double every drink until your next turn."),
   ],
 
   // --- Callouts: blunt, personal, specific ----------------------------------
@@ -263,7 +263,7 @@ const drafts: Draft[] = [
     "accent-off",
     "Accent Off",
     "challenge",
-    "Talk in an accent. If you laugh first, drink 2.",
+    "Everyone talks in an accent. First to laugh drinks 2.",
   ],
   [
     "loud-and-proud",
@@ -333,13 +333,13 @@ const drafts: Draft[] = [
     "personal-space",
     "Personal Space",
     "rule",
-    "Until next card: sit on your own hands. Slip: drink 2.",
+    "Until your next turn, everyone sits on their own hands. Slip: drink 2.",
   ],
   [
     "formal-night",
     "Formal Night",
     "rule",
-    "Until next card: address everyone as my liege. Slip: drink 2.",
+    "Until your next turn, everyone addresses others as my liege. Slip: drink 2.",
   ],
 ];
 

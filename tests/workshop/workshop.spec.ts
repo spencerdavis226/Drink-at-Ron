@@ -163,6 +163,9 @@ for (const size of [
             const box = el.getBoundingClientRect();
             const rulesElement = el.querySelector(".study-rules")!;
             const rules = rulesElement.getBoundingClientRect();
+            const titleBox = el
+              .querySelector(".study-title")!
+              .getBoundingClientRect();
             return (
               Math.abs(el.clientWidth / el.clientHeight - 2 / 3) < 0.01 &&
               Math.abs(
@@ -177,12 +180,18 @@ for (const size of [
               rules.right <= box.right + 2 &&
               rules.bottom <= box.bottom + 2 &&
               rulesElement.scrollWidth <= rulesElement.clientWidth + 2 &&
+              // Titles must stay inside their safe area, not merely inside the
+              // card: the painted arch sits above it and must never clip ink.
               [...el.querySelectorAll(".study-title h2")].every((e) => {
                 const r = e.getBoundingClientRect();
                 return (
                   r.left >= box.left - 2 &&
                   r.right <= box.right + 2 &&
-                  r.bottom <= box.bottom + 2
+                  r.bottom <= box.bottom + 2 &&
+                  r.top >= titleBox.top - 1 &&
+                  r.bottom <= titleBox.bottom + 1 &&
+                  r.left >= titleBox.left - 1 &&
+                  r.right <= titleBox.right + 1
                 );
               })
             );

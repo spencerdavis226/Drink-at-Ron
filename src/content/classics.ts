@@ -72,7 +72,7 @@ export const classicCards: CardDefinition[] = [
     "birthday",
     "Birthday Month",
     "group",
-    "Birthday this month? Drink 2. Everyone else toasts you.",
+    "Your birthday this month? Drink 2. Everyone else toasts you.",
   ),
 
   // --- Reaction and reflex -------------------------------------------------
@@ -134,7 +134,7 @@ export const classicCards: CardDefinition[] = [
     "sober-talk",
     "Sober Talk",
     "rule",
-    "Until your next turn: no saying drink, drank or drunk. Slip = drink 2.",
+    "Until your next turn, you can't say drink, drank or drunk. Slip = drink 2.",
   ),
   card("buffalo", "Buffalo", "rule", "It's gotta go."),
   card(
@@ -147,13 +147,13 @@ export const classicCards: CardDefinition[] = [
     "library",
     "Library Mode",
     "rule",
-    "Until your next turn: whisper everything. Slip = drink 2.",
+    "Until your next turn, everyone whispers. Slip = drink 2.",
   ),
   card(
     "little-green-man",
     "Little Green Man",
     "rule",
-    "Until your next turn: remove the tiny man first. Slip = drink 2.",
+    "Until your next turn, everyone removes the tiny man before drinking. Slip = drink 2.",
   ),
   card(
     "question-master",
@@ -264,7 +264,7 @@ export const classicCards: CardDefinition[] = [
     "dungeon-master",
     "Dungeon Master",
     "rule",
-    "Until your next turn: narrate in third person. Slip = drink 2.",
+    "Until your next turn, you narrate in third person. Slip = drink 2.",
   ),
   card(
     "prophecy",

@@ -1,4 +1,5 @@
 import { readFile, writeFile } from "node:fs/promises";
+import { parseCsv } from "./csv";
 
 /**
  * Parse Spencer's CABIIN 2.0 board-game card sheet into a readable JSON
@@ -6,54 +7,16 @@ import { readFile, writeFile } from "node:fs/promises";
  * and it never enters the runtime bundle. See docs/CARD_VOICE_REFERENCE.md for
  * how the tone is (and is not) translated into Drink at Ron.
  *
- * Source : docs/cabiin-2/cards.csv   (one card per CSV cell: "Title\nBody")
- * Output : docs/cabiin-2/cards.json  (array of { index, title, body })
+ * Source : reference/cabiin-2/cards.csv   (one card per CSV cell: "Title\nBody")
+ * Output : reference/cabiin-2/cards.json  (array of { index, title, body })
  *
- * Run `npm run cabiin:reference` after changing the CSV.
+ * Reference files are raw sources: replace the CSV with a newer supplied
+ * version and rerun; never rewrite it to match the shipping catalog. Run
+ * `npm run cabiin:reference` after replacing the CSV.
  */
 
-const SOURCE = "docs/cabiin-2/cards.csv";
-const OUTPUT = "docs/cabiin-2/cards.json";
-
-/** Minimal RFC 4180 reader: handles quotes, escaped quotes and newlines. */
-function parseCsv(input: string): string[][] {
-  const rows: string[][] = [];
-  let row: string[] = [];
-  let field = "";
-  let inQuotes = false;
-  for (let i = 0; i < input.length; i += 1) {
-    const ch = input[i];
-    if (inQuotes) {
-      if (ch === '"') {
-        if (input[i + 1] === '"') {
-          field += '"';
-          i += 1;
-        } else {
-          inQuotes = false;
-        }
-      } else {
-        field += ch;
-      }
-    } else if (ch === '"') {
-      inQuotes = true;
-    } else if (ch === ",") {
-      row.push(field);
-      field = "";
-    } else if (ch === "\n") {
-      row.push(field);
-      rows.push(row);
-      row = [];
-      field = "";
-    } else if (ch !== "\r") {
-      field += ch;
-    }
-  }
-  if (field.length || row.length) {
-    row.push(field);
-    rows.push(row);
-  }
-  return rows;
-}
+const SOURCE = "reference/cabiin-2/cards.csv";
+const OUTPUT = "reference/cabiin-2/cards.json";
 
 const csv = await readFile(SOURCE, "utf8");
 const cells = parseCsv(csv)

@@ -2,6 +2,36 @@
 
 Updated 2026-09-26. **Single authoritative handoff for OpenCode Go, Codex, and other editors.** Read `AGENTS.md` first. This replaces the old numbered model-routing plan; historical studies are references, not new work orders. Direct user instructions win.
 
+## Card logic sweep — who acts and how long rules last (2026-09-26)
+
+Implemented locally on `main` without commit, push, or publication, alongside the concurrent reference-folder work below. Audited all 235 cards for two user-set rules: every card says who acts (the drawing player, everyone, or a named subset), and every lasting rule runs either the rest of the game or until the drawing player's next turn — never until the next card.
+
+**Duration fixes.** `core.no-names`, `core.potty-mouth`, `core.cursed-number`, `core.banned-number`, `core.heavy-hand`, `core.personal-space`, `core.formal-night`, `vip.sidekick`, `vip.excellency`, `vip.never-alone`; House `house.sheet-040` (was "for 2 rounds"), `house.sheet-099` (was an open-ended trap), and `house.sheet-053` (gained a whole-game horizon). `vip.sidekick` now defines the lasting effect it previously left implicit.
+
+**Scope fixes.** `core.group-project`, `core.bad-text`, `core.fake-sick`, `core.crypto-bro`, `core.birthday`, `core.accent-off` (was broken — "If you laugh first" had no first), `core.library`, `core.little-green-man`, `core.dungeon-master`, `vip.toast`, and House `house.sheet-005`, `house.sheet-034`, `house.sheet-082`. House edits are minimal clarity/duration only and are listed in `reference/README.md` and `docs/AUTHORING.md`; everything else stays verbatim. `core.buffalo` ("It's gotta go.") was intentionally left as the inside joke at the user's request. House row 57 (`I'm an Idiot`) ends at "drinks" in the supplied sheet itself — left verbatim; it needs a supplied amount.
+
+**Guard.** New `tests/card-logic.test.ts`: no production card text may say "next card", and every `rule` card must state a whole-game or next-turn horizon. Two documented exceptions: `core.buffalo` (inside joke) and `house.sheet-015` Mr Freeze (ends when the drawing player stops touching them). Docs updated: `docs/{GAME_DESIGN,AUTHORING,CARD_VOICE_REFERENCE}.md`. Regenerated `docs/CARD_REVIEW.md` + `docs/card-review.csv`.
+
+**Files.** `src/content/{sample,classics,standard-expansion,custom,vip}.ts`; new `tests/card-logic.test.ts`; `docs/{GAME_DESIGN,AUTHORING,CARD_VOICE_REFERENCE}.md`; regenerated review sheets.
+
+**Verification.** `npm test` **98 passed** (2 new). `BASE_PATH=/Drink-at-Ron/ npm run build` passed content validation, TypeScript, PWA generation, and unchanged budgets (**2627 KiB runtime; 87.7 KiB initial + 147.8 KiB lazy gzip JavaScript**); only the pre-existing long-copy warnings for `house.sheet-060/093/096`. Focused production layout E2E **16 passed** across Chromium/WebKit at 390×844 with the now-longest Core rules. Workshop every-card geometry in Chromium: Small phone passed all 235 cards at both text sizes, and Landscape passed all 235 cards after the concurrent worker's stricter title safe-area assertions landed. Re-runs after 12:44 hit preview-navigation timeouts while `src/main.tsx` was mid-edit by the concurrent PWA work; those are the documented readiness race, not geometry failures, and are not counted as green.
+
+**Use / risk / next task.** Not committed. Two near-duplicate number-ban cards remain (`core.cursed-number` and `core.banned-number`, same mechanic, 2 vs 3 penalty); a future trim could merge or differentiate them. `house.sheet-006/007` still reference an earlier card and a physical 1d6, and House categories carry topic-only bodies — both sheet-verbatim by design. Next: read the reworded rules aloud at the table and fold any wording fixes back into `src/content`.
+
+## Reference folder for raw card sources (2026-09-26)
+
+Created `reference/` at the repo root for raw, user-supplied card sources. It is input material, not game content: nothing in `src/` imports it, it never enters the bundle, and files are preserved exactly as supplied — replace them with newer supplied versions and rerun the matching parse instead of rewriting them to match shipping copy.
+
+**Moved (tracked).** `docs/cabiin-2/` → `reference/cabiin-2/` (raw `cards.csv` + parsed `cards.json`); `docs/drink_at_ron_sample_cards_40_v3.json` → `reference/drink_at_ron_sample_cards_40_v3.json`. **Added.** The re-supplied house sheet at `reference/Drink at Ron - Sheet1.csv` (untouched; Main + VIP columns, rows 1–2 headers, row 75 blank, row 106 title-only), its generated companion `reference/drink-at-ron-sheet1.json` (103 house rows including `Debate`, 4 VIP rows), and `reference/README.md` (policy, contents, source→game mapping).
+
+**Scripts.** New `scripts/csv.ts` (shared RFC 4180 reader) and `scripts/house-reference.ts`; `npm run house:reference` parses the sheet into house + VIP blocks. `scripts/cabiin-reference.ts` now reads/writes under `reference/` and its regenerated JSON changed only the `source` path. `package.json` gained `house:reference`.
+
+**Docs.** `docs/CARD_VOICE_REFERENCE.md` source paths; `AGENTS.md` reference-folder constraint and sheet provenance; this handoff.
+
+**Verification.** `npm test` **98 passed**; `BASE_PATH=/Drink-at-Ron/ npm run build` passed content validation, TypeScript, PWA generation, and budget/workshop-exclusion checks (**2627 KiB runtime; 87.7 KiB initial + 147.8 KiB lazy gzip JS**). Both reference parses were re-run from their new paths. No `src/`, engine, session, frame, or dice changes.
+
+**Use / risk / next task.** The moves are staged (`git mv`); the new scripts and reference files are untracked and nothing is committed. When a newer house sheet arrives, replace `reference/Drink at Ron - Sheet1.csv`, rerun `npm run house:reference`, diff the generated JSON, and only then touch `src/content/custom.ts`. The six clarity-edited House rows intentionally differ from the raw sheet — the reference folder is provenance, never shipping copy. Add future reference JSON files to this folder and, if structured, a matching `*-reference` parser.
+
 ## Dice face numerals centered on every engine (2026-09-26)
 
 Fixed the reported off-centre dice numerals. Root cause: the dice skin placed face labels with `textAlign: "center"` + `textBaseline: "middle"`, and Safari/WebKit resolves that baseline about 0.08em higher than Chromium — on the 512px face texture the numeral ink sat ~47px high (≈30% of a d20 face inradius), which Chromium-only dice checks never saw. `src/presentation/dice/skin.ts` now measures the glyph ink box (`actualBoundingBox*`) and centers it on the canvas with an alphabetic baseline. The -7.5° d20 label rotation, font size, shadow, 6/9 underscores, d6 pips, glaze, and triangle inlay are unchanged.

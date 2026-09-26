@@ -15,6 +15,7 @@
     "imprint": "tsx scripts/imprint.ts",
     "cards:review": "tsx scripts/cards-review.ts",
     "cabiin:reference": "tsx scripts/cabiin-reference.ts",
+    "house:reference": "tsx scripts/house-reference.ts",
     "generate:icons": "tsx scripts/icons.ts",
     "test:workshop": "playwright test --config playwright.workshop.config.ts",
     "test:update": "tsx scripts/check-update.ts"

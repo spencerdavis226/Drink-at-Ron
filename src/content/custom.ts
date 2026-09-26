@@ -29,7 +29,7 @@ export const houseCards: CardDefinition[] = [
     "sheet-005",
     "Dog Vision",
     "group",
-    "If you're wearing blue or yellow, give 2",
+    "Anyone wearing blue or yellow gives 2",
   ),
   houseCard(
     "sheet-006",
@@ -172,8 +172,8 @@ export const houseCards: CardDefinition[] = [
     "sheet-034",
     "Technophoria",
     "group",
-    "If you've ever touched a phone, drink 1d6",
-    roll(1, 6, "Drink {total}."),
+    "Anyone who has touched a phone drinks 1d6",
+    roll(1, 6, "Everyone drinks {total}."),
   ),
   houseCard("sheet-035", "Categories", "category", "Countries"),
   houseCard(
@@ -206,7 +206,7 @@ export const houseCards: CardDefinition[] = [
     "sheet-040",
     "Pokemon",
     "rule",
-    "Speak only your first name for 2 rounds",
+    "Speak only your first name until your next turn",
   ),
   houseCard("sheet-041", "Categories", "category", "Hockey players"),
   houseCard(
@@ -272,7 +272,12 @@ export const houseCards: CardDefinition[] = [
     "Drink if you've lost money in the casino",
   ),
   houseCard("sheet-052", "Categories", "category", "Name those Pokémon"),
-  houseCard("sheet-053", "Abra like a Slut", "rule", "Reverse the turn order"),
+  houseCard(
+    "sheet-053",
+    "Abra like a Slut",
+    "rule",
+    "Reverse the turn order for the rest of the game",
+  ),
   houseCard(
     "sheet-054",
     "Whinnie the Pooh",
@@ -410,7 +415,7 @@ export const houseCards: CardDefinition[] = [
     "sheet-082",
     "GOALLLL",
     "group",
-    "Drink as long as the person to your left can say GOAAAAALLLLL",
+    "Everyone drinks while the person on your left says GOAAAAALLLLL",
   ),
   houseCard(
     "sheet-083",
@@ -498,7 +503,7 @@ export const houseCards: CardDefinition[] = [
     "sheet-099",
     "Da Rulez",
     "rule",
-    'Next person who says "beer" has to drink',
+    'Until your next turn, the next person to say "beer" drinks',
   ),
   houseCard(
     "sheet-100",
