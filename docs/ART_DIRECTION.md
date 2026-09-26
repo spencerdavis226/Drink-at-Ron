@@ -20,6 +20,8 @@ The title safe zone is x17–83% and y8.5–24.5% of the 2:3 card. Start at `cla
 
 Setup offers Short (30 cards), Long (60 cards), and Infinite. Core is always included; a separate Card packs dialog toggles add-ons. Selected add-ons persist for the next game, while an active game's card order and text remain its saved snapshot. The setup selector, dialogs, completion, pause, install, recovery, and update surfaces share the same quiet walnut, bronze, and teal control language, clear focus treatment, and reachable targets.
 
+Mobile play is portrait-only by user decision. If a phone or tablet presents a landscape viewport, a painted rotate prompt blocks interaction while the game and any open menu stay mounted. It disappears on return to portrait. Desktop remains usable in landscape. This is an intentional accessibility tradeoff against WCAG 1.3.4; do not claim orientation accessibility compliance.
+
 The single full-screen dice renderer uses deep teal enamel, warm ivory markings, worn bronze edges, restrained lighting, and contact shadows. After a verified physical roll, dice ease into clear space above the card so the resolved instruction remains readable. Reduced Motion places them immediately. The engine supplies results; visual treatment cannot change those outcomes.
 
 For authored rules, target 90 characters and 18 words. Review copy above either target, and reject copy over 120 characters or 24 words until edited. Keep one clear action, and keep the card rules panel scrollable for enlarged text and saved edge cases.

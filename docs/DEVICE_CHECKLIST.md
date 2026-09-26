@@ -13,7 +13,7 @@ Automated browser emulation is not evidence of actual iOS Home Screen behavior. 
 - [ ] Confirm final card stays visible until dismissed; replay starts a fresh shuffle with the same setup.
 - [ ] Previous Card is read-only; menu close restores focus; End Game can be canceled.
 - [ ] Enlarge text and zoom, enable Reduce Motion and VoiceOver. Read full rules and operate all controls.
-- [ ] Test portrait, landscape, iPad split view, and hardware keyboard where available.
+- [ ] In phone and iPad landscape, confirm the rotate prompt blocks play and Escape; rotate back and confirm the same card, menu, and count return. Desktop landscape should remain usable. Check iPad split view and hardware keyboard where available.
 - [ ] Reach a dice card, roll, and confirm the saved total matches the settled dice; Continue returns to the card and the later card action discards.
 - [ ] Publish an update while a game is active: no mid-game reload. Finish/end game, apply offered update, then check offline relaunch.
 - [ ] Measure interaction smoothness on real devices; target 60 fps. No performance claim until measured.
@@ -30,7 +30,7 @@ Sound has been removed; there are no audio checks. Verify the visual and dice it
 - [ ] Roll a dice card: the card tap target remains usable, dice settle above the card, and neither dice nor controls cover rules or the pack mark.
 - [ ] Roll 20+ times across a session; watch for accumulating lag, a frozen canvas, or a lost WebGL context.
 - [ ] Simulate a platform without WebGL: the saved result still appears and Continue remains usable (no forced replay).
-- [ ] Rotate the device and let the Safari toolbar expand/collapse during and after a roll; the settled dice stay readable.
+- [ ] Rotate during and after a roll; the rotate prompt appears, the saved result stays unchanged, and portrait shows the readable settled result. Check Safari toolbar expansion/collapse separately.
 - [ ] Roll once installed and offline; reopen the app and confirm the saved roll is restored without replaying.
 - [ ] Install a new release after a completed game and resume the saved session from the updated build.
 - [ ] Ensure all rules remain clear in Grenze at larger text sizes. Check actual iPad split view and VoiceOver.

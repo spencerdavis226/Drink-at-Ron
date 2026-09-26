@@ -22,6 +22,7 @@ import { Setup } from "./screens/Setup";
 import { Play } from "./screens/Play";
 import { Completion } from "./screens/Completion";
 import { GameDialogs, type DialogName } from "./screens/GameDialogs";
+import { PortraitGate } from "./components/PortraitGate";
 import "./style.css";
 import "./presentation/theme.css";
 import "./presentation/card-front.css";
@@ -88,6 +89,7 @@ function App() {
   return (
     <>
       <Atmosphere hidden={hidden} />
+      <PortraitGate />
       <main
         className={`${active ? "app playing" : "app"} ${hidden ? "suspended" : ""}`}
         style={styles}

@@ -158,7 +158,7 @@ test("storage failure still allows play", async ({ page }) => {
   await page.getByRole("button", { name: "Reveal card" }).click();
   await expect(page.locator(".study-title h2")).toBeVisible();
 });
-test("portrait, landscape, iPad and large text retain readable rules", async ({
+test("portrait phone, iPad, and large text retain readable rules", async ({
   page,
 }) => {
   // Five viewports of reveal/discard; Linux WebKit on CI is slow enough to
@@ -171,7 +171,6 @@ test("portrait, landscape, iPad and large text retain readable rules", async ({
     { width: 375, height: 667 },
     { width: 390, height: 844 },
     { width: 768, height: 1024 },
-    { width: 1024, height: 768 },
     { width: 320, height: 700 },
   ]) {
     await page.setViewportSize(viewport);
@@ -524,7 +523,7 @@ test("legacy audio and atmosphere preferences are ignored and toggles are gone",
   await expect(page.getByRole("switch")).toHaveCount(0);
   await expect(
     page.getByRole("button", { name: "Previous card", exact: true }),
-  ).toBeVisible();
+  ).toHaveCount(0);
 });
 test("canceled animations and backgrounding settle without additional draws", async ({
   page,

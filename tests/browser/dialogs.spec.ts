@@ -102,11 +102,17 @@ test("menu → Previous card → Back to game returns to play", async ({
   await expect(page.locator(".game-card")).toBeVisible();
 });
 
-test("cancelling End game keeps the active session", async ({ page }) => {
+test("@release cancelling End game keeps the active session", async ({ page }) => {
   await seed(page, game());
   await page.getByRole("button", { name: "Open game menu" }).click();
+  await expect(
+    page.getByRole("button", { name: "Previous card", exact: true }),
+  ).toHaveCount(0);
   await page.getByRole("button", { name: "End game", exact: true }).click();
   await expect(page.getByRole("dialog")).toContainText("Call it a night?");
+  await expect(page.getByRole("dialog")).toContainText(
+    "Your progress will be cleared.",
+  );
   await page.getByRole("button", { name: "Keep playing" }).click();
   await expect(page.getByRole("dialog")).toHaveCount(0);
   await expect(page.locator(".game-card")).toBeVisible();

@@ -47,6 +47,8 @@ The release smoke suite exercises the main flow, pack selection, card reading an
 
 Setup offers Short (30 draws), Long (60 draws), and Infinite. Core is always included; optional packs are chosen in the Card packs dialog. Every shuffle cycle exhausts the selected unique cards before repeating, including when Long exceeds the catalog. Infinite cycles have bounded storage. Existing active saves keep their original length, including older custom limits. The group handles turns and ongoing rules. All cards have equal frequency per cycle.
 
+Mobile play is portrait-only. A rotate prompt blocks phone and tablet interaction in landscape without clearing the current game; desktop landscape remains available.
+
 Saves snapshot card content and order. Invalid/unsupported saves require explicit reset; storage failures leave play available with a notice. Settings and saves are local to the browser installation; Safari and Home Screen storage may differ. App updates are offered outside active games. The artwork registry remains for validation and older saved content; current card fronts use the approved ornate frame with plain parchment.
 
 ## Add content

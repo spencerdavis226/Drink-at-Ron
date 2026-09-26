@@ -44,6 +44,7 @@ test("@release Pages manifest, assets and production exclusion", async ({
   const base = new URL(baseURL!).pathname;
   expect(manifest.start_url).toBe(base);
   expect(manifest.scope).toBe(base);
+  expect(manifest.orientation).toBe("portrait");
   for (const icon of manifest.icons)
     expect(
       (await request.get(new URL(icon.src, response.url()).href)).ok(),

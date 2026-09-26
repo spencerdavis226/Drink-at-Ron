@@ -27,7 +27,7 @@ npm run test:workshop  # dev server on :5175
 
 - Playwright specs (`*.spec.ts`) are not run by `npm test`. E2E serves `dist` through `npm run preview`; build first. Locally `reuseExistingServer` is on, so a stale preview on the default `:4173` will silently serve an old build — set `TEST_PORT`.
 - `?workshop=1` and `npm run test:workshop` use the dev server, not `dist`; workshop code must never reach production.
-- CI (`.github/workflows/pages.yml`) runs unit tests -> build -> the tagged 14-case Chromium/WebKit release smoke suite -> update test, builds with `BASE_PATH=/Drink-at-Ron/`, and deploys `dist` to Pages only from `main`. Full production E2E and exhaustive workshop sweeps remain available through a manual workflow dispatch with `full_validation` enabled. Run them after layout/engine changes or for a dedicated card review, not on every publish.
+- CI (`.github/workflows/pages.yml`) runs unit tests -> build -> the tagged Chromium/WebKit release smoke suite -> update test, builds with `BASE_PATH=/Drink-at-Ron/`, and deploys `dist` to Pages only from `main`. Full production E2E and exhaustive workshop sweeps remain available through a manual workflow dispatch with `full_validation` enabled. Run them after layout/engine changes or for a dedicated card review, not on every publish.
 
 ## Budgets and dice prototype
 

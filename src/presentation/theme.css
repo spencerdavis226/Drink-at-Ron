@@ -349,6 +349,27 @@ dialog.closing {
   /* Exiting controls must not act: the dialog is inert and non-interactive. */
   pointer-events: none;
 }
+.orientation-gate {
+  width: min(calc(100% - 32px), 420px);
+  max-height: calc(100svh - 32px);
+  padding: 28px 20px;
+  text-align: center;
+}
+.orientation-gate:focus-visible {
+  outline: 2px solid var(--bronze);
+  outline-offset: 2px;
+}
+.orientation-gate h2 {
+  font-size: clamp(1.7rem, 6vw, 2.3rem);
+  line-height: 1.05;
+  color: #fff0cf;
+}
+.orientation-gate p {
+  margin: 16px 0 0;
+  color: #f4dfb7;
+  font-size: 1.2rem;
+  line-height: 1.3;
+}
 .dialog-head {
   gap: 8px;
   margin-bottom: 20px;

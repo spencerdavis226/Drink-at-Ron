@@ -70,13 +70,11 @@ export function GameDialogs({
     return (
       <Modal title="Paused" onClose={() => setModal(null)} exiting={exiting}>
         <Button onClick={() => setModal(null)}>Resume game</Button>
-        <Button
-          variant="menu-row"
-          disabled={!session?.previousId}
-          onClick={() => setModal("previous")}
-        >
-          Previous card
-        </Button>
+        {session?.previousId && (
+          <Button variant="menu-row" onClick={() => setModal("previous")}>
+            Previous card
+          </Button>
+        )}
         {session && (
           <div className="active-pack-list" aria-label="Packs in this game">
             {selectedPacks(session.config.packIds).map((pack) => (
@@ -118,6 +116,7 @@ export function GameDialogs({
         onClose={() => setModal("menu")}
         exiting={exiting}
       >
+        <p>End this game and return to setup? Your progress will be cleared.</p>
         <Button onClick={onEnd}>End game</Button>
         <Button variant="text-button" onClick={() => setModal(null)}>
           Keep playing
