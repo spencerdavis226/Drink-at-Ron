@@ -5,6 +5,7 @@ const key = "drink-at-ron.session.v1";
 const core = packs.find((p) => p.id === "core")!;
 const house = packs.find((p) => p.id === "house")!;
 const vip = packs.find((p) => p.id === "vip")!;
+const pokemon = packs.find((p) => p.id === "pokemon")!;
 const plain = cards.filter((c) => !c.dice && core.cardIds.includes(c.id));
 const longestRule = [...plain].sort(
   (a, b) => b.rules.length - a.rules.length,
@@ -79,7 +80,7 @@ test("card parchment stays plain without an icon lattice or tint", async ({
   ).toHaveCount(0);
   await expect(page.locator(".card-footer .pack-logo")).toBeVisible();
 });
-test("Core, House and VIP seals stay inside the parchment at supported widths", async ({
+test("every pack seal stays inside the parchment at supported widths", async ({
   page,
 }) => {
   for (const viewport of [
@@ -88,7 +89,7 @@ test("Core, House and VIP seals stay inside the parchment at supported widths", 
     { width: 768, height: 1024 },
   ]) {
     await page.setViewportSize(viewport);
-    for (const pack of [core, house, vip]) {
+    for (const pack of [core, house, vip, pokemon]) {
       const card = cards.find((candidate) =>
         pack.cardIds.includes(candidate.id),
       )!;
@@ -99,7 +100,7 @@ test("Core, House and VIP seals stay inside the parchment at supported widths", 
           limit: 1,
         },
         [card],
-        [core, house, vip],
+        packs,
       );
       session.phase = "revealed";
       await seed(page, session);

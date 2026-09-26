@@ -10,7 +10,7 @@ Automated browser emulation is not evidence of actual iOS Home Screen behavior. 
 - [ ] Reveal a card, switch apps, lock/unlock, and reopen. Same card and count persist.
 - [ ] Rapidly tap during reveal and discard. Exactly one action occurs per transition.
 - [ ] Interrupt a transition by closing the app. It restores the latest committed stable state, never a broken animation.
-- [ ] Check Short (30), Long (60), Infinite, and the three opt-in pack toggles in the pack dialog. Confirm an existing custom-length active save retains its original limit.
+- [ ] Check Short (30), Long (60), Infinite, and the four opt-in pack toggles in the pack dialog. Confirm an existing custom-length active save retains its original limit.
 - [ ] Confirm final card stays visible until dismissed; replay starts a fresh shuffle with the same setup.
 - [ ] Previous Card is read-only; menu close restores focus; End Game can be canceled.
 - [ ] Enlarge text and zoom, enable Reduce Motion and VoiceOver. Read full rules and operate all controls.

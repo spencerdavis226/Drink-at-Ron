@@ -41,5 +41,5 @@ test("each supplied sheet row lands in the House deck and VIP night", () => {
   expect(vip.cardIds.slice(-4)).toEqual(
     [3, 4, 5, 6].map((row) => `vip.sheet-${String(row).padStart(3, "0")}`),
   );
-  expect(cards).toHaveLength(235);
+  expect(cards).toHaveLength(369); // 117 core + 102 house + 16 vip + 134 Pokémon
 });

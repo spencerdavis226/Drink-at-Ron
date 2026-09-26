@@ -20,6 +20,7 @@ material, not game content:
 | `Drink at Ron - Sheet1.csv` | The supplied house sheet. Five columns: Main Title, Main Description, spacer, VIP Title, VIP Description. Rows 1–2 are headers, row 75 is blank, row 106 (`Debate`) is title-only. | `npm run house:reference` |
 | `drink-at-ron-sheet1.json` | Parsed companion: `{ row, title, description }` entries, 103 house rows (including title-only row 106) and 4 VIP rows; each row number is the sheet row. | — |
 | `drink_at_ron_sample_cards_40_v3.json` | The earlier 40-card translation of the CABIIN voice into this game; the seed of the Core deck. | — |
+| `pokemon_board_spaces.json` | The supplied Pokémon drinking-game board sheets: three 72-space boards (Kanto, Johto, Hoenn), each space a `{ title, body }`. Many spaces are untitled. Raw source behind the `pokemon` pack. | — |
 
 ## How the sources map to the game
 
@@ -34,6 +35,13 @@ material, not game content:
   does and does not carry over.
 - **Sample 40**: the earlier design artifact; its copy was revised heavily in
   the shipping Core deck, so treat it as provenance rather than current text.
+- **Pokémon**: `src/content/pokemon.ts` translates the board sheets into the
+  shared-deck format. Gyms became leader battles, movement and lost turns
+  became pours, one-shot dice, or next-turn rules, and untitled spaces are
+  named after the Pokémon in them. Source consequences are kept as written —
+  shots, chugs, gendered splits, mixed drinks and rough dares are not
+  softened. Board-only plumbing (squares, lights, turn order, extra turns) is
+  intentionally not carried over.
 
 ## Adding a new reference file
 

@@ -36,9 +36,9 @@ When proposing a new card, aim for this shape:
 2. Give it one strong comic premise, preferably rooted in a recognizable social moment or specific bit of lore.
 3. Turn that premise into an immediate table interaction that makes sense on one reading.
 4. End the activity clearly. Keep app bookkeeping unnecessary.
-5. Write the consequence plainly: the app never enforces a pour, any drink can be nonalcoholic, and card copy does not carry permission-seeking language.
+5. Write the consequence plainly: no permission-seeking language and no softened pours. The app never enforces a pour; the table decides what anyone actually drinks.
 
-A suggestion can borrow the source collection's comic rhythm without copying its exact mechanic. For example, a board-space penalty can become a one-card challenge; a multi-round status can become a rule lasting the rest of the game or until the drawing player's next turn; a high drink count can become one sip, giving a sip, or a non-drinking social consequence.
+A suggestion can borrow the source collection's comic rhythm without copying its exact mechanic. For example, a board-space penalty can become a one-card challenge; a multi-round status can become a rule lasting the rest of the game or until the drawing player's next turn. Translate the mechanic, never tame the consequence.
 
 ## CABIIN-specific material that does not carry over
 
@@ -49,8 +49,8 @@ Do not assume or recommend these unless the current game design changes explicit
 - Chained rolls, re-rolls, or outcomes that depend on state from earlier cards (one committed roll resolves each card).
 - Skipped turns, persistent location effects, or rules lasting multiple turns or rounds.
 - Dependencies on specific CABIIN cards, locations, or win conditions.
-- Alcohol-only instructions: every pour can be nonalcoholic, and the app never enforces a drink.
-- Dangerous, destructive, humiliating, nonconsensual, or physically risky actions.
+
+Nothing in the source needs softening. Keep supplied shots, chugs, gendered splits, mixed drinks, slapstick dares and crude call-outs as written; the table decides what anyone actually consumes.
 
 Dice *are* supported in this game (one to four d6/d20; total, doubles, or per-die amounts), so the source's dice ideas are welcome. Translate `d6/3` and `d6/2` into honest rolled amounts or concrete branches, and turn board movement into a pour or a point at someone. Never leave odds/evens or an "otherwise" branch for the table to work out: every roll must resolve to one exact instruction.
 

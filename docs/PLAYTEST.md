@@ -5,7 +5,7 @@ Status: **prepared, no results recorded.** Kit prepared 2026-09-21 at commit `3e
 ## How to run
 
 - Two sessions, ideally one group. Session A is Short (30 cards) with the Core deck. Session B is Infinite with the House deck and VIP night, with a guest of honor; use more sessions to cover the deck.
-- Dice cards are spread across all three packs (39 in Core, 19 in House). Packs are opt-in; select as many as the table wants.
+- Dice cards are spread across all four packs (39 in Core, 19 in House, 26 in Pokémon). Packs are opt-in; select as many as the table wants.
 - Use the game without coaching beyond choosing a first drawer and clockwise turns. Record confusion rather than steering players to the intended answer.
 - Place the phone where the group will actually play. Ask people across the table and at side angles to read each revealed rule without passing the phone; note when they must lean in, turn the phone, or scroll.
 - After each session ask: which cards would you remove, which do you want more of, and was the next action ever unclear?
@@ -41,7 +41,7 @@ Status: **prepared, no results recorded.** Kit prepared 2026-09-21 at commit `3e
 
 ## Copy and pack decisions (need user approval)
 
-- **Pack names/copy.** `The Core deck` (generated main deck, 117), `The House deck` (supplied sheet, 102), `VIP night` (16). Keep, or rename?
+- **Pack names/copy.** `The Core deck` (generated main deck, 117), `The House deck` (supplied sheet, 102), `VIP night` (16), `Pokémon night` (board sheets, 134). Keep, or rename?
 - **Dice cards.** Every roll now resolves to one exact instruction in the engine. Check the odds/evens, doubles, and per-die cards on the phone; note any result you would read differently.
 - **`VIP night` name/copy.** Keep, or rename? The pack mark is `art/packs/vip.svg`.
 - **Card wording.** The sample text is supplied as-is, including the crude language. Note any line you want changed; unchanged concepts keep their IDs, unrelated replacements get new IDs. Discuss balance after observing the expanded deck; keep IDs stable for copy edits.
@@ -51,7 +51,7 @@ Status: **prepared, no results recorded.** Kit prepared 2026-09-21 at commit `3e
 
 Add rows or annotate the sheet below. Mark each card: `fine`, `confusing`, `skipped`, or `remove`.
 
-Use the generated [card review sheet](CARD_REVIEW.md) or [CSV](card-review.csv) to record per-card observations for all 235 cards (117 Core, 102 House, 16 VIP). Keep this file for session findings and decisions. The House IDs include their source sheet row numbers for comparison.
+Use the generated [card review sheet](CARD_REVIEW.md) or [CSV](card-review.csv) to record per-card observations for all 369 cards (117 Core, 102 House, 16 VIP, 134 Pokémon). Keep this file for session findings and decisions. The House IDs include their source sheet row numbers for comparison.
 
 ## Device checks
 

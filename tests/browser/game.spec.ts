@@ -103,7 +103,7 @@ test("only three modes appear and every pack can be toggled", async ({
   ).toHaveAttribute("aria-pressed", "true");
   await page.getByRole("button", { name: "Choose packs" }).click();
   const dialog = page.getByRole("dialog");
-  await expect(dialog.locator(".pack")).toHaveCount(3);
+  await expect(dialog.locator(".pack")).toHaveCount(4);
   await expect(dialog).not.toContainText("Always included");
   const core = dialog.getByRole("button", { name: /The Core deck/ });
   await core.click();

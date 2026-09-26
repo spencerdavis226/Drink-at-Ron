@@ -7,6 +7,7 @@ const packSeals: Readonly<Record<string, string>> = {
   core: "art/packs/core-seal.svg",
   house: "art/packs/house-seal.svg",
   vip: "art/packs/vip-seal.svg",
+  pokemon: "art/packs/pokemon-seal.svg",
 };
 
 export function PackLogo({

@@ -233,7 +233,7 @@ const drafts: Draft[] = [
     "what-an-idiot",
     "What an Idiot",
     "challenge",
-    "Call someone an idiot. They give 3, or you drink 3.",
+    "Call someone an idiot. They finish their drink.",
   ],
   [
     "get-good",
@@ -251,7 +251,7 @@ const drafts: Draft[] = [
     "its-gotta-go",
     "It's Gotta Go",
     "challenge",
-    "Finish your drink. Or pass and drink 3.",
+    "Finish your drink.",
   ],
   [
     "thanos-snap",

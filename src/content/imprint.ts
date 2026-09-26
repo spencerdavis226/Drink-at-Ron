@@ -1,5 +1,6 @@
 import { standardExpansionCards } from "./standard-expansion";
 import { houseCards, customVipCards } from "./custom";
+import { pokemonCards } from "./pokemon";
 
 /**
  * Card imprint content: which icon and paper tint a card carries.
@@ -67,6 +68,9 @@ export const imprintAssignments: Record<string, ImprintAssignment> = {
       card.id,
       expansionMotifs[card.category],
     ]),
+  ),
+  ...Object.fromEntries(
+    pokemonCards.map((card) => [card.id, expansionMotifs[card.category]]),
   ),
   "core.house-special": { icon: "lorc/beer-stein", tint: "amber" },
   "core.bar-tab": { icon: "delapouite/coins-pile", tint: "sepia" },
@@ -162,6 +166,41 @@ export const imprintAssignments: Record<string, ImprintAssignment> = {
   "core.prophecy": { icon: "lorc/treasure-map", tint: "plum" },
   "core.mimic-chest": { icon: "lorc/treasure-map", tint: "rose" },
   "core.side-quest": { icon: "lorc/scroll-unfurled", tint: "teal" },
+
+  // Pokémon pack highlights. Slugs all exist in the shipped sprite.
+  "pokemon.mareep": { icon: "lorc/clover", tint: "sage" },
+  "pokemon.pikachu": { icon: "delapouite/round-star", tint: "amber" },
+  "pokemon.unown": { icon: "lorc/book-cover", tint: "sepia" },
+  "pokemon.smeargle": { icon: "lorc/quill", tint: "rose" },
+  "pokemon.magikarp": { icon: "lorc/clover", tint: "teal" },
+  "pokemon.red-gyarados": { icon: "lorc/snake", tint: "rose" },
+  "pokemon.dragon-rage": { icon: "lorc/heartburn", tint: "rose" },
+  "pokemon.dragonite": { icon: "lorc/snake", tint: "amber" },
+  "pokemon.legendary-dogs": { icon: "lorc/crown", tint: "amber" },
+  "pokemon.kyogre": { icon: "lorc/crown", tint: "teal" },
+  "pokemon.groudon": { icon: "lorc/crown", tint: "sepia" },
+  "pokemon.rayquaza": { icon: "lorc/crown", tint: "sage" },
+  "pokemon.pokemon-master": { icon: "lorc/crown", tint: "amber" },
+  "pokemon.champion-lance": { icon: "lorc/crossed-swords", tint: "rose" },
+  "pokemon.elite-four": { icon: "delapouite/round-star", tint: "plum" },
+  "pokemon.gym-battle": { icon: "lorc/castle", tint: "teal" },
+  "pokemon.game-corner": { icon: "delapouite/coins-pile", tint: "amber" },
+  "pokemon.meowth": { icon: "delapouite/coins-pile", tint: "amber" },
+  "pokemon.bug-contest": { icon: "lorc/treasure-map", tint: "sage" },
+  "pokemon.safari-zone": { icon: "lorc/treasure-map", tint: "sepia" },
+  "pokemon.bicycle": { icon: "lorc/treasure-map", tint: "sage" },
+  "pokemon.egg": { icon: "lorc/gift-of-knowledge", tint: "amber" },
+  "pokemon.togepi": { icon: "lorc/crowned-heart", tint: "rose" },
+  "pokemon.eevee": { icon: "lorc/crowned-heart", tint: "sage" },
+  "pokemon.team-rocket": { icon: "lorc/skull-crossed-bones", tint: "ash" },
+  "pokemon.team-magma": { icon: "lorc/heartburn", tint: "rose" },
+  "pokemon.team-aqua": { icon: "delapouite/wine-bottle", tint: "teal" },
+  "pokemon.missingno": { icon: "lorc/skull-crossed-bones", tint: "plum" },
+  "pokemon.pokemon-tower": { icon: "lorc/skull-crossed-bones", tint: "ash" },
+  "pokemon.gloom": { icon: "lorc/poison-bottle", tint: "sage" },
+  "pokemon.spoink": { icon: "lorc/brain", tint: "plum" },
+  "pokemon.snorlax": { icon: "lorc/beer-stein", tint: "teal" },
+  "pokemon.seaking": { icon: "delapouite/beer-horn", tint: "teal" },
 };
 
 /**

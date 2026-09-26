@@ -1,0 +1,872 @@
+[
+  [
+    {
+      "title": null,
+      "body": "Wild Mareep appeared! Roll evens to catch it! If not, drink 1 and give 1 in sadness."
+    },
+    {
+      "title": null,
+      "body": "Unown used Sobriety Test! Recite the alphabet backwards and take a drink every time you make a mistake."
+    },
+    {
+      "title": null,
+      "body": "Smeargle used Sketch! Switch drinks with another player."
+    },
+    {
+      "title": null,
+      "body": "Slowpoke tails are valuable, make a decision: Cut it off: Drink 2 and skip the next Gym. Dick. Leave it: Give 1."
+    },
+    {
+      "title": "AZALEA GYM",
+      "body": "Bugs are tiny. Drink 1. Everyone shorter than you drinks. If you're the shortest, drink again."
+    },
+    {
+      "title": "SILVER",
+      "body": "Who is this guy anyways? Drink for half the total number of players in the game rounded up."
+    },
+    {
+      "title": "ILEX FOREST",
+      "body": "This place is a little eerie. Try not to get lost! When you roll to move, if you roll a 5 or 6, drink 1 and return to the start of Ilex Forest."
+    },
+    {
+      "title": null,
+      "body": "Pineco used Protect! Drink 2 and protect yourself from any incoming drinks until your next turn!"
+    },
+    {
+      "title": null,
+      "body": "Farfetch'd got away! Drink 1 in frustration. For the remainder of the game, you are now the game's bartender. Fetch anyone a drink if they ask for it!"
+    },
+    {
+      "title": null,
+      "body": "Bellsprout used Growth! Drink 1 and take an extra turn!"
+    },
+    {
+      "title": null,
+      "body": "Spinarak used Spider Web! Drink 2. The next time someone passes you, they must stop at whatever square you're on."
+    },
+    {
+      "title": null,
+      "body": "Rare Candy - Level up! You get an extra turn."
+    },
+    {
+      "title": null,
+      "body": "Machoke used Submission! Submit to peer-pressure and do anything the group tells you to now. Otherwise, drink 4."
+    },
+    {
+      "title": null,
+      "body": "Dugtrio used Dig! Drink 3 and next turn add 3 spaces to your move roll!"
+    },
+    {
+      "title": null,
+      "body": "Geodude used Magnitude! Take as many drinks as you want, the person to the left of you must take that many minus 1. Continue this until you have gone around the table."
+    },
+    {
+      "title": null,
+      "body": "Marill used Rain Dance! Do a song and dance of the group's choice to make them all drink! If you don't, drink 3."
+    },
+    {
+      "title": null,
+      "body": "Zubats! They're back bitches! Next turn roll a die. If you roll odds, lose your turn and drink 1. You cannot leave until you roll evens."
+    },
+    {
+      "title": null,
+      "body": "Paras used Leech Life! Give drinks to all players ahead of you. If nobody is ahead, drink 1."
+    },
+    {
+      "title": "VIOLET GYM",
+      "body": "Roll a die. Even: Give a drink. Odd: Take a drink."
+    },
+    {
+      "title": "MT. MORTAR",
+      "body": "This cave is very big and dark and scary. If nobody caught a Mareep, turn off all the lights! As long as someone is in Mt. Mortar, the lights must remain off. Since the cave is so big, only people in Mt. Mortar can give you drinks when inside. Take a drink now to prepare for this undertaking!"
+    },
+    {
+      "title": null,
+      "body": "Delibird used Present! Roll a die. 1-3: drink that many, 4-6: give that many."
+    },
+    {
+      "title": "BLACKTHORN GYM",
+      "body": "First, drink 2. Then roll a die. Even: drink 2. Odd: Drink 6."
+    },
+    {
+      "title": null,
+      "body": "Skarmory used Steel Wing! Drink 3! All drinks you recieve while here bounce to the player on your right."
+    },
+    {
+      "title": null,
+      "body": "Wartortle used Skull Bash! Crush an empty beer can against your head to avoid taking 3 drinks and losing your next turn. If you can, give those 3 to one person."
+    },
+    {
+      "title": null,
+      "body": "It's the Legendary Dog Raikou! Roll a 3 to catch it and bypass the next gold square! Otherwise get zapped with a bomb shot!"
+    },
+    {
+      "title": null,
+      "body": "Raticate used Pursuit! You must now take a drink every time you leave the table for any reason."
+    },
+    {
+      "title": null,
+      "body": "Jigglypuff used Pound! Everyone pound their drinks!"
+    },
+    {
+      "title": null,
+      "body": "Hoothoot only comes out at night! If it’s after sundown, give 1. Otherwise, put on a pair of shades and drink 1."
+    },
+    {
+      "title": null,
+      "body": "Mankey used Swagger! Make up a secret handshake and teach everyone how to do it. Any time someone fails to do the handshake when posed drinks!"
+    },
+    {
+      "title": null,
+      "body": "Bellossom used Solar Beam! Take in up to 3 drinks this turn. Next turn give twice that many!"
+    },
+    {
+      "title": null,
+      "body": "Aipom used Baton Pass! As long as you are on this square, you may pass any drinks you are given to another player."
+    },
+    {
+      "title": null,
+      "body": "The Legendary Dog Suicune! Roll a 3 to catch it and bypass the next gold square! Otherwise get blitzed and shotgun a beer!"
+    },
+    {
+      "title": null,
+      "body": "You visited the Daycare Center! Give a drink for each sibling you have. If you have none, drink 2."
+    },
+    {
+      "title": null,
+      "body": "A wild Phanpy appeared! Nose Goes! Whenever the person who first landed on this square puts their finger on their nose, everyone must follow suit. The last to do so drinks!"
+    },
+    {
+      "title": "OLIVINE GYM",
+      "body": "It's hardly even a gym battle to be honest. Just drink 2."
+    },
+    {
+      "title": null,
+      "body": "A Cooltrainer challenges you to a battle! This guy is way cooler than you, drink 3 in envy."
+    },
+    {
+      "title": null,
+      "body": "Ursaring woke up! And now he's pissed! Thanks asshole. Drink as many as the group decides and apologize."
+    },
+    {
+      "title": null,
+      "body": "It's a Red Gyarados! Ok let's face it, this is probably the only shiny you've ever caught. If you've caught another shiny, give 4. Otherwise drink 4."
+    },
+    {
+      "title": "GOLDENROD GYM",
+      "body": "Roll a die. Even: Attract: Lose a turn. Odd: Rollout: Roll a die until you get a 5 or 6, drink each time you don't."
+    },
+    {
+      "title": null,
+      "body": "If you want, drink 2 to steal another player's starter and replace it with yours. Jerk."
+    },
+    {
+      "title": null,
+      "body": "Mantine used Whirlpool! Everyone take a drink and reverse the turn order!"
+    },
+    {
+      "title": null,
+      "body": "The Legendary Dog Entei! Roll a 3 to catch it and bypass the next gold square! Otherwise feel the burn and take a high-proof shot!"
+    },
+    {
+      "title": null,
+      "body": "Hitmontop used Rapid Spin! Spin in place once for each bottle, can, etc. on the table. If you don't fall over, everyone drinks!"
+    },
+    {
+      "title": null,
+      "body": "Electrode used Selfdestruct! Choose another player and you both finish your drinks!"
+    },
+    {
+      "title": null,
+      "body": "The Goldenrod Game Corner brings out your gambling problem. Each turn roll 2 dice. Roll 7 to give 7 and leave, otherwise drink 2. You may only leave once you've finished your drink or roll 7."
+    },
+    {
+      "title": null,
+      "body": "You're given an Egg! Pick a nearby object and hold it close until it hatches. Anytime you're caught without it take a drink. Drink 1 now for responsibility. (The Togepi square is now a mandatory stop for you.)"
+    },
+    {
+      "title": null,
+      "body": "Shuckle used Bide! Lose your next turn and give 4."
+    },
+    {
+      "title": null,
+      "body": "Lickitung used Lick! Give 2 and stick your tongue out until your next turn."
+    },
+    {
+      "title": "POKEMON MASTER!",
+      "body": "Throw that Master Ball and take a victory drink. All other players toast to your glory! You are a Pokemon Master!"
+    },
+    {
+      "title": "CHAMPION LANCE",
+      "body": "Finish a full drink to beat this dude and take his title! You cannot move on until your drink is finished."
+    },
+    {
+      "title": "ELITE FOUR",
+      "body": "Challenge the greatest trainers in the Land: the Elite Four! Roll 4 dice. If all dice are 4 or under you defeat the Elite Four! Otherwise, drink 4 and end your turn."
+    },
+    {
+      "title": "SILVER",
+      "body": "Time to get rid of this bastard once and for all! Drink for each player in the game times 2."
+    },
+    {
+      "title": null,
+      "body": "Murkrow used Mimic! Pick a player and repeat everything they say until your next turn."
+    },
+    {
+      "title": null,
+      "body": "Bug Catching Contest! Everyone rolls a die to catch one! 1- Paras: Awful, drink 1. 2- Metapod: Give 1. 3- Beedrill: Drink 1, give 1. 4- Butterfree: Give 2. 5- Pinsir: Drink 2, give 1. 6- Scyther: Give 3."
+    },
+    {
+      "title": null,
+      "body": "Sentret used Foresight! You didn't see this coming, choose someone to finish the drink."
+    },
+    {
+      "title": "CIANWOOD GYM",
+      "body": "Make an open-challenge to Arm Wrestle anyone. Loser drinks 5. If nobody accepts, give 5."
+    },
+    {
+      "title": "ROCKET EXECUTIVE",
+      "body": "This guy means business! Roll a die, drink half give half rounded up."
+    },
+    {
+      "title": null,
+      "body": "Grimer used Sludge Bomb! Have every player combine their drinks in a glass and you finish the drink!"
+    },
+    {
+      "title": "SILVER",
+      "body": "I swear if I see this guy one more time it'll be the last! Drink for each player in the game plus 1."
+    },
+    {
+      "title": null,
+      "body": "Rocket Grunt challenges you to a Pokemon battle! Wait... 5 Rattata? Is this guy kidding? Just drink as many as you want."
+    },
+    {
+      "title": "RADIO TOWER",
+      "body": "The infamous Team Rocket has now taken control of the Radio Tower in Goldenrod! I'm not sure what their plan is, but it probably involves Nickleback. Turn on the radio now and roll a die before each turn: 1-3: Drink that many. 4-6: Change the station."
+    },
+    {
+      "title": "MAHOGANY GYM",
+      "body": "Ice Pokemon are cool. If your drink is ice cold, drink 2, if not, drink 4."
+    },
+    {
+      "title": null,
+      "body": "Wild Sudowoodo appeared! Nobody likes a fake person. Reveal an embarassing truth about yourself to avoid 2 drinks and make everyone else drink!"
+    },
+    {
+      "title": "NEW BARK TOWN",
+      "body": "Pick one, dude."
+    },
+    {
+      "title": null,
+      "body": "Tentacool used Constrict! Grab your drink and drink 2. You are not allowed to let go of your drink until you've finished."
+    },
+    {
+      "title": null,
+      "body": "Snubbull used Roar! Roll 2 dice and move backwards that many spaces."
+    },
+    {
+      "title": null,
+      "body": "A Togepi hatched from the Egg! If you were given an Egg, make up a new rule! Any rule violations result in a drink! If you weren't, drink 2."
+    },
+    {
+      "title": null,
+      "body": "Miltank used Milk Drink! Replace your current drink with a non-alcoholic beverage and drink 2."
+    },
+    {
+      "title": null,
+      "body": "Kimono Girls have Pokemon with style. Create a stylish new rule! Any rule violations result in a drink!"
+    },
+    {
+      "title": "ECRUTEAK GYM",
+      "body": "Ghost Pokemon are pretty spooky. Drink 3 to calm yourself down."
+    },
+    {
+      "title": "BURNED TOWER",
+      "body": "While searching through the basement you found 3 cool Pokemon... but they ran away. The first person here drinks 3. Everybody else drinks 1."
+    },
+    {
+      "title": "SILVER",
+      "body": "This guy again? Drink for each player in the game minus 1."
+    }
+  ],
+  [
+    {
+      "title": null,
+      "body": "Zubats... they're... they're everywhere! Take a drink. Next turn, if you roll a 1 or 2, stay here and take a drink!"
+    },
+    {
+      "title": null,
+      "body": "Clefairy used Metronome! Close your eyes, point to a random square, and drink or give what it says. If no drink is given or taken, just drink 2."
+    },
+    {
+      "title": null,
+      "body": "Jigglypuff used Sing! Everyone else fell asleep! Take an extra turn!"
+    },
+    {
+      "title": null,
+      "body": "Abra used Teleport! Teleport to the other Abra."
+    },
+    {
+      "title": "GARY",
+      "body": "Roll a die. Drink half, give half (round up). What's this guy's deal, anyway?"
+    },
+    {
+      "title": "CERULEAN GYM",
+      "body": "Misty's water attacks caused splash damage. You drink 2, everyone else drinks 1."
+    },
+    {
+      "title": null,
+      "body": "Slowpoke is slow. For the first one here, make up a gesture. For the rest of the game, when you do it, the last to mimic you takes a drink."
+    },
+    {
+      "title": null,
+      "body": "Bellsprout used Razor Leaf! Shred someone's dignity with a reckless callout. They drink 1 in shame."
+    },
+    {
+      "title": null,
+      "body": "Meowth used Pay Day! Everybody but you takes a drink."
+    },
+    {
+      "title": null,
+      "body": "If you're a guy, guys drink. If you're a girl, girls drink."
+    },
+    {
+      "title": null,
+      "body": "Lapras used Confuse Ray! Pick a player; they are now confused. Next turn, they must roll a 1-3 to stop being confused. If not, they are still confused, and lose a turn."
+    },
+    {
+      "title": null,
+      "body": "It's Team Rocket! Watch them defeat themselves with incompetence, and everyone drink to them blasting off."
+    },
+    {
+      "title": "GIOVANNI",
+      "body": "Roll a die. 1-3: Give that number. 4-6: Drink that number."
+    },
+    {
+      "title": null,
+      "body": "Rare Candy - Level up! You get an extra turn."
+    },
+    {
+      "title": "GARY",
+      "body": "Roll a die and take that many drinks. The next time this punk hassles you will be the last."
+    },
+    {
+      "title": "SAFFRON GYM",
+      "body": "Use psychic powers to pick a number, then roll the die. If it's your number, take an extra turn. If not, drink 2."
+    },
+    {
+      "title": null,
+      "body": "Challenge someone to a chugging contest. First to finish gets an extra turn, last to finish loses a turn."
+    },
+    {
+      "title": null,
+      "body": "Diglett used Dig! Dig deep and finish your drink."
+    },
+    {
+      "title": "PEWTER GYM",
+      "body": "Roll a die. Even: Give a drink. Odd: Take a drink."
+    },
+    {
+      "title": null,
+      "body": "A Scientist uses his magnet Pokemon! You magnetically attract 1 drink per player in the game."
+    },
+    {
+      "title": null,
+      "body": "You resurrected a Fossil Pokemon! Everyone older than you drinks 2."
+    },
+    {
+      "title": null,
+      "body": "You throw a Pokeball! If your favorite Pokemon is on the board, roll a 1-3 to catch it! Roll a 4-6 and it got away, drink 3. If your favorite is not on the board, sadly drink 3."
+    },
+    {
+      "title": null,
+      "body": "Persian used Fury Swipes! Roll a die, and give out that many drinks."
+    },
+    {
+      "title": "VIRIDIAN GYM",
+      "body": "First, take a drink. Then, if you're a guy, guys take 3. If you're a girl, girls take 3."
+    },
+    {
+      "title": null,
+      "body": "Fearow used Mirror Move! Drink what the last person did during his/her last turn."
+    },
+    {
+      "title": null,
+      "body": "Krabby used Crabhammer! Bring down the Crabhammer on someone; they must finish their drink."
+    },
+    {
+      "title": null,
+      "body": "Enjoy your cruise aboard the S.S. Anne! Roll a die, you lose that many turns aboard the luxury cruise liner. Roll again, and drink that number during each lost turn."
+    },
+    {
+      "title": null,
+      "body": "Beedrill used Twinneedle! Pick two people to drink."
+    },
+    {
+      "title": "SILPH CO.",
+      "body": "You've infiltrated the headquarters of the infamous Team Rocket! You will need all your courage to make it to their leader. Drink an extra 2 every turn to calm your nerves."
+    },
+    {
+      "title": null,
+      "body": "Koffing used Haze! If there's anything nearby to smoke, smoke it to avoid taking 2 drinks."
+    },
+    {
+      "title": null,
+      "body": "Graveler used Defense Curl! Lose 2 turns, but you do not have to take any drinks until you go again."
+    },
+    {
+      "title": null,
+      "body": "Ditto used Transform! During the next person's turn, you must copy everything they do!"
+    },
+    {
+      "title": "VERMILION GYM",
+      "body": "Roll a die. Even, you're paralyzed; take 2 drinks and miss your next turn. Odd. take a drink."
+    },
+    {
+      "title": null,
+      "body": "You caught a Pikachu! Drink 2 and replace your starter with this walking electric franchise."
+    },
+    {
+      "title": null,
+      "body": "Porygon used Tri Attack! While on this space, for each drink you are given, the giver must drink 3."
+    },
+    {
+      "title": "CINNABAR GYM",
+      "body": "Roll a die. Even, roll again. Odd, drink twice as many times as you rolled evens."
+    },
+    {
+      "title": null,
+      "body": "Gyarados used Dragon Rage! Take 4 drinks unless you landed on Magikarp, in which case you give 4 drinks."
+    },
+    {
+      "title": null,
+      "body": "Doduo used Double-Edge! You give 4 drinks, but you drink 1."
+    },
+    {
+      "title": null,
+      "body": "I want to ride my BICYCLE! BICYCLE! BICYCLE! On your next turn, roll the die and move twice that number."
+    },
+    {
+      "title": null,
+      "body": "Caterpie used String Shot! It was super effective! All other players may only move 1/2 of what they roll on their next turn (round up)."
+    },
+    {
+      "title": null,
+      "body": "What? Your Pokemon is evolving! Let it evolve: Drink 4 and skip the next gym. Stop evolution: Take an extra turn."
+    },
+    {
+      "title": null,
+      "body": "A wild Missingno! Roll 3 times. Get a 5 or 6, and you continue. If not, you glitched. Restart at Pallet Town."
+    },
+    {
+      "title": null,
+      "body": "Dragonite used Hyper Beam! Give 5 drinks, but lose a turn to recharge."
+    },
+    {
+      "title": "SAFARI ZONE",
+      "body": "Before each turn in the Safari Zone, roll a die. 1-2: You throw bait. Give 1 drink to someone. 3-4: You throw a rock, dick. Lose your turn, drink 4. 5-6: You throw a safari ball. Drink 2 in sadness, because safari balls are just awful."
+    },
+    {
+      "title": null,
+      "body": "Magikarp used Splash! ...but nothing happened..."
+    },
+    {
+      "title": null,
+      "body": "Pidgey used Quick Attack! Use that quickness to give 1 drink and take an extra turn."
+    },
+    {
+      "title": null,
+      "body": "Psyduck is slow. For the first one here, make up a gesture. For the rest of the game, when you do it, the last to mimic you takes a drink."
+    },
+    {
+      "title": null,
+      "body": "Seaking used Waterfall! ...do a waterfall!"
+    },
+    {
+      "title": "POKEMON MASTER!",
+      "body": "Throw that Master Ball and take a victory drink. All other players toast to your glory! You are a Pokemon Master!"
+    },
+    {
+      "title": "CHAMPION GARY",
+      "body": "Finish a full drink to take down this bastard for the last time! You cannot move on until your drink is finished."
+    },
+    {
+      "title": "THE ELITE FOUR",
+      "body": "Challenge the land's greatest trainers: the Elite Four! Roll a 4 to defeat the Elite Four! For any other number, drink 4!"
+    },
+    {
+      "title": null,
+      "body": "Gotta catch 'em all! Roll a die. 1-3: Why are you throwing Great Balls at it? Take a drink! 4-6: You got one! You may only move on once you've caught all 3 birds."
+    },
+    {
+      "title": null,
+      "body": "Gone fishin’... a wild Dratini appeared! Roll a 1 to catch. Otherwise, drink 1."
+    },
+    {
+      "title": null,
+      "body": "Sandshrew used Sand-Attack! Your accuracy is lowered. For the rest of the game, you may only drink with your non-dominant hand."
+    },
+    {
+      "title": null,
+      "body": "Rattata used Tackle!..wait, you seriously rolled a 1? You fainted. Finish your drink."
+    },
+    {
+      "title": "CELADON GYM",
+      "body": "Roll a die. 1-3: Stun Spore; Lose a turn. 4-6: Mega Drain; Finish your drink."
+    },
+    {
+      "title": null,
+      "body": "Poliwag used Hydro Pump! Shotgun a beer."
+    },
+    {
+      "title": null,
+      "body": "Electabuzz used Thunder Punch! You're paralyzed; miss your next turn."
+    },
+    {
+      "title": null,
+      "body": "Electrode used Explosion! Everybody finish their drinks!"
+    },
+    {
+      "title": "FUCHSIA GYM",
+      "body": "Poison Pokemon are Toxic! Better get intoxicated! Drink 3."
+    },
+    {
+      "title": null,
+      "body": "Roll the die. If it's 1-3 Chansey eludes you, drink 1. If 4-6, you capture Chansey, give 2."
+    },
+    {
+      "title": null,
+      "body": "A wild Tauros appeared... but instantly fled. Drink 2 for not being quick enough."
+    },
+    {
+      "title": "POKEMON TOWER",
+      "body": "While in the Pokemon Tower, out of respect for the dead, you should not speak. Doing so results in a drink each time. Take a drink now for your fallen comrades."
+    },
+    {
+      "title": "PALLET TOWN",
+      "body": "Pick one, dude."
+    },
+    {
+      "title": null,
+      "body": "Eeveelution time! You choose a new rule! Any rule violations result in a drink."
+    },
+    {
+      "title": "GARY",
+      "body": "Roll a die. Drink that number minus one. Seriously though, is this dude following you or something?"
+    },
+    {
+      "title": null,
+      "body": "A sleeping Snorlax blocks your path. Belt out a song of the group's choice to wake him, or take 4 drinks."
+    },
+    {
+      "title": null,
+      "body": "Abra used Teleport! Teleport to the other Abra."
+    },
+    {
+      "title": null,
+      "body": "If someone is in Silph Co, you use the Silph Scope to beat the ghost and everyone else drinks. Otherwise take 3 drinks to appease the dead."
+    },
+    {
+      "title": null,
+      "body": "Cubone used \"My mother is dead.\" Share a depressing story with the group. Then everyone take a drink."
+    },
+    {
+      "title": null,
+      "body": "Haunter used Dream Eater! Devour someone else's dreams by moving them back 10 spaces."
+    },
+    {
+      "title": null,
+      "body": "A possessed Channeler. Now you're possessed too! While you are on this space, anyone may make you get them a drink."
+    }
+  ],
+  [
+    {
+      "title": null,
+      "body": "Take a ride with Mr. Briney and Peeko. Drink 3 and toast to altruism."
+    },
+    {
+      "title": "GRANITE CAVE",
+      "body": "This cave is dark and annoyingly maze like. The lights must remain off while someone is inside Granite Cave. Drink 2 to prepare yourself."
+    },
+    {
+      "title": null,
+      "body": "Zubats again?! This joke isn't even funny anymore! Next turn roll a die. If you roll odds, lose your turn and drink 1. You cannot leave until you roll evens."
+    },
+    {
+      "title": null,
+      "body": "Aron used Iron Defense! Drink 2 and reduce the amount you drink by half (round up) until your next turn."
+    },
+    {
+      "title": "DEWFORD GYM",
+      "body": "Choose another player. They may High Five you as hard as they can. Drink for every time they do so."
+    },
+    {
+      "title": null,
+      "body": "Tentacool used Supersonic! You get confused and must roll a die before every turn. Even: drink 2. Odd: you snap out of confusion."
+    },
+    {
+      "title": null,
+      "body": "Team Magma has recruited you into their ranks. Every time you drink give that many to your team to split. Drink 2 to celebrate."
+    },
+    {
+      "title": null,
+      "body": "You have entered the famous Hoenn Trick House! Make a tricky rule that will get everybody drinking!"
+    },
+    {
+      "title": null,
+      "body": "Plusle and Minun used Helping Hand! Choose a player and the next time they drink, drink for them."
+    },
+    {
+      "title": null,
+      "body": "Whismur used Uproar! All other players agree on a word or phrase. Shout this as loud as you can up to 3 times. Give that many drinks."
+    },
+    {
+      "title": "FORTREE GYM",
+      "body": "Flying pokemon battles are epic! Stand on furniture until your next turn. Drink 3 to calm your nerves."
+    },
+    {
+      "title": null,
+      "body": "Shuppet used Curse! Until the end of the game every time you curse you drink."
+    },
+    {
+      "title": null,
+      "body": "Wailmer used Whirlpool! Give 3 drinks and reverse the turn order."
+    },
+    {
+      "title": null,
+      "body": "Xatu used Future Sight! Roll a die at the beginning of your next two turns. Then drink the total of the two."
+    },
+    {
+      "title": null,
+      "body": "Golduck used Fury Swipes! Roll a die. Even: Roll again. Odd: Drink the number of times you rolled."
+    },
+    {
+      "title": null,
+      "body": "Welcome to the Hoenn Pokemon Contest Hall. Choose a song and do your best model runway walk. Give out 5 drinks if you do."
+    },
+    {
+      "title": "MAY",
+      "body": "Time to end this awkward relationship once and for all! Roll 3 die and drink the total."
+    },
+    {
+      "title": null,
+      "body": "Team Aqua has recruited you into their ranks. Every time you drink give that many to your team to split. Drink 2 to celebrate, Drink 5 if you are on Team Magma."
+    },
+    {
+      "title": "RUSTBORO GYM",
+      "body": "Roll a die. Even: Give a drink. Odd: Take a drink."
+    },
+    {
+      "title": "MAY",
+      "body": "Damn this bitch is clingy! Everyone in a relationship drink 3. Everyone drink 5 if nobody is."
+    },
+    {
+      "title": "ARCHIE",
+      "body": "If you are a member of Team Aqua make a rule. Otherwise drink 7."
+    },
+    {
+      "title": null,
+      "body": "Kyogre, the Legendary Sea Basin Pokemon! Roll a 5 to catch it and bypass the next gold space, or get soaked and shotgun a beer."
+    },
+    {
+      "title": null,
+      "body": "Bagon used Rage! For the rest of the game drink at the beginning of your turn. Add 1 to that amount every turn."
+    },
+    {
+      "title": null,
+      "body": "Medicham used Detect! Drink 3 and evade all drinks given to you until your next turn."
+    },
+    {
+      "title": null,
+      "body": "Mawile used Vicegrip! Until your next turn you must grab another player and squeeze them as hard as you can. Drink 4 and apologize."
+    },
+    {
+      "title": null,
+      "body": "Vulpix used Will-o-wisp! For the rest of the game add 1 to the amount you must drink."
+    },
+    {
+      "title": "WALLY",
+      "body": "This kid catches one pokemon and now thinks he's hot shit. Roll a die, drink that many."
+    },
+    {
+      "title": "MAY",
+      "body": "That's the Professor's daughter you pervert, hands off! Drink for half the number of players (round up) for your sick mind."
+    },
+    {
+      "title": null,
+      "body": "Castform used Weather Ball! Drink for the Weather Outside. Clear Skies: Drink 2 Cloudy: Give 2 Rain: Drink 3 Snow: Give 3"
+    },
+    {
+      "title": null,
+      "body": "Gyarados used Waterfall! Start a waterfall."
+    },
+    {
+      "title": null,
+      "body": "Sableye used Metronome! Close your eyes and point to a space on the board. Drink that many or drink 3 if no drinks are given."
+    },
+    {
+      "title": null,
+      "body": "Chimecho used Heal Bell! Add 1 to your roll the next time you really need it. Drink two to thank Chimecho for being a bro."
+    },
+    {
+      "title": "MAUVILLE GYM",
+      "body": "Roll a die. Even: You are paralyzed, drink 2 and you miss your next turn. Odd: take a drink."
+    },
+    {
+      "title": null,
+      "body": "Zigzagoon used Growl! Get scared and subtract 1 from your dice roll next turn. Drink 2 to calm yourself."
+    },
+    {
+      "title": null,
+      "body": "You have joined Team Aqua. If you are already a member you must talk like a pirate till your next turn. If you are a Team Magma poser drink 8"
+    },
+    {
+      "title": "SOOTOPOLIS GYM",
+      "body": "Roll a die. Even: Chug a glass of water. Odd: Chug your drink to completion."
+    },
+    {
+      "title": null,
+      "body": "Claydol used Double Edge! Give as many drinks as you want to target player, drink half in recoil damage."
+    },
+    {
+      "title": null,
+      "body": "Gloom used Sludge Bomb. You and the two players sitting next to you drink 4."
+    },
+    {
+      "title": null,
+      "body": "Barboach used Mud-slap! Choose a player, until the end of the game this player at the price of finishing a full drink may slap you across the face. (This may only happen once.)"
+    },
+    {
+      "title": "WALLY",
+      "body": "You help new trainer Wally catch a Ralts! Roll a 3 or 4 to catch one too or drink 2 in frustration."
+    },
+    {
+      "title": null,
+      "body": "Tropius used Sweet Scent! Until your next turn all drinks that can be given out must be given to you."
+    },
+    {
+      "title": null,
+      "body": "Groudon, the Legendary Continent Pokemon! Roll 4 to catch it and bypass the next gold square or get rocked and take a high proof shot."
+    },
+    {
+      "title": null,
+      "body": "Rayquaza, the Legendary Sky High Pokemon! Roll a 6 to catch it and skip the next gold space, or get dropped and take a bomb shot."
+    },
+    {
+      "title": "MOSSDEEP GYM",
+      "body": "Double Battles are twice the fun! Pick another player. Both roll a die; if the total is 8 or higher you win! Each give two drinks. If not both drink 4."
+    },
+    {
+      "title": "FIERY PATH",
+      "body": "This narrow path through the mountains is heated by geothermal eruptions. It is getting hot in here. Take off an article of clothing for every turn you end in this fiery path. Drink 4 to stay hydrated."
+    },
+    {
+      "title": null,
+      "body": "Shroomish used Leech Seed! Take a drink from somebody else's cup."
+    },
+    {
+      "title": null,
+      "body": "Kecleon's ability Color Change changed its type! Everytime you finish a drink the next one you drink must be different from the previous."
+    },
+    {
+      "title": "MAXIE",
+      "body": "If you are a member of Team Magma make a rule. Otherwise drink 7."
+    },
+    {
+      "title": "POKEMON MASTER",
+      "body": "Throw your master ball and claim victory! All players toast to your skill. You truly are the very best."
+    },
+    {
+      "title": "CHAMPION STEVEN",
+      "body": "Finish a full drink to beat this dude and take his title! You can not move on until it's finished."
+    },
+    {
+      "title": "ELITE FOUR",
+      "body": "Roll 4 die, if all 4 are 4 and under you beat the elite 4! Otherwise drink four and try again next turn."
+    },
+    {
+      "title": "WALLY",
+      "body": "How did this guy's pussy ass pokemon get him all the way here!? Drink twice for every player to crush Wally's dreams."
+    },
+    {
+      "title": "SHOAL CAVE",
+      "body": "This cave's lakes shift with the moon's tide. To reach the exit safely you'll have to surf across. While in Shoal Cave you may not for any reason touch the floor. Drink twice for every second that you do."
+    },
+    {
+      "title": null,
+      "body": "Journalists Gabby and Ty want to interview you. Every player must ask you a question. Respond truthfully or drink to skip a question."
+    },
+    {
+      "title": null,
+      "body": "Seedot used Explosion! How the hell does it know that!? Choose another player and you both finish your drinks!"
+    },
+    {
+      "title": null,
+      "body": "Pelipper used Stockpile! Pour a little of everyone's drink into a cup. Roll a die. Even: Pelipper used Swallow! Drink the mixture. Odd: Pelipper used Spit Up! Choose someone to drink it."
+    },
+    {
+      "title": null,
+      "body": "Snorunt used Blizzard! If your drink is ice cold give 5 drinks. If not drink 5."
+    },
+    {
+      "title": null,
+      "body": "Spheal used Ice Ball! Drink 1, then the player to your left drinks that plus 1. Go around the table till everyone has drank."
+    },
+    {
+      "title": null,
+      "body": "Relicanth used Dive! You must kneel underneath the table until your next turn. You do not have to drink for touching the floor for this turn."
+    },
+    {
+      "title": null,
+      "body": "Chinchou used Shockwave! Drink up to 6, the person to your right must drink 1 less. This shall continue till all drinks are given out."
+    },
+    {
+      "title": null,
+      "body": "Clamperl is evolving! Choose: All girls drink 3, or all guys drink 3."
+    },
+    {
+      "title": null,
+      "body": "Luvdisc used Splash! It's Super Effective! Everyone finish their drinks."
+    },
+    {
+      "title": null,
+      "body": "Slugma used Rock Slide! Drink up to 6 sips and give out half of what you drank (round up)."
+    },
+    {
+      "title": "LITTLEROOT TOWN",
+      "body": "Pick one, dude."
+    },
+    {
+      "title": "PETALBURG GYM",
+      "body": "Your deadbeat dad's a dick! You must call another player daddy for the rest of the game and drink 4 or drink 8 to keep your dignity."
+    },
+    {
+      "title": null,
+      "body": "You recieve TM 43 Secret Power! Choose a space on the board, any player who lands on this space must drink double that turn, you included."
+    },
+    {
+      "title": null,
+      "body": "You find two fossils in the sand. Choose: All players older then you drink 3, All players younger then you drink 3."
+    },
+    {
+      "title": null,
+      "body": "Trapinch used Hyper Beam! Give out 5 drinks and miss your next turn to recharge."
+    },
+    {
+      "title": "LAVARIDGE GYM",
+      "body": "Roll a die. 1-3: Drink your roll. 4-6: get burned and take a high proof shot."
+    },
+    {
+      "title": null,
+      "body": "Spoink used Psychic! Guess the number of fingers behind another player's back. If wrong drink that many. If right they drink that many."
+    },
+    {
+      "title": null,
+      "body": "You have been forced to join team Magma. If you are already a member you must talk like a nerd until your next turn. If you are a Team Aqua scumbag drink 8."
+    },
+    {
+      "title": null,
+      "body": "Spinda used Teeter Dance! Dance along to a song chosen by the group or drink 8 for your stage fright."
+    }
+  ]
+]

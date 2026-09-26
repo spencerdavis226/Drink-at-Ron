@@ -167,7 +167,7 @@ export const classicCards: CardDefinition[] = [
     "waterfall",
     "Ace Is Waterfall",
     "group",
-    "Start a waterfall. Everyone sips in turn and stops in turn.",
+    "Start a waterfall. Everyone drinks until the player before them stops.",
   ),
   card(
     "kings-two",
