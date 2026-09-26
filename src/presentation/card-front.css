@@ -159,40 +159,15 @@
   margin-block: auto;
 }
 
-.study-rules p.resolved-instruction {
+/* Keep the rule's original hierarchy; only resolved amounts carry emphasis. */
+.resolved-instruction strong {
   font-weight: 700;
-  color: #2b1c0d;
-  margin-block: 0;
-}
-.dice-continue-hint {
-  display: block;
-  flex-shrink: 0;
-  margin-block: 0;
-  color: #704e27;
-  font: 600 clamp(16px, 5cqw, 20px)/1.1 var(--font-tavern);
-}
-.study-rules.rules-resolved {
-  padding-top: 16px;
-  gap: 8px;
-}
-@media (prefers-reduced-motion: no-preference) {
-  .rules-resolved .study-rules p.resolved-instruction {
-    animation: outcome-in 340ms ease-out;
-  }
-}
-@keyframes outcome-in {
-  from {
-    opacity: 0;
-    transform: translateY(6px);
-  }
+  color: #281909;
 }
 
 .enlarged .study-rules p,
 .enlarged .card-copy p {
   font-size: clamp(2.125rem, 9.5cqw, 2.625rem);
-}
-.enlarged .dice-continue-hint {
-  font-size: 1.5rem;
 }
 
 @media (forced-colors: active) {

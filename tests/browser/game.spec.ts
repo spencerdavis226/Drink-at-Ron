@@ -104,7 +104,7 @@ test("only three modes appear and Core cannot be disabled", async ({
   await page.getByRole("button", { name: "Choose add-ons" }).click();
   await expect(page.getByRole("dialog")).toContainText("Always included");
   await expect(
-    page.getByRole("button", { name: /The house collection/ }),
+    page.getByRole("button", { name: /The Core deck/ }),
   ).toHaveCount(0);
   await page.getByRole("button", { name: "Done" }).click();
   await expect(

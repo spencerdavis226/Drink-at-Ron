@@ -15,10 +15,10 @@ describe("inline dice outcomes", () => {
     expect(diceResultText(base, saved)).toBe("2 is banned. Say it: drink 2.");
     expect(saved.instruction).toBe("That number is banned. Say it: drink 2.");
   });
-  it("replaces references to the roll and keeps fixed-branch totals visible", () => {
+  it("computes drink amounts and keeps only the resolved branch", () => {
     expect(
       diceResultText(base, roll("Drink half your roll, rounded up.")),
-    ).toBe("Drink half of 2, rounded up.");
+    ).toBe("Drink 1.");
     expect(
       diceResultText(
         {
@@ -32,7 +32,39 @@ describe("inline dice outcomes", () => {
         },
         roll("Give 3."),
       ),
-    ).toBe("On 2: Give 3.");
+    ).toBe("Give 3.");
+  });
+  it("resolves doubles and arithmetic while leaving the saved instruction intact", () => {
+    const saved = {
+      ...roll("Doubles: give 7. Otherwise drink 3."),
+      total: 7,
+      values: [3, 4],
+    };
+    expect(diceResultText(base, saved)).toBe("Drink 3.");
+    expect(
+      diceResultText(base, {
+        ...saved,
+        values: [4, 4],
+        total: 8,
+        instruction: "Doubles: give 8. Otherwise drink 3.",
+      }),
+    ).toBe("Give 8.");
+    expect(diceResultText(base, roll("Drink 7 minus your roll."))).toBe(
+      "Drink 5.",
+    );
+    expect(saved.instruction).toBe("Doubles: give 7. Otherwise drink 3.");
+  });
+  it("resolves authored parity and range rules using the saved faces", () => {
+    const card = { ...base, rules: "Roll d6. Odd: give 1 sip. Even: give 2." };
+    expect(diceResultText(card, roll("Odd: give 1 sip. Even: give 2."))).toBe(
+      "Give 2.",
+    );
+    expect(
+      diceResultText(
+        { ...card, rules: "Roll d6." },
+        roll("Give 1 sip on 1–3; give 2 on 4–6."),
+      ),
+    ).toBe("Give 1 sip.");
   });
   it("does not repeat totals already interpolated by the engine", () => {
     expect(

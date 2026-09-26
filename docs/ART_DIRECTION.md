@@ -1,6 +1,6 @@
 # Drink at Ron — current visual design standards
 
-Updated 2026-09-23 for launch setup, controls, and dice. **The current-state sections here are normative; older studies and generation prompts below are archival when they conflict.** Implementation tasks and priorities live only in [STATUS.md](STATUS.md).
+Updated 2026-09-25 for free-landing dice and tap-to-finish. **The current-state sections here are normative; older studies and generation prompts below are archival when they conflict.** Implementation tasks and priorities live only in [STATUS.md](STATUS.md).
 
 ## Creative direction and quality bar
 
@@ -163,12 +163,15 @@ The card is an object, not a web panel. Every phase should communicate an action
 
 ## Dice-specific composition
 
-Keep the approved transparent full-screen library roll over the live card. Do not restore the rejected dimmed-dialog or custom CSS renderer.
+Keep the transparent full-screen `@3d-dice/dice-box-threejs` roll over the live card. The 2026-09-25 direct user request supersedes the former above-card parking and non-occlusion rules.
 
-- Dice may cross the screen while tumbling, but readable results must take precedence once settled. Measure title/rule/CTA occlusion. Propose any resting-position change with visual evidence; do not manipulate physics differently between pre-simulation and replay to move dice away.
-- The result is unambiguous: saved values match final upward faces, total is easy to read, resolved instruction is available, Continue does not discard, and the later card action does.
-- One coherent material and contact-shadow treatment; match the tavern's warm lighting without excessive grime/noise on numerals. Confirm d20 numerals at small sizes.
-- Sound was removed entirely (2026-09-20): there is no collision audio, Effects/Ambience switch, or audio subsystem. Renderer failure or Reduced Motion yields the same readable saved result without a forced animation replay.
+- First tap on a revealed dice card commits the result and throws. A second tap during motion accelerates the **same recorded physical trajectory** through its landing (240ms), holds the matching faces for 180ms, then dismisses. If already settled, that tap dismisses immediately. A later tap discards the card; rapid repeats cannot reroll or discard during the return transition.
+- Dice may land anywhere within the viewport, including over titles or rules. Never slide them into a display row after landing. Keep complete mesh bounds inside the viewport, including four-die legacy saves.
+- The original rule stays visible until dismissal. Then show its resolved instruction in the same body typography, with numerical amounts in semantic bold. No “Rolled” heading, “On N” prefix, or extra continuation copy. Arithmetic, doubles, and legacy prose conditions are resolved for display without rewriting saved outcomes.
+- The lazy renderer warms while the revealed card is read. Normal playback spans 1.5–2.6 seconds plus initialization; frame interpolation follows the library's own pre-simulation. Body settings are applied at creation consistently, never changed between the pre-simulation and replay.
+- Use local procedural teal enamel, broader brass bevels and inlay, ivory pips on d6 and serif numerals on d20. Keep restrained highlights and projected contact shadows; no dimming or continuously running animation after settlement. Hand-authored markings keep every face exact without downloaded textures.
+- Sound remains removed. Reduced Motion, restoration, or renderer failure shows static saved values, with a tap returning to the resolved rule and no forced replay. Escape and stationary taps on the surrounding table can finish/dismiss; rules scrolling keeps its existing gesture protection.
+- Browser emulation does not establish physical-device frame rate or subjective approval. Review timing, material readability, and Safari toolbar behavior on the user's phone.
 
 ## Visual release gate
 

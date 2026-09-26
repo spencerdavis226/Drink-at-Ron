@@ -17,7 +17,6 @@ export const exampleCards: CardDefinition[] = [{
   rules: 'Going clockwise, each person adds one sentence to a story. End after one round.',
   category: 'challenge',
   artwork: 'art/tankard.webp',
-  illustrationBrief: 'A friendly dragon telling a story beside a tiny fireplace.',
 }];
 export const examplePack: PackDefinition = {
   version: 1,
@@ -29,7 +28,7 @@ export const examplePack: PackDefinition = {
 };
 ```
 
-Use stable namespaced IDs; never recycle one for an unrelated card. Supported categories: `sip`, `group`, `category`, `challenge`, and `rule`. Rules are plain text, not HTML. Keep one clear instruction. Aim for 90 characters and 18 words or less; the build flags longer copy for review and rejects rules over 120 characters or 24 words. Specify who starts and when the activity ends. Long text stays inside the fixed 2:3 card and scrolls within the rules panel at enlarged settings; the card never grows for content. Illustration briefs remain authoring metadata. Do not bake rule text into artwork.
+Use stable namespaced IDs; never recycle one for an unrelated card. Supported categories: `sip`, `group`, `category`, `challenge`, and `rule`. Rules are plain text, not HTML. Keep one clear instruction. Aim for 90 characters and 18 words or less; the build flags longer copy for review and rejects rules over 120 characters or 24 words. Specify who starts and when the activity ends. Long text stays inside the fixed 2:3 card and scrolls within the rules panel at enlarged settings; the card never grows for content. Cards carry no illustration text: every card renders in the shared painted frame with its deterministic imprint, so authoring never blocks on art. Do not bake rule text into artwork.
 
 The rule text scales from 26px on a phone card to 34px on a wide card at the default browser text size. Enlarged mode uses 34–42px. Review the actual rendered card at 320px and 390px viewport widths; character counts cannot predict where words wrap. Keep a short lead sentence so a group across the table can grasp the action before anyone scrolls.
 
@@ -39,24 +38,20 @@ Overlapping packs share a card by ID; it enters the shuffle pool only once. New 
 
 Before the production content session: review variety, repetition, category stopping conditions, and ongoing-rule duration. Agree on final copy and stable IDs before commissioning or generating artwork.
 
-The supplied Sheet1 CSV has Main title/description columns and separate VIP title/description columns. `src/content/custom.ts` includes all 103 nonblank Main rows as an optional `house` pack and all four VIP rows in `vip`; blank row 75 is excluded. IDs contain the 1-based sheet row number for audit, including duplicate headings. Row 106 (“Debate”) had no rule, so its released rule is a short silly debate and vote. Wording was edited to fit the game's one-sip, no-speed-drinking rules and the larger table-readable text; compare the generated review sheet with the source before final copy approval. Preview every card in the workshop at small-phone width and enlarged text. An active game's saved snapshot is never rewritten by catalog changes.
+The supplied Sheet1 CSV has Main title/description columns and separate VIP title/description columns. `src/content/custom.ts` includes all 103 nonblank Main rows, now merged directly into the always-on `core` pack, and all four VIP rows in `vip`; blank row 75 is excluded. IDs contain the 1-based sheet row number for audit, including duplicate headings. Row 106 (“Debate”) had no rule, so its released rule is a short silly debate and vote. Wording was edited for table readability; the dice energy from the sheet’s `4d6`/`1d20`/`2d6` cards lives in the voice/dice expansion (`standard-expansion.ts`) instead. Preview every card in the workshop at small-phone width and enlarged text. An active game's saved snapshot is never rewritten by catalog changes.
 
 Packs can optionally specify `artwork: 'art/your-pack.webp'`. The file must exist and follow the same local path rules as card artwork. Omit it to use the painted tankard. Shared pack controls and card frames are automatic; packs do not carry UI components, animation logic, or fonts.
 
 ## Card data and bulk review
 
-Cards are plain typed objects in `src/content` (build the common shape with `cardFactory(namespace)` from `src/content/author.ts`). A dice card is not a boolean flag: it carries a structured `dice` definition — `count`, `sides` (6 or 20), and either one `instruction` template with `{total}` or `outcomes` that cover every total exactly once. `roll()` and `rollTable()` in `author.ts` cover both cases and `validateDice` enforces them at build time.
+A card is a title, a rules body, a category, and — for dice cards — a structured `dice` definition: `count`, `sides` (6 or 20), and either one `instruction` template with `{total}` or `outcomes` that cover every total exactly once. Artwork defaults to the shared painted frame, and there is no illustration text to author. `roll()` and `rollTable()` in `author.ts` cover both dice cases and `validateDice` enforces them at build time.
 
-For a human review pass, run `npm run cards:review`. It regenerates `docs/CARD_REVIEW.md` (readable table with a blank Review column) and `docs/card-review.csv` from the live catalog, so the sheet can never drift from what ships. Edit the source and regenerate; do not hand-edit either file. `src/content/classics.ts` holds the classic / King's Cup basics and `standard-expansion.ts` holds the larger standard-deck expansion. New cards need an assignment in `src/content/imprint.ts` (the build and `tests/imprint.test.ts` require one); the expansion uses stable category motifs from the existing sprite while its new copy is reviewed.
+For a human review pass, run `npm run cards:review`. It regenerates `docs/CARD_REVIEW.md` (readable table with a blank Review column) and `docs/card-review.csv` from the live catalog, so the sheet can never drift from what ships. Edit the source and regenerate; do not hand-edit either file. `src/content/classics.ts` holds the classic / King's Cup basics, `standard-expansion.ts` holds the voice/dice expansion, and `custom.ts` holds the supplied house rows (merged into Core) plus the four VIP additions. New cards need an assignment in `src/content/imprint.ts` (the build and `tests/imprint.test.ts` require one); the content uses stable category motifs from the existing sprite.
 
-## Card workshop
+## Optional illustration and pack identity
 
-Run `npm run dev`, then open `http://127.0.0.1:5173/?workshop=1`. Search and filter the catalog, pick a card, set the preview viewport width and height or enlarged text, and tap the card to exercise the actual flip/discard controller. The preview renders the real shipping `Play` component and frame — there is no separate front-study toggle. Replay reveal deals the selected card facedown. The seed reproduces shuffle order and dice outcomes; the chosen card is moved to the front without changing pool membership. No workshop actions write game saves or preferences. See GAME_DESIGN.md for the editorial rubric and PLAYTEST.md before commissioning the full collection.
+Per-card illustration briefs are retired. Every card renders in the shared painted frame with its deterministic imprint, and no artwork text is authored. If a specific scene is ever worth shipping, follow `ILLUSTRATION_GUIDELINES.md`, register it in `src/presentation/artwork.ts`, and pass its path as the optional `artwork` argument; the old dwarf direction stays rejected.
 
-## Illustration and pack identity
-
-Follow `ILLUSTRATION_GUIDELINES.md` before generating any new art. The old dwarf direction is rejected. Use original, centered, simple fantasy subjects and test the illustration in the real small frame.
-
-Each registered pack now needs a distinct `logo`, such as `logo: 'art/packs/core.svg'`. Keep logo paths stable and add the file under public/art/packs; the build rejects missing files and reused logo paths. The same mark appears in setup, the pause legend, and card footers. The Core diamond is reserved for Core. Optional typing keeps older pack fixtures compatible, but release validation requires explicit logos for all registered packs.
+Each registered pack needs a distinct `logo`, such as `logo: 'art/packs/core.svg'`. Keep logo paths stable and add the file under public/art/packs; the build rejects missing files and reused logo paths. The same mark appears in setup, the pause legend, and card footers. The Core diamond is reserved for Core. Optional typing keeps older pack fixtures compatible, but release validation requires explicit logos for all registered packs.
 
 A shared card shows marks for selected packs containing it, in catalog order. Marks follow the installed catalog as cosmetic metadata; they do not alter or rewrite a saved session. Stable namespaced IDs preserve the known origin's mark for retired cards in older saves. Unknown removed packs do not acquire an invented Core mark. Keep old pack metadata and logo assets available across releases when possible. Gameplay, snapshots, and shuffled order are unchanged.

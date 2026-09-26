@@ -3,12 +3,12 @@ import type { CardDefinition, Category, DiceDefinition } from "../game/types";
 /**
  * Shared card authoring helpers.
  *
- * Cards are plain typed objects, never parsed data: TypeScript checks every
- * field at build time, comments and ordering stay reviewable in the source, and
- * there is no runtime JSON to validate before the engine sees it. A dice card
- * declares *which* dice to roll and how to read the total through the optional
- * structured `DiceDefinition` — not a boolean flag — so `count`, `sides` and the
- * outcome text travel together.
+ * A card is just a title, a rules body, a category, and an optional structured
+ * `dice` definition. There is no illustration metadata to write: every card
+ * renders inside the shared painted frame with its deterministic imprint, so
+ * authoring a card never blocks on art. A dice card declares *which* dice to
+ * roll and how to read the total through `DiceDefinition` — not a boolean flag
+ * — so `count`, `sides` and the outcome text travel together.
  */
 
 export const PLACEHOLDER_ART = "art/tankard.webp";
@@ -18,7 +18,6 @@ export type CardFactory = (
   title: string,
   category: Category,
   rules: string,
-  illustrationBrief: string,
   dice?: DiceDefinition,
   artwork?: string,
 ) => CardDefinition;
@@ -33,7 +32,6 @@ export function cardFactory(namespace: string): CardFactory {
     title,
     category,
     rules,
-    illustrationBrief,
     dice,
     artwork = PLACEHOLDER_ART,
   ) => ({
@@ -42,7 +40,6 @@ export function cardFactory(namespace: string): CardFactory {
     title,
     category,
     rules,
-    illustrationBrief,
     artwork,
     ...(dice ? { dice } : {}),
   });

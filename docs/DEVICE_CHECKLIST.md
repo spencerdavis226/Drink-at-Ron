@@ -14,7 +14,7 @@ Automated browser emulation is not evidence of actual iOS Home Screen behavior. 
 - [ ] Previous Card is read-only; menu close restores focus; End Game can be canceled.
 - [ ] Enlarge text and zoom, enable Reduce Motion and VoiceOver. Read full rules and operate all controls.
 - [ ] In phone and iPad landscape, confirm the rotate prompt blocks play and Escape; rotate back and confirm the same card, menu, and count return. Desktop landscape should remain usable. Check iPad split view and hardware keyboard where available.
-- [ ] Reach a dice card, roll, and confirm the saved total matches the settled dice; Continue returns to the card and the later card action discards.
+- [ ] Reach a dice card: first tap rolls; second tap during motion finishes through the landing, holds briefly, then dismisses. Confirm faces match the saved values and only the later tap discards.
 - [ ] Publish an update while a game is active: no mid-game reload. Finish/end game, apply offered update, then check offline relaunch.
 - [ ] Measure interaction smoothness on real devices; target 60 fps. No performance claim until measured.
 
@@ -27,9 +27,9 @@ Automated browser emulation is not evidence of actual iOS Home Screen behavior. 
 Sound has been removed; there are no audio checks. Verify the visual and dice items below.
 
 - [ ] Check the new painted Home Screen icons and dark launch colors on actual iOS.
-- [ ] Roll a dice card: the card tap target remains usable, dice settle above the card, and neither dice nor controls cover rules or the pack mark.
+- [ ] Let a full dice throw finish: dice land freely, including over text, and stay fully onscreen. Tap to clear them; the original rule becomes the resolved instruction with the actual amounts in bold.
 - [ ] Roll 20+ times across a session; watch for accumulating lag, a frozen canvas, or a lost WebGL context.
-- [ ] Simulate a platform without WebGL: the saved result still appears and Continue remains usable (no forced replay).
+- [ ] Simulate a platform without WebGL: the saved values still appear and a tap reveals the resolved rule (no forced replay).
 - [ ] Rotate during and after a roll; the rotate prompt appears, the saved result stays unchanged, and portrait shows the readable settled result. Check Safari toolbar expansion/collapse separately.
 - [ ] Roll once installed and offline; reopen the app and confirm the saved roll is restored without replaying.
 - [ ] Install a new release after a completed game and resume the saved session from the updated build.
@@ -41,6 +41,6 @@ Sound has been removed; there are no audio checks. Verify the visual and dice it
 Automated evidence is recorded in `docs/studies/README.md`. Keep the following pending until observed on physical hardware:
 
 - [ ] Approve the short, long, and temporary-rule front studies on an iPhone and iPad.
-- [ ] Play Short (30 cards from the 250-card Core deck) using the playtest record, then sample more cards in Infinite. Engine tests cover the full shuffle cycle.
+- [ ] Play Short (30 cards from the 322-card Core deck) using the playtest record, then sample more cards in Infinite. Engine tests cover the full shuffle cycle.
 - [ ] Verify the published `/Drink-at-Ron/` URL, Home Screen installation, offline relaunch, and updates on iOS.
 - [ ] Evaluate the approved frame and live title sharpness, scrolling with enlarged text, and flip smoothness on physical devices.

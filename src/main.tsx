@@ -34,12 +34,13 @@ function App() {
     [cachedReady, setCachedReady] = useState(false),
     [modal, setModal] = useState<DialogName>(null),
     [hidden, setHidden] = useState(document.hidden);
-  const { controller, session, outgoing, motion, transition } = usePresentation(
-    () =>
-      new PresentationController(loaded.session, (next) => {
-        if (!save(SAVE_KEY, next)) setNotice(true);
-      }),
-  );
+  const { controller, session, outgoing, motion, transition, finishingRoll } =
+    usePresentation(
+      () =>
+        new PresentationController(loaded.session, (next) => {
+          if (!save(SAVE_KEY, next)) setNotice(true);
+        }),
+    );
   const display = outgoing ?? session;
   const active = !!display && display.phase !== "complete";
   const {
@@ -162,6 +163,7 @@ function App() {
             session={display}
             motion={motion}
             transition={transition}
+            finishingRoll={finishingRoll}
             onTap={() => controller.tap()}
             onFinish={finish}
           />

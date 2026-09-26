@@ -55,14 +55,16 @@ test("dialog enter and exit share the motion tokens", async ({ page }) => {
 test("an exiting dialog is inert and cannot trigger its controls", async ({
   page,
 }) => {
-  await page.clock.install();
+  await page.clock.install({ time: 0 });
   await seed(page, game());
   await page.getByRole("button", { name: "Open game menu" }).click();
   const dialog = page.locator("dialog[open]");
   await expect(dialog).toBeVisible();
   // Freeze the exit timer so WebKit cannot unmount the short-lived dialog
   // before the inert state is inspected across the Playwright round-trip.
-  await page.clock.pauseAt(new Date());
+  // Use a known future point in the mock clock; host Date.now() can already
+  // be in its past by the time a WebKit round-trip reaches pauseAt.
+  await page.clock.pauseAt(60_000);
   await page.getByRole("button", { name: "Close" }).click();
   await expect(dialog).toHaveClass(/closing/);
   await expect(dialog).toHaveAttribute("inert", "");

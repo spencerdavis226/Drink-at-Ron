@@ -7,12 +7,10 @@ export function CardFace({
   card,
   packIds,
   roll = null,
-  rolling = false,
 }: {
   card: CardDefinition;
   packIds?: readonly string[];
   roll?: DiceRoll | null;
-  rolling?: boolean;
 }) {
   const gesture = useRef<{
     pointerId: number;
@@ -40,8 +38,8 @@ export function CardFace({
       atTop && atBottom ? "none" : atTop ? "bottom" : atBottom ? "top" : "both",
     );
   };
-  // Show the resolved outcome once the dice settle (the overlay owns the roll).
-  const resolved = !!roll && !rolling;
+  // Keep the original rule until the dice have been dismissed.
+  const resolved = !!roll?.returned;
   useLayoutEffect(() => {
     const title = titleRef.current;
     const heading = title?.querySelector<HTMLElement>("h2");
@@ -160,16 +158,17 @@ export function CardFace({
           }}
         >
           {resolved ? (
-            <>
-              <p className="resolved-instruction">
-                {diceResultText(card, roll!)}
-              </p>
-              {!roll?.returned && (
-                <span className="dice-continue-hint" aria-hidden="true">
-                  Tap card to continue
-                </span>
-              )}
-            </>
+            <p className="resolved-instruction">
+              {diceResultText(card, roll!)
+                .split(/(\d+)/)
+                .map((part, index) =>
+                  /^\d+$/.test(part) ? (
+                    <strong key={index}>{part}</strong>
+                  ) : (
+                    part
+                  ),
+                )}
+            </p>
           ) : (
             <p>{card.rules}</p>
           )}

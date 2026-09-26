@@ -73,7 +73,7 @@ describe("dice content", () => {
   });
 });
 describe("dice transactions and saves", () => {
-  it("commits one roll, locks repeat taps, and separates return from discard", () => {
+  it("commits one roll, requests a fast finish, and separates return from discard", () => {
     const persist = vi.fn(),
       shuffleRandom = vi.fn(() => 0.1),
       diceRandom = vi.fn(() => 0.9999);
@@ -85,7 +85,11 @@ describe("dice transactions and saves", () => {
       diceRandom,
     );
     c.tap();
+    const rollTransition = c.getSnapshot().transition;
     for (let i = 0; i < 20; i++) c.tap();
+    expect(c.getSnapshot().finishingRoll).toBe(true);
+    expect(c.getSnapshot().transition).toBe(rollTransition);
+    expect(c.getSnapshot().motion).toBe("roll");
     expect(persist).toHaveBeenCalledTimes(1);
     expect(diceRandom).toHaveBeenCalledTimes(2);
     expect(shuffleRandom).not.toHaveBeenCalled();
@@ -229,4 +233,3 @@ describe("dice transactions and saves", () => {
     },
   );
 });
-

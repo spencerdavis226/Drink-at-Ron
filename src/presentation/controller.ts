@@ -23,6 +23,7 @@ export interface Presentation {
   outgoing: SessionState | null;
   motion: Motion | null;
   transition: number;
+  finishingRoll: boolean;
 }
 /** Durable actions happen on acceptance. Animation completion never advances a deck. */
 export class PresentationController {
@@ -40,6 +41,7 @@ export class PresentationController {
       outgoing: null,
       motion: null,
       transition: 0,
+      finishingRoll: false,
     };
   }
   getSnapshot = () => this.state;
@@ -63,6 +65,7 @@ export class PresentationController {
       motion,
       outgoing,
       transition: this.state.transition + 1,
+      finishingRoll: false,
     });
   }
   start(session: SessionState) {
@@ -78,6 +81,12 @@ export class PresentationController {
   }
   tap() {
     const { session, motion } = this.state;
+    // A second tap asks the renderer to play through the landing. It never
+    // samples another result, discards the card, or restarts the transition.
+    if (motion === "roll" && session?.roll && !this.state.finishingRoll) {
+      this.publish({ ...this.state, finishingRoll: true });
+      return;
+    }
     if (!session || motion || session.phase === "complete") return;
     if (
       session.phase === "revealed" &&

@@ -2,13 +2,14 @@ import type { CardDefinition, PackDefinition } from "../game/types";
 import { cardFactory } from "./author";
 import { classicCards } from "./classics";
 import { standardExpansionCards } from "./standard-expansion";
+import { houseCards } from "./custom";
 
-// The house collection: the supplied 40-card sample set plus the classic /
-// King's Cup basics in `classics.ts`, all under the always-included `core`
-// pack. Cards with a `dice` definition pause the deck until the roll is
-// resolved. Most cards stay on the placeholder tankard until finished scenes
-// land through the artwork registry; Cheers, Idiots uses its individual
-// illustrated scene.
+// The house collection: the supplied 40-card sample set, the classic / King's
+// Cup basics, the voice/dice expansion, and every supplied Sheet1 house card —
+// all under the always-included `core` pack. Cards with a `dice` definition
+// pause the deck until the roll is resolved. Cheers, Idiots keeps its individual
+// illustrated scene; everything else renders in the shared painted frame with
+// its deterministic imprint.
 const card = cardFactory("core");
 
 export const sampleCards: CardDefinition[] = [
@@ -17,112 +18,96 @@ export const sampleCards: CardDefinition[] = [
     "House Special",
     "sip",
     "Drink 3.",
-    "A foaming house tankard slammed onto a scarred tavern table, centered with a broad readable silhouette.",
   ),
   card(
     "bar-tab",
     "Bar Tab",
     "sip",
     "Give 3.",
-    "A long curling bar tab pinned under a single heavy coin, centered against a warm painted backdrop.",
   ),
   card(
     "bad-influence",
     "Bad Influence",
     "sip",
     "Pick someone. Both drink 2.",
-    "Two grinning goblins clinking mismatched cups, elbow to elbow, centered with a quiet background.",
   ),
   card(
     "last-call",
     "Last Call",
     "group",
     "Everyone drinks 2.",
-    "A tavern keeper ringing a small brass bell above a table of cheering adventurers.",
   ),
   card(
     "you-specifically",
     "Fuck You Specifically",
     "sip",
     "Pick someone. They drink 4.",
-    "One smug adventurer pointing dramatically across the table while a friend recoils, centered and legible.",
   ),
   card(
     "cheap-date",
     "Cheap Date",
     "group",
     "Cheapest drink at the table drinks 3.",
-    "A tiny watered-down cup sitting alone under a spotlight on a plain wooden table.",
   ),
   card(
     "baller",
     "Big Money",
     "group",
     "Priciest drink at the table gives 4.",
-    "A lavish jeweled goblet raised beside a fat coin purse, centered with a proud silhouette.",
   ),
   card(
     "group-project",
     "Group Project",
     "group",
     "Last hand in the air drinks 3.",
-    "A cluster of adventurers half-heartedly raising one hand each, one lagging behind at the edge.",
   ),
   card(
     "bad-text",
     "U Up?",
     "sip",
     "Sent a regrettable late-night text? Drink 3.",
-    "A tiny glowing sending-stone scroll clutched by a grimacing adventurer, centered and simple.",
   ),
   card(
     "hr-violation",
     "HR Violation",
     "sip",
     "Hooked up with a coworker? Drink 4.",
-    "Two sheepish guild clerks caught side by side behind a ledger, goofy original fantasy.",
   ),
   card(
     "fake-sick",
     "Corporate Wellness",
     "sip",
     "Faked sick to skip work? Drink 3.",
-    "A bundled-up adventurer faking a cough in bed with a cheeky grin, centered with soft light.",
   ),
   card(
     "crypto-bro",
     "Financial Genius",
     "sip",
     "Own crypto? Drink 2. Don't? Give 2.",
-    "A boastful merchant brandishing a worthless enchanted coin, centered with a plain backdrop.",
   ),
   card(
     "deez-nuts",
     "Deez Nuts",
     "challenge",
     "Get someone with a deez nuts joke. They drink 3.",
-    "A snickering trickster holding a tiny acorn aloft while a confused friend looks on.",
   ),
   card(
     "smooth-brain",
     "Smooth Brain",
     "challenge",
     "Admit something dumb you believed. Drink 2.",
-    "A humble adventurer with a tiny polished stone for a hat, shrugging at the table.",
   ),
   card(
     "would-you",
     "Would You Though?",
     "group",
     "Most likely to text an ex drinks 3.",
-    "A table of adventurers all pointing at one bashful friend who is holding a glowing sending stone.",
   ),
   card(
     "cheers-idiots",
     "Cheers, Idiots",
     "group",
     "Cheers. Everyone drinks 2.",
-    "Mismatched cups raised together in a raucous centered toast, warm tavern light.",
     undefined,
     "art/cheers.webp",
   ),
@@ -131,7 +116,6 @@ export const sampleCards: CardDefinition[] = [
     "Dice Tax",
     "challenge",
     "Roll d6. Drink half, round up.",
-    "One oversized ivory die balanced on a coin tax tin, centered with generous crop margins.",
     {
       version: 1,
       count: 1,
@@ -144,7 +128,6 @@ export const sampleCards: CardDefinition[] = [
     "Give a Shit",
     "challenge",
     "Roll d6. Give that many.",
-    "An open-handed adventurer offering a fistful of tiny coins to a friend, centered and clear.",
     { version: 1, count: 1, sides: 6, instruction: "Give {total}." },
   ),
   card(
@@ -152,7 +135,6 @@ export const sampleCards: CardDefinition[] = [
     "Fuckin' Math",
     "challenge",
     "Roll d6. Drink 7 minus your roll.",
-    "A chalkboard covered in crude tally marks beside a single die, centered and uncluttered.",
     { version: 1, count: 1, sides: 6, instruction: "Drink 7 minus your roll." },
   ),
   card(
@@ -160,7 +142,6 @@ export const sampleCards: CardDefinition[] = [
     "Pathetic",
     "challenge",
     "Roll d6. 1–2: drink 4. Else give 2.",
-    "One sad little die wobbling beside a tipped-over cup, centered with a plain warm background.",
     {
       version: 1,
       count: 1,
@@ -176,7 +157,6 @@ export const sampleCards: CardDefinition[] = [
     "Big Dick Energy",
     "challenge",
     "Roll d6. 5–6: give 5. Else drink 2.",
-    "A triumphant adventurer flexing while an oversized die shows a high face, centered and bold.",
     {
       version: 1,
       count: 1,
@@ -192,7 +172,6 @@ export const sampleCards: CardDefinition[] = [
     "Same Shit",
     "challenge",
     "Roll 2d6. Doubles: give total. Else drink 3.",
-    "Two identical paired dice side by side on a table, mirrored composition, centered and legible.",
     {
       version: 1,
       count: 2,
@@ -205,7 +184,6 @@ export const sampleCards: CardDefinition[] = [
     "That's Two Beers",
     "challenge",
     "Roll 2d6. Give the total.",
-    "Two frothy cups counted beside a pair of dice, centered with a simple readable silhouette.",
     { version: 1, count: 2, sides: 6, instruction: "Give {total}." },
   ),
   card(
@@ -213,7 +191,6 @@ export const sampleCards: CardDefinition[] = [
     "Snake Eyes",
     "challenge",
     "Roll 2d6. Double 1s: drink 6. Else give 3.",
-    "Two dice both showing a single pip, framed by a small coiled decorative serpent, centered.",
     {
       version: 1,
       count: 2,
@@ -229,7 +206,6 @@ export const sampleCards: CardDefinition[] = [
     "Lucky Bastard",
     "challenge",
     "Roll 2d6. 9+: give 5. Under 9: drink 3.",
-    "A grinning rogue with dice cupped in both hands and a lucky charm around the neck, centered.",
     {
       version: 1,
       count: 2,
@@ -245,7 +221,6 @@ export const sampleCards: CardDefinition[] = [
     "Fuck Around & Find Out",
     "challenge",
     "Roll d20. 1: drink 5. 20: give 8. Else drink 2.",
-    "One huge twenty-sided die cracking the tabletop with a tiny spark, centered and dramatic.",
     {
       version: 1,
       count: 1,
@@ -262,7 +237,6 @@ export const sampleCards: CardDefinition[] = [
     "Critical Failure",
     "challenge",
     "Roll d20. 1–5: drink 4. 16–20: give 4.",
-    "A cracked twenty-sided die resting on a crumpled map, wide margins and a clear silhouette.",
     {
       version: 1,
       count: 1,
@@ -275,7 +249,6 @@ export const sampleCards: CardDefinition[] = [
     "God's Drunkest Soldier",
     "challenge",
     "Roll d20. 20: everyone else drinks 3. 1: drink 5.",
-    "A radiant adventurer lit from above with a d20 held aloft, goofy divine glow, centered.",
     {
       version: 1,
       count: 1,
@@ -289,77 +262,66 @@ export const sampleCards: CardDefinition[] = [
     "Categories",
     "category",
     "Pick a category. First repeat or blank drinks 3.",
-    "A circle of adventurers calling out around a small pile of idea scrolls, centered and lively.",
   ),
   card(
     "rhyme-time",
     "Rhyme Time",
     "category",
     "Pick a word. First bad rhyme drinks 3.",
-    "A bard mid-nonsense-rhyme with a tiny lute, speech scroll curling above, centered.",
   ),
   card(
     "questions-only",
     "Questions Only",
     "category",
     "Questions only. First statement drinks 3.",
-    "Two baffled adventurers trading questions with floating question-mark scrolls, centered.",
   ),
   card(
     "name-3",
     "Name 3",
     "category",
     "Group picks a topic. Name 3 or drink 3.",
-    "Three small numbered tokens held up in a fan by one focused adventurer, centered and clear.",
   ),
   card(
     "rock-paper-drink",
     "Rock Paper Drink",
     "category",
     "Challenge someone. Loser drinks 3.",
-    "Two adventurers facing off with rock, paper and a tiny cup between them, centered and balanced.",
   ),
   card(
     "never-have-i",
     "Never Have I Ever",
     "category",
     "Say one. Anyone who has drinks 2.",
-    "A circle of adventurers holding cups at the ready, one leaning in to confess, centered.",
   ),
   card(
     "rulemaster",
     "Rulemaster",
     "rule",
     "Make a rule until next card. Breaker drinks 2.",
-    "A proud adventurer wearing a tiny paper crown and brandishing a scroll of rules, centered.",
   ),
   card(
     "no-names",
     "Who the Fuck Are You?",
     "rule",
     "Until next card: no names. Slip = drink 2.",
-    "A masked stranger shrugging among name-tagged adventurers, centered with a plain backdrop.",
   ),
   card(
     "potty-mouth",
     "Church Mode",
     "rule",
     "Until next card: no swearing. Slip = drink 2.",
-    "A mortified adventurer covering their mouth beside a stern little shrine, centered and warm.",
   ),
   card(
     "captain-dumbass",
     "Captain Dumbass",
     "rule",
     "Until next card: call everyone \u201cCaptain.\u201d Slip = drink 2.",
-    "A saluting adventurer in an oversized paper captain hat, centered with a quiet background.",
   ),
   card(
     "cursed-number",
     "Cursed Number",
     "rule",
     "Roll d6. That number is banned. Say it = drink 2.",
-    "One die stamped with a small warning rune beside a sealed scroll, centered and ominous-fun.",
     {
       version: 1,
       count: 1,
@@ -372,7 +334,6 @@ export const sampleCards: CardDefinition[] = [
     "Dice Lord",
     "rule",
     "Roll d6. Odd: no pointing. Even: no questions. Slip = drink 2.",
-    "A tiny caped dice monarch on a thimble throne, two dice as subjects, centered and playful.",
     {
       version: 1,
       count: 1,
@@ -382,20 +343,21 @@ export const sampleCards: CardDefinition[] = [
   ),
 ];
 
-// The always-included Core deck combines the supplied sample set with the
-// classic / King's Cup basics so no game starts without "Give Two" and friends.
+// The always-included Core deck: the supplied sample set, the classic / King's
+// Cup basics, the voice/dice expansion, and every supplied house row.
 export const coreCards: CardDefinition[] = [
   ...sampleCards,
   ...classicCards,
   ...standardExpansionCards,
+  ...houseCards,
 ];
 
 export const samplePack: PackDefinition = {
   version: 1,
   id: "core",
   logo: "art/packs/core.svg",
-  title: "The house collection",
+  title: "The Core deck",
   description:
-    "The always-on deck: classic give-and-drink prompts, King's Cup rules, group games, and a few dice rolls.",
+    "The always-on deck: sample prompts, King's Cup basics, the voice/dice expansion, and every supplied house card.",
   cardIds: coreCards.map((card) => card.id),
 };

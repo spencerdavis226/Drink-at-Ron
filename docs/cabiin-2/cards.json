@@ -1,0 +1,492 @@
+{
+  "$comment": "Reference material parsed from Spencer's CABIIN 2.0 board game. Not game content and not imported at runtime. Board/team/zone/movement rules are intentionally not carried into Drink at Ron; see docs/CARD_VOICE_REFERENCE.md.",
+  "source": "docs/cabiin-2/cards.csv",
+  "count": 97,
+  "cards": [
+    {
+      "index": 1,
+      "title": "Smooth Brain",
+      "body": "Tell a story about a time you were REAL dumb. Drink 2."
+    },
+    {
+      "index": 2,
+      "title": "FaceTime Trivia",
+      "body": "The group asks you a trivia question. If wrong, drink d6/3 and no one talks to you for one round."
+    },
+    {
+      "index": 3,
+      "title": "County Commissioner",
+      "body": "Give a speech on why you should be in charge. Drink for each team that wouldn't vote for you."
+    },
+    {
+      "index": 4,
+      "title": "Bitch Babe",
+      "body": "You must refer to everyone on your team as babe, and everyone else as bitch for 2 rounds. Give 2 drinks."
+    },
+    {
+      "index": 5,
+      "title": "Abra",
+      "body": "Teleport to Kadabra."
+    },
+    {
+      "index": 6,
+      "title": "Atlanta Airport",
+      "body": "These planes are sus. Roll a die and drink that many. That is the maximum amount of spaces you can move each roll while in\nthis Zone."
+    },
+    {
+      "index": 7,
+      "title": "Freddie's Run",
+      "body": "You ran to the store. Skip your next turn. While you're up, get anyone anything they need."
+    },
+    {
+      "index": 8,
+      "title": "International Eric",
+      "body": "Take a shot of liquor cause you like it now. You have immunity to SS Allure. Else, you have to stop on SS Allure."
+    },
+    {
+      "index": 9,
+      "title": "Going the Distance",
+      "body": "Give drinks equal to the total number of travel hours it took you to get to the cabin. Idle time\ndoesn't count."
+    },
+    {
+      "index": 10,
+      "title": "Drunken Clam",
+      "body": "How the fuck did this get here? Roll a die. If you roll a 1, drink 1. Else get blindside punched in the face and finish your drink."
+    },
+    {
+      "index": 11,
+      "title": "Mint Chev",
+      "body": "It comes with empty beer cans in the back. Crush a full beer and leave the smashed can on the table to roll again. Else drink d6/3."
+    },
+    {
+      "index": 12,
+      "title": "Bartender Greg",
+      "body": "Hit on someone, share d6 free drinks with them. Try not to die on the free ride home and don't forget to send them a 4AM \n‘U up?\" text."
+    },
+    {
+      "index": 13,
+      "title": "I Don't Know Shit About Fuck",
+      "body": "Tell the group something you embarrassingly don't know/understand. Everyone drinks 2."
+    },
+    {
+      "index": 14,
+      "title": "Do Not Cum",
+      "body": "Roll a die:\n1-6: Cum. Drink that many."
+    },
+    {
+      "index": 15,
+      "title": "Dafuq Did I Just Hear?",
+      "body": "You just admitted to loving Lance, drink until the group is happy."
+    },
+    {
+      "index": 16,
+      "title": "Drinks On Me, Bring Your Card",
+      "body": "Get someone a fresh drink, but have them pay you some amount of money. Both drink 1."
+    },
+    {
+      "index": 17,
+      "title": "I'm the Captain Now",
+      "body": "Get an extra roll and reverse turn direction."
+    },
+    {
+      "index": 18,
+      "title": "Ride the Bus",
+      "body": "You pick a suit but are totally wrong. Drink 4."
+    },
+    {
+      "index": 19,
+      "title": "Corporate Meeting",
+      "body": "This could have been an email. Drink for everyone who's landed here."
+    },
+    {
+      "index": 20,
+      "title": "Allegiant Airlines",
+      "body": "It's cheap AF until it's not. Give d6."
+    },
+    {
+      "index": 21,
+      "title": "Mosby",
+      "body": "Pet the best dog in\nthe room."
+    },
+    {
+      "index": 22,
+      "title": "Spirit Airlines",
+      "body": "1's are now 0's for everyone until you get to the next Landmark. Drink\n3 now."
+    },
+    {
+      "index": 23,
+      "title": "Gengar",
+      "body": "Guess your roll to move any token to 1 adjacent Space (even through walls). They must play it. Drink X."
+    },
+    {
+      "index": 24,
+      "title": "Voltorb",
+      "body": "Choose X amount of people to finish their drinks (people can't be\npicked twice)."
+    },
+    {
+      "index": 25,
+      "title": "Alakazam",
+      "body": "Basically Kadabra with another spoon. Pick someone to teleport to you. Spoon them and both drink X+2."
+    },
+    {
+      "index": 26,
+      "title": "Ursaring",
+      "body": "Roll 1-3: Ursaring stays asleep. Give X and don't speak until your next turn.\nElse, you woke his ass up. Drink a full beer +1\nand apologize."
+    },
+    {
+      "index": 27,
+      "title": "Lance",
+      "body": "The dragon champion. He's dragon his nuts across your face. Drink X+2.\nIf you landed on Dafuq Did I Just Hear? give\nthese instead."
+    },
+    {
+      "index": 28,
+      "title": "Stonks",
+      "body": "Smoke something if you want to (and are cool) then chill here. You are immune from drinks this round."
+    },
+    {
+      "index": 29,
+      "title": "Do Better",
+      "body": "Drink 1 more than the next player drinks on their turn."
+    },
+    {
+      "index": 30,
+      "title": "Café d'Époque",
+      "body": "Everyone here is a total skank. Now you are too. Drink for every team in this Zone and also hit on them."
+    },
+    {
+      "index": 31,
+      "title": "Neighbors",
+      "body": "Everyone not staying in your cabin must drink 1."
+    },
+    {
+      "index": 32,
+      "title": "Comradery",
+      "body": "Your team shouts your Official Team Cheer and drinks 2."
+    },
+    {
+      "index": 33,
+      "title": "Soooo It's Thursday",
+      "body": "Give X to someone to calm their nerves."
+    },
+    {
+      "index": 34,
+      "title": "Ow Scratchies",
+      "body": "Show and explain to the group a scar you have. Everyone drink 2 in pain."
+    },
+    {
+      "index": 35,
+      "title": "That's Two Beers",
+      "body": "Give out 24 drinks."
+    },
+    {
+      "index": 36,
+      "title": "Chaud",
+      "body": "Microwave your drink."
+    },
+    {
+      "index": 37,
+      "title": "Guess I'll Die",
+      "body": "Roll 3 dice. If any of them are the same number, move to the player in\nlast place."
+    },
+    {
+      "index": 38,
+      "title": "I'm Gonna Cum",
+      "body": "If you landed on Do Not Cum give d6 drinks and everyone applauds you. Else, cum and drink d6."
+    },
+    {
+      "index": 39,
+      "title": "We're Not That Drunk",
+      "body": "Ignore the next Space you land on.\nOr pound a full drink and\nroll again."
+    },
+    {
+      "index": 40,
+      "title": "SS Allure",
+      "body": "Roll two dice. First die, skip half that many turns. Second die, drink that many each turn."
+    },
+    {
+      "index": 41,
+      "title": "Asshole",
+      "body": "You have to do what everyone says while on this Space."
+    },
+    {
+      "index": 42,
+      "title": "Cave Herpes",
+      "body": "If you land on this Space you must roll a 4-5 to leave. Drink 2 every time you get stuck."
+    },
+    {
+      "index": 43,
+      "title": "Pokemon League",
+      "body": "You can only say your first name while in this Zone. X is equal to the amount of official badges you own."
+    },
+    {
+      "index": 44,
+      "title": "Children's Cabin",
+      "body": "Get absolutely STONED or drink 1 every time someone takes a turn until your next turn."
+    },
+    {
+      "index": 45,
+      "title": "CABIIN",
+      "body": "Roll a die to join a team.\nTeams use same color tokens.\n1-2: Florida   3-4: Michigan   5-6: Wisconsin\n\nLegend\nBlue: Landmark. Stop here.\nGrey: Zone. Special rules apply here and connected Landmarks.\nAll squares count as Spaces.\n\nAlways round up when applicable."
+    },
+    {
+      "index": 46,
+      "title": "Group Effort",
+      "body": "Teammates advance together if they're on the same Space in this Zone. Advance 1 space on success. Other teams drink 3 now."
+    },
+    {
+      "index": 47,
+      "title": "4th Meal",
+      "body": "Fly to Ireland and get a tattoo right now. Otherwise drink d6/3."
+    },
+    {
+      "index": 48,
+      "title": "85.21% Birthday",
+      "body": "Surprise the shit out of someone by each drinking 85.21% of a drink of\nyour choosing."
+    },
+    {
+      "index": 49,
+      "title": "Too Soon O'Conner",
+      "body": "Hit the NOS and skip the next Landmark."
+    },
+    {
+      "index": 50,
+      "title": "Get Natured",
+      "body": "Drink 1 outside."
+    },
+    {
+      "index": 51,
+      "title": "Wisconsin",
+      "body": "The real mitten state. Drink 7 - d6 because you're better. If this is your team, give 7 - d6."
+    },
+    {
+      "index": 52,
+      "title": "Like I Said",
+      "body": "Mimic the person during their turn. Drink 2."
+    },
+    {
+      "index": 53,
+      "title": "Steve's Spyder Beanie",
+      "body": "It has protected his head for longer than he's been alive. Return all drinks given to you to the sender while here."
+    },
+    {
+      "index": 54,
+      "title": "Samesies",
+      "body": "Roll 2 die. If they match, give the total and advance. Else, drink half the total."
+    },
+    {
+      "index": 55,
+      "title": "Team Speech",
+      "body": "Your team has to give a speech using one word per person at a time. Then, your team drinks 1 for\neach teammate."
+    },
+    {
+      "index": 56,
+      "title": "Madi Booty",
+      "body": "Roll 3 dice and add the totals. Play a round of Madi Booty with that number."
+    },
+    {
+      "index": 57,
+      "title": "Deez Nuts",
+      "body": "You are now Deez. If you make someone fall for a deez nuts joke, they drink 3. Gottem."
+    },
+    {
+      "index": 58,
+      "title": "Ohio",
+      "body": "That sucks. This is your team now. Wear something stupid. Previous teammates drink 2 and you drink half their total."
+    },
+    {
+      "index": 59,
+      "title": "How Many Holes You Got?",
+      "body": "Give out 1 for every beer you've finished this game so far +1."
+    },
+    {
+      "index": 60,
+      "title": "Numbers",
+      "body": "Drink for every number that exists or until the group is happy."
+    },
+    {
+      "index": 61,
+      "title": "Someone Call 9-1",
+      "body": "Drink for every injury that happened this trip."
+    },
+    {
+      "index": 62,
+      "title": "Final Showdown",
+      "body": "Play Thunderstruck, but you can drink anytime. Anyone who lands here can join in progress. Everyone who finishes 2 beers before Thunderstruck ends while on this space are the current Cabin Daddies."
+    },
+    {
+      "index": 63,
+      "title": "King of the Hill",
+      "body": "Roll higher than all of your teammates in this Zone (or 6 if solo) to advance. Else, drink 2 for each teammate."
+    },
+    {
+      "index": 64,
+      "title": "That's My Boyd",
+      "body": "Guess your roll to get your boyd and advance. Else, that is not your boyd and drink 4."
+    },
+    {
+      "index": 65,
+      "title": "Miller Mike",
+      "body": "Your next full drink is chosen by the group."
+    },
+    {
+      "index": 66,
+      "title": "I Can't Believe You've Done This",
+      "body": "Pour someone's drink out. Their next roll is halved."
+    },
+    {
+      "index": 67,
+      "title": "Another One",
+      "body": "Drink the previous amount you owed and roll again."
+    },
+    {
+      "index": 68,
+      "title": "Silly Salmon",
+      "body": "Flop on the floor and\ndrink 1."
+    },
+    {
+      "index": 69,
+      "title": "Florida",
+      "body": "Let everyone know how nice Florida is and drink d6/2 warm drinks. If this is your team, give d6/2 warm drinks instead."
+    },
+    {
+      "index": 70,
+      "title": "Pipe Bomb",
+      "body": "Guess 1-6, if you roll your guess you blow up and do a pipe bomb."
+    },
+    {
+      "index": 71,
+      "title": "No Take Just Throw",
+      "body": "Throw d6 drinks someones way and make them wiggle butt in honor of Coffee."
+    },
+    {
+      "index": 72,
+      "title": "Almost Lost My Cool There",
+      "body": "If someone got angry this game, tell them to calm down (which helps), and give them 3 drinks.\nElse, rage and drink 3."
+    },
+    {
+      "index": 73,
+      "title": "Crypto",
+      "body": "Move forward or backwards (coin flip) d6 spaces and drink that many."
+    },
+    {
+      "index": 74,
+      "title": "Medium Rare Chicken",
+      "body": "Drink 2 for every player that threw up during\nthis trip."
+    },
+    {
+      "index": 75,
+      "title": "Mustard Tiger",
+      "body": "Drink as much as the person who drank the most this game, or move to the Space in last place."
+    },
+    {
+      "index": 76,
+      "title": "Hot Dog Water",
+      "body": "You insult Mike Davis and everyone hates you. Go back 10 spaces and never apologize to anyone."
+    },
+    {
+      "index": 77,
+      "title": "Ski Team",
+      "body": "If you're a skier, skiers\ndrink 2.\nIf you're a snowboarder, snowboarders drink 2.\nElse, drink 4 and grow up."
+    },
+    {
+      "index": 78,
+      "title": "What An Idiot",
+      "body": "Make someone finish\ntheir drink."
+    },
+    {
+      "index": 79,
+      "title": "I'm Sorry Baby",
+      "body": "Roll a die:\n1: You're a nobody drink 4.\n2-4: You receive a \"Smoochie-Smoochie\" drink 2.\n5-6: The night closes in. Give 3 drinks."
+    },
+    {
+      "index": 80,
+      "title": "Deans",
+      "body": "Pooh-Bear 3 drinks\nlike Spencer\nPooh-Bear's Deans."
+    },
+    {
+      "index": 81,
+      "title": "You Son of a Bitch I'm In",
+      "body": "1 person can offer you a drink type and quantity. Both people drink it."
+    },
+    {
+      "index": 82,
+      "title": "Seems Like a Real Piece of Shit",
+      "body": "You are now the beer wench for 3 turns."
+    },
+    {
+      "index": 83,
+      "title": "Part of the Ship, Part of the Crew",
+      "body": "Pick up to 3 people to be part of your crew. You all drink every time the crew drinks until your next turn."
+    },
+    {
+      "index": 84,
+      "title": "For Safety",
+      "body": "Your next drink is a water or hydrating drink."
+    },
+    {
+      "index": 85,
+      "title": "Yoink!",
+      "body": "Move someone back\nd6 spaces."
+    },
+    {
+      "index": 86,
+      "title": "Get Good",
+      "body": "Roll a die. Move to the person in the rank equal to your roll (Roll 1, move to 1st, etc)."
+    },
+    {
+      "index": 87,
+      "title": "What Is? Give",
+      "body": "Have someone get you the same type of drink that they are drinking. Both drink d6-3."
+    },
+    {
+      "index": 88,
+      "title": "Mike Bet",
+      "body": "Guess what time it will be when the first person lands on Miller Mike. Closest guess avoids 6 drinks. If no one lands on it, everyone takes a shot (unless you guessed no-show)."
+    },
+    {
+      "index": 89,
+      "title": "Michigan",
+      "body": "Drink 3 from an ice cold drink and explain how its not even cold. If this is your team, give 3 cold drinks instead."
+    },
+    {
+      "index": 90,
+      "title": "Dream Team",
+      "body": "You may split drinks with teammates that are located in this Zone."
+    },
+    {
+      "index": 91,
+      "title": "President",
+      "body": "Give orders to anyone while on this Space."
+    },
+    {
+      "index": 92,
+      "title": "3rd World Christmas",
+      "body": "While on this Space, you can give anyone a gift and they must use/wear it for the remainder of the game."
+    },
+    {
+      "index": 93,
+      "title": "Fuck You In Particular",
+      "body": "Roll a die, subtract that number from 10 and drink that number."
+    },
+    {
+      "index": 94,
+      "title": "Kadabra",
+      "body": "Abra's dumbass brother. Trade Spaces with someone if you landed here. Abra-ing like a slut doesn't count."
+    },
+    {
+      "index": 95,
+      "title": "God's Chosen",
+      "body": "If you've had COVID, drink 3. Else, give 3."
+    },
+    {
+      "index": 96,
+      "title": "Thanos Snap",
+      "body": "Pick half the people in the game to miss their next turn. Everyone else\ndrinks 2."
+    },
+    {
+      "index": 97,
+      "title": "It's Gotta Go",
+      "body": "Finish your drink."
+    }
+  ]
+}

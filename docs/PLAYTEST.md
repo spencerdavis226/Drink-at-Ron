@@ -4,8 +4,8 @@ Status: **prepared, no results recorded.** Kit prepared 2026-09-21 at commit `3e
 
 ## How to run
 
-- Three sessions, ideally one group. Session A is Short (30 cards) with Core. Session B is Infinite with Ron’s house cards selected. Session C adds VIP night with a guest of honor; use more sessions to cover the deck.
-- Dice cards are mixed into `The house collection` (20 of the 250 carry a roll), and three more are in Ron’s house cards. There is no separate dice pack to select.
+- Two sessions, ideally one group. Session A is Short (30 cards) with Core. Session B is Infinite with VIP night and a guest of honor; use more sessions to cover the deck.
+- Dice cards are mixed into Core (80 of the 322 carry a roll). There is no separate dice pack to select.
 - Use the game without coaching beyond choosing a first drawer and clockwise turns. Record confusion rather than steering players to the intended answer.
 - Place the phone where the group will actually play. Ask people across the table and at side angles to read each revealed rule without passing the phone; note when they must lean in, turn the phone, or scroll.
 - After each session ask: which cards would you remove, which do you want more of, and was the next action ever unclear?
@@ -16,21 +16,15 @@ Status: **prepared, no results recorded.** Kit prepared 2026-09-21 at commit `3e
 - Date / build commit:
 - Device / OS / Safari or installed Home Screen:
 - People / approximate session length:
-- Deck: Short, Core only (30 cards from the 250-card pool).
+- Deck: Short, Core only (30 cards from the 322-card pool).
 
-## Session B — Infinite (another 30–60 cards)
+## Session B — Infinite, then VIP night
 
 - Date / build commit:
 - Device / OS:
 - People / approximate session length:
 - Note any repetition or pacing issues; automated engine tests verify cycle exhaustion.
-
-## Session C — VIP night
-
-- Date / build commit:
-- Device / OS:
-- Guest of honor chosen before play:
-- Note whether the four sheet-sourced VIP prompts fit the occasion and read clearly.
+- If adding `VIP night`, choose a guest of honor before play and note whether the four sheet-sourced VIP prompts fit the occasion and read clearly.
 
 ## Dice and roll checks
 
@@ -47,8 +41,8 @@ Status: **prepared, no results recorded.** Kit prepared 2026-09-21 at commit `3e
 
 ## Copy and pack decisions (need user approval)
 
-- **`The house collection` name/copy.** Keep, or rename? Description: "The always-on deck: classic give-and-drink prompts, King's Cup rules, group games, and a few dice rolls."
-- **Dice cards.** They currently live inside `The house collection` (no separate dice pack, no dice pack logo). Decide: keep them mixed, or split them into a named dice pack with its own logo and copy. Do not add more dice mechanics by inference.
+- **`The Core deck` name/copy.** Keep, or rename? Description: "The always-on deck: sample prompts, King's Cup basics, the voice/dice expansion, and every supplied house card."
+- **Dice cards.** They are merged into Core (no separate dice pack). 80 of the 322 carry a roll. Decide whether to keep them mixed or split them into a named dice pack with its own logo and copy. Do not add more dice mechanics by inference.
 - **`VIP night` name/copy.** Keep, or rename? The pack mark is `art/packs/vip.svg`.
 - **Card wording.** The sample text is supplied as-is, including the crude language. Note any line you want changed; unchanged concepts keep their IDs, unrelated replacements get new IDs. Discuss balance after observing the expanded deck; keep IDs stable for copy edits.
 - **Future art.** The launch card front stays plain parchment inside the approved frame. Discuss any new illustration work separately after copy is locked.
@@ -57,7 +51,7 @@ Status: **prepared, no results recorded.** Kit prepared 2026-09-21 at commit `3e
 
 Add rows or annotate the sheet below. Mark each card: `fine`, `confusing`, `skipped`, or `remove`.
 
-Use the generated [card review sheet](CARD_REVIEW.md) or [CSV](card-review.csv) to record per-card observations for all 250 Core, 103 Ron’s house, and 16 VIP cards. Keep this file for session findings and decisions. The custom IDs include their source sheet row numbers for comparison.
+Use the generated [card review sheet](CARD_REVIEW.md) or [CSV](card-review.csv) to record per-card observations for all 322 Core and 16 VIP cards. Keep this file for session findings and decisions. The custom IDs include their source sheet row numbers for comparison.
 
 ## Device checks
 

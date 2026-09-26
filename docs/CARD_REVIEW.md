@@ -4,9 +4,9 @@ Generated 2026-09-26 by `npm run cards:review`. Do not edit by hand — edit the
 source modules under `src/content` and regenerate. Each row is one card;
 the Review column is intentionally blank so you can mark it up.
 
-## The house collection (`core`)
+## The Core deck (`core`)
 
-250 cards · 47 sip · 54 group · 41 category · 75 challenge · 33 rule · 20 dice
+322 cards · 55 sip · 57 group · 39 category · 125 challenge · 46 rule · 80 dice
 
 | Review | Title | ID | Cat | Rules | Dice |
 | --- | --- | --- | --- | --- | --- |
@@ -18,255 +18,21 @@ the Review column is intentionally blank so you can mark it up.
 | ☐ | HR Violation | `core.hr-violation` | sip | Hooked up with a coworker? Drink 4. |  |
 | ☐ | Corporate Wellness | `core.fake-sick` | sip | Faked sick to skip work? Drink 3. |  |
 | ☐ | Financial Genius | `core.crypto-bro` | sip | Own crypto? Drink 2. Don't? Give 2. |  |
-| ☐ | Give One | `core.give-one` | sip | Give 1 sip to anyone. |  |
-| ☐ | Give Two | `core.give-two` | sip | Give 2 sips to anyone. |  |
-| ☐ | Drink Two | `core.drink-two` | sip | Drink 2. |  |
-| ☐ | Give and Take | `core.give-take` | sip | Give 2 sips to someone. Take 1 sip yourself. |  |
-| ☐ | Two Is You | `core.kings-two` | sip | Give 2 sips to anyone. |  |
-| ☐ | Three Is Me | `core.kings-three` | sip | Drink 3. |  |
+| ☐ | Give One | `core.give-one` | sip | Give 1 sip to anyone. Make eye contact. |  |
+| ☐ | Give Two | `core.give-two` | sip | Give 2 sips to anyone. Announce it like a tax refund. |  |
+| ☐ | Drink Two | `core.drink-two` | sip | Drink 2. No explanation owed. |  |
+| ☐ | Give and Take | `core.give-take` | sip | Give 2 sips to someone. Take 1 yourself. Balanced. |  |
+| ☐ | Two Is You | `core.kings-two` | sip | Give 2 sips to anyone. Point so it's personal. |  |
+| ☐ | Three Is Me | `core.kings-three` | sip | Drink 3. The cards hate you personally. |  |
 | ☐ | Potion of Courage | `core.potion-courage` | sip | Drink 2, then dare someone to match you. They may pass. |  |
 | ☐ | Resurrection | `core.resurrection` | sip | Top up your drink, then take 2 sips for the fallen. |  |
 | ☐ | Mimic Chest | `core.mimic-chest` | sip | Open the chest: take 2 sips and give 1 away. |  |
-| ☐ | Pick Your Poison | `core.pick-your-poison` | sip | Drink 1 or give 1. Say why you chose it. |  |
-| ☐ | Split the Bill | `core.split-the-bill` | sip | Pick someone. Each of you drinks 1. |  |
-| ☐ | Generous Round | `core.generous-round` | sip | Give 1 sip each to two different players. |  |
-| ☐ | Little Treat | `core.little-treat` | sip | Give 1 sip to whoever needs a little treat. |  |
-| ☐ | Bad Timing | `core.bad-timing` | sip | Last person to check the time drinks 1. |  |
-| ☐ | Empty Pockets | `core.empty-pockets` | sip | Anyone with no cash on them drinks 1. |  |
-| ☐ | Face Down | `core.phone-face-down` | sip | Anyone with their phone face up drinks 1. |  |
-| ☐ | Receipt Check | `core.receipt-check` | sip | Anyone who kept a receipt today drinks 1. |  |
-| ☐ | Night Owl | `core.night-owl` | sip | Latest bedtime last night drinks 1. |  |
-| ☐ | Early Bird | `core.early-bird` | sip | Earliest wake-up today gives 1. |  |
-| ☐ | Weather Report | `core.weather-report` | sip | Name today's weather in one dramatic word. Anyone who agrees drinks 1. |  |
-| ☐ | Hot Take Tax | `core.hot-take-tax` | sip | Give a harmless hot take. Anyone who disagrees drinks 1. |  |
-| ☐ | Agree to Disagree | `core.agree-to-disagree` | sip | Name a food you dislike. Fans of it drink 1. |  |
-| ☐ | Tiny Victory | `core.tiny-victory` | sip | Name a small win from this week. Give 1 to someone who cheers. |  |
-| ☐ | Wrong Address | `core.wrong-address` | sip | Ever gone to the wrong place? Drink 1. |  |
-| ☐ | Missed Exit | `core.missed-exit` | sip | Ever missed your stop or exit? Drink 1. |  |
-| ☐ | Reply All | `core.accidental-reply` | sip | Ever sent a message to the wrong person? Drink 1. |  |
-| ☐ | Double Booked | `core.double-booked` | sip | Ever agreed to two plans at once? Drink 1. |  |
-| ☐ | Lost the Plot | `core.lost-the-plot` | sip | Forgot why you entered a room today? Drink 1. |  |
-| ☐ | Spare Key | `core.spare-key` | sip | Ever locked yourself out? Drink 1. |  |
-| ☐ | Impulse Buy | `core.impulse-buy` | sip | Bought something silly this month? Drink 1. |  |
-| ☐ | Half Finished | `core.unfinished-project` | sip | Have an unfinished hobby project? Drink 1. |  |
-| ☐ | What's Your Name? | `core.forgot-the-name` | sip | Forgot a name right after hearing it? Drink 1. |  |
-| ☐ | Wrong Lyrics | `core.wrong-lyrics` | sip | Sung the wrong lyrics with confidence? Drink 1. |  |
-| ☐ | One More Episode | `core.one-more-episode` | sip | Stayed up for one more episode? Drink 1. |  |
-| ☐ | Sent the Draft | `core.sent-the-draft` | sip | Sent a message before proofreading it? Drink 1. |  |
-| ☐ | Wrong Tab | `core.wrong-tab` | sip | Opened a tab and forgot why? Drink 1. |  |
-| ☐ | Forgot the Bag | `core.forgot-the-bag` | sip | Ever left your shopping bag behind? Drink 1. |  |
-| ☐ | Quiet Credit | `core.quiet-credit` | sip | Give 1 to someone who helped you recently. Tell them why. |  |
-| ☐ | Cheers to That | `core.cheers-to-that` | sip | Name something worth celebrating. You drink 1; the table may join. |  |
-| ☐ | Last Call | `core.last-call` | group | Everyone drinks 2. |  |
-| ☐ | Cheap Date | `core.cheap-date` | group | Cheapest drink at the table drinks 3. |  |
-| ☐ | Big Money | `core.baller` | group | Priciest drink at the table gives 4. |  |
-| ☐ | Group Project | `core.group-project` | group | Last hand in the air drinks 3. |  |
-| ☐ | Would You Though? | `core.would-you` | group | Most likely to text an ex drinks 3. |  |
-| ☐ | Cheers, Idiots | `core.cheers-idiots` | group | Cheers. Everyone drinks 2. |  |
-| ☐ | Social Sip | `core.social-sip` | group | Everyone drinks 2. |  |
-| ☐ | Girls Drink | `core.girls-drink` | group | Everyone who identifies as a girl drinks 2. |  |
-| ☐ | Guys Drink | `core.guys-drink` | group | Everyone who identifies as a guy drinks 2. |  |
-| ☐ | Table Toast | `core.table-toast` | group | Raise your glass. Last to toast drinks 2. |  |
-| ☐ | Respect Your Elders | `core.elders` | group | Oldest player drinks 2. |  |
-| ☐ | Youth Is Wasted | `core.youth` | group | Youngest player drinks 2. |  |
-| ☐ | Big Friendly Giant | `core.tallest` | group | Tallest player drinks 2. |  |
-| ☐ | Pocket Sized | `core.shortest` | group | Shortest player drinks 2. |  |
-| ☐ | New Blood | `core.new-blood` | group | Newest player drinks 2. |  |
-| ☐ | Fashionably Late | `core.late-arrival` | group | Last to arrive drinks 2. |  |
-| ☐ | Couples Drink | `core.couples` | group | Anyone in a relationship drinks 2. Everyone else gives 2. |  |
-| ☐ | Single Pringle | `core.singles` | group | Anyone single drinks 2. Everyone else gives 2. |  |
-| ☐ | Birthday Month | `core.birthday` | group | If it is your birthday month, drink 2. Everyone else toasts you. |  |
-| ☐ | Most Likely To | `core.most-likely` | group | Name a misdeed. Point at the most likely. Most pointed drinks 2. |  |
-| ☐ | Would You Rather | `core.would-rather` | group | Pose a dilemma. Point left or right. Minority drinks 2. |  |
-| ☐ | Ace Is Waterfall | `core.waterfall` | group | Start a waterfall. Everyone sips in turn and stops in turn. |  |
-| ☐ | King's Cup | `core.kings-king` | group | Pour a sip into the cup. When full, the drawer sips from it. |  |
-| ☐ | Tavern Brawl | `core.tavern-brawl` | group | On three, everyone points at someone. Most pointed drinks 3. |  |
-| ☐ | Same Shoes | `core.same-shoes` | group | Anyone wearing the same shoe color as the drawer drinks 1. |  |
-| ☐ | Pocket Check | `core.pocket-check` | group | Anyone carrying a key drinks 1. |  |
-| ☐ | Glasses Club | `core.glasses-club` | group | Anyone wearing glasses drinks 1. Everyone else gives 1. |  |
-| ☐ | Hat Trick | `core.hat-trick` | group | Anyone wearing a hat gives 1. If nobody is, drawer drinks 1. |  |
-| ☐ | Sleeve Squad | `core.sleeve-squad` | group | Long sleeves drink 1. Short sleeves give 1. |  |
-| ☐ | Color War | `core.color-war` | group | Drawer names a color. Anyone wearing it drinks 1. |  |
-| ☐ | Pet People | `core.pet-people` | group | Anyone with a pet drinks 1. Tell us its name. |  |
-| ☐ | Plant Parent | `core.plant-parent` | group | Anyone keeping a plant alive gives 1. |  |
-| ☐ | Window Seat | `core.window-seat` | group | Window-seat people drink 1. Aisle-seat people give 1. |  |
-| ☐ | Sweet or Salty | `core.sweet-or-salty` | group | Vote sweet or salty. Minority drinks 1; ties mean everyone drinks 1. |  |
-| ☐ | Tea or Coffee | `core.tea-or-coffee` | group | Vote tea or coffee. Minority gives 1; ties mean drawer drinks 1. |  |
-| ☐ | Morning or Night | `core.morning-or-night` | group | Vote mornings or nights. Minority drinks 1; ties mean all drink 1. |  |
-| ☐ | Beach or Mountain | `core.beach-or-mountain` | group | Vote beach or mountain. Minority drinks 1; ties mean all drink 1. |  |
-| ☐ | Dogs or Cats | `core.dogs-or-cats` | group | Vote dogs or cats. Minority gives 1; ties mean drawer gives 1. |  |
-| ☐ | Sit or Dance | `core.sit-or-dance` | group | Vote sit or dance. Minority drinks 1; ties mean everyone toasts. |  |
-| ☐ | Table Twin | `core.table-twin` | group | Find someone with your birth month. Both give 1. No match? Drink 1. |  |
-| ☐ | Name Neighbor | `core.name-neighbor` | group | Find the player whose first name is nearest yours in the alphabet. Both drink 1. |  |
-| ☐ | Same Letter | `core.same-first-letter` | group | Same first initial as the drawer? Drink 1. No match? Drawer gives 1. |  |
-| ☐ | Long Way Home | `core.furthest-away` | group | Who traveled farthest to get here? They give 1. |  |
-| ☐ | Local Legend | `core.closest-to-home` | group | Who lives closest to this place? They drink 1. |  |
-| ☐ | Last Photo | `core.last-photo` | group | Anyone whose last photo is of food drinks 1. |  |
-| ☐ | Unread Count | `core.unread-count` | group | Most unread messages gives 1. No need to show the screen. |  |
-| ☐ | Open Tabs | `core.tabs-open` | group | Most browser tabs open drinks 1. Honor system. |  |
-| ☐ | Low Battery | `core.battery-low` | group | Lowest phone battery drinks 1. Ties all drink 1. |  |
-| ☐ | The DJ | `core.playlist-picker` | group | Who picked the music? They give 1 to a fan. |  |
-| ☐ | Best Seat | `core.best-seat` | group | On three, point to the best seat. Its occupant gives 1. |  |
-| ☐ | Worst Seat | `core.worst-seat` | group | On three, point to the worst seat. Its occupant drinks 1. |  |
-| ☐ | Pocket Dimension | `core.most-pockets` | group | Most pockets on your outfit gives 1. |  |
-| ☐ | Group Portrait | `core.group-selfie` | group | Everyone makes the same silly face. Last to copy drinks 1. |  |
-| ☐ | Pass It On | `core.compliment-chain` | group | Compliment the player to your left. They give 1 to someone else. |  |
-| ☐ | Categories | `core.categories` | category | Pick a category. First repeat or blank drinks 3. |  |
-| ☐ | Rhyme Time | `core.rhyme-time` | category | Pick a word. First bad rhyme drinks 3. |  |
-| ☐ | Questions Only | `core.questions-only` | category | Questions only. First statement drinks 3. |  |
-| ☐ | Name 3 | `core.name-3` | category | Group picks a topic. Name 3 or drink 3. |  |
-| ☐ | Rock Paper Drink | `core.rock-paper-drink` | category | Challenge someone. Loser drinks 3. |  |
-| ☐ | Never Have I Ever | `core.never-have-i` | category | Say one. Anyone who has drinks 2. |  |
-| ☐ | Alphabet Race | `core.alphabet` | category | Pick a letter. Name words starting with it. First blank drinks 2. |  |
-| ☐ | Story Time | `core.story-time` | category | Add one sentence to a group story. First to stall drinks 2. |  |
-| ☐ | Fizz Buzz | `core.fizz-buzz` | category | Count up: Fizz on 3s, Buzz on 5s, both on 15. Slip = drink 2. |  |
-| ☐ | Fuzzy Duck | `core.fuzzy-duck` | category | Say fuzzy duck. Switch to ducky fuzz anytime. Slip = drink 2. |  |
-| ☐ | Goblin Market | `core.goblin-market` | category | Name something from a goblin market. First blank drinks 2. |  |
-| ☐ | Pizza Toppings | `core.pizza-toppings` | category | Name pizza toppings clockwise. First repeat or pass drinks 1. |  |
-| ☐ | Breakfast Club | `core.breakfast-foods` | category | Name breakfast foods clockwise. First repeat or pass drinks 1. |  |
-| ☐ | Things That Fly | `core.things-that-fly` | category | Name things that fly clockwise. First repeat or pass drinks 1. |  |
-| ☐ | On Wheels | `core.things-with-wheels` | category | Name things with wheels clockwise. First repeat or pass drinks 1. |  |
-| ☐ | Villain Roll Call | `core.fictional-villains` | category | Name fictional villains clockwise. First repeat or pass drinks 1. |  |
-| ☐ | At the Movies | `core.movie-genres` | category | Name movie genres clockwise. First repeat or pass drinks 1. |  |
-| ☐ | Game Shelf | `core.board-games` | category | Name board games clockwise. First repeat or pass drinks 1. |  |
-| ☐ | Fridge Raid | `core.things-in-a-fridge` | category | Name things in a fridge clockwise. First repeat or pass drinks 1. |  |
-| ☐ | Bag Check | `core.things-in-a-bag` | category | Name things in a bag clockwise. First repeat or pass drinks 1. |  |
-| ☐ | Party Inventory | `core.things-at-a-party` | category | Name things at a party clockwise. First repeat or pass drinks 1. |  |
-| ☐ | Bad Superpowers | `core.bad-superpowers` | category | Invent useless powers clockwise. First repeat or pass drinks 1. |  |
-| ☐ | Fake Band Names | `core.fake-band-names` | category | Invent band names clockwise. First repeat or pass drinks 1. |  |
-| ☐ | Pet Names | `core.pet-names` | category | Name possible pet names clockwise. First repeat or pass drinks 1. |  |
-| ☐ | Ice Cream | `core.ice-cream-flavors` | category | Name ice cream flavors clockwise. First repeat or pass drinks 1. |  |
-| ☐ | Sandwich Shop | `core.sandwich-fillings` | category | Name sandwich fillings clockwise. First repeat or pass drinks 1. |  |
-| ☐ | Trip Disasters | `core.vacation-mishaps` | category | Name vacation mishaps clockwise. First repeat or pass drinks 1. |  |
-| ☐ | Tavern Payroll | `core.tavern-jobs` | category | Name tavern jobs clockwise. First repeat or pass drinks 1. |  |
-| ☐ | Fantasy Pets | `core.fantasy-pets` | category | Invent fantasy pets clockwise. First repeat or pass drinks 1. |  |
-| ☐ | Dragon's Closet | `core.things-a-dragon-owns` | category | Name things a dragon owns clockwise. First repeat or pass drinks 1. |  |
-| ☐ | Bad Quests | `core.terrible-quests` | category | Invent terrible quests clockwise. First repeat or pass drinks 1. |  |
-| ☐ | Fake Holidays | `core.fake-holidays` | category | Invent holidays clockwise. First repeat or pass drinks 1. |  |
-| ☐ | Under Lock | `core.things-with-keys` | category | Name things with keys clockwise. First repeat or pass drinks 1. |  |
-| ☐ | Going in Circles | `core.round-objects` | category | Name round objects clockwise. First repeat or pass drinks 1. |  |
-| ☐ | Noise Complaint | `core.loud-things` | category | Name loud things clockwise. First repeat or pass drinks 1. |  |
-| ☐ | Tiny Things | `core.tiny-things` | category | Name tiny things clockwise. First repeat or pass drinks 1. |  |
-| ☐ | Meltdown | `core.things-that-melt` | category | Name things that melt clockwise. First repeat or pass drinks 1. |  |
-| ☐ | Feeling Blue | `core.things-that-are-blue` | category | Name blue things clockwise. First repeat or pass drinks 1. |  |
-| ☐ | Bad Gifts | `core.terrible-gifts` | category | Invent terrible gifts clockwise. First repeat or pass drinks 1. |  |
-| ☐ | Movie in Three | `core.three-word-movies` | category | Describe movies in three words clockwise. First repeat or pass drinks 1. |  |
-| ☐ | Alphabet Soup | `core.alphabet-food` | category | Name foods A to Z clockwise. First blank or pass drinks 1. |  |
-| ☐ | Deez Nuts | `core.deez-nuts` | challenge | Get someone with a deez nuts joke. They drink 3. |  |
-| ☐ | Smooth Brain | `core.smooth-brain` | challenge | Admit something dumb you believed. Drink 2. |  |
-| ☐ | Dice Tax | `core.dice-tax` | challenge | Roll d6. Drink half, round up. | 1d6 — Drink half your roll, rounded up. |
-| ☐ | Give a Shit | `core.give-a-shit` | challenge | Roll d6. Give that many. | 1d6 — Give {total}. |
-| ☐ | Fuckin' Math | `core.fuckin-math` | challenge | Roll d6. Drink 7 minus your roll. | 1d6 — Drink 7 minus your roll. |
-| ☐ | Pathetic | `core.low-roller` | challenge | Roll d6. 1–2: drink 4. Else give 2. | 1d6 — 1-2: Drink 4. 3-6: Give 2. |
-| ☐ | Big Dick Energy | `core.high-roller` | challenge | Roll d6. 5–6: give 5. Else drink 2. | 1d6 — 1-4: Drink 2. 5-6: Give 5. |
-| ☐ | Same Shit | `core.same-shit` | challenge | Roll 2d6. Doubles: give total. Else drink 3. | 2d6 — Doubles: give {total}. Otherwise drink 3. |
-| ☐ | That's Two Beers | `core.two-beers-math` | challenge | Roll 2d6. Give the total. | 2d6 — Give {total}. |
-| ☐ | Snake Eyes | `core.snake-eyes` | challenge | Roll 2d6. Double 1s: drink 6. Else give 3. | 2d6 — 2-2: Drink 6. 3-12: Give 3. |
-| ☐ | Lucky Bastard | `core.lucky-bastard` | challenge | Roll 2d6. 9+: give 5. Under 9: drink 3. | 2d6 — 2-8: Drink 3. 9-12: Give 5. |
-| ☐ | Fuck Around & Find Out | `core.fuck-around` | challenge | Roll d20. 1: drink 5. 20: give 8. Else drink 2. | 1d20 — 1-1: Drink 5. 2-19: Drink 2. 20-20: Give 8. |
-| ☐ | Critical Failure | `core.crit-fail` | challenge | Roll d20. 1–5: drink 4. 16–20: give 4. | 1d20 — Roll 1–5: drink 4. Roll 16–20: give 4. Otherwise nothing. |
-| ☐ | God's Drunkest Soldier | `core.chosen-one` | challenge | Roll d20. 20: everyone else drinks 3. 1: drink 5. | 1d20 — Roll 20: everyone else drinks 3. Roll 1: drink 5. Otherwise nothing. |
-| ☐ | Four Is Floor | `core.kings-four` | challenge | Touch the floor. Last one down drinks 2. |  |
-| ☐ | Seven Is Heaven | `core.kings-seven` | challenge | Reach for the sky. Last hand up drinks 2. |  |
-| ☐ | Hands on Heads | `core.hands-on-heads` | challenge | Put your hands on your head. Last one drinks 2. |  |
-| ☐ | Truth or Drink | `core.truth-or-drink` | challenge | Ask someone a question. They answer honestly or drink 2. |  |
-| ☐ | Paranoia | `core.paranoia` | challenge | Whisper a question. They answer aloud. Ask what it was: drink 1. |  |
-| ☐ | Two Truths | `core.two-truths` | challenge | Say two truths and one lie. First wrong guess drinks 2. |  |
-| ☐ | Rant Mode | `core.rant` | challenge | Name a topic for the drawer. They rant for 20 seconds or drink 2. |  |
-| ☐ | Do the Impression | `core.impression` | challenge | Do an impression of someone here. If nobody laughs, drink 2. |  |
-| ☐ | Stare Down | `core.stare-down` | challenge | Stare down a rival. First to blink or laugh drinks 2. |  |
-| ☐ | Thumb War | `core.thumb-war` | challenge | Challenge someone to a thumb war. Loser drinks 2. |  |
-| ☐ | Lucky Sip | `core.lucky-sip` | challenge | Roll d6. Drink your roll. | 1d6 — Drink {total}. |
-| ☐ | Open Hand | `core.open-hand` | challenge | Roll d6. Give your roll. | 1d6 — Give {total}. |
-| ☐ | Coin Flip | `core.odd-even` | challenge | Roll d6. Odd: drink 3. Even: give 3. | 1d6 — 1-3: Odd: drink 3. 4-6: Even: give 3. |
-| ☐ | Fate | `core.fate` | challenge | Roll d20. 10 or more: give 2. Under 10: drink 3. | 1d20 — 1-9: Drink 3. 10-20: Give 2. |
-| ☐ | Blessing | `core.blessing` | challenge | Roll d20. Only a natural 20 does anything: everyone else drinks 2. | 1d20 — 1-19: Nothing happens. 20-20: Everyone else drinks 2. |
-| ☐ | Dragon's Breath | `core.dragon-breath` | challenge | Take a sip, then name someone. They drink 1 and take a sip back. |  |
-| ☐ | Loot Drop | `core.loot-drop` | challenge | Roll d6. 5-6: give 4. Else drink 2. | 1d6 — 1-4: Drink 2. 5-6: Give 4. |
-| ☐ | Critical Hit | `core.critical-hit` | challenge | Rock-paper-scissors: winner gives 4, loser drinks 2. |  |
-| ☐ | Bardic Inspiration | `core.bard` | challenge | Sing your next sentence. Laughs: drink 2. Silence: you drink 2. |  |
-| ☐ | Prophecy | `core.prophecy` | challenge | Predict who drinks next. Right: give 3. Wrong: drink 3. |  |
-| ☐ | Side Quest | `core.side-quest` | challenge | Give the table a small dare. Anyone who refuses drinks 2. |  |
-| ☐ | One Word Toast | `core.one-word-toast` | challenge | Give a toast using exactly one word. Table votes: good or drink 1. |  |
-| ☐ | Bad Advice | `core.bad-advice` | challenge | Ask for harmless bad advice. Each player offers one line; pick the best to give 1. |  |
-| ☐ | Sell Me This | `core.sell-me-this` | challenge | Pick an object nearby. Sell it to the table in one sentence. |  |
-| ☐ | Catchphrase | `core.new-catchphrase` | challenge | Invent a catchphrase for someone here. They use it once or drink 1. |  |
-| ☐ | Movie Trailer | `core.movie-trailer` | challenge | Narrate this night as a movie trailer. First laugh gives 1. |  |
-| ☐ | One Star | `core.terrible-review` | challenge | Give a one-star review of a harmless object nearby. |  |
-| ☐ | Five Stars | `core.five-star-review` | challenge | Give a five-star review of the weirdest object nearby. |  |
-| ☐ | And the Award Goes | `core.fake-award` | challenge | Give someone a ridiculous award. They make an acceptance speech. |  |
-| ☐ | No Comment | `core.press-conference` | challenge | The table asks one question. Answer like a scandal-hit celebrity. |  |
-| ☐ | Secret Ingredient | `core.secret-ingredient` | challenge | Describe a made-up dish. Table guesses its secret ingredient. |  |
-| ☐ | Bad Alibi | `core.bad-alibi` | challenge | Explain why you were late to a dragon fight. Table votes if it holds up. |  |
-| ☐ | Perfect Crime | `core.perfect-crime` | challenge | Confess to stealing a harmless object here. Table names your motive. |  |
-| ☐ | Instant Nickname | `core.instant-nickname` | challenge | Give the player on your right a nickname. They approve it or give 1. |  |
-| ☐ | Backhanded | `core.reverse-compliment` | challenge | Give a compliment that sounds like an insult. Target judges it. |  |
-| ☐ | Petty Debate | `core.tiny-argument` | challenge | Defend a silly opinion. Table gives 1 if convinced; else you drink 1. |  |
-| ☐ | Objection | `core.courtroom` | challenge | Accuse someone of a harmless crime. They give one-sentence defense. |  |
-| ☐ | Tavern Haiku | `core.haiku` | challenge | Make a three-line poem about this table. Everyone snaps or you drink 1. |  |
-| ☐ | Read the Room | `core.dramatic-reading` | challenge | Read any short label nearby like a dramatic prophecy. |  |
-| ☐ | Animal Act | `core.charade-animal` | challenge | Act out an animal silently. Each player gets one guess; first correct guess gives 1. |  |
-| ☐ | What Do I Do? | `core.charade-job` | challenge | Act out a job silently. Each player gets one guess; first correct guess gives 1. |  |
-| ☐ | Invisible Prop | `core.charade-object` | challenge | Mime using an object. Each player gets one guess; first correct guess gives 1. |  |
-| ☐ | Everyone But You | `core.reverse-charade` | challenge | Table acts out one animal together. Drawer gets one guess. |  |
-| ☐ | Sound Effects | `core.sound-effect` | challenge | Make a sound for a nearby object. One guess each; first correct guess assigns 1 sip. |  |
-| ☐ | Hum It | `core.hum-a-song` | challenge | Hum a song without lyrics. Each player gets one guess; first correct guess gives 1. |  |
-| ☐ | Finish the Line | `core.finish-the-line` | challenge | Start a familiar saying. First person to finish it gives 1. |  |
-| ☐ | Two Word Story | `core.two-word-story` | challenge | Begin a story with two words. Each player adds two; stop after one lap. |  |
-| ☐ | The Sequel | `core.one-sentence-sequel` | challenge | Invent a one-sentence sequel to tonight. Table names its title. |  |
-| ☐ | Breaking News | `core.fake-headline` | challenge | Make a news headline about this table. Target gives 1 if flattered. |  |
-| ☐ | Lost and Found | `core.lost-and-found` | challenge | Describe an imaginary lost item. Table guesses its owner. |  |
-| ☐ | Dream Dinner | `core.dream-dinner` | challenge | Name your dream dinner. Anyone who wants it drinks 1. |  |
-| ☐ | One Item | `core.desert-island` | challenge | Name one item for a deserted island. Table votes if it helps. |  |
-| ☐ | Bad Password | `core.bad-password` | challenge | Invent the worst safe-to-say password. Table picks the worst. |  |
-| ☐ | Fact Check | `core.fact-check` | challenge | State a surprising fact, true or invented. Table guesses; then reveal. |  |
-| ☐ | Guilty Pleasure | `core.guilty-pleasure` | challenge | Name a harmless guilty pleasure. Anyone who shares it drinks 1. |  |
-| ☐ | Would You Survive? | `core.would-you-survive` | challenge | Name a silly disaster. Table votes who survives; chosen gives 1. |  |
-| ☐ | Table Mascot | `core.make-a-mascot` | challenge | Pick an object as tonight's mascot. Everyone gives it a name. |  |
-| ☐ | Handshake Deal | `core.secret-handshake` | challenge | Invent a no-contact handshake with someone. Table judges the finale. |  |
-| ☐ | Compliment Duel | `core.compliment-duel` | challenge | Trade compliments with a rival. First to laugh drinks 1. |  |
-| ☐ | Memory Lane | `core.memory-lane` | challenge | Tell a short funny memory with someone here. They correct one detail. |  |
-| ☐ | Ask the Expert | `core.unexpected-expert` | challenge | Table names a silly subject. Give one confident expert answer. |  |
-| ☐ | Rulemaster | `core.rulemaster` | rule | Make a rule until next card. Breaker drinks 2. |  |
-| ☐ | Who the Fuck Are You? | `core.no-names` | rule | Until next card: no names. Slip = drink 2. |  |
-| ☐ | Church Mode | `core.potty-mouth` | rule | Until next card: no swearing. Slip = drink 2. |  |
-| ☐ | Captain Dumbass | `core.captain-dumbass` | rule | Until next card: call everyone “Captain.” Slip = drink 2. |  |
-| ☐ | Cursed Number | `core.cursed-number` | rule | Roll d6. That number is banned. Say it = drink 2. | 1d6 — {total} is banned. Say it: drink 2. |
-| ☐ | Dice Lord | `core.dice-lord` | rule | Roll d6. Odd: no pointing. Even: no questions. Slip = drink 2. | 1d6 — Odd: no pointing. Even: no questions. Slip: drink 2. |
-| ☐ | Thumb Master | `core.thumb-master` | rule | Until next card: thumbs up means copy. Last to copy drinks 2. |  |
-| ☐ | Lefty | `core.lefty` | rule | Until next card: drink with the wrong hand. Slip = drink 2. |  |
-| ☐ | No Pointing | `core.no-pointing` | rule | Until next card: no pointing. Slip = drink 2. |  |
-| ☐ | No Questions | `core.no-questions` | rule | Until next card: no questions. Slip = drink 2. |  |
-| ☐ | Sober Talk | `core.sober-talk` | rule | Until next card: no saying drink, drank or drunk. Slip = drink 2. |  |
-| ☐ | Buffalo | `core.buffalo` | rule | Until next card: drink with your left hand. Slip = drink 2. |  |
-| ☐ | Accent Lock | `core.accent` | rule | Until next card: everyone talks in an accent. Slip = drink 2. |  |
-| ☐ | Library Mode | `core.library` | rule | Until next card: whisper everything. Slip = drink 2. |  |
-| ☐ | Little Green Man | `core.little-green-man` | rule | Until next card: remove the tiny man first. Slip = drink 2. |  |
-| ☐ | Question Master | `core.question-master` | rule | Until next card: anyone who answers your question drinks 2. |  |
-| ☐ | Eight Is Mate | `core.kings-eight` | rule | Pick a mate until next card. When one of you drinks, both drink. |  |
-| ☐ | Dungeon Master | `core.dungeon-master` | rule | Until next card: narrate in third person. Slip = drink 2. |  |
-| ☐ | Last Names Only | `core.no-first-names` | rule | Until next card: use last names only. Slip = drink 1. |  |
-| ☐ | Royal We | `core.royal-we` | rule | Until next card: say we instead of I. Slip = drink 1. |  |
-| ☐ | Say Cheers | `core.third-word-cheers` | rule | Until next card: say cheers before drinking. Slip = drink 1. |  |
-| ☐ | No Yes | `core.no-yes` | rule | Until next card: the word yes is banned. Slip = drink 1. |  |
-| ☐ | No No | `core.no-no` | rule | Until next card: the word no is banned. Slip = drink 1. |  |
-| ☐ | No I | `core.no-i` | rule | Until next card: the word I is banned. Slip = drink 1. |  |
-| ☐ | Your Majesty | `core.proper-titles` | rule | Until next card: address everyone as Your Majesty. Slip = drink 1. |  |
-| ☐ | Pinky Out | `core.pinky-out` | rule | Until next card: pinky out when you sip. Slip = drink 1. |  |
-| ☐ | Rhyme Crime | `core.speak-in-rhyme` | rule | Until next card: finish each sentence with a rhyme. Slip = drink 1. |  |
-| ☐ | Take a Bow | `core.dramatic-bow` | rule | Until next card: bow before speaking. Slip = drink 1. |  |
-| ☐ | Formal Toast | `core.formal-toast` | rule | Until next card: raise your glass before sipping. Slip = drink 1. |  |
-| ☐ | Narrator Voice | `core.table-narrator` | rule | Until next card: narrate your own actions. Slip = drink 1. |  |
-| ☐ | Third Person Toast | `core.third-person-toast` | rule | Until next card: toast in the third person. Slip = drink 1. |  |
-| ☐ | Silent Toast | `core.silent-toast` | rule | Until next card: toast only with gestures. Speak during a toast: drink 1. |  |
-| ☐ | Answer in Questions | `core.question-answer` | rule | Until next card: answer questions with questions. Slip = drink 1. |  |
-
-## Ron’s house cards (`house`)
-
-103 cards · 32 sip · 15 group · 13 category · 31 challenge · 12 rule · 3 dice
-
-| Review | Title | ID | Cat | Rules | Dice |
-| --- | --- | --- | --- | --- | --- |
+| ☐ | Empty the Tank | `core.empty-the-tank` | sip | Roll d6. Drink your roll. The die knows what you did. | 1d6 — Drink {total}. |
+| ☐ | Loose Change | `core.loose-change` | sip | Roll d6. Give that many, split between two people. | 1d6 — Give {total}, split between two people. |
+| ☐ | Big Spender | `core.big-spender` | sip | Roll 2d6. Give the total. Announce it like it's charity. | 2d6 — Give {total}. |
+| ☐ | Do Better | `core.do-better` | sip | Drink 1 more than the last person drank. Blame them. |  |
+| ☐ | Another One | `core.another-one` | sip | Drink the last amount you drank, then 1 more. |  |
+| ☐ | For Safety | `core.for-safety` | sip | Your next drink is water. Announce it like a heroic choice. |  |
 | ☐ | California Sober | `house.sheet-004` | sip | Anyone choosing a smoke break takes water. Everyone else takes 1 sip. |  |
 | ☐ | The Game Giveth | `house.sheet-006` | sip | Give 1 sip. If The Game Taketh appeared this game, give 2 instead. |  |
 | ☐ | The Game Taketh | `house.sheet-007` | sip | Take 1 sip. If The Game Giveth appeared this game, take 2 instead. |  |
@@ -299,6 +65,48 @@ the Review column is intentionally blank so you can mark it up.
 | ☐ | Missed the G | `house.sheet-079` | sip | Missed the G? Take 1 sip. |  |
 | ☐ | Blessing & a Curse | `house.sheet-094` | sip | Give 1 sip, then take 1 sip yourself. |  |
 | ☐ | Vowels | `house.sheet-102` | sip | Count the vowels in your name. Take 1 sip if you have any. |  |
+| ☐ | Last Call | `core.last-call` | group | Everyone drinks 2. |  |
+| ☐ | Cheap Date | `core.cheap-date` | group | Cheapest drink at the table drinks 3. |  |
+| ☐ | Big Money | `core.baller` | group | Priciest drink at the table gives 4. |  |
+| ☐ | Group Project | `core.group-project` | group | Last hand in the air drinks 3. |  |
+| ☐ | Would You Though? | `core.would-you` | group | Most likely to text an ex drinks 3. |  |
+| ☐ | Cheers, Idiots | `core.cheers-idiots` | group | Cheers. Everyone drinks 2. |  |
+| ☐ | Social Sip | `core.social-sip` | group | Everyone drinks 2. Cheers to the group chat. |  |
+| ☐ | Girls Drink | `core.girls-drink` | group | Everyone who identifies as a girl drinks 2. |  |
+| ☐ | Guys Drink | `core.guys-drink` | group | Everyone who identifies as a guy drinks 2. |  |
+| ☐ | Table Toast | `core.table-toast` | group | Raise your glass. Last to toast drinks 2. |  |
+| ☐ | Respect Your Elders | `core.elders` | group | Oldest player drinks 2. You owe them this. |  |
+| ☐ | Youth Is Wasted | `core.youth` | group | Youngest player drinks 2. Youth is wasted on them. |  |
+| ☐ | Big Friendly Giant | `core.tallest` | group | Tallest player drinks 2. Duck. |  |
+| ☐ | Pocket Sized | `core.shortest` | group | Shortest player drinks 2. Podium not included. |  |
+| ☐ | New Blood | `core.new-blood` | group | Newest player drinks 2. Welcome to it. |  |
+| ☐ | Fashionably Late | `core.late-arrival` | group | Last to arrive drinks 2. Sinner. |  |
+| ☐ | Couples Drink | `core.couples` | group | Anyone partnered drinks 2. Singles give 2 and sulk. |  |
+| ☐ | Single Pringle | `core.singles` | group | Anyone single drinks 2. Everyone else gives 2. |  |
+| ☐ | Birthday Month | `core.birthday` | group | Birthday this month? Drink 2. Everyone else toasts you. |  |
+| ☐ | Most Likely To | `core.most-likely` | group | Name a misdeed. Point at the most likely. Most pointed drinks 3. |  |
+| ☐ | Would You Rather | `core.would-rather` | group | Pose a dilemma. Point left or right. Minority drinks 2. |  |
+| ☐ | Ace Is Waterfall | `core.waterfall` | group | Start a waterfall. Everyone sips in turn and stops in turn. |  |
+| ☐ | King's Cup | `core.kings-king` | group | Pour a sip into the cup. When full, the drawer sips from it. |  |
+| ☐ | Tavern Brawl | `core.tavern-brawl` | group | On three, everyone points at someone. Most pointed drinks 3. |  |
+| ☐ | Round for the Table | `core.round-for-the-table` | group | Roll d6. Everyone drinks your roll. You just watch. | 1d6 — Everyone but you drinks {total}. |
+| ☐ | Potluck | `core.potluck` | group | Roll 2d6. Everyone drinks half the total, rounded up. | 2d6 — Everyone drinks half the total, rounded up. |
+| ☐ | Table Tax | `core.table-tax` | group | Roll d6. Everyone else drinks your roll. Toast them. | 1d6 — Everyone else drinks {total}. |
+| ☐ | Group Roll | `core.group-roll` | group | Roll d20. 10+: everyone gives you 1. Else everyone drinks 1. | 1d20 — 1-9: Everyone drinks 1. 10-20: Everyone gives you 1. |
+| ☐ | Snake Pit | `core.snake-pit` | group | Roll 2d6. Doubles: everyone drinks 2. Else only you do. | 2d6 — Doubles: everyone drinks 2. Otherwise you drink 2. |
+| ☐ | Committee | `core.committee` | group | Roll d6. Point at that many people. Each drinks 1. | 1d6 — Point at {total} players to drink 1 each. |
+| ☐ | Last Call Roll | `core.last-call-roll` | group | Roll d6. Everyone toasts and drinks your roll. | 1d6 — Everyone toasts and drinks {total}. |
+| ☐ | Crowd Surf | `core.crowd-surf` | group | Roll d6. Give that many total, split however you like. | 1d6 — Give {total} total, split however you like. |
+| ☐ | Thanos Snap | `core.thanos-snap` | group | Pick half the table. Everyone picked drinks 2. |  |
+| ☐ | Call Out | `core.call-out-overpack` | group | Who overpacks for one night? They drink 3. |  |
+| ☐ | Ghosted the Chat | `core.call-out-ghost` | group | Who reads the group chat and never replies? They drink 3. |  |
+| ☐ | Notes App Menace | `core.call-out-notes` | group | Who lives in their notes app? They drink 3. |  |
+| ☐ | Damn, You're Old | `core.damn-youre-old` | group | Oldest drinks 3. Youngest gives 1 for the disrespect. |  |
+| ☐ | Big Baby | `core.big-baby` | group | Youngest drinks 2. Oldest gives 1 for the disrespect. |  |
+| ☐ | Still Single | `core.still-single` | group | Anyone single drinks 2. Everyone partnered gives 1. |  |
+| ☐ | Power Couple | `core.power-couple` | group | Anyone partnered drinks 2. Singles give 1. |  |
+| ☐ | The Cino | `core.the-cino` | group | Ever lost money gambling? Drink 3. Still up? Give 2. |  |
+| ☐ | First Class | `core.first-class` | group | Flown first class? Drink 2 and brag. Everyone else gives 1. |  |
 | ☐ | Dog Vision | `house.sheet-005` | group | Wearing blue or yellow? Give 1 sip. |  |
 | ☐ | Ron Stop | `house.sheet-013` | group | Say “Ron, stop” in one breath. Everyone takes 1 sip when you stop. |  |
 | ☐ | And the Chicks | `house.sheet-019` | group | One guy takes 1 sip. Everyone else takes 1 sip together. |  |
@@ -314,6 +122,32 @@ the Review column is intentionally blank so you can mark it up.
 | ☐ | The Lurker | `house.sheet-084` | group | Who reads the group chat but never replies? Vote. They take 1 sip. |  |
 | ☐ | The Note Taker | `house.sheet-085` | group | Who uses their notes app most? Vote. They take 1 sip. |  |
 | ☐ | Shot Caller | `house.sheet-092` | group | Who suggests shots most often? Vote. They take 1 sip. |  |
+| ☐ | Categories | `core.categories` | category | Pick a category. First repeat or blank drinks 3. |  |
+| ☐ | Rhyme Time | `core.rhyme-time` | category | Pick a word. First bad rhyme drinks 3. |  |
+| ☐ | Questions Only | `core.questions-only` | category | Questions only. First statement drinks 3. |  |
+| ☐ | Name 3 | `core.name-3` | category | Group picks a topic. Name 3 or drink 3. |  |
+| ☐ | Rock Paper Drink | `core.rock-paper-drink` | category | Challenge someone. Loser drinks 3. |  |
+| ☐ | Never Have I Ever | `core.never-have-i` | category | Say one. Anyone who has drinks 2. |  |
+| ☐ | Alphabet Race | `core.alphabet` | category | Pick a letter. First blank or repeat drinks 2. |  |
+| ☐ | Story Time | `core.story-time` | category | Add one sentence to a group story. First to stall drinks 2. |  |
+| ☐ | Fizz Buzz | `core.fizz-buzz` | category | Count up: Fizz on 3s, Buzz on 5s. First slip rolls d6 and drinks it. | 1d6 — Drink {total}. |
+| ☐ | Fuzzy Duck | `core.fuzzy-duck` | category | Say fuzzy duck. Switch to ducky fuzz anytime. Slip: drink 2. |  |
+| ☐ | Goblin Market | `core.goblin-market` | category | Name something from a goblin market. First blank drinks 2. |  |
+| ☐ | Bad Baby Names | `core.bad-baby-names` | category | Name terrible baby names. First repeat or blank drinks 3. |  |
+| ☐ | Ex-Cuses | `core.ex-cuses` | category | Name an ex. First repeat, blank or cringe drinks 3. |  |
+| ☐ | Cheap Beers | `core.cheap-beers` | category | Name cheap beers. First repeat or blank drinks 3. |  |
+| ☐ | Hockey Guys | `core.hockey-guys` | category | Name hockey players. First repeat or blank drinks 3. |  |
+| ☐ | Name Those Pokémon | `core.name-those-pokemon` | category | Name Pokémon. First repeat or blank drinks 3. |  |
+| ☐ | Trilogies | `core.trilogies` | category | Name movie trilogies. First repeat or blank drinks 3. |  |
+| ☐ | Taco Bell Menu | `core.taco-bell-menu` | category | Name Taco Bell items. First repeat or blank drinks 3. |  |
+| ☐ | Things You Lick | `core.things-you-lick` | category | Name things you lick. First repeat or blank drinks 3. |  |
+| ☐ | US Capitals | `core.us-capitals` | category | Name US capitals. First repeat or blank drinks 3. |  |
+| ☐ | Kitchen Things | `core.kitchen-things` | category | Name things in a kitchen. First repeat or blank drinks 3. |  |
+| ☐ | Never Say This | `core.never-say-to-cops` | category | Name things you never say to a cop. First repeat or blank drinks 3. |  |
+| ☐ | Animated Movies | `core.animated-movies` | category | Name animated movies. First repeat or blank drinks 3. |  |
+| ☐ | Reality TV | `core.reality-tv` | category | Name reality shows. First repeat or blank drinks 3. |  |
+| ☐ | Freddies Sales | `core.freddies-sales` | category | Name things on sale at Freddie's. First repeat or blank drinks 3. |  |
+| ☐ | Creepy Crawlies | `core.creepy-crawlies` | category | Name bugs. First repeat or blank drinks 3. |  |
 | ☐ | Disney Movies | `house.sheet-021` | category | Clockwise, name Disney movies. No repeats. First to stall takes 1 sip. |  |
 | ☐ | Taco Bell Menu | `house.sheet-022` | category | Clockwise, name Taco Bell menu items. No repeats. First to stall takes 1 sip. |  |
 | ☐ | Things You Lick | `house.sheet-025` | category | Clockwise, name things you lick. No repeats. First to stall takes 1 sip. |  |
@@ -327,6 +161,100 @@ the Review column is intentionally blank so you can mark it up.
 | ☐ | Kitchen Things | `house.sheet-095` | category | Clockwise, name things in a kitchen. No repeats. First to stall takes 1 sip. |  |
 | ☐ | US Capitals | `house.sheet-103` | category | Clockwise, name US state capitals. No repeats. First to stall takes 1 sip. |  |
 | ☐ | Police Officer | `house.sheet-105` | category | Clockwise, name things you should never say to a police officer. First to stall sips. |  |
+| ☐ | Deez Nuts | `core.deez-nuts` | challenge | Get someone with a deez nuts joke. They drink 3. |  |
+| ☐ | Smooth Brain | `core.smooth-brain` | challenge | Admit something dumb you believed. Drink 2. |  |
+| ☐ | Dice Tax | `core.dice-tax` | challenge | Roll d6. Drink half, round up. | 1d6 — Drink half your roll, rounded up. |
+| ☐ | Give a Shit | `core.give-a-shit` | challenge | Roll d6. Give that many. | 1d6 — Give {total}. |
+| ☐ | Fuckin' Math | `core.fuckin-math` | challenge | Roll d6. Drink 7 minus your roll. | 1d6 — Drink 7 minus your roll. |
+| ☐ | Pathetic | `core.low-roller` | challenge | Roll d6. 1–2: drink 4. Else give 2. | 1d6 — 1-2: Drink 4. 3-6: Give 2. |
+| ☐ | Big Dick Energy | `core.high-roller` | challenge | Roll d6. 5–6: give 5. Else drink 2. | 1d6 — 1-4: Drink 2. 5-6: Give 5. |
+| ☐ | Same Shit | `core.same-shit` | challenge | Roll 2d6. Doubles: give total. Else drink 3. | 2d6 — Doubles: give {total}. Otherwise drink 3. |
+| ☐ | That's Two Beers | `core.two-beers-math` | challenge | Roll 2d6. Give the total. | 2d6 — Give {total}. |
+| ☐ | Snake Eyes | `core.snake-eyes` | challenge | Roll 2d6. Double 1s: drink 6. Else give 3. | 2d6 — 2-2: Drink 6. 3-12: Give 3. |
+| ☐ | Lucky Bastard | `core.lucky-bastard` | challenge | Roll 2d6. 9+: give 5. Under 9: drink 3. | 2d6 — 2-8: Drink 3. 9-12: Give 5. |
+| ☐ | Fuck Around & Find Out | `core.fuck-around` | challenge | Roll d20. 1: drink 5. 20: give 8. Else drink 2. | 1d20 — 1-1: Drink 5. 2-19: Drink 2. 20-20: Give 8. |
+| ☐ | Critical Failure | `core.crit-fail` | challenge | Roll d20. 1–5: drink 4. 16–20: give 4. | 1d20 — Roll 1–5: drink 4. Roll 16–20: give 4. Otherwise nothing. |
+| ☐ | God's Drunkest Soldier | `core.chosen-one` | challenge | Roll d20. 20: everyone else drinks 3. 1: drink 5. | 1d20 — Roll 20: everyone else drinks 3. Roll 1: drink 5. Otherwise nothing. |
+| ☐ | Four Is Floor | `core.kings-four` | challenge | Touch the floor. Last one down drinks 2. |  |
+| ☐ | Seven Is Heaven | `core.kings-seven` | challenge | Hands up. Last hand up drinks 2. |  |
+| ☐ | Hands on Heads | `core.hands-on-heads` | challenge | Put your hands on your head. Last one drinks 2. |  |
+| ☐ | Truth or Drink | `core.truth-or-drink` | challenge | Answer honestly, or roll d6 and drink it. | 1d6 — Drink {total}. |
+| ☐ | Paranoia | `core.paranoia` | challenge | Whisper a question. They answer aloud. Ask what it was: drink 2. |  |
+| ☐ | Two Truths | `core.two-truths` | challenge | Two truths and a lie. First wrong guess rolls d6 and drinks it. | 1d6 — Drink {total}. |
+| ☐ | Rant Mode | `core.rant` | challenge | Rant for 20 seconds or roll d6 and drink it. | 1d6 — Drink {total}. |
+| ☐ | Do the Impression | `core.impression` | challenge | Do an impression of someone here. If nobody laughs, drink 2. |  |
+| ☐ | Stare Down | `core.stare-down` | challenge | Stare down a rival. First to blink or laugh drinks 2. |  |
+| ☐ | Thumb War | `core.thumb-war` | challenge | Challenge someone to a thumb war. Loser drinks 2. |  |
+| ☐ | Lucky Sip | `core.lucky-sip` | challenge | Roll d6. Drink your roll. Call it luck. | 1d6 — Drink {total}. |
+| ☐ | Open Hand | `core.open-hand` | challenge | Roll d6. Give your roll. Look generous. | 1d6 — Give {total}. |
+| ☐ | Coin Flip | `core.odd-even` | challenge | Roll d6. Odd: drink 3. Even: give 3. | 1d6 — Odd: drink 3. Even: give 3. |
+| ☐ | Fate | `core.fate` | challenge | Roll d20. 10 or more: give 3. Under 10: drink 4. | 1d20 — 1-9: Drink 4. 10-20: Give 3. |
+| ☐ | Blessing | `core.blessing` | challenge | Roll d20. Only a natural 20 does anything: everyone else drinks 2. | 1d20 — 1-19: Nothing happens. 20-20: Everyone else drinks 2. |
+| ☐ | Dragon's Breath | `core.dragon-breath` | challenge | Take a sip, then name someone. They drink 1 and take a sip back. |  |
+| ☐ | Loot Drop | `core.loot-drop` | challenge | Roll d6. 5–6: give 4. Else drink 2. | 1d6 — 1-4: Drink 2. 5-6: Give 4. |
+| ☐ | Critical Hit | `core.critical-hit` | challenge | Rock-paper-scissors: winner gives 4, loser drinks 2. |  |
+| ☐ | Bardic Inspiration | `core.bard` | challenge | Sing your next sentence. Laughs: drink 2. Silence: you drink 2. |  |
+| ☐ | Prophecy | `core.prophecy` | challenge | Predict who drinks next. Right: give 3. Wrong: drink 3. |  |
+| ☐ | Side Quest | `core.side-quest` | challenge | Give the table a small dare. Anyone who refuses drinks 2. |  |
+| ☐ | Pay Your Tab | `core.pay-your-tab` | challenge | Roll d6. Give your roll to anyone. No takebacks, no crying. | 1d6 — Give {total}. |
+| ☐ | Dice Debt | `core.dice-debt` | challenge | Roll d6. Drink 7 minus your roll. Show your work. | 1d6 — Drink 7 minus your roll. |
+| ☐ | Middle Management | `core.middle-management` | challenge | Roll d6. 1–2: drink 3. 3–4: give 3. 5–6: drink 3. | 1d6 — 1-2: Drink 3. 3-4: Give 3. 5-6: Drink 3. |
+| ☐ | Rock Bottom | `core.rock-bottom` | challenge | Roll d6. 1–2: drink 5. Else drink 1. Could be worse. | 1d6 — 1-2: Drink 5. 3-6: Drink 1. |
+| ☐ | High Noon | `core.high-noon` | challenge | Roll d6. 5–6: give 6. Else drink 2. | 1d6 — 1-4: Drink 2. 5-6: Give 6. |
+| ☐ | Even Money | `core.even-money` | challenge | Roll d6. Odd: drink 4. Even: give 4. The house wins. | 1d6 — Odd: drink 4. Even: give 4. |
+| ☐ | Ten Percent | `core.ten-percent` | challenge | Roll d6. Drink half your roll, rounded up. Tip included. | 1d6 — Drink half your roll, rounded up. |
+| ☐ | Pay It Forward | `core.pay-it-forward` | challenge | Roll d6. Give half your roll, rounded up. Be smug about it. | 1d6 — Give half your roll, rounded up. |
+| ☐ | Surcharge | `core.surcharge` | challenge | Roll d6. Drink that many. On a 6, drink 2 more. | 1d6 — Drink {total}. On a 6, drink 2 more. |
+| ☐ | Lucky Sevens | `core.lucky-sevens` | challenge | Roll 2d6. A 7: give 7. Doubles: drink 4. Else drink 2. | 2d6 — A 7: give 7. Doubles: drink 4. Otherwise drink 2. |
+| ☐ | Boxcars | `core.boxcars` | challenge | Roll 2d6. Double 6s: everyone else drinks 4. | 2d6 — Double 6s: everyone else drinks 4. Otherwise nothing. |
+| ☐ | Bad Start | `core.bad-start` | challenge | Roll 2d6. Double 1s: drink 6. Else give 3. | 2d6 — 2-2: Drink 6. 3-12: Give 3. |
+| ☐ | Double Digits | `core.double-digits` | challenge | Roll 2d6. 10 or more: give 6. Under 10: drink 3. | 2d6 — 2-9: Drink 3. 10-12: Give 6. |
+| ☐ | Crap Out | `core.crap-out` | challenge | Roll 2d6. 2, 3 or 12: drink 6. Else give 2. | 2d6 — 2-3: Drink 6. 4-11: Give 2. 12-12: Drink 6. |
+| ☐ | Split the Pot | `core.split-the-pot` | challenge | Roll 2d6. Give half, rounded up. Drink the rest. | 2d6 — Give half the total, rounded up. Drink the rest. |
+| ☐ | House Edge | `core.house-edge` | challenge | Roll 2d6. Drink the total minus 3, minimum 1. | 2d6 — Drink {total} minus 3, at least 1. |
+| ☐ | Cold Streak | `core.cold-streak` | challenge | Roll 2d6. 4 or less: drink 5. Else drink 1. | 2d6 — 2-4: Drink 5. 5-12: Drink 1. |
+| ☐ | All or Nothing | `core.all-or-nothing` | challenge | Roll 2d6. 12: give 12. Anything less: drink 2. | 2d6 — 2-11: Drink 2. 12-12: Give 12. |
+| ☐ | Table Stakes | `core.table-stakes` | challenge | Roll 2d6. 9+: give 5. Under 9: drink 3. | 2d6 — 2-8: Drink 3. 9-12: Give 5. |
+| ☐ | Samesies | `core.samesies` | challenge | Roll 2d6. Doubles: give the total. Else drink half. | 2d6 — Doubles: give {total}. Otherwise drink half, rounded up. |
+| ☐ | Double Down | `core.double-down` | challenge | Roll 2d6. Doubles: drink 5. Else give 3. | 2d6 — Doubles: drink 5. Otherwise give 3. |
+| ☐ | Nat One | `core.nat-one` | challenge | Roll d20. A 1: finish your drink. Else drink 3. | 1d20 — A 1: finish your drink. Otherwise drink 3. |
+| ☐ | Nat Twenty | `core.nat-twenty` | challenge | Roll d20. A 20: give 8. Else drink 2. | 1d20 — 1-19: Drink 2. 20-20: Give 8. |
+| ☐ | Close Call | `core.close-call` | challenge | Roll d20. 1–5: drink 5. 16–20: give 5. Else nothing. | 1d20 — 1-5: Drink 5. 6-15: Nothing happens. 16-20: Give 5. |
+| ☐ | Coin Flip | `core.coin-flip` | challenge | Roll d20. 11+: give 4. 10 or less: drink 4. | 1d20 — 1-10: Drink 4. 11-20: Give 4. |
+| ☐ | The Gods Decide | `core.the-gods-decide` | challenge | Roll d20. 10 or more: everyone else drinks 3. Else drink 4. | 1d20 — 1-9: Drink 4. 10-20: Everyone else drinks 3. |
+| ☐ | Percentage Tax | `core.percentage-tax` | challenge | Roll d20. Drink 21 minus your roll. Show your work. | 1d20 — Drink 21 minus your roll. |
+| ☐ | Long Shot | `core.long-shot` | challenge | Roll d20. 19–20: give 8. Else drink 2. | 1d20 — 1-18: Drink 2. 19-20: Give 8. |
+| ☐ | Skyscraper | `core.skyscraper` | challenge | Roll d20. A 20: give 10. A 1: drink 10. Else drink 2. | 1d20 — 1-1: Drink 10. 2-19: Drink 2. 20-20: Give 10. |
+| ☐ | The Swing | `core.the-swing` | challenge | Roll d20. Under 10: drink half. 10+: give half. | 1d20 — Under 10: drink half, rounded up. 10+: give half, rounded up. |
+| ☐ | Game of Chance | `core.game-of-chance` | challenge | Roll d20. Odd: give 5. Even: drink 5. | 1d20 — Odd: give 5. Even: drink 5. |
+| ☐ | Triple Threat | `core.triple-threat` | challenge | Roll 3d6. Give the total, capped at 9. | 3d6 — Give {total}, capped at 9. |
+| ☐ | Three Dice Deep | `core.three-dice-deep` | challenge | Roll 3d6. Drink half the total, rounded down. | 3d6 — Drink half the total, rounded down. |
+| ☐ | Prison Rules | `core.prison-rules` | challenge | Roll 3d6. Triple 1s: drink 9. Else drink 2. | 3d6 — 3-3: Drink 9. 4-18: Drink 2. |
+| ☐ | Full House | `core.full-house` | challenge | Roll 3d6. All three match: give 12. Else drink 3. | 3d6 — All three match: give 12. Otherwise drink 3. |
+| ☐ | Overdrive | `core.overdrive` | challenge | Roll 4d6. Even total: give 6. Odd total: drink 6. | 4d6 — Even total: give 6. Odd total: drink 6. |
+| ☐ | I Don't Know Shit | `core.i-dont-know-shit` | challenge | Admit something basic you don't understand. Everyone drinks 2. |  |
+| ☐ | Almost Lost My Cool | `core.almost-lost-my-cool` | challenge | If someone here is mad, calm them and give 3. Else rage and drink 3. |  |
+| ☐ | What an Idiot | `core.what-an-idiot` | challenge | Call someone an idiot. They give 3, or you drink 3. |  |
+| ☐ | Get Good | `core.get-good` | challenge | Insult someone's skills. They prove you wrong or drink 3. |  |
+| ☐ | It's Gotta Go | `core.its-gotta-go` | challenge | Finish your drink. Or pass and drink 3. |  |
+| ☐ | Nicetitties | `core.nicetitties` | challenge | Genuinely compliment the player on your right. Sincerity or sip twice. |  |
+| ☐ | Accent Off | `core.accent-off` | challenge | Talk in an accent. If you laugh first, drink 2. |  |
+| ☐ | Loud and Proud | `core.loud-and-proud` | challenge | Say your next sentence too loud. If it lands, give 2. |  |
+| ☐ | Useless Fact | `core.useless-fact` | challenge | Share an impressive useless fact. If nobody reacts, drink 2. |  |
+| ☐ | The Receipt | `core.the-receipt` | challenge | Read your last purchase aloud. Cringe? Drink 3. |  |
+| ☐ | Gym Class | `core.gym-class` | challenge | Ten jumping jacks or drink 3. No negotiation. |  |
+| ☐ | Runway | `core.runway` | challenge | Do a runway walk. Table scores it: under 7, drink 3. |  |
+| ☐ | Weatherman | `core.weatherman` | challenge | Give tonight's forecast. If it's wrong by last call, drink 3. |  |
+| ☐ | Happy Holidays | `core.happy-holidays` | challenge | Invent a holiday in ten seconds. Flop: drink 3. |  |
+| ☐ | Tin Hat | `core.tin-hat` | challenge | Share a conspiracy you half-believe. Table votes: pass or drink 3. |  |
+| ☐ | Debate Club | `core.debate-club` | challenge | Defend an opinion nobody shares. Lose the vote: drink 3. |  |
+| ☐ | Stare Down | `core.stare-off` | challenge | Stare down a rival. First to laugh drinks 3. |  |
+| ☐ | Thumb War | `core.thumb-battle` | challenge | Thumb war someone. Loser drinks 3. |  |
+| ☐ | Best of Three | `core.best-of-three` | challenge | Best-of-three rock-paper-scissors. Loser drinks 4. |  |
+| ☐ | Knowledge Gap | `core.knowledge-gap` | challenge | Name five of anything the table picks. Miss: drink 3. |  |
+| ☐ | U Up? | `core.late-night-text` | challenge | Read your last late-night text aloud. Refuse: drink 4. |  |
+| ☐ | Corporate Wellness | `core.corporate-wellness` | challenge | Faked sick to skip work? Drink 3. Honest? Give 2. |  |
+| ☐ | HR Violation | `core.hr-hazard` | challenge | Hooked up with a coworker? Drink 4. HR is watching. |  |
 | ☐ | That's Two Beers? | `house.sheet-003` | challenge | Roll d6. On 1–3, give 1 sip. On 4–6, give 2. | 1d6 — Give 1 sip on 1–3; give 2 on 4–6. |
 | ☐ | Fetch | `house.sheet-008` | challenge | Find something outside in 30 seconds, or take 1 sip. |  |
 | ☐ | Steve's Beans | `house.sheet-009` | challenge | Text Steve a compliment about his beans, or take 1 sip. |  |
@@ -358,6 +286,40 @@ the Review column is intentionally blank so you can mark it up.
 | ☐ | Dare | `house.sheet-100` | challenge | Balance an empty cup on your head for 10 seconds, or take 1 sip. |  |
 | ☐ | Opinions | `house.sheet-104` | challenge | Give your most Joe-or-Becca opinion. The table guesses whose it is. |  |
 | ☐ | Debate | `house.sheet-106` | challenge | Pick a silly topic. Each side gets 10 seconds to argue. The table votes for a winner. |  |
+| ☐ | Rulemaster | `core.rulemaster` | rule | Make a rule until next card. Breaker drinks 2. |  |
+| ☐ | Who the Fuck Are You? | `core.no-names` | rule | Until next card: no names. Slip = drink 2. |  |
+| ☐ | Church Mode | `core.potty-mouth` | rule | Until next card: no swearing. Slip = drink 2. |  |
+| ☐ | Captain Dumbass | `core.captain-dumbass` | rule | Until next card: call everyone “Captain.” Slip = drink 2. |  |
+| ☐ | Cursed Number | `core.cursed-number` | rule | Roll d6. That number is banned. Say it = drink 2. | 1d6 — {total} is banned. Say it: drink 2. |
+| ☐ | Dice Lord | `core.dice-lord` | rule | Roll d6. Odd: no pointing. Even: no questions. Slip = drink 2. | 1d6 — Odd: no pointing. Even: no questions. Slip: drink 2. |
+| ☐ | Thumb Master | `core.thumb-master` | rule | Until next card: thumbs up means copy. Last to copy drinks 2. |  |
+| ☐ | Lefty | `core.lefty` | rule | Until next card: drink with the wrong hand. Slip = drink 2. |  |
+| ☐ | No Pointing | `core.no-pointing` | rule | Until next card: no pointing. Slip = drink 2. |  |
+| ☐ | No Questions | `core.no-questions` | rule | Until next card: no questions. Slip = drink 2. |  |
+| ☐ | Sober Talk | `core.sober-talk` | rule | Until next card: no saying drink, drank or drunk. Slip = drink 2. |  |
+| ☐ | Buffalo | `core.buffalo` | rule | Until next card: drink with your left hand. Slip = drink 2. |  |
+| ☐ | Accent Lock | `core.accent` | rule | Until next card: everyone talks in an accent. Slip = drink 2. |  |
+| ☐ | Library Mode | `core.library` | rule | Until next card: whisper everything. Slip = drink 2. |  |
+| ☐ | Little Green Man | `core.little-green-man` | rule | Until next card: remove the tiny man first. Slip = drink 2. |  |
+| ☐ | Question Master | `core.question-master` | rule | Until next card: anyone who answers your question drinks 2. |  |
+| ☐ | Eight Is Mate | `core.kings-eight` | rule | Pick a mate until next card. When one of you drinks, both drink. |  |
+| ☐ | Dungeon Master | `core.dungeon-master` | rule | Until next card: narrate in third person. Slip = drink 2. |  |
+| ☐ | Banned Number | `core.banned-number` | rule | Roll d6. Nobody may say it. Slip: drink 3. | 1d6 — {total} is banned. Say it: drink 3. |
+| ☐ | Lucky Charm | `core.lucky-charm-rule` | rule | Roll d6. That number is lucky. Say it: give 1. | 1d6 — {total} is lucky. Say it: give 1. |
+| ☐ | Parity | `core.parity` | rule | Roll d6. Even: drink left-handed. Odd: no names. Slip: drink 2. | 1d6 — Even: drink left-handed. Odd: no names. Slip: drink 2. |
+| ☐ | Trick Die | `core.trick-die` | rule | Roll d6. 1–3: no pointing. 4–6: no questions. Slip: drink 2. | 1d6 — 1-3: No pointing. Slip: drink 2. 4-6: No questions. Slip: drink 2. |
+| ☐ | Heavy Hand | `core.heavy-hand` | rule | Roll d6. All drinks are doubled until the next card. | 1d6 — Double every drink until the next card. |
+| ☐ | Roll With It | `core.roll-with-it` | rule | Roll d6. That number is unlucky. Roll it again later and drink 3. | 1d6 — {total} is unlucky. Mention it and drink 3. |
+| ☐ | Hands Off | `core.hands-off` | rule | Until next card: no hands to drink. Slip: drink 2. |  |
+| ☐ | Banana Peel | `core.banana-peel` | rule | Until next card: peel your drink like a banana. Slip: drink 2. |  |
+| ☐ | Beer Ban | `core.beer-ban` | rule | Until next card: say beer and drink 2. |  |
+| ☐ | T-Rex Arms | `core.t-rex-arms` | rule | Until next card: tiny T-rex arms. Slip: drink 2. |  |
+| ☐ | First Name Only | `core.first-name-only` | rule | Until next card: first names only. Slip: drink 2. |  |
+| ☐ | High Lord | `core.high-lord` | rule | Until next card: speak like a fantasy lord. Slip: drink 2. |  |
+| ☐ | Last Names Only | `core.last-names-only` | rule | Until next card: last names only. Slip: drink 2. |  |
+| ☐ | Personal Space | `core.personal-space` | rule | Until next card: sit on your own hands. Slip: drink 2. |  |
+| ☐ | Formal Night | `core.formal-night` | rule | Until next card: address everyone as my liege. Slip: drink 2. |  |
+| ☐ | Copycat | `core.copycat` | rule | Until next card: copy whoever drank last. Slip: drink 2. |  |
 | ☐ | Caveman | `house.sheet-010` | rule | Until your next turn, speak only in grunts. Slip: take 1 sip. |  |
 | ☐ | Mr Freeze | `house.sheet-015` | rule | Touch someone’s shoulder with permission. They freeze until you let go. |  |
 | ☐ | Wench | `house.sheet-024` | rule | You are the drink wench until your next turn. Offer refills when asked. |  |
@@ -378,7 +340,7 @@ the Review column is intentionally blank so you can mark it up.
 | Review | Title | ID | Cat | Rules | Dice |
 | --- | --- | --- | --- | --- | --- |
 | ☐ | A toast to the VIP | `vip.toast` | sip | Toast the VIP by name. The VIP takes 1 sip; everyone joins them. |  |
-| ☐ | Choose a sidekick | `vip.sidekick` | sip | The VIP picks a sidekick until the next card is revealed. They both take one sip now. |  |
+| ☐ | Choose a sidekick | `vip.sidekick` | sip | The VIP picks a sidekick until the next card. They both take one sip now. |  |
 | ☐ | The VIP tax | `vip.tax` | sip | The VIP takes 1 sip and names a privilege they'd trade away tonight. |  |
 | ☐ | One Year Older | `vip.sheet-005` | sip | The VIP gives 1 sip to someone younger, or takes 1 themselves. |  |
 | ☐ | It’s Gotta Go | `vip.sheet-006` | sip | The VIP takes 1 sip, then chooses someone to join them. |  |

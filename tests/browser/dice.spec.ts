@@ -1,5 +1,6 @@
-import { test, expect, type Page } from "@playwright/test";
+import { test, expect, devices, type Page } from "@playwright/test";
 import { createSession } from "../../src/game/engine";
+import { diceResultText } from "../../src/presentation/dice/result-text";
 import { cards, packs } from "../../src/content/catalog";
 const key = "drink-at-ron.session.v1";
 const webgl = (page: Page) =>
@@ -62,6 +63,10 @@ for (const index of [0, 1])
       await page.locator(".roll-stage").getAttribute("data-startup-ms"),
     );
     await page.screenshot({ path: info.outputPath(`settled-${index}.png`) });
+    await expect(page.locator(".study-rules p")).toHaveText(
+      cards.find((c) => c.id === diceIds[index])!.rules,
+    );
+    await expect(page.locator(".resolved-instruction")).toHaveCount(0);
     expect((await saved(page)).roll).toEqual(committed.roll);
     expect(external).toEqual([]);
     await expect(page.locator(".game-card")).toHaveAccessibleName(
@@ -71,6 +76,15 @@ for (const index of [0, 1])
     await expect(page.locator(".roll-layer")).toHaveCount(0);
     expect((await saved(page)).roll.returned).toBe(true);
     expect((await saved(page)).discarded).toBe(0);
+    await expect(page.locator(".resolved-instruction")).toHaveText(
+      diceResultText(
+        cards.find((c) => c.id === diceIds[index])!,
+        committed.roll,
+      ),
+    );
+    await expect(
+      page.locator(".resolved-instruction strong").first(),
+    ).toBeVisible();
   });
 test("@release a restored unrolled dice card rolls by tapping the card", async ({
   page,
@@ -120,7 +134,7 @@ test("repeated rolls settle, never fall back, and are never a weak plop", async 
     expect(ms).toBeGreaterThan(700);
     // Upper bound is loose: software-rendered CI runners are slow, but a
     // fallback or runaway roll would still be caught by the settled assertion.
-    expect(ms).toBeLessThan(9000);
+    expect(ms).toBeLessThan(5000);
   }
 });
 test("reload and reduced motion restore static saved result without replay", async ({
@@ -169,20 +183,63 @@ test("dragging the resolved rules does not return or discard", async ({
   await page.locator(".game-card").click();
   await expect.poll(async () => (await saved(page)).discarded).toBe(1);
 });
-test("Escape interrupts safely and preserves the committed roll", async ({
+test("@release a second tap finishes the moving dice, then reveals the bold amount", async ({
   page,
 }) => {
-  test.skip(!(await webgl(page)), "WebGL unavailable (headless Linux WebKit)");
+  test.skip(!(await webgl(page)), "WebGL unavailable");
+  await seed(page);
+  const errors: string[] = [];
+  page.on("pageerror", (error) => errors.push(error.message));
+  await page.locator(".game-card").click();
+  const committed = await saved(page);
+  await expect(page.locator(".roll-stage")).toHaveAttribute(
+    "data-renderer",
+    "rolling",
+  );
+  await expect(page.locator(".game-card")).toHaveAccessibleName(
+    "Finish dice roll",
+  );
+  await page.locator(".game-card").click();
+  await expect(page.locator(".roll-layer")).toBeVisible();
+  await expect(page.locator(".roll-stage")).toHaveAttribute(
+    "data-face-values",
+    committed.roll.values.join(","),
+    { timeout: 1800 },
+  );
+  await expect(page.locator(".roll-layer")).toHaveCount(0);
+  await expect(page.locator(".resolved-instruction")).toHaveText(
+    diceResultText(
+      cards.find((c) => c.id === diceIds[0])!,
+      committed.roll,
+    ),
+  );
+  await expect(
+    page.locator(".resolved-instruction strong").first(),
+  ).toBeVisible();
+  expect((await saved(page)).roll).toEqual({
+    ...committed.roll,
+    returned: true,
+  });
+  expect((await saved(page)).discarded).toBe(0);
+  // Stale animation callbacks must not advance the deck after an early finish.
+  await page.waitForTimeout(600);
+  expect((await saved(page)).discarded).toBe(0);
+  expect(errors).toEqual([]);
+  await page.locator(".game-card").click();
+  await expect.poll(async () => (await saved(page)).discarded).toBe(1);
+});
+test("Escape finishes the throw and returns without changing the saved faces", async ({
+  page,
+}) => {
   await seed(page);
   await page.locator(".game-card").click();
   const committed = await saved(page);
   await page.keyboard.press("Escape");
-  await expect(page.locator(".game-card")).toHaveAccessibleName(
-    /Return to card$/,
-  );
-  expect((await saved(page)).roll).toEqual(committed.roll);
-  await page.locator(".game-card").click();
   await expect(page.locator(".roll-layer")).toHaveCount(0);
+  expect((await saved(page)).roll).toEqual({
+    ...committed.roll,
+    returned: true,
+  });
   await expect(page.locator(".game-card")).toBeFocused();
 });
 test("offline dice roll and relaunch preserve result", async ({
@@ -312,9 +369,7 @@ test("legacy cursed-number saves show the number in the rule without a Rolled he
     { key, state },
   );
   await page.reload();
-  await expect(page.locator(".resolved-instruction")).toHaveText(
-    "2 is banned. Say it: drink 2.",
-  );
+  await expect(page.locator(".resolved-instruction")).toHaveCount(0);
   await expect(page.locator(".rolled-total")).toHaveCount(0);
   await page.locator(".game-card").click();
   await expect(page.locator(".roll-layer")).toHaveCount(0);
@@ -322,4 +377,102 @@ test("legacy cursed-number saves show the number in the rule without a Rolled he
     "2 is banned. Say it: drink 2.",
   );
   expect((await saved(page)).roll.instruction).toBe(state.roll!.instruction);
+});
+
+for (const viewport of [
+  { width: 320, height: 568 },
+  { width: 768, height: 1024 },
+  { width: 1280, height: 800 },
+]) {
+  test.describe(`viewport ${viewport.width}`, () => {
+    if (viewport.width === 1280)
+      test.use({
+        isMobile: false,
+        hasTouch: false,
+        userAgent: devices["Desktop Safari"].userAgent,
+      });
+    test(`four dice stay visible and retain faces at ${viewport.width}px`, async ({
+      page,
+    }, info) => {
+      test.skip(!(await webgl(page)), "WebGL unavailable");
+      await page.setViewportSize(viewport);
+      const source = cards.find((c) => c.id === "core.two-beers-math")!;
+      const card = {
+        ...source,
+        rules: "Roll 4d6. Give the total.",
+        dice: { ...source.dice!, count: 4 },
+      };
+      const state = createSession(
+        { version: 1, packIds: ["core"], limit: 2 },
+        [card],
+        [{ ...packs[0], cardIds: [card.id] }],
+      );
+      state.phase = "revealed";
+      await page.goto("./");
+      await page.evaluate(
+        ({ key, state }) => localStorage.setItem(key, JSON.stringify(state)),
+        { key, state },
+      );
+      await page.reload();
+      const errors: string[] = [];
+      page.on("pageerror", (error) => errors.push(error.message));
+      await page.locator(".game-card").click();
+      const committed = await saved(page);
+      await expect(page.locator(".roll-stage")).toHaveAttribute(
+        "data-renderer",
+        `settled:${committed.roll.values.join(",")}`,
+      );
+      const bounds = JSON.parse(
+        (await page.locator(".roll-stage").getAttribute("data-landed-bounds"))!,
+      ) as number[][];
+      expect(bounds).toHaveLength(4);
+      for (const [left, top, right, bottom] of bounds) {
+        expect(left).toBeGreaterThanOrEqual(0);
+        expect(top).toBeGreaterThanOrEqual(0);
+        expect(right).toBeLessThanOrEqual(viewport.width);
+        expect(bottom).toBeLessThanOrEqual(viewport.height);
+      }
+      await page.screenshot({
+        path: info.outputPath(`dice-${viewport.width}.png`),
+      });
+      // A tap off the card clears the settled dice as well.
+      await page.mouse.click(4, viewport.height - 4);
+      await expect(page.locator(".roll-layer")).toHaveCount(0);
+      await expect(page.locator(".resolved-instruction")).toHaveText(
+        `Give ${committed.roll.total}.`,
+      );
+      await expect(page.locator(".resolved-instruction strong")).toHaveText(
+        String(committed.roll.total),
+      );
+      await page.screenshot({
+        path: info.outputPath(`result-${viewport.width}.png`),
+      });
+      expect(errors).toEqual([]);
+    });
+  });
+}
+
+test("a finish request during lazy loading survives startup without another roll", async ({
+  page,
+}) => {
+  let release: () => void = () => {};
+  const ready = new Promise<void>((resolve) => {
+    release = resolve;
+  });
+  await page.route("**/library-*.js", async (route) => {
+    await ready;
+    await route.continue();
+  });
+  await seed(page);
+  await page.locator(".game-card").click();
+  const committed = await saved(page);
+  await page.locator(".game-card").click();
+  expect((await saved(page)).roll).toEqual(committed.roll);
+  release();
+  await expect(page.locator(".roll-layer")).toHaveCount(0);
+  expect((await saved(page)).roll).toEqual({
+    ...committed.roll,
+    returned: true,
+  });
+  expect((await saved(page)).discarded).toBe(0);
 });

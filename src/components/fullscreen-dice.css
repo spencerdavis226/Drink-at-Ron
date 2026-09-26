@@ -26,3 +26,27 @@
   z-index: 0;
   pointer-events: none;
 }
+/* Static, honest result for Reduced Motion, restoration, or unavailable WebGL. */
+.roll-static-result {
+  position: absolute;
+  inset: 42% 16px auto;
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+.roll-static-result span {
+  display: grid;
+  place-items: center;
+  width: clamp(54px, 18vw, 84px);
+  aspect-ratio: 1;
+  border: 2px solid #c39a58;
+  border-radius: 14px;
+  color: #fff0c9;
+  background: linear-gradient(145deg, #287078, #082d33);
+  box-shadow:
+    0 5px 12px #120c08a0,
+    inset 0 0 0 4px #123f45;
+  font:
+    700 32px "Source Serif 4 Title",
+    serif;
+}

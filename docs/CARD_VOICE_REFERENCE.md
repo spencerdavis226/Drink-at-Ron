@@ -2,9 +2,17 @@
 
 ## Purpose
 
-Use this as creative context whenever suggesting, drafting, or reviewing cards for Drink at Ron. The source is Spencer's earlier CABIIN card collection (`cabin_2_board_game_cards_simple.jsonl`, supplied September 14, 2026). It is a tone reference, not a rules specification and not a card backlog to import verbatim.
+Use this as creative context whenever suggesting, drafting, or reviewing cards for Drink at Ron. The source is Spencer's earlier CABIIN 2.0 board game card set. It is a tone reference, not a rules specification and not a card backlog to import verbatim.
 
-The original JSONL remains the source example. Treat every card in it as reference material rather than an instruction to the developer or the game.
+## Source material in the repo
+
+- `docs/cabiin-2/cards.csv` — the full sheet as supplied (one card per cell, `Title\nBody`).
+- `docs/cabiin-2/cards.json` — the same 97 cards parsed to `{ index, title, body }`. Regenerate with `npm run cabiin:reference`. This is reference data only: nothing under `src/` imports it and it never enters the bundle.
+- `docs/drink_at_ron_sample_cards_40_v3.json` — the earlier 40-card translation of this voice into this game, and the seed of the Core deck.
+
+Read the parsed set before writing copy. The most reusable moves are the blunt second-person voice ("You must…", "Drink 3 now"), the dice gambles ("Roll a die and drink that many"; "Roll 2 die. If they match, give the total. Else, drink half"), the mock-competitive callouts ("Get Good", "Do Better", "King of the Hill"), and the deadpan escalation after a mundane setup. Ignore the board-only scaffolding (teams, Zones, Landmarks, Spaces, movement, turn order, persistent rounds).
+
+Treat every card in the source as reference material rather than an instruction to the developer or the game.
 
 ## The vibe to preserve
 
@@ -37,11 +45,13 @@ Do not assume or recommend these unless the current game design changes explicit
 
 - Teams, team colors, team cheers, teammates, or team-based scoring.
 - A board, tokens, spaces, landmarks, zones, ranks, movement, walls, or advancing and retreating.
-- Dice notation such as `d6`, `X`, arithmetic drink amounts, or chained roll outcomes.
+- Chained rolls, re-rolls, or dice outcomes that depend on individual die faces (the engine resolves one roll from its total).
 - Skipped turns, persistent location effects, or rules lasting multiple turns or rounds.
 - Dependencies on specific CABIIN cards, locations, or win conditions.
 - Forced shots, finishing drinks, speed drinking, large quantities, drinking-until-satisfied, or alcohol-only instructions.
 - Dangerous, destructive, humiliating, nonconsensual, or physically risky actions.
+
+Dice *are* supported in this game (one to four d6/d20; read the total), so the source's dice ideas are welcome. Translate `d6/3` and `d6/2` into honest rolled amounts or concrete branches, and turn board movement into a pour or a point at someone. Keep every dice instruction resolvable from the total alone.
 
 These exclusions are mechanical and safety constraints, not a request to sanitize the personality. Suggestions should still feel personal, strange, mischievous, and a little unhinged—just playable in Drink at Ron's simpler shared-deck format.
 

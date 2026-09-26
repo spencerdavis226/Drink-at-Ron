@@ -69,21 +69,20 @@ test("selecting VIP night reveals its one-line setup reminder", async ({
   await vip.click();
   await expect(page.locator(".pack-hint")).toHaveCount(0);
 });
-test("@release the supplied house cards are an optional pack in a new game", async ({
+test("@release Core includes the supplied house cards and VIP is the only add-on", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 320, height: 568 });
   await page.goto("./");
   await page.getByRole("button", { name: "Choose add-ons" }).click();
-  const house = page
-    .getByRole("dialog")
-    .getByRole("button", { name: "Ron’s house cards", exact: true });
-  await expect(house).toHaveAttribute("aria-pressed", "false");
-  await house.click();
-  await expect(house).toHaveAttribute("aria-pressed", "true");
+  const dialog = page.getByRole("dialog");
+  const vip = dialog.getByRole("button", { name: "VIP night", exact: true });
+  await expect(vip).toHaveAttribute("aria-pressed", "false");
+  await expect(dialog.getByRole("button", { name: /house/i })).toHaveCount(0);
+  await expect(dialog.locator(".included-pack")).toContainText("Always included");
   expect(
-    await page.getByRole("dialog").evaluate((dialog) => {
-      const rect = dialog.getBoundingClientRect();
+    await dialog.evaluate((dialogEl) => {
+      const rect = dialogEl.getBoundingClientRect();
       return rect.left >= 0 && rect.right <= innerWidth;
     }),
   ).toBe(true);
@@ -93,8 +92,8 @@ test("@release the supplied house cards are an optional pack in a new game", asy
     (key) => JSON.parse(localStorage.getItem(key)!),
     key,
   );
-  expect(session.config.packIds).toEqual(["core", "house"]);
-  expect(session.cards).toHaveLength(353);
+  expect(session.config.packIds).toEqual(["core"]);
+  expect(session.cards).toHaveLength(322);
   expect(
     session.cards.some((card: { id: string }) => card.id === "house.sheet-106"),
   ).toBe(true);

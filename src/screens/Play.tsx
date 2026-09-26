@@ -18,6 +18,7 @@ export function Play({
   session,
   motion,
   transition,
+  finishingRoll = false,
   onTap,
   onFinish,
   renderFace,
@@ -26,6 +27,7 @@ export function Play({
   session: SessionState;
   motion: Motion | null;
   transition: number;
+  finishingRoll?: boolean;
   onTap: () => void;
   onFinish: (id: number) => void;
   renderFace?: (card: CardDefinition) => ReactNode;
@@ -127,14 +129,14 @@ export function Play({
             ref={ref}
             className={`game-card ${session.phase === "revealed" ? "face" : "back"}`}
             onClick={onTap}
-            aria-disabled={!!motion}
+            aria-disabled={!!motion && motion !== "roll"}
             aria-label={
               session.phase === "hidden"
                 ? "Reveal card"
                 : card.dice && !session.roll?.returned
                   ? session.roll
                     ? motion === "roll"
-                      ? "Rolling dice"
+                      ? "Finish dice roll"
                       : `Rolled ${session.roll.total}. Return to card`
                     : `Roll ${diceNotation(card.dice)}. ${card.rules}`
                   : `${card.title}. ${session.roll?.returned ? `Rolled ${session.roll.total}. ${diceResultText(card, session.roll)}` : card.rules} ${cardPacks(
@@ -161,7 +163,6 @@ export function Play({
                     card={card}
                     packIds={session.config.packIds}
                     roll={session.roll}
-                    rolling={motion === "roll"}
                   />
                 )}
               </span>
@@ -179,6 +180,7 @@ export function Play({
               card={card}
               roll={session.roll}
               rolling={motion === "roll"}
+              finishing={finishingRoll}
               onTap={onTap}
               onFinish={() => onFinish(transition)}
             />

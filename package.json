@@ -14,6 +14,7 @@
     "format": "prettier --write src scripts tests *.ts *.json index.html",
     "imprint": "tsx scripts/imprint.ts",
     "cards:review": "tsx scripts/cards-review.ts",
+    "cabiin:reference": "tsx scripts/cabiin-reference.ts",
     "generate:icons": "tsx scripts/icons.ts",
     "test:workshop": "playwright test --config playwright.workshop.config.ts",
     "test:update": "tsx scripts/check-update.ts"

@@ -4,184 +4,219 @@ import type { CardDefinition, DiceRoll } from "../game/types";
 import { forceMotion } from "../presentation/motion";
 import "./fullscreen-dice.css";
 
-// Probe WebGL once per session and release the probe context immediately, so
-// repeated rolls do not allocate a new context just to test support.
-let webglSupport: boolean | undefined;
-const supportsWebGL = () => {
-  if (webglSupport !== undefined) return webglSupport;
-  try {
-    const canvas = document.createElement("canvas");
-    const gl =
-      canvas.getContext("webgl2") ||
-      canvas.getContext("webgl") ||
-      canvas.getContext("experimental-webgl");
-    webglSupport = !!gl;
-    (gl as WebGLRenderingContext | null)
-      ?.getExtension("WEBGL_lose_context")
-      ?.loseContext();
-  } catch {
-    webglSupport = false;
-  }
-  return webglSupport;
-};
+type Stage = Awaited<
+  ReturnType<typeof import("../presentation/dice/library").createDiceStage>
+>;
 
-/**
- * Card-forward roll overlay. There is no dialog and no dimming: the live 2:3
- * card stays readable behind a transparent 3D stage, dice tumble over it, and a
- * tap on the card drives the whole interaction. The card button remains the
- * accessible control; this layer only adds the visual affordance and result.
- */
+/** Transparent, full-viewport dice. Saved outcomes never depend on WebGL. */
 export default function FullScreenDice({
   card,
   roll,
   rolling,
+  finishing,
   onTap,
   onFinish,
 }: {
   card: CardDefinition;
   roll: DiceRoll | null;
   rolling: boolean;
+  finishing: boolean;
   onTap(): void;
   onFinish(): void;
 }) {
   const stageId = `dice-stage-${useId().replace(/:/g, "")}`;
-  const finish = useRef(onFinish);
-  finish.current = onFinish;
-  const retained = useRef<{ dispose(): void } | null>(null);
+  const callbacks = useRef({ onTap, onFinish });
+  callbacks.current = { onTap, onFinish };
+  const stage = useRef<Stage | null>(null);
+  const ready = useRef<Promise<Stage | null> | null>(null);
+  const expedited = useRef(false);
+  const stopped = useRef(false);
+  const initial = useRef({ roll, rolling });
   const [status, setStatus] = useState("static");
   const [stopReason, setStopReason] = useState("");
   const [timing, setTiming] = useState(0);
   const [rollMs, setRollMs] = useState(0);
+
+  // Warm the lazy renderer while the revealed card is being read. A restored
+  // result stays static; it never replays or allocates a WebGL context.
   useEffect(() => {
-    const previous = document.activeElement as HTMLElement | null;
-    return () => {
-      (previous && previous !== document.body
-        ? previous
-        : document.querySelector<HTMLElement>(".game-card")
-      )?.focus();
-    };
-  }, []);
-  useEffect(() => {
-    const onKey = (event: KeyboardEvent) => {
-      if (event.key !== "Escape") return;
-      // Let an open modal (game menu, dialogs) own Escape instead.
-      if (document.querySelector("dialog[open]")) return;
-      event.preventDefault();
-      if (rolling) finish.current();
-      else if (roll) onTap();
-    };
-    document.addEventListener("keydown", onKey);
-    return () => document.removeEventListener("keydown", onKey);
-  }, [rolling, roll, onTap]);
-  useEffect(() => {
+    stopped.current = false;
     if (
-      !rolling ||
-      !roll ||
-      (matchMedia("(prefers-reduced-motion: reduce)").matches &&
-        !forceMotion()) ||
-      document.hidden
+      (initial.current.roll && !initial.current.rolling) ||
+      document.hidden ||
+      (matchMedia("(prefers-reduced-motion: reduce)").matches && !forceMotion())
     )
       return;
     let canceled = false;
-    let completed = false;
-    let stage:
-      | Awaited<
-          ReturnType<
-            typeof import("../presentation/dice/library").createDiceStage
-          >
-        >
-      | undefined;
+    const started = performance.now();
+    setStatus("loading");
+    ready.current = import("../presentation/dice/library")
+      .then(({ createDiceStage }) =>
+        canceled || stopped.current
+          ? null
+          : createDiceStage(`#${CSS.escape(stageId)}`),
+      )
+      .then((created) => {
+        if (canceled || stopped.current) {
+          created?.dispose();
+          return null;
+        }
+        stage.current = created;
+        document
+          .querySelector(
+            `#${CSS.escape(stageId)} canvas:not(.dice-shadow-layer)`,
+          )
+          ?.addEventListener(
+            "webglcontextlost",
+            () => {
+              if (canceled || stopped.current) return;
+              setStatus("fallback");
+              setStopReason("webgl");
+            },
+            { once: true },
+          );
+        setTiming(Math.round(performance.now() - started));
+        setStatus("ready");
+        return created;
+      })
+      .catch(() => {
+        if (!canceled) {
+          setStatus("fallback");
+          setStopReason("webgl");
+        }
+        return null;
+      });
+    return () => {
+      canceled = true;
+      stage.current?.dispose();
+      stage.current = null;
+    };
+  }, [stageId]);
+
+  useEffect(
+    () => () => {
+      if (!document.querySelector("dialog[open]"))
+        document
+          .querySelector<HTMLElement>(".game-card")
+          ?.focus({ preventScroll: true });
+    },
+    [],
+  );
+
+  useEffect(() => {
+    if (!finishing) return;
+    expedited.current = true;
+    stage.current?.finish();
+  }, [finishing]);
+
+  useEffect(() => {
+    if (!roll) return;
+    if (!rolling) {
+      if (!expedited.current) return;
+      // Give the landing a brief readable beat before clearing the table.
+      const timer = setTimeout(() => callbacks.current.onTap(), 180);
+      return () => clearTimeout(timer);
+    }
+    let canceled = false;
     const started = performance.now();
     const stop = (reason: string) => {
       if (canceled) return;
       canceled = true;
-      stage?.dispose();
+      stopped.current = true;
+      stage.current?.dispose();
+      stage.current = null;
       setStatus("fallback");
       setStopReason(reason);
-      finish.current();
+      callbacks.current.onFinish();
     };
-    // Platforms without WebGL (e.g. Linux CI WebKit) degrade instantly, before
-    // installing any listeners or timers, so nothing leaks on this path.
-    if (!supportsWebGL()) {
-      stop("webgl");
+    const reduced = matchMedia("(prefers-reduced-motion: reduce)");
+    if (document.hidden || (reduced.matches && !forceMotion())) {
+      stop(document.hidden ? "hidden" : "reduced");
       return;
     }
     const hidden = () => {
       if (document.hidden) stop("hidden");
     };
-    const reduced = matchMedia("(prefers-reduced-motion: reduce)");
-    const onReducedChange = () => {
-      if (!forceMotion()) stop("reduced");
+    const onReduced = () => {
+      if (reduced.matches && !forceMotion()) stop("reduced");
     };
-    const timeout = setTimeout(() => stop("timeout"), 12000);
-    // Only a real size change settles the roll: the library cannot resize
-    // mid-throw, but mobile URL-bar jitter fires spurious resize events.
-    const startWidth = window.innerWidth;
-    const startHeight = window.innerHeight;
-    const onResize = () => {
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+    const resize = () => {
+      // Ignore URL-bar height jitter; the fixed canvas can stretch vertically.
       if (
-        window.innerWidth !== startWidth ||
-        window.innerHeight !== startHeight
+        Math.abs(window.innerWidth - width) > 2 ||
+        Math.abs(window.innerHeight - height) > 180
       )
         stop("resize");
     };
-    window.addEventListener("resize", onResize);
+    const timeout = setTimeout(() => stop("timeout"), 6000);
     document.addEventListener("visibilitychange", hidden);
-    reduced.addEventListener("change", onReducedChange);
-    setStatus("loading");
-    void import("../presentation/dice/library")
-      .then(async ({ createDiceStage }) => {
-        if (canceled) return;
-        stage = await createDiceStage(`#${CSS.escape(stageId)}`);
-        if (canceled) {
-          stage.dispose();
-          return;
-        }
-        setTiming(Math.round(performance.now() - started));
-        setStatus("rolling");
-        const canvas = document.querySelector(`#${CSS.escape(stageId)} canvas`);
-        canvas?.addEventListener("webglcontextlost", () => stop("webgl"), {
-          once: true,
-        });
-        const actual = await stage.roll(card.dice!.sides, roll.values);
-        if (canceled) return;
-        completed = true;
-        // A lost context after settling must not leave a frozen canvas.
-        canvas?.addEventListener(
-          "webglcontextlost",
-          () => {
-            stage?.dispose();
-            retained.current = null;
-          },
-          { once: true },
-        );
-        setRollMs(Math.round(performance.now() - started));
-        setStatus(`settled:${actual.join(",")}`);
-        clearTimeout(timeout);
-        finish.current();
-      })
-      .catch(() => stop("error"));
+    window.addEventListener("resize", resize);
+    reduced.addEventListener("change", onReduced);
+    void (async () => {
+      const renderer = await ready.current;
+      if (canceled) return;
+      if (!renderer) {
+        stop("webgl");
+        return;
+      }
+      if (expedited.current) renderer.finish();
+      setStatus("rolling");
+      const actual = await renderer.roll(card.dice!.sides, roll.values);
+      if (canceled) return;
+      clearTimeout(timeout);
+      setRollMs(Math.round(performance.now() - started));
+      setStatus(`settled:${actual.join(",")}`);
+      callbacks.current.onFinish();
+    })().catch(() => stop("error"));
     return () => {
       canceled = true;
       clearTimeout(timeout);
-      window.removeEventListener("resize", onResize);
       document.removeEventListener("visibilitychange", hidden);
-      reduced.removeEventListener("change", onReducedChange);
-      // Preserve the settled canvas until the overlay closes. See separate owner below.
-      if (stage) {
-        if (!completed) {
-          stage.dispose();
-        } else {
-          retained.current?.dispose();
-          retained.current = stage;
-        }
-      }
+      window.removeEventListener("resize", resize);
+      reduced.removeEventListener("change", onReduced);
     };
-  }, [rolling, roll, card.dice, stageId]);
-  useEffect(() => () => retained.current?.dispose(), []);
+  }, [rolling, roll, card.dice]);
+
+  useEffect(() => {
+    if (!roll) return;
+    const key = (event: KeyboardEvent) => {
+      if (event.key !== "Escape" || document.querySelector("dialog[open]"))
+        return;
+      event.preventDefault();
+      callbacks.current.onTap();
+    };
+    // The card keeps its native keyboard and scroll/tap handling. Stationary
+    // taps elsewhere on the table can finish/dismiss the dice too.
+    let down = { x: 0, y: 0 };
+    const pointer = (event: PointerEvent) => {
+      down = { x: event.clientX, y: event.clientY };
+    };
+    const click = (event: MouseEvent) => {
+      if (
+        event.defaultPrevented ||
+        document.querySelector("dialog[open]") ||
+        (event.target as Element).closest("button, a, input, select, dialog") ||
+        Math.hypot(event.clientX - down.x, event.clientY - down.y) > 8
+      )
+        return;
+      callbacks.current.onTap();
+    };
+    document.addEventListener("keydown", key);
+    document.addEventListener("pointerdown", pointer);
+    document.addEventListener("click", click);
+    return () => {
+      document.removeEventListener("keydown", key);
+      document.removeEventListener("pointerdown", pointer);
+      document.removeEventListener("click", click);
+    };
+  }, [roll]);
+
+  const staticResult = roll && !rolling && !status.startsWith("settled:");
   return createPortal(
-    <div className="roll-layer">
-      <div className="roll-stage-band" aria-hidden="true">
+    <div className="roll-layer" aria-hidden="true">
+      <div className="roll-stage-band">
         <div
           className="roll-stage"
           id={stageId}
@@ -191,6 +226,13 @@ export default function FullScreenDice({
           data-roll-ms={rollMs}
         />
       </div>
+      {staticResult && (
+        <div className="roll-static-result">
+          {roll.values.map((value, index) => (
+            <span key={index}>{value}</span>
+          ))}
+        </div>
+      )}
     </div>,
     document.body,
   );

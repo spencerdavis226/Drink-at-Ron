@@ -20,7 +20,6 @@ export interface CardDefinition {
   rules: string;
   category: Category;
   artwork: string;
-  illustrationBrief: string;
   dice?: DiceDefinition;
 }
 export interface PackDefinition {

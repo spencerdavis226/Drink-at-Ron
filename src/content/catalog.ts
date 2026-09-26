@@ -1,19 +1,15 @@
 import { validateDice } from "../game/dice";
 import { coreCards, samplePack } from "./sample";
-import { houseCards, housePack } from "./custom";
 import { vipCards, vipPack } from "./vip";
 import type { CardDefinition, PackDefinition } from "../game/types";
 
-// The runtime catalog. `samplePack` (Core) holds the supplied sample set plus
-// the classic / King's Cup basics, and is always included; VIP night is an
-// additional themed pack. Card content is provided sample material and is
-// expected to change.
-export const cards: CardDefinition[] = [
-  ...coreCards,
-  ...houseCards,
-  ...vipCards,
-];
-export const packs: PackDefinition[] = [samplePack, housePack, vipPack];
+// The runtime catalog. `samplePack` (Core) is always included and now carries
+// the supplied sample set, the classic / King's Cup basics, the voice/dice
+// expansion, and every supplied house row; VIP night is the only optional
+// themed pack. Card content is provided sample material and is expected to
+// change.
+export const cards: CardDefinition[] = [...coreCards, ...vipCards];
+export const packs: PackDefinition[] = [samplePack, vipPack];
 
 export function validateCatalog(cs: CardDefinition[], ps: PackDefinition[]) {
   const fail = (message: string): never => {
@@ -33,12 +29,7 @@ export function validateCatalog(cs: CardDefinition[], ps: PackDefinition[]) {
     if (c.dice !== undefined) validateDice(c.dice);
     if (!["sip", "group", "category", "challenge", "rule"].includes(c.category))
       fail(`Invalid category: ${c.id}`);
-    for (const key of [
-      "title",
-      "rules",
-      "artwork",
-      "illustrationBrief",
-    ] as const)
+    for (const key of ["title", "rules", "artwork"] as const)
       if (typeof c[key] !== "string" || !c[key].trim())
         fail(`Missing ${key}: ${c.id}`);
     if (!/^art\/[a-zA-Z0-9/_-]+\.(svg|png|webp|avif)$/.test(c.artwork))

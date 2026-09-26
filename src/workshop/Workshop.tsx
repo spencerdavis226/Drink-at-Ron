@@ -166,7 +166,6 @@ export default function Workshop() {
           {shown.length} cards · {validation}
         </p>
         <p>{card.id}</p>
-        <p>{card.illustrationBrief}</p>
         <nav aria-label="Study examples">
           {[
             "core.house-special",

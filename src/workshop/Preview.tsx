@@ -32,21 +32,22 @@ export default function Preview() {
   const [initial] = useState(() => workshopSession(seed, id, revealed));
   const random = useRef(initial.random);
   const diceRandom = useRef(seededRandom(`${seed}:dice`));
-  const { controller, session, outgoing, motion, transition } = usePresentation(
-    () =>
-      new PresentationController(
-        initial.session,
-        () => {},
-        () => {},
-        () => random.current(),
-        () =>
-          outcome === "Minimum"
-            ? 0
-            : outcome === "Maximum"
-              ? 0.999999
-              : diceRandom.current(),
-      ),
-  );
+  const { controller, session, outgoing, motion, transition, finishingRoll } =
+    usePresentation(
+      () =>
+        new PresentationController(
+          initial.session,
+          () => {},
+          () => {},
+          () => random.current(),
+          () =>
+            outcome === "Minimum"
+              ? 0
+              : outcome === "Maximum"
+                ? 0.999999
+                : diceRandom.current(),
+        ),
+    );
   return (
     <>
       <Atmosphere hidden={false} />
@@ -58,6 +59,7 @@ export default function Preview() {
           session={(outgoing ?? session)!}
           motion={motion}
           transition={transition}
+          finishingRoll={finishingRoll}
           onTap={() => controller.tap()}
           onFinish={controller.finish.bind(controller)}
         />
