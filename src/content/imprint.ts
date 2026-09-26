@@ -1,4 +1,5 @@
 import { standardExpansionCards } from "./standard-expansion";
+import { houseCards, customVipCards } from "./custom";
 
 /**
  * Card imprint content: which icon and paper tint a card carries.
@@ -57,6 +58,12 @@ const expansionMotifs: Record<string, ImprintAssignment> = {
 export const imprintAssignments: Record<string, ImprintAssignment> = {
   ...Object.fromEntries(
     standardExpansionCards.map((card) => [
+      card.id,
+      expansionMotifs[card.category],
+    ]),
+  ),
+  ...Object.fromEntries(
+    [...houseCards, ...customVipCards].map((card) => [
       card.id,
       expansionMotifs[card.category],
     ]),

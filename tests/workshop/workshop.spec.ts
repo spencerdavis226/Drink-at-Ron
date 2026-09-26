@@ -121,7 +121,7 @@ for (const size of [
   "Split view",
 ]) {
   test(`all study cards retain their ratio at ${size}`, async ({ page }) => {
-    // 250 Core cards (20 with dice) plus the VIP pack; each iteration
+    // 250 Core, 103 house, and 16 VIP cards; each iteration
     // re-reads the preview, and software-rendered WebKit is the slow case.
     test.setTimeout(600000);
     await page.setViewportSize({ width: 1400, height: 1100 });

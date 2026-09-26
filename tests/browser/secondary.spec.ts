@@ -69,6 +69,36 @@ test("selecting VIP night reveals its one-line setup reminder", async ({
   await vip.click();
   await expect(page.locator(".pack-hint")).toHaveCount(0);
 });
+test("the supplied house cards are an optional pack in a new game", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 320, height: 568 });
+  await page.goto("./");
+  await page.getByRole("button", { name: "Choose add-ons" }).click();
+  const house = page
+    .getByRole("dialog")
+    .getByRole("button", { name: "Ron’s house cards", exact: true });
+  await expect(house).toHaveAttribute("aria-pressed", "false");
+  await house.click();
+  await expect(house).toHaveAttribute("aria-pressed", "true");
+  expect(
+    await page.getByRole("dialog").evaluate((dialog) => {
+      const rect = dialog.getBoundingClientRect();
+      return rect.left >= 0 && rect.right <= innerWidth;
+    }),
+  ).toBe(true);
+  await page.getByRole("button", { name: "Done" }).click();
+  await page.getByRole("button", { name: "Play", exact: true }).click();
+  const session = await page.evaluate(
+    (key) => JSON.parse(localStorage.getItem(key)!),
+    key,
+  );
+  expect(session.config.packIds).toEqual(["core", "house"]);
+  expect(session.cards).toHaveLength(353);
+  expect(
+    session.cards.some((card: { id: string }) => card.id === "house.sheet-106"),
+  ).toBe(true);
+});
 test("the card is the only dice control and keeps a generous target", async ({
   page,
 }) => {

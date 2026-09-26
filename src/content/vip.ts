@@ -1,4 +1,5 @@
 import type { CardDefinition, PackDefinition, Category } from "../game/types";
+import { customVipCards } from "./custom";
 
 // VIP night: for a birthday, a bachelorette, or anyone whose night it is. The
 // group crowns one guest of honor (the VIP) before playing, and every card in
@@ -105,6 +106,7 @@ export const vipCards: CardDefinition[] = [
     "Until the next card, the VIP picks someone to join each sip they take.",
     "Two mismatched cups clinking beside a small bronze crown, centered against a quiet tavern background.",
   ),
+  ...customVipCards,
 ];
 
 export const vipPack: PackDefinition = {

@@ -23,5 +23,19 @@ test("Core composition matches the content brief", () => {
       ]),
     ),
   ).toEqual({ sip: 47, group: 54, category: 41, challenge: 75, rule: 33 });
-  expect(cards.filter((c) => c.dice)).toHaveLength(20);
+  expect(coreCards.filter((c) => c.dice)).toHaveLength(20);
+});
+
+test("all supplied custom rows remain available in their intended packs", () => {
+  const house = packs.find((pack) => pack.id === "house")!;
+  const vip = packs.find((pack) => pack.id === "vip")!;
+  expect(house.cardIds).toEqual(
+    Array.from({ length: 104 }, (_, offset) => offset + 3)
+      .filter((row) => row !== 75) // blank CSV row
+      .map((row) => `house.sheet-${String(row).padStart(3, "0")}`),
+  );
+  expect(vip.cardIds.slice(-4)).toEqual(
+    [3, 4, 5, 6].map((row) => `vip.sheet-${String(row).padStart(3, "0")}`),
+  );
+  expect(cards).toHaveLength(369);
 });

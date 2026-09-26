@@ -4,8 +4,8 @@ Status: **prepared, no results recorded.** Kit prepared 2026-09-21 at commit `3e
 
 ## How to run
 
-- Two sessions, ideally one group. Session A is Short (30 cards) with Core. Session B is Infinite for another 30–60 cards; use more sessions to cover the deck.
-- Dice cards are mixed into `The house collection` (20 of the 250 carry a roll), so any game can reach a roll — there is no separate dice pack to select.
+- Three sessions, ideally one group. Session A is Short (30 cards) with Core. Session B is Infinite with Ron’s house cards selected. Session C adds VIP night with a guest of honor; use more sessions to cover the deck.
+- Dice cards are mixed into `The house collection` (20 of the 250 carry a roll), and three more are in Ron’s house cards. There is no separate dice pack to select.
 - Use the game without coaching beyond choosing a first drawer and clockwise turns. Record confusion rather than steering players to the intended answer.
 - Place the phone where the group will actually play. Ask people across the table and at side angles to read each revealed rule without passing the phone; note when they must lean in, turn the phone, or scroll.
 - After each session ask: which cards would you remove, which do you want more of, and was the next action ever unclear?
@@ -24,6 +24,13 @@ Status: **prepared, no results recorded.** Kit prepared 2026-09-21 at commit `3e
 - Device / OS:
 - People / approximate session length:
 - Note any repetition or pacing issues; automated engine tests verify cycle exhaustion.
+
+## Session C — VIP night
+
+- Date / build commit:
+- Device / OS:
+- Guest of honor chosen before play:
+- Note whether the four sheet-sourced VIP prompts fit the occasion and read clearly.
 
 ## Dice and roll checks
 
@@ -50,7 +57,7 @@ Status: **prepared, no results recorded.** Kit prepared 2026-09-21 at commit `3e
 
 Add rows or annotate the sheet below. Mark each card: `fine`, `confusing`, `skipped`, or `remove`.
 
-Use the generated [card review sheet](CARD_REVIEW.md) or [CSV](card-review.csv) to record per-card observations for all 250 Core and 12 VIP cards. Keep this file for session findings and decisions.
+Use the generated [card review sheet](CARD_REVIEW.md) or [CSV](card-review.csv) to record per-card observations for all 250 Core, 103 Ron’s house, and 16 VIP cards. Keep this file for session findings and decisions. The custom IDs include their source sheet row numbers for comparison.
 
 ## Device checks
 

@@ -39,7 +39,7 @@ Overlapping packs share a card by ID; it enters the shuffle pool only once. New 
 
 Before the production content session: review variety, repetition, category stopping conditions, and ongoing-rule duration. Agree on final copy and stable IDs before commissioning or generating artwork.
 
-For an incoming CSV, review column mapping, stable IDs, duplicate concepts, pack membership, dice outcomes, and the text limits before adding anything to the catalog. Preview every accepted card in the workshop at small-phone width and enlarged text. Update `docs/PLAYTEST.md` to match the accepted catalog; do not silently rewrite an active game's saved card snapshot.
+The supplied Sheet1 CSV has Main title/description columns and separate VIP title/description columns. `src/content/custom.ts` includes all 103 nonblank Main rows as an optional `house` pack and all four VIP rows in `vip`; blank row 75 is excluded. IDs contain the 1-based sheet row number for audit, including duplicate headings. Row 106 (“Debate”) had no rule, so its released rule is a short silly debate and vote. Wording was edited to fit the game's one-sip, no-speed-drinking rules and the larger table-readable text; compare the generated review sheet with the source before final copy approval. Preview every card in the workshop at small-phone width and enlarged text. An active game's saved snapshot is never rewritten by catalog changes.
 
 Packs can optionally specify `artwork: 'art/your-pack.webp'`. The file must exist and follow the same local path rules as card artwork. Omit it to use the painted tankard. Shared pack controls and card frames are automatic; packs do not carry UI components, animation logic, or fonts.
 
