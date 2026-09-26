@@ -241,37 +241,41 @@ test("returning a rolled card settles without a positional jump", async ({
     () => 0.5,
   );
   await seed(page, rolled);
-  const frames = await page.evaluate(async () => {
-    const card = document.querySelector(".game-card") as HTMLElement;
-    card.click();
-    const animation = await new Promise<CSSAnimation>((resolve) => {
-      const poll = () => {
-        const current = card
-          .getAnimations()
-          .find(
-            (item): item is CSSAnimation =>
-              item instanceof CSSAnimation &&
-              item.animationName === "card-settle",
-          );
-        if (current) resolve(current);
-        else requestAnimationFrame(poll);
-      };
-      poll();
-    });
-    animation.pause();
-    animation.currentTime = animation.effect!.getComputedTiming().endTime;
-    const end = getComputedStyle(card).transform;
-    animation.play();
-    await new Promise<void>((resolve) => {
-      const poll = () => {
-        if (card.getAnimations().length === 0) resolve();
-        else requestAnimationFrame(poll);
-      };
-      poll();
-    });
-    return { end, rest: getComputedStyle(card).transform };
+  await page.locator(".game-card").click();
+  await expect(page.locator(".game-card")).toHaveAttribute(
+    "aria-label",
+    /Tap to put this card aside/,
+  );
+  await expect(page.locator(".card-stage")).not.toHaveClass(/settle/);
+  const frames = await page.evaluate(() => {
+    const rules = [...document.styleSheets].flatMap((sheet) => [
+      ...sheet.cssRules,
+    ]);
+    const settle = rules.find(
+      (rule): rule is CSSKeyframesRule =>
+        rule instanceof CSSKeyframesRule && rule.name === "card-settle",
+    )!;
+    const matrix = (value: string) =>
+      value === "none" ? "none" : new DOMMatrixReadOnly(value).toString();
+    const frame = (key: string) =>
+      matrix(
+        [...settle.cssRules].find(
+          (rule) => (rule as CSSKeyframeRule).keyText === key,
+        )!.style.transform,
+      );
+    return {
+      start: frame("0%"),
+      end: frame("100%"),
+      rest: getComputedStyle(document.querySelector(".game-card")!).transform,
+    };
   });
-  // The settle starts and ends at rest, so it can never step the card.
+  // WebKit can remove the short settle before exposing a CSSAnimation. The
+  // authored endpoints must both match the card after the return completes.
+  expectSame(
+    geometry(frames.start),
+    geometry(frames.rest),
+    "dice return start",
+  );
   expectSame(geometry(frames.end), geometry(frames.rest), "dice return");
 });
 test("discard never shifts the exposed under card between frames and handoff", async ({
