@@ -1,11 +1,20 @@
 export const VERSION = 1 as const;
 export type Category = "sip" | "group" | "category" | "challenge" | "rule";
+export interface DiceOutcome {
+  min: number;
+  max: number;
+  /** Repeat step so a table can cover every other total (odds, evens). */
+  step?: number;
+  instruction: string;
+}
 export interface DiceDefinition {
   version: 1;
   count: number;
   sides: 6 | 20;
   instruction?: string;
-  outcomes?: { min: number; max: number; instruction: string }[];
+  /** Replaces the normal instruction when every die shows the same face. */
+  doubles?: string;
+  outcomes?: DiceOutcome[];
 }
 export interface DiceRoll {
   values: number[];

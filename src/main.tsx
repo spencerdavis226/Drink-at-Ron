@@ -16,7 +16,7 @@ import { usePresentation } from "./presentation/usePresentation";
 import { theme } from "./presentation/theme";
 import { preloadUrl } from "./presentation/artwork";
 import { coreFrameSurfaces } from "./presentation/frame-surfaces";
-import { Button, IconButton, Notice } from "./components/UI";
+import { Button, IconButton, InstallIcon, Notice } from "./components/UI";
 import { Atmosphere } from "./components/Atmosphere";
 import { Setup } from "./screens/Setup";
 import { Play } from "./screens/Play";
@@ -66,14 +66,13 @@ function App() {
     };
   }, []);
   const start = () => {
+    const packIds = prefs.config.packIds.filter((id) =>
+      packs.some((pack) => pack.id === id),
+    );
+    if (!packIds.length) return;
     const config = {
       ...prefs.config,
-      packIds: [
-        "core",
-        ...prefs.config.packIds.filter(
-          (id) => id !== "core" && packs.some((p) => p.id === id),
-        ),
-      ],
+      packIds,
       limit: MODE_LIMITS[prefs.choice],
     };
     setPrefs({ ...prefs, config });
@@ -117,7 +116,10 @@ function App() {
               label="Install app"
               onClick={() => setModal("install")}
             >
-              <span aria-hidden="true">↓</span>
+              <InstallIcon />
+              <span className="install-button-label" aria-hidden="true">
+                Install
+              </span>
             </IconButton>
           )}
         </header>
@@ -165,6 +167,7 @@ function App() {
             transition={transition}
             finishingRoll={finishingRoll}
             onTap={() => controller.tap()}
+            onRevealRoll={() => controller.revealRoll()}
             onFinish={finish}
           />
         )}
@@ -206,6 +209,14 @@ if (import.meta.env.DEV && params.get("preview") === "1") {
     root.render(
       <React.StrictMode>
         <Preview />
+      </React.StrictMode>,
+    ),
+  );
+} else if (import.meta.env.DEV && params.get("review") === "1") {
+  void import("./workshop/CardReview").then(({ default: CardReview }) =>
+    root.render(
+      <React.StrictMode>
+        <CardReview />
       </React.StrictMode>,
     ),
   );

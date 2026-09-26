@@ -4,8 +4,8 @@ Status: **prepared, no results recorded.** Kit prepared 2026-09-21 at commit `3e
 
 ## How to run
 
-- Two sessions, ideally one group. Session A is Short (30 cards) with Core. Session B is Infinite with VIP night and a guest of honor; use more sessions to cover the deck.
-- Dice cards are mixed into Core (80 of the 322 carry a roll). There is no separate dice pack to select.
+- Two sessions, ideally one group. Session A is Short (30 cards) with the Core deck. Session B is Infinite with the House deck and VIP night, with a guest of honor; use more sessions to cover the deck.
+- Dice cards are spread across all three packs (39 in Core, 19 in House). Packs are opt-in; select as many as the table wants.
 - Use the game without coaching beyond choosing a first drawer and clockwise turns. Record confusion rather than steering players to the intended answer.
 - Place the phone where the group will actually play. Ask people across the table and at side angles to read each revealed rule without passing the phone; note when they must lean in, turn the phone, or scroll.
 - After each session ask: which cards would you remove, which do you want more of, and was the next action ever unclear?
@@ -16,7 +16,7 @@ Status: **prepared, no results recorded.** Kit prepared 2026-09-21 at commit `3e
 - Date / build commit:
 - Device / OS / Safari or installed Home Screen:
 - People / approximate session length:
-- Deck: Short, Core only (30 cards from the 322-card pool).
+- Deck: Short, Core only (30 cards from the 117-card pool).
 
 ## Session B — Infinite, then VIP night
 
@@ -36,13 +36,13 @@ Status: **prepared, no results recorded.** Kit prepared 2026-09-21 at commit `3e
 
 ## Temporary-rule checks
 
-- For each `rule` card encountered: did the rule clearly end at the next reveal, with no app bookkeeping needed?
-- Did any rule persist past the next card, or require a reminder of when it stopped?
+- For each `rule` card encountered: did the rule's stated duration and consequence land without app bookkeeping?
+- Did any rule require a reminder of when it stopped?
 
 ## Copy and pack decisions (need user approval)
 
-- **`The Core deck` name/copy.** Keep, or rename? Description: "The always-on deck: sample prompts, King's Cup basics, the voice/dice expansion, and every supplied house card."
-- **Dice cards.** They are merged into Core (no separate dice pack). 80 of the 322 carry a roll. Decide whether to keep them mixed or split them into a named dice pack with its own logo and copy. Do not add more dice mechanics by inference.
+- **Pack names/copy.** `The Core deck` (generated main deck, 117), `The House deck` (supplied sheet, 102), `VIP night` (16). Keep, or rename?
+- **Dice cards.** Every roll now resolves to one exact instruction in the engine. Check the odds/evens, doubles, and per-die cards on the phone; note any result you would read differently.
 - **`VIP night` name/copy.** Keep, or rename? The pack mark is `art/packs/vip.svg`.
 - **Card wording.** The sample text is supplied as-is, including the crude language. Note any line you want changed; unchanged concepts keep their IDs, unrelated replacements get new IDs. Discuss balance after observing the expanded deck; keep IDs stable for copy edits.
 - **Future art.** The launch card front stays plain parchment inside the approved frame. Discuss any new illustration work separately after copy is locked.
@@ -51,7 +51,7 @@ Status: **prepared, no results recorded.** Kit prepared 2026-09-21 at commit `3e
 
 Add rows or annotate the sheet below. Mark each card: `fine`, `confusing`, `skipped`, or `remove`.
 
-Use the generated [card review sheet](CARD_REVIEW.md) or [CSV](card-review.csv) to record per-card observations for all 322 Core and 16 VIP cards. Keep this file for session findings and decisions. The custom IDs include their source sheet row numbers for comparison.
+Use the generated [card review sheet](CARD_REVIEW.md) or [CSV](card-review.csv) to record per-card observations for all 235 cards (117 Core, 102 House, 16 VIP). Keep this file for session findings and decisions. The House IDs include their source sheet row numbers for comparison.
 
 ## Device checks
 

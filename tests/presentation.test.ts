@@ -95,7 +95,7 @@ describe("presentation transactions", () => {
   });
 });
 describe("preferences compatibility", () => {
-  it("maps legacy finite choices to the nearest mode and always includes Core", () => {
+  it("maps legacy finite choices to the nearest mode and keeps selected packs selectable", () => {
     const old = {
       config: { version: 1, packIds: ["vip"], limit: 37 },
       sound: true,
@@ -106,7 +106,7 @@ describe("preferences compatibility", () => {
     };
     vi.stubGlobal("localStorage", { getItem: () => JSON.stringify(old) });
     expect(loadPreferences()).toEqual({
-      config: { version: 1, packIds: ["core", "vip"], limit: 30 },
+      config: { version: 1, packIds: ["vip"], limit: 30 },
       choice: "short",
     });
     for (const [size, choice, limit] of [

@@ -18,11 +18,16 @@ async function seed(page: Page, index = 0) {
   );
   session.phase = "revealed";
   await page.goto("./");
-  await page.evaluate(
-    ({ key, session }) => localStorage.setItem(key, JSON.stringify(session)),
-    { key, session },
-  );
-  await page.reload();
+  await Promise.all([
+    page.waitForNavigation(),
+    page.evaluate(
+      ({ key, session }) => {
+        localStorage.setItem(key, JSON.stringify(session));
+        location.reload();
+      },
+      { key, session },
+    ),
+  ]);
   await expect(page.locator(".game-card")).toHaveAccessibleName(/^Roll /);
 }
 const saved = (page: Page) =>
@@ -63,25 +68,26 @@ for (const index of [0, 1])
       await page.locator(".roll-stage").getAttribute("data-startup-ms"),
     );
     await page.screenshot({ path: info.outputPath(`settled-${index}.png`) });
-    await expect(page.locator(".study-rules p")).toHaveText(
-      cards.find((c) => c.id === diceIds[index])!.rules,
-    );
-    await expect(page.locator(".resolved-instruction")).toHaveCount(0);
-    expect((await saved(page)).roll).toEqual(committed.roll);
-    expect(external).toEqual([]);
-    await expect(page.locator(".game-card")).toHaveAccessibleName(
-      /Return to card$/,
-    );
-    await page.locator(".game-card").click();
     await expect(page.locator(".roll-layer")).toHaveCount(0);
-    expect((await saved(page)).roll.returned).toBe(true);
-    expect((await saved(page)).discarded).toBe(0);
     await expect(page.locator(".resolved-instruction")).toHaveText(
       diceResultText(
         cards.find((c) => c.id === diceIds[index])!,
         committed.roll,
       ),
     );
+    await expect(page.locator(".dice-result-face")).toHaveText(
+      committed.roll.values.map(String),
+    );
+    if (committed.roll.values.length > 1)
+      await expect(page.locator(".dice-result-total strong")).toHaveText(
+        String(committed.roll.total),
+      );
+    expect((await saved(page)).roll).toEqual({
+      ...committed.roll,
+      returned: true,
+    });
+    expect(external).toEqual([]);
+    expect((await saved(page)).discarded).toBe(0);
     await expect(
       page.locator(".resolved-instruction strong").first(),
     ).toBeVisible();
@@ -99,12 +105,13 @@ test("@release a restored unrolled dice card rolls by tapping the card", async (
     /^settled:/,
     { timeout: 15000 },
   );
-  await expect(page.locator(".game-card")).toHaveAccessibleName(
-    /Return to card$/,
-  );
   expect(
     await page.locator(".roll-stage").getAttribute("data-stop-reason"),
   ).toBe("");
+  await expect(page.locator(".roll-layer")).toHaveCount(0);
+  await expect(page.locator(".game-card")).toHaveAccessibleName(
+    /Tap to put this card aside\.$/,
+  );
 });
 test("repeated rolls settle, never fall back, and are never a weak plop", async ({
   page,
@@ -128,6 +135,10 @@ test("repeated rolls settle, never fall back, and are never a weak plop", async 
     durations.push(
       Number(await page.locator(".roll-stage").getAttribute("data-roll-ms")),
     );
+    // Let the automatic result handoff finish before replacing this save with
+    // the next fixture; otherwise the intentional 700ms hold can outlive the
+    // test's localStorage write and race the next navigation.
+    await expect(page.locator(".roll-layer")).toHaveCount(0);
   }
   console.log("roll ms", durations.join(", "));
   for (const ms of durations) {
@@ -137,33 +148,28 @@ test("repeated rolls settle, never fall back, and are never a weak plop", async 
     expect(ms).toBeLessThan(5000);
   }
 });
-test("reload and reduced motion restore static saved result without replay", async ({
+test("reload and reduced motion reveal a saved result without replay", async ({
   page,
 }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
   await seed(page);
   // Reduced motion commits the roll with no dice animation.
   await page.locator(".game-card").click();
-  await expect(page.locator(".game-card")).toHaveAccessibleName(
-    /Return to card$/,
-  );
+  await expect(page.locator(".resolved-instruction")).toBeVisible();
   const committed = await saved(page);
+  expect(committed.roll.returned).toBe(true);
   await page.reload();
   await expect(page.locator(".game-card")).toHaveAccessibleName(
-    /Return to card$/,
+    /Tap to put this card aside\.$/,
   );
   await expect(page.locator(".roll-stage canvas")).toHaveCount(0);
   expect((await saved(page)).roll).toEqual(committed.roll);
 });
-test("dragging the resolved rules does not return or discard", async ({
-  page,
-}) => {
+test("dragging the resolved rules does not discard", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
   await seed(page);
   await page.locator(".game-card").click();
-  await expect(page.locator(".game-card")).toHaveAccessibleName(
-    /Return to card$/,
-  );
+  await expect(page.locator(".resolved-instruction")).toBeVisible();
   const box = (await page.locator(".study-rules").boundingBox())!;
   await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
   await page.mouse.down();
@@ -172,14 +178,11 @@ test("dragging the resolved rules does not return or discard", async ({
   });
   await page.mouse.up();
   await expect(page.locator(".game-card")).toHaveAccessibleName(
-    /Return to card$/,
+    /Tap to put this card aside\.$/,
   );
-  expect((await saved(page)).roll.returned).toBe(false);
-  expect((await saved(page)).discarded).toBe(0);
-  // A stationary tap on the card still returns, then the next action discards.
-  await page.locator(".game-card").click();
-  await expect(page.locator(".roll-layer")).toHaveCount(0);
   expect((await saved(page)).roll.returned).toBe(true);
+  expect((await saved(page)).discarded).toBe(0);
+  // A stationary tap on the resolved card discards it.
   await page.locator(".game-card").click();
   await expect.poll(async () => (await saved(page)).discarded).toBe(1);
 });
@@ -228,7 +231,7 @@ test("@release a second tap finishes the moving dice, then reveals the bold amou
   await page.locator(".game-card").click();
   await expect.poll(async () => (await saved(page)).discarded).toBe(1);
 });
-test("Escape finishes the throw and returns without changing the saved faces", async ({
+test("Escape finishes the throw and reveals without changing the saved faces", async ({
   page,
 }) => {
   await seed(page);
@@ -261,27 +264,19 @@ test("offline dice roll and relaunch preserve result", async ({
   await context.setOffline(true);
   await page.reload();
   await page.locator(".game-card").click();
-  await expect(page.locator(".game-card")).toHaveAccessibleName(
-    /Return to card$/,
-    {
-      timeout: 15000,
-    },
-  );
-  await expect(page.locator(".roll-stage")).toHaveAttribute(
-    "data-renderer",
-    /^settled:/,
-  );
+  await expect(page.locator(".resolved-instruction")).toBeVisible({
+    timeout: 15000,
+  });
   const committed = await saved(page);
+  expect(committed.roll.returned).toBe(true);
   await page.reload();
   await expect(page.locator(".game-card")).toHaveAccessibleName(
-    /Return to card$/,
+    /Tap to put this card aside\.$/,
   );
   expect((await saved(page)).roll).toEqual(committed.roll);
   await context.setOffline(false);
 });
-test("WebGL failure uses a static result without blocking return", async ({
-  page,
-}) => {
+test("WebGL failure immediately reveals the saved result", async ({ page }) => {
   await page.addInitScript(() => {
     const original = HTMLCanvasElement.prototype.getContext;
     HTMLCanvasElement.prototype.getContext = function (
@@ -296,19 +291,10 @@ test("WebGL failure uses a static result without blocking return", async ({
   });
   await seed(page);
   await page.locator(".game-card").click();
-  await expect(page.locator(".roll-stage")).toHaveAttribute(
-    "data-renderer",
-    "fallback",
-  );
-  await expect(page.locator(".roll-stage")).toHaveAttribute(
-    "data-stop-reason",
-    "webgl",
-  );
-  await expect(page.locator(".game-card")).toHaveAccessibleName(
-    /Return to card$/,
-  );
+  await expect(page.locator(".resolved-instruction")).toBeVisible();
+  await expect(page.locator(".roll-layer")).toHaveCount(0);
   const committed = await saved(page);
-  expect(committed.roll.returned).toBe(false);
+  expect(committed.roll.returned).toBe(true);
   await page.reload();
   expect((await saved(page)).roll).toEqual(committed.roll);
 });
@@ -317,10 +303,11 @@ test("resize interruption settles without another roll", async ({ page }) => {
   await page.locator(".game-card").click();
   const committed = await saved(page);
   await page.setViewportSize({ width: 844, height: 390 });
-  await expect(page.locator(".game-card")).toHaveAccessibleName(
-    /Return to card$/,
-  );
-  expect((await saved(page)).roll).toEqual(committed.roll);
+  await expect(page.locator(".resolved-instruction")).toBeVisible();
+  expect((await saved(page)).roll).toEqual({
+    ...committed.roll,
+    returned: true,
+  });
   await page.reload();
   await expect(page.locator(".roll-stage canvas")).toHaveCount(0);
 });
@@ -337,11 +324,12 @@ test("backgrounding stops animation and preserves the saved outcome", async ({
     });
     document.dispatchEvent(new Event("visibilitychange"));
   });
-  await expect(page.locator(".game-card")).toHaveAccessibleName(
-    /Return to card$/,
-  );
+  await expect(page.locator(".resolved-instruction")).toBeVisible();
   await expect(page.locator(".roll-stage canvas")).toHaveCount(0);
-  expect((await saved(page)).roll).toEqual(committed.roll);
+  expect((await saved(page)).roll).toEqual({
+    ...committed.roll,
+    returned: true,
+  });
 });
 
 test("legacy cursed-number saves show the number in the rule without a Rolled heading", async ({
@@ -369,14 +357,63 @@ test("legacy cursed-number saves show the number in the rule without a Rolled he
     { key, state },
   );
   await page.reload();
-  await expect(page.locator(".resolved-instruction")).toHaveCount(0);
-  await expect(page.locator(".rolled-total")).toHaveCount(0);
-  await page.locator(".game-card").click();
   await expect(page.locator(".roll-layer")).toHaveCount(0);
   await expect(page.locator(".resolved-instruction")).toHaveText(
     "2 is banned. Say it: drink 2.",
   );
   expect((await saved(page)).roll.instruction).toBe(state.roll!.instruction);
+});
+
+test("resolved 1d20 through 4d6 summaries fit a small phone with enlarged text", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 320, height: 568 });
+  const source = cards.find((card) => card.id === diceIds[0])!;
+  for (const count of [1, 2, 3, 4]) {
+    const sides = count === 1 ? 20 : 6;
+    const card = {
+      ...source,
+      dice: {
+        version: 1 as const,
+        count,
+        sides: sides as 6 | 20,
+        instruction: "Give {total}.",
+      },
+    };
+    const state = createSession(
+      { version: 1, packIds: ["core"], limit: 1 },
+      [card],
+      [{ ...packs[0], cardIds: [card.id] }],
+    );
+    const values = Array.from({ length: count }, () => sides);
+    const total = values.reduce((sum, value) => sum + value, 0);
+    state.phase = "revealed";
+    state.roll = {
+      values,
+      total,
+      instruction: `Give ${total}.`,
+      returned: true,
+    };
+    await page.goto("./");
+    await page.evaluate(
+      ({ key, state }) => localStorage.setItem(key, JSON.stringify(state)),
+      { key, state },
+    );
+    await page.reload();
+    await page
+      .locator("main")
+      .evaluate((element) => element.classList.add("enlarged"));
+    await expect(page.locator(".dice-result-face")).toHaveCount(count);
+    await expect(page.locator(".resolved-instruction")).toHaveText(
+      `Give ${total}.`,
+    );
+    expect(
+      await page
+        .locator(".study-rules")
+        .evaluate((element) => element.scrollWidth <= element.clientWidth + 2),
+      `${count} dice should not overflow horizontally`,
+    ).toBe(true);
+  }
 });
 
 for (const viewport of [
@@ -435,13 +472,17 @@ for (const viewport of [
       await page.screenshot({
         path: info.outputPath(`dice-${viewport.width}.png`),
       });
-      // A tap off the card clears the settled dice as well.
-      await page.mouse.click(4, viewport.height - 4);
       await expect(page.locator(".roll-layer")).toHaveCount(0);
       await expect(page.locator(".resolved-instruction")).toHaveText(
         `Give ${committed.roll.total}.`,
       );
       await expect(page.locator(".resolved-instruction strong")).toHaveText(
+        String(committed.roll.total),
+      );
+      await expect(page.locator(".dice-result-face")).toHaveText(
+        committed.roll.values.map(String),
+      );
+      await expect(page.locator(".dice-result-total strong")).toHaveText(
         String(committed.roll.total),
       );
       await page.screenshot({

@@ -42,6 +42,21 @@ export function IconButton({
     </Button>
   );
 }
+export function InstallIcon() {
+  return (
+    <svg className="ui-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path d="M12 3v11m0 0 4-4m-4 4-4-4" />
+      <path d="M5 15v3.5A2.5 2.5 0 0 0 7.5 21h9a2.5 2.5 0 0 0 2.5-2.5V15" />
+    </svg>
+  );
+}
+export function CloseIcon() {
+  return (
+    <svg className="ui-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path d="M6.5 6.5 17.5 17.5M17.5 6.5 6.5 17.5" />
+    </svg>
+  );
+}
 export function Notice({ children }: { children: ReactNode }) {
   return (
     <p className="notice" role="status">
@@ -162,7 +177,7 @@ export function Modal({
       <div className="dialog-head">
         <h2 id="dialog-title">{title}</h2>
         <IconButton label="Close" onClick={onClose}>
-          ×
+          <CloseIcon />
         </IconButton>
       </div>
       {children}

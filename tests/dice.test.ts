@@ -27,6 +27,17 @@ const revealed = () => advance(session());
 const settle = (c: PresentationController) => {
   while (c.getSnapshot().motion) c.finish(c.getSnapshot().transition);
 };
+// Build one legal face set for every possible total (each face 1..sides).
+const valuesFor = (d: DiceDefinition, total: number) => {
+  const values: number[] = [];
+  let left = total;
+  for (let i = 0; i < d.count; i++) {
+    const value = Math.min(d.sides, Math.max(1, left - (d.count - i - 1)));
+    values.push(value);
+    left -= value;
+  }
+  return values;
+};
 
 describe("dice content", () => {
   it("validates the production dice cards", () => {
@@ -58,7 +69,7 @@ describe("dice content", () => {
     for (const card of diceCards) {
       const d = card.dice!;
       for (let total = d.count; total <= d.sides * d.count; total++)
-        expect(resolveInstruction(d, total)).toBeTruthy();
+        expect(resolveInstruction(d, valuesFor(d, total))).toBeTruthy();
     }
     const d: DiceDefinition = {
       version: 1,
@@ -67,13 +78,75 @@ describe("dice content", () => {
       instruction: "Tell a {total}-word tale.",
     };
     validateDice(d);
-    expect(resolveInstruction(d, 80)).toBe("Tell a 80-word tale.");
-    expect(resolveInstruction(fixture.dice!, 2)).toBe("Drink 6.");
-    expect(resolveInstruction(fixture.dice!, 3)).toBe("Give 3.");
+    expect(resolveInstruction(d, [20, 20, 20, 20])).toBe(
+      "Tell a 80-word tale.",
+    );
+    expect(resolveInstruction(fixture.dice!, [1, 1])).toBe("Give 2.");
+    expect(resolveInstruction(fixture.dice!, [6, 6])).toBe("Give 12.");
+    expect(resolveInstruction(fixture.dice!, [1, 2])).toBe("Drink 3.");
+  });
+  it("resolves every production roll to one exact instruction", () => {
+    for (const card of diceCards) {
+      const d = card.dice!;
+      for (let total = d.count; total <= d.sides * d.count; total++) {
+        const text = resolveInstruction(d, valuesFor(d, total));
+        expect(text, `${card.id} at ${total}`).not.toMatch(
+          /odd|even|doubles|otherwise|your roll|that number|\d+d(?:6|20)|\{/i,
+        );
+      }
+    }
+  });
+  it("resolves parity and per-die placeholders to exact text", () => {
+    const parity = diceCards.find((c) => c.id === "core.chosen-one")!.dice!;
+    expect(resolveInstruction(parity, [13])).toBe("Drink 13.");
+    expect(resolveInstruction(parity, [14])).toBe("Give 14.");
+    const split = diceCards.find((c) => c.id === "house.sheet-094")!.dice!;
+    expect(resolveInstruction(split, [6, 2])).toBe("Give 6 and drink 2.");
+  });
+  it("rejects parity gaps, overlaps, and unavailable placeholders", () => {
+    expect(() =>
+      validateDice({
+        version: 1,
+        count: 1,
+        sides: 6,
+        outcomes: [
+          { min: 1, max: 5, step: 2, instruction: "A" },
+          { min: 2, max: 5, step: 2, instruction: "B" },
+        ],
+      }),
+    ).toThrow();
+    expect(() =>
+      validateDice({
+        version: 1,
+        count: 1,
+        sides: 6,
+        outcomes: [
+          { min: 1, max: 6, step: 1, instruction: "A" },
+          { min: 2, max: 2, instruction: "B" },
+        ],
+      }),
+    ).toThrow();
+    expect(() =>
+      validateDice({
+        version: 1,
+        count: 1,
+        sides: 6,
+        instruction: "{second} drinks.",
+      }),
+    ).toThrow();
+    expect(() =>
+      validateDice({
+        version: 1,
+        count: 1,
+        sides: 6,
+        instruction: "Give {total}.",
+        doubles: "Give {total} twice.",
+      }),
+    ).toThrow();
   });
 });
 describe("dice transactions and saves", () => {
-  it("commits one roll, requests a fast finish, and separates return from discard", () => {
+  it("commits one roll, requests a fast finish, and automatically reveals before discard", () => {
     const persist = vi.fn(),
       shuffleRandom = vi.fn(() => 0.1),
       diceRandom = vi.fn(() => 0.9999);
@@ -97,10 +170,13 @@ describe("dice transactions and saves", () => {
     const saved = parseSession(JSON.stringify(c.getSnapshot().session));
     const restored = new PresentationController(saved, vi.fn());
     expect(restored.getSnapshot().motion).toBeNull();
+    restored.tap();
+    expect(restored.getSnapshot().session?.roll?.returned).toBe(false);
     settle(c);
     expect(persist).toHaveBeenCalledTimes(1);
     c.tap();
-    c.tap();
+    expect(persist).toHaveBeenCalledTimes(1);
+    c.revealRoll();
     expect(persist).toHaveBeenCalledTimes(2);
     expect(c.getSnapshot().session!.discarded).toBe(0);
     settle(c);
@@ -162,6 +238,8 @@ describe("dice transactions and saves", () => {
     settle(c);
     expect(c.getSnapshot().session!.phase).toBe("revealed");
     c.tap();
+    settle(c);
+    c.revealRoll();
     settle(c);
     c.tap();
     settle(c);

@@ -20,6 +20,7 @@ export function Play({
   transition,
   finishingRoll = false,
   onTap,
+  onRevealRoll,
   onFinish,
   renderFace,
   overlay = true,
@@ -29,6 +30,7 @@ export function Play({
   transition: number;
   finishingRoll?: boolean;
   onTap: () => void;
+  onRevealRoll: () => void;
   onFinish: (id: number) => void;
   renderFace?: (card: CardDefinition) => ReactNode;
   overlay?: boolean;
@@ -113,9 +115,8 @@ export function Play({
         </div>
         <span className="sr-only" role="status" aria-live="polite">
           {session.phase === "revealed" &&
-          session.roll &&
-          !session.roll.returned &&
-          motion !== "roll"
+          session.roll?.returned &&
+          motion === "settle"
             ? `Rolled ${session.roll.values.join(" plus ")}${
                 session.roll.values.length > 1
                   ? `, total ${session.roll.total}`
@@ -128,8 +129,21 @@ export function Play({
           <button
             ref={ref}
             className={`game-card ${session.phase === "revealed" ? "face" : "back"}`}
-            onClick={onTap}
-            aria-disabled={!!motion && motion !== "roll"}
+            onClick={() => {
+              const awaitingReveal =
+                !!card.dice &&
+                !!session.roll &&
+                !session.roll.returned &&
+                motion !== "roll";
+              if (!awaitingReveal) onTap();
+            }}
+            aria-disabled={
+              (!!motion && motion !== "roll") ||
+              (!!card.dice &&
+                !!session.roll &&
+                !session.roll.returned &&
+                motion !== "roll")
+            }
             aria-label={
               session.phase === "hidden"
                 ? "Reveal card"
@@ -137,7 +151,7 @@ export function Play({
                   ? session.roll
                     ? motion === "roll"
                       ? "Finish dice roll"
-                      : `Rolled ${session.roll.total}. Return to card`
+                      : "Revealing dice result"
                     : `Roll ${diceNotation(card.dice)}. ${card.rules}`
                   : `${card.title}. ${session.roll?.returned ? `Rolled ${session.roll.total}. ${diceResultText(card, session.roll)}` : card.rules} ${cardPacks(
                       card.id,
@@ -182,6 +196,7 @@ export function Play({
               rolling={motion === "roll"}
               finishing={finishingRoll}
               onTap={onTap}
+              onReveal={onRevealRoll}
               onFinish={() => onFinish(transition)}
             />
           </Suspense>

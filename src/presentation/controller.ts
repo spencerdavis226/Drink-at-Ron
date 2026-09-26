@@ -93,15 +93,13 @@ export class PresentationController {
       currentCard(session).dice &&
       !session.roll?.returned
     ) {
-      const rolling = !session.roll;
-      const next = rolling
-        ? rollDice(session, this.diceRandom)
-        : returnToCard(session);
+      // Once committed, only the renderer's automatic reveal can return the
+      // result to the card. Taps during the readable landing beat do nothing.
+      if (session.roll) return;
+      const next = rollDice(session, this.diceRandom);
       this.persist(next);
-      // Returning a rolled card starts a short non-positional settle that also
-      // locks out a double tap from discarding the card immediately.
-      this.transition(next, rolling ? "roll" : "settle");
-      this.effect(rolling ? "roll" : "press");
+      this.transition(next, "roll");
+      this.effect("roll");
       return;
     }
     const next = advance(session, this.random);
@@ -114,6 +112,24 @@ export class PresentationController {
       revealing ? null : session,
     );
     this.effect(revealing ? "reveal" : "discard");
+  }
+  revealRoll() {
+    const { session, motion } = this.state;
+    if (
+      !session ||
+      motion ||
+      session.phase !== "revealed" ||
+      !currentCard(session).dice ||
+      !session.roll ||
+      session.roll.returned
+    )
+      return;
+    const next = returnToCard(session);
+    this.persist(next);
+    // The short settle introduces the resolved layout and prevents the same
+    // physical tap from immediately discarding the card.
+    this.transition(next, "settle");
+    this.effect("press");
   }
   finish(id: number) {
     if (id !== this.state.transition || !this.state.motion) return;

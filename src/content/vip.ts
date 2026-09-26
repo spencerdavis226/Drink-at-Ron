@@ -72,7 +72,7 @@ export const vipCards: CardDefinition[] = [
     "roast",
     "The loving roast",
     "challenge",
-    "Clockwise, give the VIP a gentle roast. The VIP picks a favorite and takes 1 sip.",
+    "Clockwise, give the VIP a roast. The VIP picks a favorite and takes 1 sip.",
   ),
   vipCard(
     "title",

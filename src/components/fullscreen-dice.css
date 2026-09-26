@@ -4,6 +4,11 @@
   inset: 0;
   z-index: 40;
   pointer-events: none;
+  opacity: 1;
+  transition: opacity 180ms ease-out;
+}
+.roll-layer.revealing {
+  opacity: 0;
 }
 .roll-stage-band {
   position: fixed;

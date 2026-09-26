@@ -158,17 +158,39 @@ export function CardFace({
           }}
         >
           {resolved ? (
-            <p className="resolved-instruction">
-              {diceResultText(card, roll!)
-                .split(/(\d+)/)
-                .map((part, index) =>
-                  /^\d+$/.test(part) ? (
-                    <strong key={index}>{part}</strong>
-                  ) : (
-                    part
-                  ),
+            <div className="dice-result">
+              <div
+                className="dice-result-equation"
+                aria-label={`Rolled ${roll!.values.join(" plus ")}${
+                  roll!.values.length > 1 ? `, total ${roll!.total}` : ""
+                }`}
+              >
+                <span className="dice-result-faces" aria-hidden="true">
+                  {roll!.values.map((value, index) => (
+                    <span className="dice-result-face" key={index}>
+                      {value}
+                    </span>
+                  ))}
+                </span>
+                {roll!.values.length > 1 && (
+                  <span className="dice-result-total" aria-hidden="true">
+                    <span>=</span>
+                    <strong>{roll!.total}</strong>
+                  </span>
                 )}
-            </p>
+              </div>
+              <p className="resolved-instruction">
+                {diceResultText(card, roll!)
+                  .split(/(\d+)/)
+                  .map((part, index) =>
+                    /^\d+$/.test(part) ? (
+                      <strong key={index}>{part}</strong>
+                    ) : (
+                      part
+                    ),
+                  )}
+              </p>
+            </div>
           ) : (
             <p>{card.rules}</p>
           )}

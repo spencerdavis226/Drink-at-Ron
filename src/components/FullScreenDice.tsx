@@ -15,6 +15,7 @@ export default function FullScreenDice({
   rolling,
   finishing,
   onTap,
+  onReveal,
   onFinish,
 }: {
   card: CardDefinition;
@@ -22,11 +23,12 @@ export default function FullScreenDice({
   rolling: boolean;
   finishing: boolean;
   onTap(): void;
+  onReveal(): void;
   onFinish(): void;
 }) {
   const stageId = `dice-stage-${useId().replace(/:/g, "")}`;
-  const callbacks = useRef({ onTap, onFinish });
-  callbacks.current = { onTap, onFinish };
+  const callbacks = useRef({ onTap, onReveal, onFinish });
+  callbacks.current = { onTap, onReveal, onFinish };
   const stage = useRef<Stage | null>(null);
   const ready = useRef<Promise<Stage | null> | null>(null);
   const expedited = useRef(false);
@@ -110,13 +112,24 @@ export default function FullScreenDice({
   }, [finishing]);
 
   useEffect(() => {
-    if (!roll) return;
-    if (!rolling) {
-      if (!expedited.current) return;
-      // Give the landing a brief readable beat before clearing the table.
-      const timer = setTimeout(() => callbacks.current.onTap(), 180);
+    if (!roll || rolling) return;
+    if (status === "revealing") {
+      const timer = setTimeout(() => callbacks.current.onReveal(), 180);
       return () => clearTimeout(timer);
     }
+    if (status.startsWith("settled:")) {
+      // Let the physical result read, then fade it into the resolved card.
+      const timer = setTimeout(() => setStatus("revealing"), 700);
+      return () => clearTimeout(timer);
+    }
+    // Restored, reduced-motion and unavailable-renderer results skip the
+    // decorative stage and reveal their already-saved outcome immediately.
+    const timer = setTimeout(() => callbacks.current.onReveal(), 0);
+    return () => clearTimeout(timer);
+  }, [rolling, roll, status]);
+
+  useEffect(() => {
+    if (!roll || !rolling) return;
     let canceled = false;
     const started = performance.now();
     const stop = (reason: string) => {
@@ -185,7 +198,7 @@ export default function FullScreenDice({
       if (event.key !== "Escape" || document.querySelector("dialog[open]"))
         return;
       event.preventDefault();
-      callbacks.current.onTap();
+      if (rolling) callbacks.current.onTap();
     };
     // The card keeps its native keyboard and scroll/tap handling. Stationary
     // taps elsewhere on the table can finish/dismiss the dice too.
@@ -195,6 +208,7 @@ export default function FullScreenDice({
     };
     const click = (event: MouseEvent) => {
       if (
+        !rolling ||
         event.defaultPrevented ||
         document.querySelector("dialog[open]") ||
         (event.target as Element).closest("button, a, input, select, dialog") ||
@@ -211,11 +225,14 @@ export default function FullScreenDice({
       document.removeEventListener("pointerdown", pointer);
       document.removeEventListener("click", click);
     };
-  }, [roll]);
+  }, [roll, rolling]);
 
   const staticResult = roll && !rolling && !status.startsWith("settled:");
   return createPortal(
-    <div className="roll-layer" aria-hidden="true">
+    <div
+      className={`roll-layer ${status === "revealing" ? "revealing" : ""}`}
+      aria-hidden="true"
+    >
       <div className="roll-stage-band">
         <div
           className="roll-stage"

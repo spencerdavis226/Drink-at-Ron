@@ -4,7 +4,7 @@ import { cards } from "../../src/content/catalog";
 test("every authored title fits the two-line band at supported card widths", async ({
   page,
 }) => {
-  // Six complete catalog passes now cover 338 cards in each browser.
+  // Six complete catalog passes now cover 235 cards in each browser.
   test.setTimeout(120000);
   await page.setViewportSize({ width: 1200, height: 900 });
   await page.goto("/docs/studies/front-typography-2026-09-22/");

@@ -3,6 +3,8 @@ import { createSession, advance } from "../../src/game/engine";
 import { cards, packs } from "../../src/content/catalog";
 const key = "drink-at-ron.session.v1";
 const core = packs.find((p) => p.id === "core")!;
+const house = packs.find((p) => p.id === "house")!;
+const vip = packs.find((p) => p.id === "vip")!;
 const plain = cards.filter((c) => !c.dice && core.cardIds.includes(c.id));
 const longestRule = [...plain].sort(
   (a, b) => b.rules.length - a.rules.length,
@@ -53,7 +55,9 @@ test("@release Core instructions fit at 390x844 with ratio, pack mark and no CTA
           getComputedStyle(rules.querySelector("p")!).fontSize,
         ),
         ratio: card.width / card.height,
-        mark: !!document.querySelector(".card-footer .card-pack-marks img"),
+        mark: !!document.querySelector(
+          ".card-footer .card-pack-marks .pack-logo-seal",
+        ),
       };
     });
     expect(m.fit, `${card.id} rules should fit at 390x844`).toBe(true);
@@ -74,6 +78,61 @@ test("card parchment stays plain without an icon lattice or tint", async ({
     page.locator(".card-imprint-lattice, .card-imprint-tint"),
   ).toHaveCount(0);
   await expect(page.locator(".card-footer .pack-logo")).toBeVisible();
+});
+test("Core, House and VIP seals stay inside the parchment at supported widths", async ({
+  page,
+}) => {
+  for (const viewport of [
+    { width: 320, height: 568 },
+    { width: 390, height: 844 },
+    { width: 768, height: 1024 },
+  ]) {
+    await page.setViewportSize(viewport);
+    for (const pack of [core, house, vip]) {
+      const card = cards.find((candidate) =>
+        pack.cardIds.includes(candidate.id),
+      )!;
+      const session = createSession(
+        {
+          version: 1,
+          packIds: pack.id === "core" ? ["core"] : ["core", pack.id],
+          limit: 1,
+        },
+        [card],
+        [core, house, vip],
+      );
+      session.phase = "revealed";
+      await seed(page, session);
+      const mark = page.locator(".card-footer .pack-logo");
+      await expect(mark).toHaveAttribute(
+        "data-seal",
+        new RegExp(`art/packs/${pack.id}-seal\\.svg$`),
+      );
+      const geometry = await mark.evaluate((element) => {
+        const seal = element.getBoundingClientRect();
+        const parchment = element
+          .closest(".study-body")!
+          .getBoundingClientRect();
+        const ink = getComputedStyle(
+          element.querySelector(".pack-logo-seal")!,
+          "::before",
+        );
+        return {
+          inside:
+            seal.left >= parchment.left &&
+            seal.right <= parchment.right &&
+            seal.top >= parchment.top &&
+            seal.bottom <= parchment.bottom,
+          mask: ink.maskImage || ink.webkitMaskImage,
+        };
+      });
+      expect(
+        geometry.inside,
+        `${pack.id} seal stays inside at ${viewport.width}px`,
+      ).toBe(true);
+      expect(geometry.mask).toContain(`${pack.id}-seal.svg`);
+    }
+  }
 });
 test("Previous Card owns the same 2:3 geometry as gameplay", async ({
   page,
@@ -104,7 +163,7 @@ test("Previous Card owns the same 2:3 geometry as gameplay", async ({
     true,
   );
   await expect(
-    page.locator(".previous-card .card-pack-marks img"),
+    page.locator(".previous-card .card-pack-marks .pack-logo-seal"),
   ).toBeVisible();
   await page.setViewportSize({ width: 320, height: 568 });
   const back = await page

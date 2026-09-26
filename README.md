@@ -45,7 +45,7 @@ The release smoke suite exercises the main flow, pack selection, card reading an
 - `src/main.tsx`: saved preferences, visibility handling, and PWA orchestration.
 - `public/art`: bundled original placeholder artwork; no remote asset dependency.
 
-Setup offers Short (30 draws), Long (60 draws), and Infinite. Core is always included; optional packs are chosen in the Card packs dialog. Every shuffle cycle exhausts the selected unique cards before repeating, including when Long exceeds the catalog. Infinite cycles have bounded storage. Existing active saves keep their original length, including older custom limits. The group handles turns and ongoing rules. All cards have equal frequency per cycle.
+Setup offers Short (30 draws), Long (60 draws), and Infinite. All three packs are opt-in in the Card packs dialog — the generated main deck, the supplied House deck, and VIP night — and any combination of at least one pack starts a game. Every shuffle cycle exhausts the selected unique cards before repeating, including when Long exceeds the catalog. Infinite cycles have bounded storage. Existing active saves keep their original length, including older custom limits. The group handles turns and ongoing rules. All cards have equal frequency per cycle.
 
 Mobile play is portrait-only. A rotate prompt blocks phone and tablet interaction in landscape without clearing the current game; desktop landscape remains available.
 
@@ -53,7 +53,7 @@ Saves snapshot card content and order. Invalid/unsupported saves require explici
 
 ## Add content
 
-See [the pack authoring guide](docs/AUTHORING.md). The always-included `core` deck has 322 cards across `src/content/sample.ts`, `classics.ts`, `standard-expansion.ts`, and `custom.ts` (the supplied house rows), with 80 dice cards mixed in. `VIP night` is the only optional add-on, with 16 cards including its four supplied VIP entries. The voice/dice expansion replaced the earlier generic filler; it draws on `docs/CARD_VOICE_REFERENCE.md` and the parsed CABIIN 2.0 set in `docs/cabiin-2/`. The new material awaits group playtesting and copy review. The approved front keeps live titles and rules over plain parchment inside the ornate teal frame. Run `npm run cards:review` to regenerate the human review sheet (`docs/CARD_REVIEW.md` and `docs/card-review.csv`) from the live catalog before locking copy.
+See [the pack authoring guide](docs/AUTHORING.md). The catalog ships three packs: the generated main deck (`core`, 117 cards) across `src/content/sample.ts`, `classics.ts`, and `standard-expansion.ts`; the supplied Sheet1 house deck (`house`, 102 cards) in `src/content/custom.ts`, restored verbatim; and `VIP night` (16 cards, including its four supplied VIP entries). The main deck was trimmed hard — near-duplicate dice branches and flavorless filler were removed — and every dice card now resolves to one exact, computed instruction. Run `npm run cards:review` to regenerate the human review sheet (`docs/CARD_REVIEW.md` and `docs/card-review.csv`) from the live catalog before locking copy.
 
 ## Static deployment
 
@@ -72,9 +72,9 @@ Re-export the generated UI sheet with `npx tsx scripts/chrome.ts`; regenerate ic
 
 ## Production workshop and release
 
-Open `/?workshop=1` on the development server for isolated card previews, seeded sessions, and dice fixtures. The approved ornate teal front uses plain parchment; the retired imprint browser is no longer exposed. Workshop code and fixtures are excluded from production; the approved shared frame and its assets are shipped. The `core` pack holds 322 cards (80 dice cards included); `VIP night` is the only optional pack. Group balance remains untested.
+Open `/?workshop=1` on the development server for isolated card previews, seeded sessions, and dice fixtures. The approved ornate teal front uses plain parchment; the retired imprint browser is no longer exposed. Workshop code and fixtures are excluded from production; the approved shared frame and its assets are shipped. The packs are opt-in: `core` (117 cards), `house` (102 supplied sheet cards), and `VIP night` (16). Group balance remains untested.
 
-See [Game design](docs/GAME_DESIGN.md), [Playtest record](docs/PLAYTEST.md), and [GitHub Pages release](docs/GITHUB_PAGES.md). The unified front is approved and used throughout. Dice use the approved full-screen `@3d-dice/dice-box-threejs` overlay; dice cards are mixed into the `core` pack (see STATUS.md).
+See [Game design](docs/GAME_DESIGN.md), [Playtest record](docs/PLAYTEST.md), and [GitHub Pages release](docs/GITHUB_PAGES.md). The unified front is approved and used throughout. Dice use the approved full-screen `@3d-dice/dice-box-threejs` overlay; dice cards are spread across all three packs (see STATUS.md).
 
 Illustrations follow [Image creation guidelines](docs/ILLUSTRATION_GUIDELINES.md): centered, crop-safe, simple, original fantasy. Pack logos are registered separately and appear consistently in selection, pause, and card footers.
 

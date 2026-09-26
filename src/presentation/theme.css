@@ -168,14 +168,25 @@ dialog p,
   gap: 8px;
 }
 .icon-button {
-  background: #19322c url("/art/bezel.webp") center/100% 100%;
-  border: 0;
-  border-radius: 10px;
-  box-shadow: 0 3px 4px #0008;
+  color: #f0d29b;
+  background: linear-gradient(180deg, #2b5148 0%, #17332e 100%);
+  border: 1px solid #3c6258;
+  border-radius: 12px;
+  box-shadow:
+    inset 0 1px rgb(255 238 199 / 0.16),
+    inset 0 -1px rgb(4 14 12 / 0.7),
+    0 2px 0 #0e0a07,
+    0 5px 12px rgb(0 0 0 / 0.38);
   width: 54px;
   height: 54px;
   font-size: 2rem;
   font-weight: 600;
+  line-height: 0;
+}
+.icon-button:focus-visible {
+  outline: none;
+  filter: brightness(1.18);
+  transform: translateY(-1px);
 }
 .pack {
   border: 1px solid #916f43;
@@ -272,20 +283,6 @@ dialog p,
   font-size: 2rem;
   color: #e5ba70;
 }
-.included-pack {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 14px;
-  padding: 10px 2px 12px;
-  border-bottom: 1px solid #c7a57066;
-  font-size: 1.3rem;
-}
-.included-pack small {
-  margin-left: auto;
-  color: #dec390;
-  font-size: 1rem;
-}
 .addon-list {
   display: grid;
   gap: 12px;
@@ -356,8 +353,8 @@ dialog.closing {
   text-align: center;
 }
 .orientation-gate:focus-visible {
-  outline: 2px solid var(--bronze);
-  outline-offset: 2px;
+  outline: none;
+  filter: brightness(1.08);
 }
 .orientation-gate h2 {
   font-size: clamp(1.7rem, 6vw, 2.3rem);
@@ -383,6 +380,10 @@ dialog.closing {
   flex-shrink: 0;
   width: 46px;
   height: 46px;
+}
+.dialog-head .icon-button .ui-icon {
+  width: 21px;
+  height: 21px;
 }
 .recovery {
   text-align: center;
@@ -765,12 +766,36 @@ dialog.closing {
 .card-pack-marks {
   display: flex;
   justify-content: center;
-  gap: 8px;
-  min-height: 28px;
+  align-items: center;
+  gap: 7px;
+  min-height: 24px;
 }
-.card-pack-marks .pack-logo img {
-  background: none;
-  border-radius: 0;
+.pack-logo-watermark {
+  width: 22px;
+  height: 22px;
+}
+.pack-logo-seal {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  filter: saturate(0.75);
+}
+.pack-logo-seal::before,
+.pack-logo-seal::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  -webkit-mask: var(--pack-seal) center / contain no-repeat;
+  mask: var(--pack-seal) center / contain no-repeat;
+}
+.pack-logo-seal::before {
+  background: rgb(76 46 20 / 0.42);
+  transform: translate(-0.55px, -0.55px);
+}
+.pack-logo-seal::after {
+  background: rgb(255 241 202 / 0.52);
+  transform: translate(0.6px, 0.75px);
 }
 .pack-copy .pack-logo {
   margin-top: 2px;

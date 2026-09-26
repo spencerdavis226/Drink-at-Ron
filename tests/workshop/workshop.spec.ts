@@ -121,7 +121,7 @@ for (const size of [
   "Split view",
 ]) {
   test(`all study cards retain their ratio at ${size}`, async ({ page }) => {
-    // 322 Core and 16 VIP cards; each iteration
+    // 117 main, 102 House and 16 VIP cards; each iteration
     // re-reads the preview, and software-rendered WebKit is the slow case.
     test.setTimeout(600000);
     await page.setViewportSize({ width: 1400, height: 1100 });
@@ -151,10 +151,12 @@ for (const size of [
           ).toBeLessThanOrEqual(1);
         }
         await expect(frame.locator(".study-category")).toHaveCount(0);
-        const logo = packs.find((p) => p.cardIds.includes(id))!.logo!;
-        await expect(frame.locator(".card-pack-marks img")).toHaveAttribute(
-          "src",
-          new RegExp(`${logo.replace(/\//g, "\\/")}$`),
+        const pack = packs.find((p) => p.cardIds.includes(id))!;
+        await expect(
+          frame.locator(".card-pack-marks .pack-logo"),
+        ).toHaveAttribute(
+          "data-seal",
+          new RegExp(`art\\/packs\\/${pack.id}-seal\\.svg$`),
         );
         expect(
           await frame.locator(".game-card").evaluate((el) => {
@@ -243,10 +245,6 @@ test("the production overlay is contained and seeded replay repeats outcomes", a
     await navigated;
     await frame.getByRole("button", { name: "Reveal card" }).click();
     await expect(frame.locator(".game-card")).toHaveAccessibleName(/^Roll /);
-    await frame.locator(".game-card").click();
-    await expect(frame.locator(".game-card")).toHaveAccessibleName(
-      /Return to card$/,
-    );
     await frame.locator(".game-card").click();
     await expect(frame.locator(".resolved-instruction")).toBeVisible();
     return frame.locator(".resolved-instruction").innerText();

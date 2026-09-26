@@ -93,7 +93,7 @@ test("@release legacy finite game, rapid taps, restore, previous card, replay an
   await expect(page.locator(".game-card")).toBeVisible();
   expect(errors).toEqual([]);
 });
-test("only three modes appear and Core cannot be disabled", async ({
+test("only three modes appear and every pack can be toggled", async ({
   page,
 }) => {
   await page.goto("./");
@@ -101,11 +101,19 @@ test("only three modes appear and Core cannot be disabled", async ({
   await expect(
     page.getByRole("button", { name: "Short, 30 cards" }),
   ).toHaveAttribute("aria-pressed", "true");
-  await page.getByRole("button", { name: "Choose add-ons" }).click();
-  await expect(page.getByRole("dialog")).toContainText("Always included");
+  await page.getByRole("button", { name: "Choose packs" }).click();
+  const dialog = page.getByRole("dialog");
+  await expect(dialog.locator(".pack")).toHaveCount(3);
+  await expect(dialog).not.toContainText("Always included");
+  const core = dialog.getByRole("button", { name: /The Core deck/ });
+  await core.click();
+  await expect(core).toHaveAttribute("aria-pressed", "false");
+  await page.getByRole("button", { name: "Done" }).click();
   await expect(
-    page.getByRole("button", { name: /The Core deck/ }),
-  ).toHaveCount(0);
+    page.getByRole("button", { name: "Play", exact: true }),
+  ).toBeDisabled();
+  await page.getByRole("button", { name: "Choose packs" }).click();
+  await core.click();
   await page.getByRole("button", { name: "Done" }).click();
   await expect(
     page.getByRole("button", { name: "Play", exact: true }),
@@ -431,7 +439,7 @@ test("mode and add-ons persist while interruption restores a stable card", async
 }) => {
   await page.goto("./");
   await page.getByRole("button", { name: "Long, 60 cards" }).click();
-  await page.getByRole("button", { name: "Choose add-ons" }).click();
+  await page.getByRole("button", { name: "Choose packs" }).click();
   await page.getByRole("button", { name: /VIP night/ }).click();
   await page.getByRole("button", { name: "Done" }).click();
   await page.reload();
@@ -583,11 +591,12 @@ test("offline uses local Grenze and painted controls", async ({
       .locator(".primary")
       .evaluate((el) => getComputedStyle(el).borderImageSource),
   ).toContain("button.webp");
-  await page.getByRole("button", { name: "Choose add-ons" }).click();
+  await page.getByRole("button", { name: "Choose packs" }).click();
   await expect
     .poll(() =>
       page
-        .locator(".included-pack .pack-logo img")
+        .getByRole("button", { name: /The Core deck/ })
+        .locator(".pack-logo img")
         .evaluate((el) => (el as HTMLImageElement).naturalWidth),
     )
     .toBeGreaterThan(0);

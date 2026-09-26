@@ -74,19 +74,18 @@ test("rotation during a roll keeps its predetermined saved result", async ({
   ).toBeVisible();
   await page.setViewportSize({ width: 390, height: 844 });
   await expect(page.locator(".card-stage")).not.toHaveClass(/roll/);
+  // A rotation or resize settles the committed throw and reveals its result.
+  await expect(page.locator(".game-card")).toHaveAttribute(
+    "aria-label",
+    /Tap to put this card aside/,
+  );
   const restored = await page.evaluate(
     (key) => JSON.parse(localStorage.getItem(key)!),
     saveKey,
   );
   expect(restored.roll.values).toEqual(roll.values);
+  expect(restored.roll.returned).toBe(true);
   expect(restored.discarded).toBe(0);
-  await page.locator(".game-card").click();
-  const returned = await page.evaluate(
-    (key) => JSON.parse(localStorage.getItem(key)!),
-    saveKey,
-  );
-  expect(returned.roll.returned).toBe(true);
-  expect(returned.discarded).toBe(0);
 });
 
 test("rotation over the pause menu restores that menu", async ({ page }) => {

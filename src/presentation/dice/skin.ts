@@ -106,12 +106,23 @@ export function installDiceSkin(factory: any) {
         ctx.translate(0.5, 0.5);
         ctx.rotate((-7.5 * Math.PI) / 180);
         ctx.font = '700 .34px "Source Serif 4 Title"';
-        ctx.textAlign = "center";
-        ctx.textBaseline = "middle";
+        // Safari/WebKit resolves the "middle" baseline about 0.08em higher than
+        // Chromium, which left iOS d20 numerals visibly above the face centre.
+        // Center the measured ink box on the canvas instead; the metrics are
+        // stable across engines and keep the shadow offset below.
+        const label = String(value);
+        ctx.textAlign = "left";
+        ctx.textBaseline = "alphabetic";
+        const metrics = ctx.measureText(label);
+        const inkX =
+          (metrics.actualBoundingBoxRight - metrics.actualBoundingBoxLeft) / 2;
+        const inkY =
+          (metrics.actualBoundingBoxAscent - metrics.actualBoundingBoxDescent) /
+          2;
         ctx.fillStyle = "#041e22";
-        ctx.fillText(String(value), 0.003, 0.024);
+        ctx.fillText(label, -inkX + 0.003, inkY + 0.024);
         ctx.fillStyle = "#fff0c9";
-        ctx.fillText(String(value), 0, 0.015);
+        ctx.fillText(label, -inkX, inkY);
         if (value === 6 || value === 9) {
           ctx.fillStyle = "#d2a65f";
           ctx.fillRect(-0.045, 0.2, 0.09, 0.012);

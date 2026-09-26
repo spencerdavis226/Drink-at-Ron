@@ -10,12 +10,11 @@ test("seeded workshop preserves the pool and reproduces order", () => {
     workshopSession("b", "core.house-special").session.order,
   );
 });
-test("Core composition matches the content brief", () => {
+test("Core composition matches the trimmed content brief", () => {
   const core = packs.find((p) => p.id === "core")!;
   const coreCards = cards.filter((c) => core.cardIds.includes(c.id));
-  // Supplied sample set (40), classics (65), voice/dice expansion (114), and
-  // every supplied house row (103) merged into one always-on deck.
-  expect(coreCards).toHaveLength(322);
+  // Sample set (34), trimmed classics (45), trimmed standard expansion (38).
+  expect(coreCards).toHaveLength(117);
   expect(
     Object.fromEntries(
       ["sip", "group", "category", "challenge", "rule"].map((c) => [
@@ -23,19 +22,24 @@ test("Core composition matches the content brief", () => {
         coreCards.filter((card) => card.category === c).length,
       ]),
     ),
-  ).toEqual({ sip: 55, group: 57, category: 39, challenge: 125, rule: 46 });
-  expect(coreCards.filter((c) => c.dice)).toHaveLength(80);
+  ).toEqual({ sip: 18, group: 23, category: 9, challenge: 51, rule: 16 });
+  expect(coreCards.filter((c) => c.dice)).toHaveLength(39);
 });
 
-test("all supplied custom rows remain available in Core and VIP night", () => {
-  const core = packs.find((pack) => pack.id === "core")!;
-  const vip = packs.find((pack) => pack.id === "vip")!;
+test("each supplied sheet row lands in the House deck and VIP night", () => {
+  const core = packs.find((p) => p.id === "core")!;
+  const house = packs.find((p) => p.id === "house")!;
+  const vip = packs.find((p) => p.id === "vip")!;
+  // Rows 3–106 minus the blank row 75 and the description-less row 106.
   const sheetRows = Array.from({ length: 104 }, (_, offset) => offset + 3)
-    .filter((row) => row !== 75) // blank CSV row
+    .filter((row) => row !== 75 && row !== 106)
     .map((row) => `house.sheet-${String(row).padStart(3, "0")}`);
-  for (const id of sheetRows) expect(core.cardIds).toContain(id);
+  expect(house.cardIds).toHaveLength(102);
+  for (const id of sheetRows) expect(house.cardIds).toContain(id);
+  // The generated main deck no longer carries the supplied sheet.
+  expect(core.cardIds.some((id) => id.startsWith("house."))).toBe(false);
   expect(vip.cardIds.slice(-4)).toEqual(
     [3, 4, 5, 6].map((row) => `vip.sheet-${String(row).padStart(3, "0")}`),
   );
-  expect(cards).toHaveLength(338);
+  expect(cards).toHaveLength(235);
 });

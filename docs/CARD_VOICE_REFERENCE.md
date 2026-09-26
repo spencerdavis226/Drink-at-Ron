@@ -35,7 +35,7 @@ When proposing a new card, aim for this shape:
 2. Give it one strong comic premise, preferably rooted in a recognizable social moment or specific bit of lore.
 3. Turn that premise into an immediate table interaction that makes sense on one reading.
 4. End the activity clearly. Keep app bookkeeping unnecessary.
-5. Adapt consumption to the current safety rules: sips are optional, passing is always allowed, and any drink can be nonalcoholic.
+5. Write the consequence plainly: the app never enforces a pour, any drink can be nonalcoholic, and card copy does not carry permission-seeking language.
 
 A suggestion can borrow the source collection's comic rhythm without copying its exact mechanic. For example, a board-space penalty can become a one-card challenge; a multi-round status can become a rule lasting only until the next reveal; a high drink count can become one sip, giving a sip, or a non-drinking social consequence.
 
@@ -45,15 +45,15 @@ Do not assume or recommend these unless the current game design changes explicit
 
 - Teams, team colors, team cheers, teammates, or team-based scoring.
 - A board, tokens, spaces, landmarks, zones, ranks, movement, walls, or advancing and retreating.
-- Chained rolls, re-rolls, or dice outcomes that depend on individual die faces (the engine resolves one roll from its total).
+- Chained rolls, re-rolls, or outcomes that depend on state from earlier cards (one committed roll resolves each card).
 - Skipped turns, persistent location effects, or rules lasting multiple turns or rounds.
 - Dependencies on specific CABIIN cards, locations, or win conditions.
-- Forced shots, finishing drinks, speed drinking, large quantities, drinking-until-satisfied, or alcohol-only instructions.
+- Alcohol-only instructions: every pour can be nonalcoholic, and the app never enforces a drink.
 - Dangerous, destructive, humiliating, nonconsensual, or physically risky actions.
 
-Dice *are* supported in this game (one to four d6/d20; read the total), so the source's dice ideas are welcome. Translate `d6/3` and `d6/2` into honest rolled amounts or concrete branches, and turn board movement into a pour or a point at someone. Keep every dice instruction resolvable from the total alone.
+Dice *are* supported in this game (one to four d6/d20; total, doubles, or per-die amounts), so the source's dice ideas are welcome. Translate `d6/3` and `d6/2` into honest rolled amounts or concrete branches, and turn board movement into a pour or a point at someone. Never leave odds/evens or an "otherwise" branch for the table to work out: every roll must resolve to one exact instruction.
 
-These exclusions are mechanical and safety constraints, not a request to sanitize the personality. Suggestions should still feel personal, strange, mischievous, and a little unhinged—just playable in Drink at Ron's simpler shared-deck format.
+These exclusions are mechanical constraints, not a request to sanitize the personality. Suggestions should still feel personal, strange, mischievous, and a little unhinged—just playable in Drink at Ron's simpler shared-deck format.
 
 ## Suggestion rubric
 

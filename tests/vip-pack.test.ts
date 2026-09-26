@@ -15,12 +15,12 @@ test("VIP night is a registered pack with its own mark and setup hint", () => {
   expect(new Set(logos).size).toBe(logos.length);
 });
 
-test("every VIP card is namespaced and centered on the VIP", () => {
-  expect(vipCards.length).toBeGreaterThanOrEqual(10);
+test("every VIP card is namespaced and centers the VIP", () => {
+  expect(vipCards).toHaveLength(16);
   for (const card of vipCards) {
     expect(card.id.startsWith("vip.")).toBe(true);
-    // The pack's contract: every rule involves the VIP, positive or negative.
-    expect(card.rules).toContain("VIP");
+    // Generated VIP cards name the VIP; the supplied sheet rows stay verbatim.
+    if (!card.id.startsWith("vip.sheet-")) expect(card.rules).toContain("VIP");
     expect(card.rules.trim().split(/\s+/).length).toBeLessThan(45);
   }
 });

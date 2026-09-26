@@ -1,47 +1,26 @@
 import type { CardDefinition, PackDefinition } from "../game/types";
-import { cardFactory } from "./author";
+import { cardFactory, roll, rollTable } from "./author";
 import { classicCards } from "./classics";
 import { standardExpansionCards } from "./standard-expansion";
-import { houseCards } from "./custom";
 
-// The house collection: the supplied 40-card sample set, the classic / King's
-// Cup basics, the voice/dice expansion, and every supplied Sheet1 house card —
-// all under the always-included `core` pack. Cards with a `dice` definition
-// pause the deck until the roll is resolved. Cheers, Idiots keeps its individual
-// illustrated scene; everything else renders in the shared painted frame with
-// its deterministic imprint.
+// The generated main deck: the supplied 40-card sample set, the classic /
+// King's Cup basics, and the trimmed voice/dice expansion. The supplied Sheet1
+// house cards now live in their own pack (`./custom`). Cards with a `dice`
+// definition pause the deck until the roll is resolved. Cheers, Idiots keeps
+// its individual illustrated scene; everything else renders in the shared
+// painted frame with its deterministic imprint.
 const card = cardFactory("core");
 
 export const sampleCards: CardDefinition[] = [
-  card(
-    "house-special",
-    "House Special",
-    "sip",
-    "Drink 3.",
-  ),
-  card(
-    "bar-tab",
-    "Bar Tab",
-    "sip",
-    "Give 3.",
-  ),
-  card(
-    "bad-influence",
-    "Bad Influence",
-    "sip",
-    "Pick someone. Both drink 2.",
-  ),
-  card(
-    "last-call",
-    "Last Call",
-    "group",
-    "Everyone drinks 2.",
-  ),
+  card("house-special", "House Special", "sip", "Drink 3."),
+  card("bar-tab", "Bar Tab", "sip", "Give 3."),
+  card("bad-influence", "Bad Influence", "sip", "Pick someone. Both drink 2."),
+  card("last-call", "Last Call", "group", "Everyone drinks 2."),
   card(
     "you-specifically",
-    "Fuck You Specifically",
+    "Fuck You In Particular",
     "sip",
-    "Pick someone. They drink 4.",
+    "Pick someone. They drink 6.",
   ),
   card(
     "cheap-date",
@@ -49,12 +28,7 @@ export const sampleCards: CardDefinition[] = [
     "group",
     "Cheapest drink at the table drinks 3.",
   ),
-  card(
-    "baller",
-    "Big Money",
-    "group",
-    "Priciest drink at the table gives 4.",
-  ),
+  card("baller", "Big Money", "group", "Priciest drink at the table gives 4."),
   card(
     "group-project",
     "Group Project",
@@ -68,12 +42,6 @@ export const sampleCards: CardDefinition[] = [
     "Sent a regrettable late-night text? Drink 3.",
   ),
   card(
-    "hr-violation",
-    "HR Violation",
-    "sip",
-    "Hooked up with a coworker? Drink 4.",
-  ),
-  card(
     "fake-sick",
     "Corporate Wellness",
     "sip",
@@ -84,12 +52,6 @@ export const sampleCards: CardDefinition[] = [
     "Financial Genius",
     "sip",
     "Own crypto? Drink 2. Don't? Give 2.",
-  ),
-  card(
-    "deez-nuts",
-    "Deez Nuts",
-    "challenge",
-    "Get someone with a deez nuts joke. They drink 3.",
   ),
   card(
     "smooth-brain",
@@ -116,56 +78,52 @@ export const sampleCards: CardDefinition[] = [
     "Dice Tax",
     "challenge",
     "Roll d6. Drink half, round up.",
-    {
-      version: 1,
-      count: 1,
-      sides: 6,
-      instruction: "Drink half your roll, rounded up.",
-    },
+    rollTable(1, 6, [
+      { min: 1, max: 2, instruction: "Drink 1." },
+      { min: 3, max: 4, instruction: "Drink 2." },
+      { min: 5, max: 6, instruction: "Drink 3." },
+    ]),
   ),
   card(
     "give-a-shit",
     "Give a Shit",
     "challenge",
     "Roll d6. Give that many.",
-    { version: 1, count: 1, sides: 6, instruction: "Give {total}." },
+    roll(1, 6, "Give {total}."),
   ),
   card(
     "fuckin-math",
     "Fuckin' Math",
     "challenge",
     "Roll d6. Drink 7 minus your roll.",
-    { version: 1, count: 1, sides: 6, instruction: "Drink 7 minus your roll." },
+    rollTable(1, 6, [
+      { min: 1, max: 1, instruction: "Drink 6." },
+      { min: 2, max: 2, instruction: "Drink 5." },
+      { min: 3, max: 3, instruction: "Drink 4." },
+      { min: 4, max: 4, instruction: "Drink 3." },
+      { min: 5, max: 5, instruction: "Drink 2." },
+      { min: 6, max: 6, instruction: "Drink 1." },
+    ]),
   ),
   card(
     "low-roller",
     "Pathetic",
     "challenge",
     "Roll d6. 1–2: drink 4. Else give 2.",
-    {
-      version: 1,
-      count: 1,
-      sides: 6,
-      outcomes: [
-        { min: 1, max: 2, instruction: "Drink 4." },
-        { min: 3, max: 6, instruction: "Give 2." },
-      ],
-    },
+    rollTable(1, 6, [
+      { min: 1, max: 2, instruction: "Drink 4." },
+      { min: 3, max: 6, instruction: "Give 2." },
+    ]),
   ),
   card(
     "high-roller",
     "Big Dick Energy",
     "challenge",
     "Roll d6. 5–6: give 5. Else drink 2.",
-    {
-      version: 1,
-      count: 1,
-      sides: 6,
-      outcomes: [
-        { min: 1, max: 4, instruction: "Drink 2." },
-        { min: 5, max: 6, instruction: "Give 5." },
-      ],
-    },
+    rollTable(1, 6, [
+      { min: 1, max: 4, instruction: "Drink 2." },
+      { min: 5, max: 6, instruction: "Give 5." },
+    ]),
   ),
   card(
     "same-shit",
@@ -176,86 +134,68 @@ export const sampleCards: CardDefinition[] = [
       version: 1,
       count: 2,
       sides: 6,
-      instruction: "Doubles: give {total}. Otherwise drink 3.",
+      doubles: "Give {total}.",
+      outcomes: [{ min: 2, max: 12, instruction: "Drink 3." }],
     },
   ),
   card(
     "two-beers-math",
     "That's Two Beers",
     "challenge",
-    "Roll 2d6. Give the total.",
-    { version: 1, count: 2, sides: 6, instruction: "Give {total}." },
+    "Roll 4d6. Give the total.",
+    roll(4, 6, "Give {total}."),
   ),
   card(
     "snake-eyes",
     "Snake Eyes",
     "challenge",
-    "Roll 2d6. Double 1s: drink 6. Else give 3.",
-    {
-      version: 1,
-      count: 2,
-      sides: 6,
-      outcomes: [
-        { min: 2, max: 2, instruction: "Drink 6." },
-        { min: 3, max: 12, instruction: "Give 3." },
-      ],
-    },
+    "Roll 2d6. Double 1s: drink 11. Else give 3.",
+    rollTable(2, 6, [
+      { min: 2, max: 2, instruction: "Drink 11." },
+      { min: 3, max: 12, instruction: "Give 3." },
+    ]),
   ),
   card(
     "lucky-bastard",
     "Lucky Bastard",
     "challenge",
     "Roll 2d6. 9+: give 5. Under 9: drink 3.",
-    {
-      version: 1,
-      count: 2,
-      sides: 6,
-      outcomes: [
-        { min: 2, max: 8, instruction: "Drink 3." },
-        { min: 9, max: 12, instruction: "Give 5." },
-      ],
-    },
+    rollTable(2, 6, [
+      { min: 2, max: 8, instruction: "Drink 3." },
+      { min: 9, max: 12, instruction: "Give 5." },
+    ]),
   ),
   card(
     "fuck-around",
     "Fuck Around & Find Out",
     "challenge",
-    "Roll d20. 1: drink 5. 20: give 8. Else drink 2.",
-    {
-      version: 1,
-      count: 1,
-      sides: 20,
-      outcomes: [
-        { min: 1, max: 1, instruction: "Drink 5." },
-        { min: 2, max: 19, instruction: "Drink 2." },
-        { min: 20, max: 20, instruction: "Give 8." },
-      ],
-    },
+    "Roll d20. 1: take a shot. 20: give a shot. Else drink 2.",
+    rollTable(1, 20, [
+      { min: 1, max: 1, instruction: "Take a shot." },
+      { min: 2, max: 19, instruction: "Drink 2." },
+      { min: 20, max: 20, instruction: "Give a shot." },
+    ]),
   ),
   card(
     "crit-fail",
     "Critical Failure",
     "challenge",
     "Roll d20. 1–5: drink 4. 16–20: give 4.",
-    {
-      version: 1,
-      count: 1,
-      sides: 20,
-      instruction: "Roll 1–5: drink 4. Roll 16–20: give 4. Otherwise nothing.",
-    },
+    rollTable(1, 20, [
+      { min: 1, max: 5, instruction: "Drink 4." },
+      { min: 6, max: 15, instruction: "Nothing happens." },
+      { min: 16, max: 20, instruction: "Give 4." },
+    ]),
   ),
   card(
     "chosen-one",
     "God's Drunkest Soldier",
     "challenge",
-    "Roll d20. 20: everyone else drinks 3. 1: drink 5.",
-    {
-      version: 1,
-      count: 1,
-      sides: 20,
-      instruction:
-        "Roll 20: everyone else drinks 3. Roll 1: drink 5. Otherwise nothing.",
-    },
+    "Roll d20. Odd: drink your roll. Even: give your roll.",
+    rollTable(1, 20, [
+      { min: 1, max: 19, step: 2, instruction: "Drink {total}." },
+      { min: 2, max: 20, step: 2, instruction: "Give {total}." },
+    ]),
   ),
   card(
     "categories",
@@ -268,18 +208,6 @@ export const sampleCards: CardDefinition[] = [
     "Rhyme Time",
     "category",
     "Pick a word. First bad rhyme drinks 3.",
-  ),
-  card(
-    "questions-only",
-    "Questions Only",
-    "category",
-    "Questions only. First statement drinks 3.",
-  ),
-  card(
-    "name-3",
-    "Name 3",
-    "category",
-    "Group picks a topic. Name 3 or drink 3.",
   ),
   card(
     "rock-paper-drink",
@@ -297,7 +225,7 @@ export const sampleCards: CardDefinition[] = [
     "rulemaster",
     "Rulemaster",
     "rule",
-    "Make a rule until next card. Breaker drinks 2.",
+    "Make a rule until the end of the game. Breaker drinks 2.",
   ),
   card(
     "no-names",
@@ -312,44 +240,19 @@ export const sampleCards: CardDefinition[] = [
     "Until next card: no swearing. Slip = drink 2.",
   ),
   card(
-    "captain-dumbass",
-    "Captain Dumbass",
-    "rule",
-    "Until next card: call everyone \u201cCaptain.\u201d Slip = drink 2.",
-  ),
-  card(
     "cursed-number",
     "Cursed Number",
     "rule",
     "Roll d6. That number is banned. Say it = drink 2.",
-    {
-      version: 1,
-      count: 1,
-      sides: 6,
-      instruction: "{total} is banned. Say it: drink 2.",
-    },
-  ),
-  card(
-    "dice-lord",
-    "Dice Lord",
-    "rule",
-    "Roll d6. Odd: no pointing. Even: no questions. Slip = drink 2.",
-    {
-      version: 1,
-      count: 1,
-      sides: 6,
-      instruction: "Odd: no pointing. Even: no questions. Slip: drink 2.",
-    },
+    roll(1, 6, "{total} is banned. Say it: drink 2."),
   ),
 ];
 
-// The always-included Core deck: the supplied sample set, the classic / King's
-// Cup basics, the voice/dice expansion, and every supplied house row.
+// The generated main deck. All three packs are opt-in at setup.
 export const coreCards: CardDefinition[] = [
   ...sampleCards,
   ...classicCards,
   ...standardExpansionCards,
-  ...houseCards,
 ];
 
 export const samplePack: PackDefinition = {
@@ -358,6 +261,6 @@ export const samplePack: PackDefinition = {
   logo: "art/packs/core.svg",
   title: "The Core deck",
   description:
-    "The always-on deck: sample prompts, King's Cup basics, the voice/dice expansion, and every supplied house card.",
+    "The main deck: sample prompts, King's Cup basics, and the dice-forward standard cards.",
   cardIds: coreCards.map((card) => card.id),
 };

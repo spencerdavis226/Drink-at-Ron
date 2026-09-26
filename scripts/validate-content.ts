@@ -23,8 +23,8 @@ if (generated !== expected)
 for (const c of cards) {
   if ([...c.title].length > 22)
     throw Error(`Card title exceeds 22 characters: ${c.id}`);
-  if (Math.max(...c.title.split(/\s+/u).map((word) => [...word].length)) > 12)
-    throw Error(`Card title has a word over 12 characters: ${c.id}`);
+  if (Math.max(...c.title.split(/\s+/u).map((word) => [...word].length)) > 15)
+    throw Error(`Card title has a word over 15 characters: ${c.id}`);
   const ruleChars = [...c.rules.trim()].length;
   const ruleWords = c.rules.trim().split(/\s+/u).length;
   if (ruleChars > 120 || ruleWords > 24)

@@ -21,11 +21,11 @@ test("unselected packs stay readable and selection is unambiguous", async ({
   page,
 }) => {
   await page.goto("./");
-  await page.getByRole("button", { name: "Choose add-ons" }).click();
-  const core = page.locator(".included-pack");
-  const other = page
-    .getByRole("dialog")
-    .getByRole("button", { name: "VIP night", exact: true });
+  await page.getByRole("button", { name: "Choose packs" }).click();
+  const dialog = page.getByRole("dialog");
+  const core = dialog.getByRole("button", { name: /The Core deck/ });
+  const other = dialog.getByRole("button", { name: "VIP night", exact: true });
+  await expect(core).toHaveAttribute("aria-pressed", "true");
   const unselected = await other.evaluate((el) => {
     const style = getComputedStyle(el);
     return {
@@ -38,8 +38,7 @@ test("unselected packs stay readable and selection is unambiguous", async ({
   expect(unselected.opacity).toBe(1);
   expect(unselected.filter).toBe("none");
   expect(unselected.mark).toBe("+");
-  await expect(core).toContainText("Always included");
-  // The add-on title and mark share one copy slot when a name wraps.
+  // The pack title and mark share one copy slot when a name wraps.
   expect(
     await other.evaluate((el) => {
       const copy = el.querySelector(".pack-copy")!;
@@ -52,12 +51,16 @@ test("unselected packs stay readable and selection is unambiguous", async ({
   await other.click();
   await expect(other).toHaveAttribute("aria-pressed", "true");
   await expect(other.locator(".checkbox")).toHaveText("✓");
+  // Core is an ordinary opt-in pack now, too.
+  await core.click();
+  await expect(core).toHaveAttribute("aria-pressed", "false");
+  await expect(dialog).not.toContainText("Always included");
 });
 test("selecting VIP night reveals its one-line setup reminder", async ({
   page,
 }) => {
   await page.goto("./");
-  await page.getByRole("button", { name: "Choose add-ons" }).click();
+  await page.getByRole("button", { name: "Choose packs" }).click();
   const vip = page
     .getByRole("dialog")
     .getByRole("button", { name: "VIP night", exact: true });
@@ -69,34 +72,38 @@ test("selecting VIP night reveals its one-line setup reminder", async ({
   await vip.click();
   await expect(page.locator(".pack-hint")).toHaveCount(0);
 });
-test("@release Core includes the supplied house cards and VIP is the only add-on", async ({
+test("@release House and VIP are selectable add-ons and Core can be deselected", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 320, height: 568 });
   await page.goto("./");
-  await page.getByRole("button", { name: "Choose add-ons" }).click();
+  await page.getByRole("button", { name: "Choose packs" }).click();
   const dialog = page.getByRole("dialog");
   const vip = dialog.getByRole("button", { name: "VIP night", exact: true });
+  const house = dialog.getByRole("button", { name: /The House deck/ });
   await expect(vip).toHaveAttribute("aria-pressed", "false");
-  await expect(dialog.getByRole("button", { name: /house/i })).toHaveCount(0);
-  await expect(dialog.locator(".included-pack")).toContainText("Always included");
+  await expect(house).toHaveAttribute("aria-pressed", "false");
   expect(
     await dialog.evaluate((dialogEl) => {
       const rect = dialogEl.getBoundingClientRect();
       return rect.left >= 0 && rect.right <= innerWidth;
     }),
   ).toBe(true);
+  await house.click();
   await page.getByRole("button", { name: "Done" }).click();
   await page.getByRole("button", { name: "Play", exact: true }).click();
   const session = await page.evaluate(
     (key) => JSON.parse(localStorage.getItem(key)!),
     key,
   );
-  expect(session.config.packIds).toEqual(["core"]);
-  expect(session.cards).toHaveLength(322);
+  expect(session.config.packIds).toEqual(["core", "house"]);
+  expect(session.cards).toHaveLength(219);
+  expect(
+    session.cards.some((card: { id: string }) => card.id === "house.sheet-091"),
+  ).toBe(true);
   expect(
     session.cards.some((card: { id: string }) => card.id === "house.sheet-106"),
-  ).toBe(true);
+  ).toBe(false);
 });
 test("the card is the only dice control and keeps a generous target", async ({
   page,

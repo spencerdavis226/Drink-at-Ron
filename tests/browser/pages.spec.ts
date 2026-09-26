@@ -28,6 +28,13 @@ test("@release Pages manifest, assets and production exclusion", async ({
   page.on("response", (r) => {
     if (r.status() >= 400) failures.push(r.url());
   });
+  await page.goto("./?review=1");
+  await expect(
+    page.getByRole("button", { name: "Play", exact: true }),
+  ).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Card review" })).toHaveCount(
+    0,
+  );
   await page.goto("./?workshop=1");
   await expect(
     page.getByRole("button", { name: "Play", exact: true }),
@@ -57,20 +64,21 @@ test("Core logo matches selection, card, pause legend and previous card", async 
   page,
 }) => {
   await page.goto("./");
-  await page.getByRole("button", { name: "Choose add-ons" }).click();
-  await expect(page.locator(".included-pack .pack-logo img")).toHaveAttribute(
-    "src",
-    /art\/packs\/core.svg$/,
-  );
+  await page.getByRole("button", { name: "Choose packs" }).click();
+  await expect(
+    page
+      .getByRole("button", { name: /The Core deck/ })
+      .locator(".pack-logo img"),
+  ).toHaveAttribute("src", /art\/packs\/core.svg$/);
   await page.getByRole("button", { name: "Done" }).click();
   await page.getByRole("button", { name: "Play", exact: true }).click();
   await seedPlain(page);
   await page.getByRole("button", { name: "Reveal card", exact: true }).click();
   await expect(page.locator(".card-stage")).not.toHaveClass(/flip|settle|deal/);
   await expect(page.locator(".card-category")).toHaveCount(0);
-  await expect(page.locator(".card-pack-marks img")).toHaveAttribute(
-    "src",
-    /art\/packs\/core.svg$/,
+  await expect(page.locator(".card-pack-marks .pack-logo")).toHaveAttribute(
+    "data-seal",
+    /art\/packs\/core-seal.svg$/,
   );
   await page.locator(".game-card").click();
   await expect(page.locator(".card-stage")).not.toHaveClass(
@@ -85,6 +93,6 @@ test("Core logo matches selection, card, pause legend and previous card", async 
     .getByRole("button", { name: "Previous card", exact: true })
     .click();
   await expect(
-    page.locator(".previous-card .card-pack-marks img"),
-  ).toHaveAttribute("src", /art\/packs\/core.svg$/);
+    page.locator(".previous-card .card-pack-marks .pack-logo"),
+  ).toHaveAttribute("data-seal", /art\/packs\/core-seal.svg$/);
 });

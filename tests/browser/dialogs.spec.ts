@@ -52,6 +52,61 @@ test("dialog enter and exit share the motion tokens", async ({ page }) => {
   await expect(page.getByRole("dialog")).toHaveCount(0);
 });
 
+test("install pill and dialog close icon are optically centered", async ({
+  page,
+}) => {
+  for (const viewport of [
+    { width: 320, height: 568 },
+    { width: 768, height: 1024 },
+  ]) {
+    await page.setViewportSize(viewport);
+    await page.goto("./");
+    const install = page.getByRole("button", { name: "Install app" });
+    await expect(install).toContainText("Install");
+    const target = await install.boundingBox();
+    expect(target!.width).toBeGreaterThanOrEqual(44);
+    expect(target!.height).toBeGreaterThanOrEqual(44);
+    const installSurface = await install.evaluate((button) => {
+      const style = getComputedStyle(button);
+      return {
+        background: style.backgroundImage,
+        radius: parseFloat(style.borderRadius),
+      };
+    });
+    expect(installSurface.background).toContain("linear-gradient");
+    expect(installSurface.background).not.toContain("bezel.webp");
+    expect(installSurface.radius).toBeLessThan(target!.height / 2);
+    await install.click();
+    const close = page.getByRole("button", { name: "Close" });
+    expect(
+      await close.evaluate(
+        (button) => getComputedStyle(button).backgroundImage,
+      ),
+    ).not.toContain("bezel.webp");
+    const centered = await close.evaluate((button) => {
+      const control = button.getBoundingClientRect();
+      const icon = button.querySelector("svg")!.getBoundingClientRect();
+      return {
+        x: Math.abs(
+          icon.left + icon.width / 2 - (control.left + control.width / 2),
+        ),
+        y: Math.abs(
+          icon.top + icon.height / 2 - (control.top + control.height / 2),
+        ),
+        width: control.width,
+        height: control.height,
+      };
+    });
+    expect(centered.x).toBeLessThanOrEqual(1);
+    expect(centered.y).toBeLessThanOrEqual(1);
+    expect(centered.width).toBeGreaterThanOrEqual(44);
+    expect(centered.height).toBeGreaterThanOrEqual(44);
+    await page.keyboard.press("Escape");
+    await expect(page.getByRole("dialog")).toHaveCount(0);
+    await expect(install).toBeFocused();
+  }
+});
+
 test("an exiting dialog is inert and cannot trigger its controls", async ({
   page,
 }) => {
@@ -80,11 +135,17 @@ test("Escape closes the menu and restores focus to its opener", async ({
 }) => {
   await seed(page, game());
   const opener = page.getByRole("button", { name: "Open game menu" });
+  expect(
+    await opener.evaluate((button) => getComputedStyle(button).backgroundImage),
+  ).not.toContain("bezel.webp");
   await opener.click();
   await expect(page.getByRole("dialog")).toContainText("Paused");
   await page.keyboard.press("Escape");
   await expect(page.getByRole("dialog")).toHaveCount(0);
   await expect(opener).toBeFocused();
+  expect(
+    await opener.evaluate((button) => getComputedStyle(button).outlineStyle),
+  ).toBe("none");
 });
 
 test("menu → Previous card → Back to game returns to play", async ({
@@ -104,7 +165,9 @@ test("menu → Previous card → Back to game returns to play", async ({
   await expect(page.locator(".game-card")).toBeVisible();
 });
 
-test("@release cancelling End game keeps the active session", async ({ page }) => {
+test("@release cancelling End game keeps the active session", async ({
+  page,
+}) => {
   await seed(page, game());
   await page.getByRole("button", { name: "Open game menu" }).click();
   await expect(

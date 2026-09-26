@@ -1,4 +1,4 @@
-import { validateCatalog } from "../content/catalog";
+import { packs, validateCatalog } from "../content/catalog";
 import { validateRoll } from "../game/dice";
 import { validConfig } from "../game/engine";
 import type { GameConfig, SessionState } from "../game/types";
@@ -17,6 +17,11 @@ export interface Preferences {
 export const defaults: Preferences = {
   config: { version: 1, packIds: ["core"], limit: 30 },
   choice: "short",
+};
+/** Keep only installed packs; never let a stale selection empty the deck. */
+const knownPackIds = (ids: readonly string[]) => {
+  const known = packs.map((pack) => pack.id).filter((id) => ids.includes(id));
+  return known.length ? known : [packs[0].id];
 };
 export function parseSession(raw: string): SessionState {
   const parsed = JSON.parse(raw);
@@ -138,10 +143,7 @@ export function loadPreferences(): Preferences {
       return {
         config: {
           ...p.config,
-          packIds: [
-            "core",
-            ...p.config.packIds.filter((id: string) => id !== "core"),
-          ],
+          packIds: knownPackIds(p.config.packIds),
           limit: MODE_LIMITS[choice],
         },
         choice,

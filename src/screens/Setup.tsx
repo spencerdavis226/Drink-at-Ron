@@ -2,7 +2,6 @@ import { useState } from "react";
 import type { Preferences } from "../app/persistence";
 import type { PackDefinition } from "../game/types";
 import { Button, DeckChoices, Modal, PackTile } from "../components/UI";
-import { PackLogo } from "../components/PackMarks";
 
 export function Setup({
   prefs,
@@ -16,25 +15,18 @@ export function Setup({
   onStart: () => void;
 }) {
   const [packsOpen, setPacksOpen] = useState(false);
-  const core = packs.find((pack) => pack.id === "core");
-  const addons = packs.filter((pack) => pack.id !== "core");
-  const selected = addons.filter((pack) =>
+  const selected = packs.filter((pack) =>
     prefs.config.packIds.includes(pack.id),
   );
   const toggle = (id: string) => {
-    const addonIds = new Set(selected.map((pack) => pack.id));
-    if (addonIds.has(id)) addonIds.delete(id);
-    else addonIds.add(id);
+    const next = new Set(prefs.config.packIds);
+    if (next.has(id)) next.delete(id);
+    else next.add(id);
     onChange({
       ...prefs,
       config: {
         ...prefs.config,
-        packIds: [
-          "core",
-          ...addons
-            .filter((pack) => addonIds.has(pack.id))
-            .map((pack) => pack.id),
-        ],
+        packIds: packs.filter((pack) => next.has(pack.id)).map((p) => p.id),
       },
     });
   };
@@ -66,28 +58,23 @@ export function Setup({
           onClick={() => setPacksOpen(true)}
         >
           <span>
-            <strong>Choose add-ons</strong>
+            <strong>Choose packs</strong>
             <small>
               {selected.length
                 ? selected.map((pack) => pack.title).join(", ")
-                : "Core deck only"}
+                : "Pick at least one"}
             </small>
           </span>
           <span aria-hidden="true">›</span>
         </Button>
       </div>
-      <Button onClick={onStart}>Play</Button>
+      <Button onClick={onStart} disabled={!selected.length}>
+        Play
+      </Button>
       {packsOpen && (
         <Modal title="Card packs" onClose={() => setPacksOpen(false)}>
-          {core && (
-            <div className="included-pack">
-              <PackLogo pack={core} decorative />
-              <span>{core.title}</span>
-              <small>Always included</small>
-            </div>
-          )}
           <div className="addon-list">
-            {addons.map((pack) => (
+            {packs.map((pack) => (
               <div key={pack.id}>
                 <PackTile
                   pack={pack}

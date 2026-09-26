@@ -241,7 +241,8 @@ test("returning a rolled card settles without a positional jump", async ({
     () => 0.5,
   );
   await seed(page, rolled);
-  await page.locator(".game-card").click();
+  // A restored unresolved roll settles into the resolved card automatically;
+  // the follow-up tap only puts the shown card aside.
   await expect(page.locator(".game-card")).toHaveAttribute(
     "aria-label",
     /Tap to put this card aside/,

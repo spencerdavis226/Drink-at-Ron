@@ -1,15 +1,18 @@
 import { validateDice } from "../game/dice";
 import { coreCards, samplePack } from "./sample";
+import { houseCards, housePack } from "./custom";
 import { vipCards, vipPack } from "./vip";
 import type { CardDefinition, PackDefinition } from "../game/types";
 
-// The runtime catalog. `samplePack` (Core) is always included and now carries
-// the supplied sample set, the classic / King's Cup basics, the voice/dice
-// expansion, and every supplied house row; VIP night is the only optional
-// themed pack. Card content is provided sample material and is expected to
-// change.
-export const cards: CardDefinition[] = [...coreCards, ...vipCards];
-export const packs: PackDefinition[] = [samplePack, vipPack];
+// The runtime catalog. Three opt-in packs: the generated main deck, the
+// supplied Sheet1 house deck (verbatim), and VIP night. Card content is
+// provided sample material and is expected to change.
+export const cards: CardDefinition[] = [
+  ...coreCards,
+  ...houseCards,
+  ...vipCards,
+];
+export const packs: PackDefinition[] = [samplePack, housePack, vipPack];
 
 export function validateCatalog(cs: CardDefinition[], ps: PackDefinition[]) {
   const fail = (message: string): never => {
