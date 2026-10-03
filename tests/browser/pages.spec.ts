@@ -79,6 +79,52 @@ test("@release Pages manifest, assets and production exclusion", async ({
   expect(failures).toEqual([]);
 });
 
+test("a Home Screen web app hides Install but keeps the in-game menu", async ({
+  page,
+}) => {
+  await page.addInitScript(() => {
+    // WebKit exposes this legacy flag in iOS Home Screen web apps.
+    Object.defineProperty(navigator, "standalone", {
+      configurable: true,
+      value: true,
+    });
+  });
+  await page.goto("./");
+  await expect(page.getByRole("button", { name: "Install app" })).toHaveCount(
+    0,
+  );
+  await expect(page.locator(".topbar")).toHaveCount(0);
+  await expect(
+    page.getByRole("button", { name: "Play", exact: true }),
+  ).toBeVisible();
+  await page.getByRole("button", { name: "Play", exact: true }).click();
+  await expect(
+    page.getByRole("button", { name: "Open game menu" }),
+  ).toBeVisible();
+  await expect(page.getByRole("button", { name: "Install app" })).toHaveCount(
+    0,
+  );
+});
+
+test("Play keeps a themed fallback if its painted border has not loaded", async ({
+  page,
+}) => {
+  await page.route("**/art/button.webp", (route) => route.abort());
+  await page.goto("./");
+  const play = page.getByRole("button", { name: "Play", exact: true });
+  const style = await play.evaluate((el) => {
+    const computed = getComputedStyle(el);
+    return {
+      background: computed.backgroundImage,
+      radius: parseFloat(computed.borderRadius),
+    };
+  });
+  expect(style.background).toContain("linear-gradient");
+  expect(style.radius).toBeGreaterThanOrEqual(10);
+  await play.click();
+  await expect(page.getByRole("button", { name: "Open game menu" })).toBeVisible();
+});
+
 test("Core logo matches selection, card, pause legend and previous card", async ({
   page,
 }) => {

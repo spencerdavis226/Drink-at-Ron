@@ -9,8 +9,17 @@ function isMobileDevice() {
   );
 }
 
+// Phones are blocked in landscape; the card is a fixed 2:3 and a phone's short
+// side leaves no room for it. Tablets (short side of 600px or more) can seat a
+// full card in landscape, so iPad play is never interrupted.
+const PHONE_SHORT_SIDE = 600;
+
 function mobileLandscape() {
-  return isMobileDevice() && matchMedia(LANDSCAPE).matches;
+  return (
+    isMobileDevice() &&
+    matchMedia(LANDSCAPE).matches &&
+    Math.min(window.innerWidth, window.innerHeight) < PHONE_SHORT_SIDE
+  );
 }
 
 function RotateDialog() {

@@ -1,4 +1,5 @@
 import { test, expect, type Page } from "@playwright/test";
+import sharp from "sharp";
 import { createSession, advance } from "../../src/game/engine";
 import { cards, packs } from "../../src/content/catalog";
 const key = "drink-at-ron.session.v1";
@@ -194,15 +195,42 @@ test("an iOS top inset keeps topbar controls below the status-bar frost", async 
       chrome: root.getPropertyValue("--chrome").trim(),
       html: root.backgroundColor,
       layers: getComputedStyle(document.body, "::before").backgroundImage,
+      backdropHeight: parseFloat(
+        getComputedStyle(document.body, "::before").height,
+      ),
+      visibleHeight: document.documentElement.clientHeight,
     };
   });
   expect(chrome.chrome).toBe("#17100c");
   expect(chrome.html).toBe("rgb(23, 16, 12)");
+  // The OS-only chin must not push our bottom fade beneath the paintable view.
+  expect(chrome.backdropHeight).toBeCloseTo(chrome.visibleHeight, 0);
   // The flat status-bar band and the bottom blend into the system strip use
   // the same page colour the installed app is sampled from.
   expect(
     chrome.layers.match(/rgb\(23, 16, 12\)/g)?.length ?? 0,
   ).toBeGreaterThanOrEqual(2);
+  const atmosphere = await page.locator(".atmosphere").evaluate((el) => ({
+    height: parseFloat(getComputedStyle(el).height),
+    mask: getComputedStyle(el).maskImage,
+  }));
+  expect(atmosphere.height).toBeCloseTo(chrome.visibleHeight, 0);
+  expect(atmosphere.mask).toContain("rgba(0, 0, 0, 0)");
+  const { data, info } = await sharp(
+    await page.screenshot({ animations: "disabled" }),
+  )
+    .raw()
+    .toBuffer({ resolveWithObject: true });
+  const bottomCenter =
+    ((info.height - 3) * info.width + Math.floor(info.width / 2)) *
+    info.channels;
+  const edgePixel = [...data.subarray(bottomCenter, bottomCenter + 3)];
+  // The last painted row needs to meet the OS-owned strip's chrome colour.
+  for (const [channel, target] of edgePixel.map(
+    (value, i) => [value, [23, 16, 12][i]] as const,
+  )) {
+    expect(Math.abs(channel - target)).toBeLessThanOrEqual(6);
+  }
 
   await seed(page, revealed(longestRule));
   await page.addStyleTag({ content: ":root { --top-safe: 59px }" });

@@ -56,6 +56,10 @@ export function GameDialogs({
           In Safari, open Share, choose <strong>Add to Home Screen</strong>,
           then <strong>Add</strong>. Leave Open as Web App enabled if offered.
         </p>
+        <p>
+          Install before you start a game: the Home Screen app keeps its own
+          saved games, separate from Safari.
+        </p>
         <p role="status">
           {offlineReady
             ? "Ready for offline play"

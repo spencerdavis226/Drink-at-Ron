@@ -104,13 +104,13 @@ test("rotation over the pause menu restores that menu", async ({ page }) => {
   await expect(page.locator(".game-card")).toBeVisible();
 });
 
-test("iPadOS landscape is blocked and desktop landscape remains usable", async ({
+test("iPadOS landscape stays playable, phones are still blocked, desktop is usable", async ({
   browser,
   baseURL,
 }) => {
   const ipad = await browser.newContext({
     baseURL,
-    viewport: { width: 1024, height: 768 },
+    viewport: { width: 1180, height: 820 },
     hasTouch: true,
     userAgent:
       "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Safari/605.1.15",
@@ -120,14 +120,16 @@ test("iPadOS landscape is blocked and desktop landscape remains usable", async (
   });
   const ipadPage = await ipad.newPage();
   await ipadPage.goto("./");
-  await expect(
-    ipadPage.getByRole("alertdialog", { name: "Rotate to portrait" }),
-  ).toBeVisible();
+  await expect(ipadPage.getByRole("alertdialog")).toHaveCount(0);
+  await ipadPage.getByRole("button", { name: "Play", exact: true }).click();
+  const card = ipadPage.locator(".game-card");
+  await expect(card).toBeVisible();
+  const box = (await card.boundingBox())!;
+  expect(box.y).toBeGreaterThanOrEqual(0);
+  expect(box.y + box.height).toBeLessThanOrEqual(820);
+  expect(box.x + box.width).toBeLessThanOrEqual(1180);
   await ipadPage.setViewportSize({ width: 768, height: 1024 });
   await expect(ipadPage.getByRole("alertdialog")).toHaveCount(0);
-  await expect(
-    ipadPage.getByRole("button", { name: "Play", exact: true }),
-  ).toBeVisible();
   await ipad.close();
 
   const desktop = await browser.newContext({

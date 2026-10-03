@@ -6,6 +6,9 @@ Automated browser emulation is not evidence of actual iOS Home Screen behavior. 
 - [ ] Set the phone on a table and read short and long rules from the far seat and side seats in bright and dim light. Check whether any rule needs the phone passed around or a forced scroll.
 - [ ] Install through Share → Add to Home Screen; open from icon and check standalone launch appearance.
 - [ ] In the installed app, check the status-bar area: nothing interactive (Install, wordmark, menu) sits inside the system's frosted top edge on iOS 27, and the top band fades into the table without a hard line. Check the bottom of the screen above the home indicator: the table blends into the system strip instead of ending on a dark bar. Rotate to landscape and back and re-check both edges.
+  - 2026-09-26 iPhone screenshot: **failed** bottom check; an ~89px flat strip begins at a hard table-to-system seam. A local fade mitigation awaits deployment and a fresh installed-app screenshot. The OS-owned strip itself may remain.
+- [ ] Wake lock: in the installed app start a game, leave it untouched 5+ minutes; the screen must stay on, then dim normally after ending the game or backgrounding. Check Low Power Mode.
+- [ ] iPad landscape (full screen, 1366×1024 and 1180×820) plays without a rotate prompt and the card fits; phones in landscape still show the prompt.
 - [ ] Wait for offline readiness, enable airplane mode, close and reopen. Reveal/discard multiple cards and verify artwork works.
 - [ ] Reveal a card, switch apps, lock/unlock, and reopen. Same card and count persist.
 - [ ] Rapidly tap during reveal and discard. Exactly one action occurs per transition.

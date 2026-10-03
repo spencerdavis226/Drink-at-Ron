@@ -163,3 +163,11 @@ export function save(key: string, value: unknown): boolean {
     return false;
   }
 }
+/** Ask the browser to keep saves; Safari grants this to installed web apps. */
+export function requestPersistence() {
+  try {
+    void navigator.storage?.persist?.().catch(() => {});
+  } catch {
+    /* unsupported */
+  }
+}

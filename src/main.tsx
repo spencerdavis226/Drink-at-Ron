@@ -7,6 +7,7 @@ import {
   loadPreferences,
   loadSession,
   MODE_LIMITS,
+  requestPersistence,
   save,
   SAVE_KEY,
   SETTINGS_KEY,
@@ -22,10 +23,17 @@ import { Setup } from "./screens/Setup";
 import { Play } from "./screens/Play";
 import { Completion } from "./screens/Completion";
 import { GameDialogs, type DialogName } from "./screens/GameDialogs";
+import { useWakeLock } from "./app/wakeLock";
 import { PortraitGate } from "./components/PortraitGate";
 import "./style.css";
 import "./presentation/theme.css";
 import "./presentation/card-front.css";
+function isStandaloneApp() {
+  return (
+    window.matchMedia("(display-mode: standalone)").matches ||
+    ("standalone" in navigator && navigator.standalone === true)
+  );
+}
 function App() {
   const [loaded] = useState(loadSession),
     [corrupt, setCorrupt] = useState(loaded.corrupt),
@@ -34,6 +42,7 @@ function App() {
     [cachedReady, setCachedReady] = useState(false),
     [updateReady, setUpdateReady] = useState(false),
     [modal, setModal] = useState<DialogName>(null),
+    [standalone, setStandalone] = useState(isStandaloneApp),
     [hidden, setHidden] = useState(document.hidden);
   const { controller, session, outgoing, motion, transition, finishingRoll } =
     usePresentation(
@@ -44,6 +53,8 @@ function App() {
     );
   const display = outgoing ?? session;
   const active = !!display && display.phase !== "complete";
+  useWakeLock(active);
+  useEffect(requestPersistence, []);
   const {
     offlineReady: [offlineReady],
   } = useRegisterSW({
@@ -55,6 +66,16 @@ function App() {
       if (registration?.active) setCachedReady(true);
     },
   });
+  useEffect(() => {
+    const media = window.matchMedia("(display-mode: standalone)");
+    const update = () => setStandalone(isStandaloneApp());
+    media.addEventListener("change", update);
+    window.addEventListener("pageshow", update);
+    return () => {
+      media.removeEventListener("change", update);
+      window.removeEventListener("pageshow", update);
+    };
+  }, []);
   useEffect(() => {
     if (!("serviceWorker" in navigator)) return;
     const check = () => {
@@ -132,35 +153,37 @@ function App() {
         className={`${active ? "app playing" : "app"} ${hidden ? "suspended" : ""}`}
         style={styles}
       >
-        <header className="topbar">
-          {active ? (
-            <>
-              <span className="wordmark">Drink at Ron</span>
+        {(active || !standalone) && (
+          <header className="topbar">
+            {active ? (
+              <>
+                <span className="wordmark">Drink at Ron</span>
+                <IconButton
+                  label="Open game menu"
+                  disabled={!!motion}
+                  onClick={() => setModal("menu")}
+                >
+                  <span className="menu-icon" aria-hidden="true">
+                    <i />
+                    <i />
+                    <i />
+                  </span>
+                </IconButton>
+              </>
+            ) : (
               <IconButton
-                label="Open game menu"
-                disabled={!!motion}
-                onClick={() => setModal("menu")}
+                className="install-button"
+                label="Install app"
+                onClick={() => setModal("install")}
               >
-                <span className="menu-icon" aria-hidden="true">
-                  <i />
-                  <i />
-                  <i />
+                <InstallIcon />
+                <span className="install-button-label" aria-hidden="true">
+                  Install
                 </span>
               </IconButton>
-            </>
-          ) : (
-            <IconButton
-              className="install-button"
-              label="Install app"
-              onClick={() => setModal("install")}
-            >
-              <InstallIcon />
-              <span className="install-button-label" aria-hidden="true">
-                Install
-              </span>
-            </IconButton>
-          )}
-        </header>
+            )}
+          </header>
+        )}
         {notice && (
           <Notice>
             Saving is unavailable. This game may not survive closing the app.

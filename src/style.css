@@ -41,7 +41,13 @@ body {
 body:before {
   content: "";
   position: fixed;
-  inset: 0;
+  top: 0;
+  right: 0;
+  left: 0;
+  /* In affected standalone iOS builds the fixed containing block can retain
+     the physical screen height while the paintable viewport is shorter. Anchor
+     the bottom fade to the visible viewport, not the unreachable system strip. */
+  height: 100dvh;
   z-index: -1;
   background:
     /* Installed iOS web apps reserve a system strip at the bottom that no DOM

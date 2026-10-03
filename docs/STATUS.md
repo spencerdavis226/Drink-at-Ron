@@ -2,6 +2,51 @@
 
 Updated 2026-09-26. **Single authoritative handoff for OpenCode Go, Codex, and other editors.** Read `AGENTS.md` first. This replaces the old numbered model-routing plan; historical studies are references, not new work orders. Direct user instructions win.
 
+## Review and improvement plan — iOS/iPadOS Home Screen app (2026-10-03)
+
+Read-only review of `main` plus the uncommitted chin-mitigation diff; no source behavior changed. Added `CLAUDE.md` (imports `AGENTS.md`) at the root and in `src/{game,app,content,presentation,presentation/dice,components,screens,workshop}`, `tests`, `scripts`, `docs`, `reference`, `public`, `assets`. Checked: `npm test` 98 passed, `tsc -b` clean. Not run: production build, Playwright, any physical device. Everything below about iOS behavior is unverified until observed on hardware.
+
+**Verified from code (no bug found).** Engine/save invariants and v1 migration, update flow (`autoUpdate` + `onNeedReload`, never reloads mid-game), dice stage disposal (`forceContextLoss`), storage-denied degradation, saved roll validation. Save cost per tap is 27 KB (Core) to 84 KB (all packs) synchronous; acceptable, no action.
+
+**Findings, highest value first.**
+
+1. **Screen can lock mid-game.** Nothing requests a Screen Wake Lock (`grep wakeLock src` is empty). A phone or iPad sitting on a table between card reads will dim and lock on iOS defaults. Saves survive, but it breaks the "native app" feel.
+2. **iPad landscape is blocked.** `PortraitGate` treats every iPhone/iPad (including iPadOS reporting as Macintosh with touch) in landscape as blocked. iPads on a table are often landscape. The card is a fixed 2:3, so landscape should simply centre it. This is a product decision as well as a bug; confirm with Spencer before changing.
+3. **Install copy omits a data-loss trap.** On iOS the Safari tab and the installed Home Screen app do not share localStorage, so a game started in Safari is not there after installing. Nothing calls `navigator.storage.persist()` either. Tell people to install first, and request persistence where available.
+4. **Unresolved installed-app bottom strip.** The local `100dvh` backdrop and firelight fade (uncommitted) still need authorization to commit and a physical recheck. Do not add more speculative CSS if it persists (see the task below).
+5. **Always-on ambient animation.** Fire, six embers, eight dust motes and a candle loop for the whole session (`theme.css`), paused only when the page is hidden. Likely battery and heat cost on a table-top device left on for hours; unmeasured.
+6. **Possible white launch flash.** No `apple-touch-startup-image`; `index.html` only sets the title, icon and translucent status bar. Whether iOS shows a white frame before the dark UI is unverified.
+7. **Short/Long on small packs repeats cards.** Length is a fixed 30/60 cards, but VIP alone has 16, so one "Short" game reshuffles and repeats cards with no hint on Setup. Setup also never shows how many cards the selected packs contain.
+8. **Stale/contradictory docs.** `AGENTS.md` still says to preserve branch `codex/finish-v1`; `main` is the only branch. This file is ~725 lines and its header date predates the latest work. `scripts/_temporary-card-edit.mjs` (untracked) overwrites card modules with superseded copy, including the denied `core.deez-nuts`; running it would regress content.
+9. **Tooling gaps.** No `typecheck` or lint script (hooks lint would catch effect-dependency mistakes in `FullScreenDice`/`main.tsx`); `npm test` does not type-check. Two near-duplicate cards remain (`core.cursed-number`, `core.banned-number`). `assets/` is ~66 MB of tracked source art.
+
+**Plan.** One task at a time, each ending with updated status and device-checklist items. Nothing here is authorized for commit, push or deploy.
+
+| # | Task | Done when |
+| --- | --- | --- |
+| 1 | Get authorization to commit the chin mitigation and deploy; recheck on the installed iPhone and record it in `docs/DEVICE_CHECKLIST.md`. | Result recorded, pass or fail. |
+| 2 | Wake Lock hook in `src/app` or `src/presentation`: acquire while a game is active, re-acquire on `visibilitychange`, release on complete/setup, silent no-op when unsupported. | Playwright test with a stubbed `navigator.wakeLock`; device check that the screen stays on for 5+ minutes in the installed app. |
+| 3 | Install dialog and persistence: warn to install before playing, call `navigator.storage.persist()` when available. | Copy updated; unit/browser test for denied or missing API. |
+| 4 | Decide iPad landscape (Spencer's call). If yes, gate only phone-sized landscape and verify card fit at 1180×820, 1366×1024 and Split View. | Orientation specs updated; device check on an iPad. |
+| 5 | Measure ambient animation cost with Safari Web Inspector on a real device; if material, pause ambience during dice, dialogs and after idle. | Before/after numbers in this file. |
+| 6 | Check for a launch flash on device; if present add startup images for current iPhone/iPad sizes under `public/`, inside the 3 MiB runtime budget. | Cold launch checked on device. |
+| 7 | Setup: show pack card counts, and clamp or label Short/Long when the selected packs have fewer cards than the limit. | Unit test on the clamp; Setup layout still passes `@release`. |
+| 8 | Hygiene (ask first): fix the `AGENTS.md` branch line, move STATUS history to an archive file, delete the scratch script, add `typecheck`/lint scripts, merge or differentiate the two number-ban cards. | Docs and CI still pass. |
+
+**Progress (2026-10-03, local, uncommitted).** Tasks 2, 3, 4 and 7 are implemented; 1, 5, 6 and 8 are open. Per Spencer's "whatever a professional game dev would do": wake lock via `src/app/wakeLock.ts` (`useWakeLock(active)` in `main.tsx`); `requestPersistence()` on start and an Install dialog line saying to install before playing; `PortraitGate` now blocks only landscape with a short side under 600px, so iPad landscape plays (the old "iPad landscape is blocked" test was replaced by a 1180×820 card-fit check); Setup shows the selected packs' card count and a repeat hint when the count is below the 30/60 limit (no clamp; the game itself is unchanged). Verified: `npm test` 98 passed, `tsc` clean, Pages-path build and budgets passed (2737 KiB runtime; 94.2 KiB initial + 147.8 KiB lazy gzip), new wake-lock spec plus orientation/secondary/game specs 49 passed / 2 skipped / 1 flaky (a WebKit menu-focus assertion in game.spec.ts passed on retry; unrelated code), release smoke 22/22, update flow passed. Not verified: real wake lock on iPhone/iPad (needs iOS 16.4+, Home Screen fix 18.4+), iPad landscape at 1366×1024 and Split View, Setup hint layout on a 320px phone.
+
+Gates for every task: `npm test`, `BASE_PATH=/Drink-at-Ron/ npm run build` (budgets unchanged), `npm run test:release` with a unique `TEST_PORT`, and the matching device check.
+
+## Current task — installed iPhone bottom strip (2026-09-26)
+
+Spencer's physical Home Screen screenshot (590×1280) still shows an abrupt ~89px flat chin below the painted web view. The last painted table row is roughly RGB (39, 29, 20), while the iOS-owned strip is RGB (21, 16, 10). [WebKit bug 301994](https://bugs.webkit.org/show_bug.cgi?id=301994) remains reopened for this standalone-only gap: the strip is outside the DOM, so the app cannot put texture or controls into it. This task is a **blend mitigation**, not a claim that the system strip can be eliminated.
+
+**Local change (not committed or deployed).** `src/style.css` makes the fixed table backdrop `100dvh` high rather than anchoring it to the possibly taller fixed containing block. `src/presentation/theme.css` makes the firelight layer `100dvh` high and masks its final 90px to transparent. The backdrop already fades to `--chrome` / manifest `background_color` `#17100c`; the missing firelight fade was the visible warm-to-flat seam. `tests/browser/layout.spec.ts` now checks both layers match the visible viewport and samples the last painted pixel against that chrome colour. `docs/DEVICE_CHECKLIST.md` records the physical failure and pending recheck. No engine, session, card, or install-flow behavior changed; the unrelated untracked scratch script is untouched.
+
+**Verification.** `npm test` **98 passed**; Pages-path build/content/TypeScript/PWA/budgets passed (2736 KiB runtime; 93.8 KiB initial + 147.8 KiB lazy gzip JS). Focused iOS-edge test passed **2/2** across Chromium/WebKit; complete layout suite **18/18**; isolated release smoke **20/20**. The first concurrent Playwright release/layout run failed while both runners wrote to the same `test-results` trace directory (17 passed, 1 failed, 2 flaky); the isolated rerun passed. In WebKit emulation, the center bottom pixel is now RGB (24, 16, 12) at 393×793 and 834×1194, close to the target (23, 16, 12); the actual installed iPhone cannot be simulated. Page identity, controls, Install dialog, and console were checked locally. Screenshots: `/tmp/ron-chin-after-{393,834}.png`.
+
+**Risk / next task.** Get explicit authorization before committing/pushing to Pages. Then close and reopen the existing Home Screen icon on the physical iPhone (the OS strip colour can be cached at launch), compare the seam, and note the outcome in `docs/DEVICE_CHECKLIST.md`. The flat system-owned area may remain visible even when the hard line is gone. If it still looks unacceptable, do not layer more speculative CSS; a different presentation choice or an upstream WebKit fix is required.
+
 ## Current handoff — matched rounded card front/back and text fit (2026-09-26)
 
 The selected card back and its matching front are installed in commit `fbb52a9`. Both retain the rounded, sculpted fantasy playing-card construction: curved brass corner armor, dark carved-walnut rails, matching perimeter rivets, worn teal leather, and equal visual weight at the top and bottom. The rejected generation with an extra wooden plank below the back is not used. The approved sources are `assets/source/{card-back-symmetric,card-front-symmetric}.png`; runtime assets are `public/art/card-back.webp` and `src/presentation/art/ornate-teal-frame.webp`. They remain full-bleed 2:3 surfaces with no exterior background strip. The front keeps the existing live-title teal recess and plain parchment rules field; gameplay, Previous Card, and workshop share it.

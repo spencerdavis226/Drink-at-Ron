@@ -111,11 +111,13 @@ dialog p,
 }
 .primary {
   position: relative;
-  background: #bc8c49;
-  border: solid transparent;
+  /* A deliberate fallback while the painted border image loads or offline
+     image recovery is underway; never leave a raw square tan rectangle. */
+  background: linear-gradient(180deg, #ebc681, #ae7c3e);
+  border: solid #a77536;
   border-width: 14px 22px;
   border-image: url("/art/button.webp") 110 210 fill / 14px 22px stretch;
-  border-radius: 0;
+  border-radius: 14px;
   padding: 0 12px;
   min-height: 68px;
   font-size: 1.65rem;
@@ -425,10 +427,28 @@ dialog.closing {
 }
 .atmosphere {
   position: fixed;
-  inset: 0;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 100dvh;
   z-index: -1;
   pointer-events: none;
   overflow: hidden;
+  /* The Home Screen system strip cannot display DOM content. Let the warm
+     firelight disappear before the visible viewport ends so it meets the
+     page/manifest chrome colour instead of a hard, bright-to-dark seam. */
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    #000 0,
+    #000 calc(100% - 90px),
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    #000 0,
+    #000 calc(100% - 90px),
+    transparent 100%
+  );
 }
 .firelight {
   position: absolute;

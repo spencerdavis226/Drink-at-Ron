@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { Preferences } from "../app/persistence";
+import { MODE_LIMITS, type Preferences } from "../app/persistence";
 import type { PackDefinition } from "../game/types";
 import { Button, DeckChoices, Modal, PackTile } from "../components/UI";
 
@@ -18,6 +18,8 @@ export function Setup({
   const selected = packs.filter((pack) =>
     prefs.config.packIds.includes(pack.id),
   );
+  const cardCount = new Set(selected.flatMap((pack) => pack.cardIds)).size;
+  const limit = MODE_LIMITS[prefs.choice];
   const toggle = (id: string) => {
     const next = new Set(prefs.config.packIds);
     if (next.has(id)) next.delete(id);
@@ -61,13 +63,18 @@ export function Setup({
             <strong>Choose packs</strong>
             <small>
               {selected.length
-                ? selected.map((pack) => pack.title).join(", ")
+                ? `${selected.map((pack) => pack.title).join(", ")} · ${cardCount} cards`
                 : "Pick at least one"}
             </small>
           </span>
           <span aria-hidden="true">›</span>
         </Button>
       </div>
+      {limit !== null && cardCount > 0 && cardCount < limit && (
+        <p className="pack-hint" role="status">
+          These packs have {cardCount} cards, so some will repeat.
+        </p>
+      )}
       <Button onClick={onStart} disabled={!selected.length}>
         Play
       </Button>
