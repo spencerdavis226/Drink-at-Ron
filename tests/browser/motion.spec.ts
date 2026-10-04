@@ -319,11 +319,14 @@ test("discard never shifts the exposed under card between frames and handoff", a
 });
 test("rapid taps during a reveal commit one action", async ({ page }) => {
   await seed(page, sessionFor(cheers, "hidden", [diceCard]));
-  await page.getByRole("button", { name: "Reveal card", exact: true }).click();
-  // Hammer the card while the turn is committed. Dispatch directly: the card
-  // is mid-animation, so Playwright's stability wait would block a real click.
+  await expect(
+    page.getByRole("button", { name: "Reveal card", exact: true }),
+  ).toBeVisible();
+  // Reveal and hammer the card in one synchronous burst, so every extra tap
+  // lands while the turn is committed however slow the runner is. Dispatch
+  // directly: Playwright's stability wait would block a real mid-flip click.
   await page.locator(".game-card").evaluate((el) => {
-    for (let i = 0; i < 8; i++) (el as HTMLButtonElement).click();
+    for (let i = 0; i < 9; i++) (el as HTMLButtonElement).click();
   });
   await expect(page.locator(".progress")).toContainText("1 /");
   const saved = await page.evaluate(

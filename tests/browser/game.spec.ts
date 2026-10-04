@@ -52,9 +52,12 @@ test("@release legacy finite game, rapid taps, restore, previous card, replay an
     localStorage.setItem(k, JSON.stringify(s));
   }, key);
   await forcePlainFirst(page, 2);
-  await page.getByRole("button", { name: "Reveal card" }).click();
+  // The reveal and the rapid taps go in one synchronous burst. Sent as two
+  // steps, a slow runner can finish the flip in between, and the first
+  // "rapid" tap then discards the card.
+  await expect(page.getByRole("button", { name: "Reveal card" })).toBeVisible();
   await page.locator(".game-card").evaluate((el) => {
-    for (let i = 0; i < 8; i++) (el as HTMLElement).click();
+    for (let i = 0; i < 9; i++) (el as HTMLElement).click();
   });
   await ready(page);
   await expect(page.locator(".card-front")).toHaveCSS(

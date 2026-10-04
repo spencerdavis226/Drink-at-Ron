@@ -2,9 +2,9 @@
 
 Updated 2026-10-04. **Single authoritative handoff.** Read `AGENTS.md` first. Older handoffs are in `docs/STATUS_ARCHIVE.md` (reference only). Direct user instructions win.
 
-## Update offer survives an early takeover; update check hardened (2026-10-04, committed locally, not pushed)
+## Update offer survives an early takeover; update check hardened (2026-10-04, pushed as `aeb84dd`; CI run `37244462749` passed and deployed)
 
-**Trigger.** CI run `37212135022` (`10fd5a4`, no app change) failed in `npm run test:update`: `forceUpdate` timed out after 30 s waiting for the second new worker to take over (`scripts/check-update.ts`). The other failure that day (`38e45f8`) was unrelated: a WebKit release-smoke `toHaveText` timeout in `game.spec.ts`, not looked into.
+**Trigger.** CI run `37212135022` (`10fd5a4`, no app change) failed in `npm run test:update`: `forceUpdate` timed out after 30 s waiting for the second new worker to take over (`scripts/check-update.ts`). The other failure that day (`38e45f8`) was a test race, since fixed: `game.spec.ts:39` sent the reveal and its eight "rapid" taps as two steps, so on a slow runner the flip finished in between and a tap discarded the card (the test then read an empty title from the hidden face). Reproduced exactly by delaying the taps 800 ms; it and the same pattern in `motion.spec.ts` now send reveal and taps in one synchronous burst (24/24 over 6 repeats in Chromium and WebKit). The app was behaving correctly.
 
 **Found.** The CI timeout itself was not reproduced (8 old-script runs under 8x and 20x CPU throttling and with a forced in-flight update check all passed), so its exact cause is unproven. Probing it did expose a real app bug: when a new release's worker takes control before the app has mounted (the first render is held for its art) or before the update hook is listening, the takeover went unnoticed and Update game was never offered that session. A probe that swaps the build while the reloaded page is still loading, at 8x CPU throttle, failed 4 of 5 runs before the fix and passed 5 of 5 after it.
 
