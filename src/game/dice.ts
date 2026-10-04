@@ -45,6 +45,14 @@ export function validateDice(value: unknown): asserts value is DiceDefinition {
     d.count > 4
   )
     throw Error("Invalid dice: use one to four d6 or d20 dice");
+  if (
+    d.choice !== undefined &&
+    ![d.choice?.skip, d.choice?.roll].every(
+      (label) =>
+        typeof label === "string" && !!label.trim() && label.length <= 14,
+    )
+  )
+    throw Error("Invalid dice choice");
   if (d.doubles !== undefined) {
     if (d.count < 2 || !templateIsValid(d.doubles, d.count))
       throw Error("Invalid doubles instruction");

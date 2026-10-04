@@ -88,10 +88,12 @@ export function parseSession(raw: string): SessionState {
   validateRoll(s.previousRoll, previous?.dice);
   if (
     (s.phase === "hidden" && s.roll !== null) ||
-    (previous?.dice && !s.previousRoll?.returned) ||
+    // A choice card may have been put aside without a roll.
+    (previous?.dice && !previous.dice.choice && !s.previousRoll) ||
     (s.previousRoll && !s.previousRoll.returned) ||
     (s.phase === "complete" &&
       current.dice &&
+      !(current.dice.choice && !s.roll && !s.previousRoll) &&
       (!s.roll?.returned ||
         JSON.stringify(s.roll) !== JSON.stringify(s.previousRoll)))
   )

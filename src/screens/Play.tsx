@@ -9,7 +9,7 @@ import {
 import type { SessionState, CardDefinition } from "../game/types";
 import { diceResultText } from "../presentation/dice/result-text";
 import { diceNotation } from "../game/dice";
-import { currentCard } from "../game/engine";
+import { awaitingChoice, currentCard } from "../game/engine";
 import type { Motion } from "../presentation/controller";
 import { cardPacks } from "../presentation/packs";
 import { CardFace } from "../components/Cards";
@@ -20,6 +20,7 @@ export function Play({
   transition,
   finishingRoll = false,
   onTap,
+  onChoose,
   onRevealRoll,
   onFinish,
   renderFace,
@@ -30,13 +31,18 @@ export function Play({
   transition: number;
   finishingRoll?: boolean;
   onTap: () => void;
+  onChoose: (option: "skip" | "roll") => void;
   onRevealRoll: () => void;
   onFinish: (id: number) => void;
   renderFace?: (card: CardDefinition) => ReactNode;
   overlay?: boolean;
 }) {
   const card = currentCard(session),
-    ref = useRef<HTMLButtonElement>(null);
+    ref = useRef<HTMLButtonElement>(null),
+    choiceRef = useRef<HTMLDivElement>(null);
+  // The plaques arrive once the card has landed face up and leave with the
+  // decision; the card itself takes no action while they are up.
+  const choice = !motion && awaitingChoice(session) ? card.dice!.choice! : null;
   // WebKit can paint the reverse of a nested, clipped 3D face despite
   // backface-visibility. Cull by the actual rendered angle, not a timer, so
   // interrupted/reduced-motion turns cannot expose mirrored card text.
@@ -124,7 +130,9 @@ export function Play({
               }. ${diceResultText(card, session.roll)}`
             : ""}
         </span>
-        <div className={`card-stage ${motion ?? ""}`}>
+        <div
+          className={`card-stage ${motion ?? ""} ${choice ? "choosing" : ""}`}
+        >
           <div className="deck-under" aria-hidden="true" />
           <button
             ref={ref}
@@ -135,9 +143,21 @@ export function Play({
                 !!session.roll &&
                 !session.roll.returned &&
                 motion !== "roll";
-              if (!awaitingReveal) onTap();
+              if (choice) {
+                // Point at the plaques instead of acting on a stray tap.
+                if (!matchMedia("(prefers-reduced-motion: reduce)").matches)
+                  choiceRef.current?.animate(
+                    [
+                      { transform: "scale(1)" },
+                      { transform: "scale(1.05)" },
+                      { transform: "scale(1)" },
+                    ],
+                    { duration: 240, easing: "ease-out" },
+                  );
+              } else if (!awaitingReveal) onTap();
             }}
             aria-disabled={
+              !!choice ||
               (!!motion && motion !== "roll") ||
               (!!card.dice &&
                 !!session.roll &&
@@ -147,18 +167,20 @@ export function Play({
             aria-label={
               session.phase === "hidden"
                 ? "Reveal card"
-                : card.dice && !session.roll?.returned
-                  ? session.roll
-                    ? motion === "roll"
-                      ? "Finish dice roll"
-                      : "Revealing dice result"
-                    : `Roll ${diceNotation(card.dice)}. ${card.rules}`
-                  : `${card.title}. ${session.roll?.returned ? `Rolled ${session.roll.total}. ${diceResultText(card, session.roll)}` : card.rules} ${cardPacks(
-                      card.id,
-                      session.config.packIds,
-                    )
-                      .map((pack) => pack.title)
-                      .join(", ")}. Tap to put this card aside.`
+                : choice
+                  ? `${card.title}. ${card.rules} Choose ${choice.skip} or ${choice.roll}.`
+                  : card.dice && !session.roll?.returned
+                    ? session.roll
+                      ? motion === "roll"
+                        ? "Finish dice roll"
+                        : "Revealing dice result"
+                      : `Roll ${diceNotation(card.dice)}. ${card.rules}`
+                    : `${card.title}. ${session.roll?.returned ? `Rolled ${session.roll.total}. ${diceResultText(card, session.roll)}` : card.rules} ${cardPacks(
+                        card.id,
+                        session.config.packIds,
+                      )
+                        .map((pack) => pack.title)
+                        .join(", ")}. Tap to put this card aside.`
             }
           >
             <span
@@ -182,6 +204,29 @@ export function Play({
               </span>
             </span>
           </button>
+          {choice && (
+            <div
+              ref={choiceRef}
+              className="card-choice"
+              role="group"
+              aria-label="Your choice"
+            >
+              <button
+                className="card-choice-option skip"
+                onClick={() => onChoose("skip")}
+              >
+                {choice.skip}
+              </button>
+              <button
+                className="card-choice-option roll"
+                aria-label={`${choice.roll}: roll ${diceNotation(card.dice!)}`}
+                onClick={() => onChoose("roll")}
+              >
+                {choice.roll}
+                <small>{diceNotation(card.dice!)}</small>
+              </button>
+            </div>
+          )}
         </div>
       </section>
       {overlay &&

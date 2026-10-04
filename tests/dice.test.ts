@@ -1,5 +1,11 @@
 import { describe, expect, it, vi } from "vitest";
-import { advance, createSession, replaySession } from "../src/game/engine";
+import {
+  advance,
+  awaitingChoice,
+  createSession,
+  replaySession,
+  skipRoll,
+} from "../src/game/engine";
 import {
   rollDice,
   returnToCard,
@@ -310,4 +316,106 @@ describe("dice transactions and saves", () => {
       expect(s.roll?.values).toEqual([1 + Math.floor(sample * 20)]);
     },
   );
+});
+
+describe("choice cards", () => {
+  const choiceCard = diceCards.find((c) => c.id === "house.sheet-023")!;
+  const controller = (limit: number | null = 2) => {
+    const persist = vi.fn(),
+      effect = vi.fn(),
+      c = new PresentationController(
+        session(limit, choiceCard),
+        persist,
+        effect,
+      );
+    c.tap();
+    settle(c);
+    return { c, persist, effect };
+  };
+  const lastSave = (persist: ReturnType<typeof vi.fn>) =>
+    parseSession(JSON.stringify(persist.mock.calls.at(-1)![0]));
+  it("marks the supplied do-it-or-roll rows and rejects bad labels", () => {
+    expect(diceCards.filter((c) => c.dice!.choice).map((c) => c.id)).toEqual(
+      [4, 8, 9, 23, 42, 62].map(
+        (row) => `house.sheet-0${String(row).padStart(2, "0")}`,
+      ),
+    );
+    for (const choice of [
+      {},
+      { skip: "Do it" },
+      { skip: " ", roll: "Refuse" },
+      { skip: "Do it", roll: "A label far too long" },
+    ])
+      expect(() => validateDice({ ...choiceCard.dice, choice })).toThrow();
+  });
+  it("ignores taps until an option is picked", () => {
+    const { c, persist } = controller();
+    for (let i = 0; i < 5; i++) c.tap();
+    expect(persist).toHaveBeenCalledTimes(1);
+    expect(c.getSnapshot().motion).toBeNull();
+    expect(awaitingChoice(c.getSnapshot().session!)).toBe(true);
+    expect(advance(c.getSnapshot().session!)).toBe(c.getSnapshot().session);
+  });
+  it("puts the card aside unrolled and restores that save", () => {
+    const { c, persist, effect } = controller();
+    c.choose("skip");
+    c.choose("skip");
+    c.choose("roll");
+    expect(persist).toHaveBeenCalledTimes(2);
+    expect(effect).toHaveBeenLastCalledWith("discard");
+    expect(c.getSnapshot().motion).toBe("discard");
+    const saved = lastSave(persist);
+    expect(saved).toMatchObject({
+      phase: "hidden",
+      discarded: 1,
+      roll: null,
+      previousRoll: null,
+      previousId: choiceCard.id,
+    });
+  });
+  it("completes a finite game on an unrolled choice card", () => {
+    const { c, persist } = controller(1);
+    c.choose("skip");
+    expect(lastSave(persist)).toMatchObject({
+      phase: "complete",
+      roll: null,
+      previousRoll: null,
+    });
+  });
+  it("rolls exactly as a plain dice card when the roll is picked", () => {
+    const { c, persist } = controller();
+    c.choose("roll");
+    c.choose("skip");
+    expect(c.getSnapshot().motion).toBe("roll");
+    const rolled = lastSave(persist);
+    expect(rolled.roll!.instruction).toBe(`Drink ${rolled.roll!.total}.`);
+    expect(skipRoll(rolled)).toBe(rolled);
+    settle(c);
+    c.revealRoll();
+    settle(c);
+    c.tap();
+    expect(lastSave(persist)).toMatchObject({
+      phase: "hidden",
+      previousRoll: { returned: true },
+    });
+  });
+  it("still requires a roll on dice cards without a choice", () => {
+    const plain = advance(session());
+    expect(skipRoll(plain)).toBe(plain);
+    const c = new PresentationController(plain, vi.fn());
+    c.choose("skip");
+    expect(c.getSnapshot().session).toBe(plain);
+    expect(() =>
+      parseSession(
+        JSON.stringify({
+          ...plain,
+          phase: "hidden",
+          position: 0,
+          cycle: 1,
+          discarded: 1,
+          previousId: fixture.id,
+        }),
+      ),
+    ).toThrow("Invalid dice progress");
+  });
 });

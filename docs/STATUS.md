@@ -2,6 +2,40 @@
 
 Updated 2026-10-04. **Single authoritative handoff for OpenCode Go, Codex, and other editors.** Read `AGENTS.md` first. This replaces the old numbered model-routing plan; historical studies are references, not new work orders. Direct user instructions win.
 
+## First screen waits for its painted art (2026-10-04, local, uncommitted)
+
+**Report.** On a fresh Home Screen install the Play button showed a flat tan bar with odd top and bottom bands instead of the painted plate (owner's iPhone screenshot).
+
+**Cause.** `button.webp` is a CSS `border-image`. The browser only requests it after the stylesheet is parsed and the button exists, and WebKit paints neither a partial nine-piece image nor the border while it is pending, so the gradient fallback showed (its bands were the gradient repeating under the transparent border). An installed app starts with empty storage, so its first launch downloads the art while the service worker precaches 2.7 MiB on the same connection. The file itself is served and precached correctly on Pages (checked 200, 93 KiB). Not established: whether the bar on the phone was a slow load or stayed until relaunch.
+
+**Change.** `src/main.tsx` holds the first render until the first screen's art (`table.webp`, `button.webp`) and the Grenze faces are decoded; a resumed game also waits for every shared surface and the card frame. A 4 s cap falls through to the themed fallbacks. `index.html` preloads `table.webp`, `button.webp`, and `grenze.woff2` so they download alongside the script. `.primary` fallback gradient is now `border-box` (no bands if it is ever seen). `tests/browser/pages.spec.ts` gains an `@release` test that delays the art 1.5 s and asserts no Play button exists until it arrives; `motion.spec.ts` `seed` waits for the now-asynchronous mount.
+
+**Verified.** `npm test` 98 passed; Pages-path build and budgets passed (2739 KiB runtime; 94.5 KiB initial + 147.8 KiB lazy gzip); full production E2E Chromium + emulated WebKit 154 passed, 3 skipped, 1 flaky (`orientation.spec.ts:7` WebKit, then 8/8 in isolation); update flow passed. Another session was editing `src/style.css` and `tests/browser/layout.spec.ts` during these runs. **Not verified:** a physical iPhone or the simulator's installed app.
+
+## Choice cards: do it or roll (2026-10-04, local, uncommitted)
+
+**Request.** Cards like "Wear Becca's glasses for a round. Else drink 2d6" always rolled. They now offer the choice on the card.
+
+**Change.** `DiceDefinition.choice?: { skip, roll }` (labels, at most 14 characters, checked by `validateDice`); `choice()` helper in `src/content/author.ts`. Engine: `awaitingChoice` and `skipRoll` in `src/game/engine.ts` (`advance` is unchanged and still refuses an unrolled dice card). Controller: `choose("skip" | "roll")`; `tap()` does nothing while a choice is pending. `parseSession` accepts an unrolled previous or final card only when that card has `dice.choice`. No session schema change, same storage key; games already in progress keep their snapshot and the old behaviour. `Play.tsx` renders two `.card-choice` plaques as siblings of the card button after the flip lands (styles in `card-front.css`); the parchment body shrinks above them, and a tap on the card only pulses them. Six House rows are marked: `house.sheet-004` (roll = "Got pitted", skip = "Take a shot"; its instruction is now "Drink {total} water."), `-008`, `-009`, `-023`, `-042`, `-062`. Sheet wording is untouched. Fixed-number "or drink 4" cards are unchanged.
+
+**Verified.** `npm test` 104 passed (6 new in `tests/dice.test.ts`). Pages-path build and budgets passed (95.0 KiB initial + 147.8 KiB lazy gzip). New `@release` test in `tests/browser/dice.spec.ts` at 390×844 and 375×548, Chromium and WebKit, 4/4: plaques inside the card, at least 48px tall, no rule text under them, card tap inert, skip saves and reloads, roll resolves. `npm run cards:review` regenerated.
+
+**Pre-push review of the whole working tree (same day).** Full production E2E: 158 passed, 3 intentional WebKit offline skips, 1 flaky (`orientation.spec.ts:7`, WebKit, first attempt only). Cause: `PortraitGate` read the orientation at render and attached its listeners in an effect, so a rotation in between was missed; the delayed first render made that window reachable. Fixed by re-checking when the listeners attach (`src/components/PortraitGate.tsx`). After the fix: release smoke 32/32 with no retry, update flow passed. `pages.spec.ts` "first screen waits for its painted art and fonts", recorded below as failing, passed 10/10 on a quiet machine; the earlier failure was host load.
+
+**Not verified.** A physical iPhone or iPad (thumb reach, legibility at table distance), enlarged text with the plaques up, workshop suite.
+
+## Play screen fits a Safari tab (2026-10-04, local, uncommitted)
+
+**Report.** iPhone 15 Pro, iOS 27, Safari tab with the two-row bottom toolbar: the card's bottom edge was cut off and the page could be dragged up and down.
+
+**Cause.** The card was only height-fitted inside `@media (min-height: 760px)`. A Safari tab with its toolbar showing is about 650 to 715px tall on a 6.1in iPhone, so the card fell back to width sizing (337×505 at 393 wide) and the play screen came out a few pixels taller than the viewport. Playwright never saw it: every layout test used 844/852 or 568.
+
+**Change.** `src/style.css`: `.card-stage` width is always `min(100% - 8px, (--app-height - --play-chrome) * 2/3, 470px)` with a 220px floor; `--play-chrome` on `.playing` adds up the real padding (safe-area insets included), topbar, counter and gaps instead of a fixed 175px (148px base at `min-width: 700px`). The `min-height: 760px` card rule is gone. `html:has(.playing) { overscroll-behavior: none }` stops rubber-banding on the play screen; Setup still scrolls. `--app-height` is unchanged (`100svh` in a tab, `100lvh` installed). `tests/browser/layout.spec.ts`: new `@release` test checks no page scroll, the card ending above the fold and 2:3 at eight viewports from 375×548 to 820×1050.
+
+**Verified.** Pages-path build and budgets passed. Layout spec 22/22 in Chromium and WebKit. iOS 27.0 simulator (iPhone 17 Pro), Safari tab with the compact toolbar: card back and front fully visible above the toolbar; a vertical drag leaves the page in place. `pages.spec.ts:109` ("first screen waits for its painted art and fonts", from the earlier uncommitted preload work) failed in both browsers at `expect(delivered).toBe(false)`; not investigated here.
+
+**Not verified.** The two-row bottom toolbar from the report (the simulator used the compact one), a physical iPhone, rubber-band behaviour mid-drag, the installed app after this change on a device, `npm test`, full E2E, workshop.
+
 ## Installed app is full screen (2026-10-04, local, uncommitted)
 
 **Result.** The strip under the installed app and the flat band behind the status bar are not system-owned. They are the page's own background showing where the document is not painted. Fixed in CSS plus one small effect; the wood now covers the whole display in the installed app on the iOS 18.5 and iOS 27.0 iPhone simulators. This supersedes the two sections below ("Wood to the edges", "installed iPhone bottom strip") and the claim that WebKit bug 301994 puts the strip outside the DOM. Screenshots: `docs/evidence/standalone-ios27-{before,after}.jpg`.

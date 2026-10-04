@@ -1,6 +1,6 @@
 # Card review sheet
 
-Generated 2026-09-26 by `npm run cards:review`. Do not edit by hand — edit the
+Generated 2026-10-04 by `npm run cards:review`. Do not edit by hand — edit the
 source modules under `src/content` and regenerate. Each row is one card;
 the Review column is intentionally blank so you can mark it up.
 
@@ -134,7 +134,7 @@ the Review column is intentionally blank so you can mark it up.
 
 | Review | Title | ID | Cat | Rules | Dice |
 | --- | --- | --- | --- | --- | --- |
-| ☐ | California Sober | `house.sheet-004` | sip | Get pitted and smoke something, then drink 1d6 water. Else, take a shot. | 1d6 — Drink {total} water if you got pitted, or take a shot. |
+| ☐ | California Sober | `house.sheet-004` | sip | Get pitted and smoke something, then drink 1d6 water. Else, take a shot. | 1d6 — Drink {total} water. |
 | ☐ | The Game Giveth | `house.sheet-006` | sip | Give 3 drinks. If "The Game Taketh" was already played, multiply by 1d6. |  |
 | ☐ | The Game Taketh | `house.sheet-007` | sip | Take 3 drinks. If "The Game Giveth" was already played, multiply by 1d6. |  |
 | ☐ | Ursaring | `house.sheet-016` | sip | Give 13 and apologize |  |

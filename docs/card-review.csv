@@ -116,7 +116,7 @@ pack,id,title,category,rules,dice,review
 "core","core.heavy-hand","Heavy Hand","rule","Roll d6. All drinks are doubled until your next turn.","1d6 — Double every drink until your next turn.",""
 "core","core.personal-space","Personal Space","rule","Until your next turn, everyone sits on their own hands. Slip: drink 2.","",""
 "core","core.formal-night","Formal Night","rule","Until your next turn, everyone addresses others as my liege. Slip: drink 2.","",""
-"house","house.sheet-004","California Sober","sip","Get pitted and smoke something, then drink 1d6 water. Else, take a shot.","1d6 — Drink {total} water if you got pitted, or take a shot.",""
+"house","house.sheet-004","California Sober","sip","Get pitted and smoke something, then drink 1d6 water. Else, take a shot.","1d6 — Drink {total} water.",""
 "house","house.sheet-006","The Game Giveth","sip","Give 3 drinks. If ""The Game Taketh"" was already played, multiply by 1d6.","",""
 "house","house.sheet-007","The Game Taketh","sip","Take 3 drinks. If ""The Game Giveth"" was already played, multiply by 1d6.","",""
 "house","house.sheet-016","Ursaring","sip","Give 13 and apologize","",""

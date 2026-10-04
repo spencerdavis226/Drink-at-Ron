@@ -15,6 +15,9 @@ export interface DiceDefinition {
   /** Replaces the normal instruction when every die shows the same face. */
   doubles?: string;
   outcomes?: DiceOutcome[];
+  /** The roll is one of two options. `skip` labels the option that puts the
+   * card aside without rolling; `roll` labels the option that rolls. */
+  choice?: { skip: string; roll: string };
 }
 export interface DiceRoll {
   values: number[];

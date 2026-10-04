@@ -56,6 +56,16 @@ export const roll = (
 ): DiceDefinition => ({ version: 1, count, sides, instruction });
 
 /**
+ * Make the roll one of two options the player picks on the card. `skip` puts
+ * the card aside unrolled; `rollLabel` rolls. Keep both to a couple of words.
+ */
+export const choice = (
+  dice: DiceDefinition,
+  skip: string,
+  rollLabel: string,
+): DiceDefinition => ({ ...dice, choice: { skip, roll: rollLabel } });
+
+/**
  * A dice card whose result branches. Outcomes must cover every total exactly
  * once; `validateDice` enforces that at build time.
  */

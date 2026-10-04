@@ -526,3 +526,90 @@ test("a finish request during lazy loading survives startup without another roll
   });
   expect((await saved(page)).discarded).toBe(0);
 });
+
+async function seedChoice(page: Page) {
+  const card = cards.find((c) => c.id === "house.sheet-023")!;
+  const house = packs.find((p) => p.id === "house")!;
+  const session = createSession(
+    { version: 1, packIds: ["house"], limit: 3 },
+    [card],
+    [{ ...house, cardIds: [card.id] }],
+  );
+  session.phase = "revealed";
+  await page.goto("./");
+  await Promise.all([
+    page.waitForNavigation(),
+    page.evaluate(
+      ({ key, session }) => {
+        localStorage.setItem(key, JSON.stringify(session));
+        location.reload();
+      },
+      { key, session },
+    ),
+  ]);
+  await expect(page.locator(".card-choice")).toBeVisible();
+}
+for (const viewport of [
+  { width: 390, height: 844 },
+  { width: 375, height: 548 },
+])
+  test(`choice card offers both options on the card at ${viewport.width}x${viewport.height} @release`, async ({
+    page,
+  }) => {
+    await page.setViewportSize(viewport);
+    await seedChoice(page);
+    const skip = page.locator(".card-choice-option.skip");
+    const roll = page.locator(".card-choice-option.roll");
+    await expect(skip).toHaveAccessibleName("Wear them");
+    await expect(roll).toHaveAccessibleName("Refuse: roll 2d6");
+    const boxes = await Promise.all(
+      [".game-card", ".study-body", ".study-rules p"]
+        .map((selector) => page.locator(selector))
+        .concat(skip, roll)
+        .map((locator) => locator.boundingBox()),
+    );
+    const [cardBox, body, rules, left, right] = boxes.map((box) => box!);
+    for (const plaque of [left, right]) {
+      expect(plaque.height).toBeGreaterThanOrEqual(48);
+      expect(plaque.x).toBeGreaterThanOrEqual(cardBox.x);
+      expect(plaque.x + plaque.width).toBeLessThanOrEqual(
+        cardBox.x + cardBox.width + 1,
+      );
+      expect(plaque.y + plaque.height).toBeLessThanOrEqual(
+        cardBox.y + cardBox.height + 1,
+      );
+      // The parchment ends above the plaques, so no rule text sits under them.
+      expect(body.y + body.height).toBeLessThanOrEqual(plaque.y + 1);
+    }
+    expect(rules.y + rules.height).toBeLessThanOrEqual(left.y);
+    expect(left.x + left.width).toBeLessThanOrEqual(right.x);
+    // A tap on the card itself neither rolls nor discards.
+    await page.locator(".game-card").click({ force: true });
+    expect((await saved(page)).roll).toBeNull();
+    expect((await saved(page)).discarded).toBe(0);
+    await skip.click();
+    await expect(page.locator(".game-card")).toHaveAccessibleName(
+      "Reveal card",
+    );
+    await expect(page.locator(".card-choice")).toHaveCount(0);
+    expect(await saved(page)).toMatchObject({
+      discarded: 1,
+      phase: "hidden",
+      roll: null,
+      previousRoll: null,
+    });
+    // The unrolled card survives a reload and reads back as the previous card.
+    await page.reload();
+    await expect(page.locator(".game-card")).toHaveAccessibleName(
+      "Reveal card",
+    );
+    await page.locator(".game-card").click();
+    await roll.click();
+    await expect(page.locator(".resolved-instruction")).toHaveText(
+      /^Drink \d+\.$/,
+      { timeout: 15000 },
+    );
+    const rolled = await saved(page);
+    expect(rolled.roll.values).toHaveLength(2);
+    expect(rolled.roll.returned).toBe(true);
+  });

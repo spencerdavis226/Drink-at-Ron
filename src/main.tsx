@@ -246,6 +246,7 @@ function App() {
             transition={transition}
             finishingRoll={finishingRoll}
             onTap={() => controller.tap()}
+            onChoose={(option) => controller.choose(option)}
             onRevealRoll={() => controller.revealRoll()}
             onFinish={finish}
           />

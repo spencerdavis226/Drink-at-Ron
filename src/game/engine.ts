@@ -73,6 +73,10 @@ export function createSession(
 export function currentCard(s: SessionState) {
   return s.cards.find((c) => c.id === s.order[s.position])!;
 }
+/** A revealed choice card whose option has not been picked yet. */
+export function awaitingChoice(s: SessionState) {
+  return s.phase === "revealed" && !s.roll && !!currentCard(s).dice?.choice;
+}
 export function advance(
   s: SessionState,
   random: Random = Math.random,
@@ -80,6 +84,16 @@ export function advance(
   if (s.phase === "complete") return s;
   if (s.phase === "hidden") return { ...s, phase: "revealed" };
   if (currentCard(s).dice && !s.roll?.returned) return s;
+  return discard(s, random);
+}
+/** Take the no-roll option of a choice card: it is put aside unrolled. */
+export function skipRoll(
+  s: SessionState,
+  random: Random = Math.random,
+): SessionState {
+  return awaitingChoice(s) ? discard(s, random) : s;
+}
+function discard(s: SessionState, random: Random): SessionState {
   const history = { previousRoll: s.roll, roll: null };
   const discarded = s.discarded + 1,
     previousId = currentCard(s).id;

@@ -1,5 +1,5 @@
 import type { CardDefinition, PackDefinition } from "../game/types";
-import { cardFactory, roll } from "./author";
+import { cardFactory, choice, roll } from "./author";
 
 // "The House deck": one card per nonblank row of the supplied Sheet1 CSV
 // (`Drink at Ron - Sheet1.csv`). Copy is restored verbatim from that sheet —
@@ -23,7 +23,7 @@ export const houseCards: CardDefinition[] = [
     "California Sober",
     "sip",
     "Get pitted and smoke something, then drink 1d6 water. Else, take a shot.",
-    roll(1, 6, "Drink {total} water if you got pitted, or take a shot."),
+    choice(roll(1, 6, "Drink {total} water."), "Take a shot", "Got pitted"),
   ),
   houseCard(
     "sheet-005",
@@ -48,14 +48,14 @@ export const houseCards: CardDefinition[] = [
     "Fetch",
     "challenge",
     "Get something from outside in under 30 seconds or drink 1d20",
-    roll(1, 20, "Drink {total}."),
+    choice(roll(1, 20, "Drink {total}."), "Got it", "Drink"),
   ),
   houseCard(
     "sheet-009",
     "Steve's Beans",
     "challenge",
     "Text Steve and tell them his beans are good. Else drink 2d6",
-    roll(2, 6, "Drink {total}."),
+    choice(roll(2, 6, "Drink {total}."), "Text Steve", "Refuse"),
   ),
   houseCard(
     "sheet-010",
@@ -125,7 +125,7 @@ export const houseCards: CardDefinition[] = [
     "Headache Simulator",
     "challenge",
     "Wear Becca's glasses for a round. Else drink 2d6",
-    roll(2, 6, "Drink {total}."),
+    choice(roll(2, 6, "Drink {total}."), "Wear them", "Refuse"),
   ),
   houseCard(
     "sheet-024",
@@ -214,7 +214,7 @@ export const houseCards: CardDefinition[] = [
     "Pet that dog",
     "challenge",
     "Better pet any dog in the room, or take 1d6",
-    roll(1, 6, "Drink {total}."),
+    choice(roll(1, 6, "Drink {total}."), "Pet the dog", "Refuse"),
   ),
   houseCard(
     "sheet-043",
@@ -324,7 +324,7 @@ export const houseCards: CardDefinition[] = [
     "What was that?",
     "challenge",
     "Read the last text message you said out loud. Else, drink 1d6.",
-    roll(1, 6, "Drink {total}."),
+    choice(roll(1, 6, "Drink {total}."), "Read it", "Refuse"),
   ),
   houseCard("sheet-063", "Straight to jail", "sip", "Finish your drink"),
   houseCard("sheet-064", "Singles", "sip", "Drink if you're single"),

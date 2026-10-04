@@ -1,5 +1,11 @@
 import { rollDice, returnToCard } from "../game/dice";
-import { advance, currentCard, type Random } from "../game/engine";
+import {
+  advance,
+  awaitingChoice,
+  currentCard,
+  skipRoll,
+  type Random,
+} from "../game/engine";
 import type { SessionState } from "../game/types";
 import { theme } from "./theme";
 // Card motion phases. The dialog enter/exit tokens share the manifest but are
@@ -88,6 +94,8 @@ export class PresentationController {
       return;
     }
     if (!session || motion || session.phase === "complete") return;
+    // A choice card only moves through choose(); a stray tap must never roll.
+    if (awaitingChoice(session)) return;
     if (
       session.phase === "revealed" &&
       currentCard(session).dice &&
@@ -96,10 +104,7 @@ export class PresentationController {
       // Once committed, only the renderer's automatic reveal can return the
       // result to the card. Taps during the readable landing beat do nothing.
       if (session.roll) return;
-      const next = rollDice(session, this.diceRandom);
-      this.persist(next);
-      this.transition(next, "roll");
-      this.effect("roll");
+      this.roll(session);
       return;
     }
     const next = advance(session, this.random);
@@ -112,6 +117,22 @@ export class PresentationController {
       revealing ? null : session,
     );
     this.effect(revealing ? "reveal" : "discard");
+  }
+  private roll(session: SessionState) {
+    const next = rollDice(session, this.diceRandom);
+    this.persist(next);
+    this.transition(next, "roll");
+    this.effect("roll");
+  }
+  /** Commit one option of a choice card: roll the dice, or put it aside. */
+  choose(option: "skip" | "roll") {
+    const { session, motion } = this.state;
+    if (!session || motion || !awaitingChoice(session)) return;
+    if (option === "roll") return this.roll(session);
+    const next = skipRoll(session, this.random);
+    this.persist(next);
+    this.transition(next, "discard", session);
+    this.effect("discard");
   }
   revealRoll() {
     const { session, motion } = this.state;
