@@ -308,5 +308,28 @@ if (import.meta.env.DEV && params.get("preview") === "1") {
     ),
   );
 } else {
-  renderApp();
+  // The painted surfaces are CSS images, which WebKit only discovers once the
+  // element exists and never paints partially: a first launch would show the
+  // flat fallback Play bar and system serif until they arrive. Hold the first
+  // render until what that screen needs is decoded; a resumed game opens on
+  // the table, so it waits for the card surfaces as well.
+  let resuming = false;
+  try {
+    resuming = localStorage.getItem(SAVE_KEY) !== null;
+  } catch {
+    // Storage unavailable: the app opens on setup.
+  }
+  const firstScreen: string[] = resuming
+    ? [...Object.values(theme.assets), ...coreFrameSurfaces]
+    : [theme.assets.table, theme.assets.button];
+  const fonts = ["700 1em Grenze", "italic 600 1em Grenze"].map((font) =>
+    document.fonts.load(font).catch(() => undefined),
+  );
+  // A dead connection must not strand the app on bare wood; the themed
+  // fallbacks take over after the cap.
+  const cap = new Promise((resolve) => window.setTimeout(resolve, 4000));
+  void Promise.race([
+    Promise.all([...firstScreen.map(preloadUrl), ...fonts]),
+    cap,
+  ]).then(renderApp);
 }

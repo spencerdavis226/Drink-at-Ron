@@ -106,6 +106,33 @@ test("a Home Screen web app hides Install but keeps the in-game menu", async ({
   );
 });
 
+test("@release first screen waits for its painted art and fonts", async ({
+  page,
+}) => {
+  let delivered = false;
+  await page.route("**/art/button.webp", async (route) => {
+    await new Promise((resolve) => setTimeout(resolve, 1500));
+    delivered = true;
+    await route.continue();
+  });
+  // The preload hint holds the load event until the art arrives.
+  await page.goto("./", { waitUntil: "commit" });
+  const play = page.getByRole("button", { name: "Play", exact: true });
+  // Nothing is drawn with the fallback bar while the art is in flight.
+  await page.waitForTimeout(700);
+  expect(delivered).toBe(false);
+  await expect(play).toHaveCount(0);
+  await expect(play).toBeVisible();
+  expect(delivered).toBe(true);
+  expect(
+    await page.evaluate(
+      () =>
+        document.fonts.check("700 24px Grenze") &&
+        document.fonts.check("italic 600 24px Grenze"),
+    ),
+  ).toBe(true);
+});
+
 test("Play keeps a themed fallback if its painted border has not loaded", async ({
   page,
 }) => {

@@ -29,6 +29,8 @@ async function seed(page: Page, session: unknown) {
     { key, session },
   );
   await page.reload();
+  // The first render waits for the screen's art, so it lands after load.
+  await page.locator("#root > *").first().waitFor({ state: "attached" });
 }
 // A CSS transform matrix parsed without a browser DOM (the specs run in Node).
 const geometry = (transform: string) => {

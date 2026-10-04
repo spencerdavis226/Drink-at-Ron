@@ -58,6 +58,8 @@ export function PortraitGate() {
     const update = () => setBlocked(mobileLandscape());
     orientation.addEventListener("change", update);
     window.addEventListener("resize", update);
+    // A rotation between the first render and this effect has no event.
+    update();
     return () => {
       orientation.removeEventListener("change", update);
       window.removeEventListener("resize", update);

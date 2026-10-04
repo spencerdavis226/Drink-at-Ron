@@ -113,7 +113,7 @@ dialog p,
   position: relative;
   /* A deliberate fallback while the painted border image loads or offline
      image recovery is underway; never leave a raw square tan rectangle. */
-  background: linear-gradient(180deg, #ebc681, #ae7c3e);
+  background: linear-gradient(180deg, #ebc681, #ae7c3e) border-box;
   border: solid #a77536;
   border-width: 14px 22px;
   border-image: url("/art/button.webp") 110 210 fill / 14px 22px stretch;
