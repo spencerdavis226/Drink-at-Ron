@@ -175,6 +175,46 @@ test("Previous Card owns the same 2:3 geometry as gameplay", async ({
   expect(back!.y).toBeGreaterThanOrEqual(0);
   expect(back!.y + back!.height).toBeLessThanOrEqual(568);
 });
+test("@release the play screen fits a Safari tab at every phone height without scrolling", async ({
+  page,
+}) => {
+  await seed(page, revealed(longestRule));
+  await expect(page.locator(".card-stage")).toBeVisible();
+  // Visible heights of a Safari tab with its toolbar showing, from an
+  // iPhone SE to a Pro Max, plus the installed-app heights.
+  for (const viewport of [
+    { width: 375, height: 548 },
+    { width: 375, height: 635 },
+    { width: 393, height: 650 },
+    { width: 393, height: 695 },
+    { width: 402, height: 714 },
+    { width: 440, height: 780 },
+    { width: 393, height: 852 },
+    { width: 820, height: 1050 },
+  ]) {
+    await page.setViewportSize(viewport);
+    const fit = await page.evaluate(() => {
+      const stage = document
+        .querySelector(".card-stage")!
+        .getBoundingClientRect();
+      return {
+        scrollHeight: document.documentElement.scrollHeight,
+        clientHeight: document.documentElement.clientHeight,
+        bottom: stage.bottom,
+        ratio: stage.width / stage.height,
+      };
+    });
+    const at = `${viewport.width}x${viewport.height}`;
+    expect(fit.scrollHeight, `no page scroll at ${at}`).toBeLessThanOrEqual(
+      fit.clientHeight,
+    );
+    expect(fit.bottom, `card ends above the fold at ${at}`).toBeLessThanOrEqual(
+      viewport.height - 24,
+    );
+    // The stage is tilted 0.65deg, so its bounding box is a touch off 2:3.
+    expect(fit.ratio, `card keeps 2:3 at ${at}`).toBeCloseTo(2 / 3, 1);
+  }
+});
 test("an iOS top inset keeps topbar controls below the status-bar frost", async ({
   page,
 }) => {

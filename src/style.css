@@ -372,6 +372,19 @@ p {
   max-width: 650px;
   display: flex;
   flex-direction: column;
+  /* Everything on the play screen that is not the card: the app's own top and
+     bottom padding (safe areas included), the topbar and its inset clearance,
+     the counter, the gaps, and room for the stacked deck's offset and shadow.
+     The card takes whatever height is left, so the screen never scrolls. */
+  --play-chrome: calc(
+    max(16px, var(--top-safe)) + min(20px, var(--top-safe)) +
+      max(24px, env(safe-area-inset-bottom)) + 130px
+  );
+}
+/* The play screen is one fixed view: with the card fitted there is nothing to
+   scroll, so the page must not rubber-band either. Setup still scrolls. */
+html:has(.playing) {
+  overscroll-behavior: none;
 }
 .table {
   display: flex;
@@ -397,7 +410,17 @@ p {
   position: relative;
   isolation: isolate;
   perspective: 1600px;
-  width: min(calc(100% - 8px), 470px);
+  /* Width-limited on tall screens, height-limited on short ones (a Safari tab
+     with its toolbar showing is about 650px tall on a 6.1in iPhone). The
+     220px floor keeps the rules readable on tiny viewports, which scroll. */
+  width: max(
+    220px,
+    min(
+      calc(100% - 8px),
+      calc((var(--app-height) - var(--play-chrome)) * 2 / 3),
+      470px
+    )
+  );
   min-height: 0;
   margin: auto 0;
   aspect-ratio: 2/3;
@@ -716,16 +739,6 @@ dialog p {
   min-height: 50px;
 }
 @media (min-height: 760px) {
-  .playing {
-    min-height: var(--app-height);
-  }
-  .playing .card-stage {
-    width: min(
-      calc(100% - 8px),
-      calc((var(--app-height) - 175px) * 0.6667),
-      470px
-    );
-  }
   .intro {
     padding: 15px 0 42px;
   }
@@ -739,6 +752,12 @@ dialog p {
   }
   .intro {
     padding-top: 35px;
+  }
+  .playing {
+    --play-chrome: calc(
+      max(26px, var(--top-safe)) + min(20px, var(--top-safe)) +
+        max(24px, env(safe-area-inset-bottom)) + 148px
+    );
   }
   .playing .table {
     padding-top: 16px;
