@@ -434,21 +434,6 @@ dialog.closing {
   z-index: -1;
   pointer-events: none;
   overflow: hidden;
-  /* The Home Screen system strip cannot display DOM content. Let the warm
-     firelight disappear before the visible viewport ends so it meets the
-     page/manifest chrome colour instead of a hard, bright-to-dark seam. */
-  -webkit-mask-image: linear-gradient(
-    to bottom,
-    #000 0,
-    #000 calc(100% - 90px),
-    transparent 100%
-  );
-  mask-image: linear-gradient(
-    to bottom,
-    #000 0,
-    #000 calc(100% - 90px),
-    transparent 100%
-  );
 }
 .firelight {
   position: absolute;

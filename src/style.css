@@ -6,15 +6,15 @@
     "Segoe UI",
     sans-serif;
   color: #f5e6c8;
-  background: #17100c;
+  background: #271c11;
   font-synthesis: none;
   font-size: 16px;
   --gold: #dfb76f;
   --cream: #f5e6c8;
-  /* One flat colour the system can match. Installed iOS web apps paint the
-     Home Screen strip below the web view from the page background and cache it
-     at launch, so this value, the top band and the manifest stay identical. */
-  --chrome: #17100c;
+  /* The wood's edge colour. Installed iOS web apps paint the strip below the
+     web view from the page background and cache it at launch, so this value,
+     the page background and the manifest stay identical to the wood's edge. */
+  --chrome: #271c11;
   /* Top safe-area inset; a custom property so tests can pose an inset. */
   --top-safe: env(safe-area-inset-top, 0px);
 }
@@ -45,23 +45,11 @@ body:before {
   right: 0;
   left: 0;
   /* In affected standalone iOS builds the fixed containing block can retain
-     the physical screen height while the paintable viewport is shorter. Anchor
-     the bottom fade to the visible viewport, not the unreachable system strip. */
+     the physical screen height while the paintable viewport is shorter, so
+     size the wood to the visible viewport. */
   height: 100dvh;
   z-index: -1;
   background:
-    /* Installed iOS web apps reserve a system strip at the bottom that no DOM
-       element can paint. The system fills it from our cached page background,
-       so the table fades into exactly that colour instead of ending on a seam. */
-    linear-gradient(to top, var(--chrome) 0, var(--chrome) 6px, #17100c00 72px),
-    /* iOS 27 frosts the status-bar edge of installed web apps. A flat band
-       there keeps the frost invisible instead of smearing the table grain. */
-    linear-gradient(
-        to bottom,
-        var(--chrome) 0,
-        var(--chrome) calc(var(--top-safe) + 6px),
-        #17100c00 calc(var(--top-safe) + 64px)
-      ),
     radial-gradient(ellipse at 50% 40%, #110c0760, #100c0ac9),
     url("/art/table.webp") center/cover no-repeat;
   background-color: #211811;

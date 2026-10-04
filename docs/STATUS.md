@@ -2,6 +2,10 @@
 
 Updated 2026-09-26. **Single authoritative handoff for OpenCode Go, Codex, and other editors.** Read `AGENTS.md` first. This replaces the old numbered model-routing plan; historical studies are references, not new work orders. Direct user instructions win.
 
+## Wood to the edges (2026-10-03, local, uncommitted)
+
+Spencer disliked the top/bottom blur and asked for the wood to run to the edges. Removed the flat top band, bottom fade and firelight mask; the wood now paints edge to edge at `100dvh`. `--chrome`, the page background, `theme-color` and manifest colours changed from `#17100c` to `#271c11`, the measured bottom-edge average of the wood (393×852 and 834×1194), so the iOS-owned strip below the web view matches the last painted row. The strip itself still cannot show texture, and iOS 27's top frost is system-owned and remains. `tests/browser/layout.spec.ts` now averages the last row (±8) and expects no mask. Verified: layout+pages 26/26, release 22/22, update flow, build budgets unchanged. Not verified: the real installed iPhone (strip colour is cached at launch: close and reopen the icon). Capture: `/tmp/ron-wood-edge.png`.
+
 ## Review and improvement plan — iOS/iPadOS Home Screen app (2026-10-03)
 
 Read-only review of `main` plus the uncommitted chin-mitigation diff; no source behavior changed. Added `CLAUDE.md` (imports `AGENTS.md`) at the root and in `src/{game,app,content,presentation,presentation/dice,components,screens,workshop}`, `tests`, `scripts`, `docs`, `reference`, `public`, `assets`. Checked: `npm test` 98 passed, `tsc -b` clean. Not run: production build, Playwright, any physical device. Everything below about iOS behavior is unverified until observed on hardware.

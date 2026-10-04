@@ -201,35 +201,36 @@ test("an iOS top inset keeps topbar controls below the status-bar frost", async 
       visibleHeight: document.documentElement.clientHeight,
     };
   });
-  expect(chrome.chrome).toBe("#17100c");
-  expect(chrome.html).toBe("rgb(23, 16, 12)");
+  expect(chrome.chrome).toBe("#271c11");
+  expect(chrome.html).toBe("rgb(39, 28, 17)");
   // The OS-only chin must not push our bottom fade beneath the paintable view.
   expect(chrome.backdropHeight).toBeCloseTo(chrome.visibleHeight, 0);
-  // The flat status-bar band and the bottom blend into the system strip use
-  // the same page colour the installed app is sampled from.
-  expect(
-    chrome.layers.match(/rgb\(23, 16, 12\)/g)?.length ?? 0,
-  ).toBeGreaterThanOrEqual(2);
+  // The wood runs to the last row with no fade; the page background equals
+  // that edge so the OS-owned strip continues it.
   const atmosphere = await page.locator(".atmosphere").evaluate((el) => ({
     height: parseFloat(getComputedStyle(el).height),
     mask: getComputedStyle(el).maskImage,
   }));
   expect(atmosphere.height).toBeCloseTo(chrome.visibleHeight, 0);
-  expect(atmosphere.mask).toContain("rgba(0, 0, 0, 0)");
+  expect(atmosphere.mask).toBe("none");
   const { data, info } = await sharp(
     await page.screenshot({ animations: "disabled" }),
   )
     .raw()
     .toBuffer({ resolveWithObject: true });
-  const bottomCenter =
-    ((info.height - 3) * info.width + Math.floor(info.width / 2)) *
-    info.channels;
-  const edgePixel = [...data.subarray(bottomCenter, bottomCenter + 3)];
+  // Wood grain varies pixel to pixel, so compare the row's average.
+  const edgePixel = [0, 1, 2].map((channel) => {
+    let sum = 0;
+    for (let x = 0; x < info.width; x++)
+      sum +=
+        data[((info.height - 1) * info.width + x) * info.channels + channel];
+    return sum / info.width;
+  });
   // The last painted row needs to meet the OS-owned strip's chrome colour.
   for (const [channel, target] of edgePixel.map(
-    (value, i) => [value, [23, 16, 12][i]] as const,
+    (value, i) => [value, [39, 28, 17][i]] as const,
   )) {
-    expect(Math.abs(channel - target)).toBeLessThanOrEqual(6);
+    expect(Math.abs(channel - target)).toBeLessThanOrEqual(8);
   }
 
   await seed(page, revealed(longestRule));
