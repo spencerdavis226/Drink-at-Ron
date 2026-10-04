@@ -446,7 +446,9 @@ test("mode and add-ons persist while interruption restores a stable card", async
   await expect(
     page.getByRole("button", { name: "Long, 60 cards" }),
   ).toHaveAttribute("aria-pressed", "true");
-  await expect(page.locator(".pack-selector")).toContainText("VIP night");
+  await expect(page.locator(".pack-selector")).toHaveAccessibleName(
+    /VIP night/,
+  );
   await page.getByRole("button", { name: "Play", exact: true }).click();
   const config = await page.evaluate(
     (k) => JSON.parse(localStorage.getItem(k)!).config,
@@ -592,14 +594,12 @@ test("offline uses local Grenze and painted controls", async ({
       .evaluate((el) => getComputedStyle(el).borderImageSource),
   ).toContain("button.webp");
   await page.getByRole("button", { name: "Choose packs" }).click();
-  await expect
-    .poll(() =>
-      page
-        .getByRole("button", { name: /The Core deck/ })
-        .locator(".pack-logo img")
-        .evaluate((el) => (el as HTMLImageElement).naturalWidth),
-    )
-    .toBeGreaterThan(0);
+  await expect(
+    page
+      .getByRole("dialog")
+      .getByRole("button", { name: /The Core deck/ })
+      .locator(".pack-logo-gilt"),
+  ).toBeVisible();
   await page.getByRole("button", { name: "Done" }).click();
   await page.getByRole("button", { name: "Install app" }).click();
   await expect(page.getByText("Ready for offline play")).toBeVisible();

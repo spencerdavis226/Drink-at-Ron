@@ -175,8 +175,21 @@ function App() {
           <header className="topbar">
             {active ? (
               <>
-                <span className="wordmark">Drink at Ron</span>
+                {/* One row of table furniture: the count on a brass
+                    medallion, the menu on a matching stud. */}
+                <div
+                  className="progress"
+                  role="img"
+                  aria-label={`Card ${display.discarded + 1} of ${display.config.limit ?? "endless"}`}
+                >
+                  <strong>{display.discarded + 1}</strong>
+                  <span className="muted">
+                    {" "}
+                    / {display.config.limit ?? "∞"}
+                  </span>
+                </div>
                 <IconButton
+                  className="menu-button"
                   label="Open game menu"
                   disabled={!!motion}
                   onClick={() => setModal("menu")}
@@ -266,6 +279,9 @@ function App() {
           session={session}
           offlineReady={offlineReady || cachedReady}
           onEnd={() => {
+            // The brief dice-result reveal can start under the open menu;
+            // settle it so a confirmed End game is never ignored.
+            controller.settleAll();
             controller.clear();
             setModal(null);
           }}

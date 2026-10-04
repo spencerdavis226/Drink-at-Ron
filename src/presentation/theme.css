@@ -34,7 +34,6 @@
 }
 button,
 input,
-.wordmark,
 .intro h1,
 .intro em,
 .section-label h2,
@@ -42,16 +41,9 @@ input,
 .pack-copy strong,
 .primary,
 .progress,
-.card-category,
-.card-copy h2,
 .dialog-head h2,
 .complete h1 {
   font-family: var(--font-tavern);
-}
-.wordmark {
-  font-size: 1.8rem;
-  font-weight: 700;
-  letter-spacing: 0;
 }
 .intro h1 {
   font-size: clamp(5rem, 20vw, 6.7rem);
@@ -66,34 +58,8 @@ input,
   font-size: 1.7rem;
   font-weight: 600;
 }
-.card-copy h2 {
-  font-size: clamp(2.1rem, 8.2vw, 2.9rem);
-  font-weight: 700;
-  letter-spacing: -0.3px;
-  line-height: 1.05;
-}
-.card-copy p {
-  font-family: var(--font-tavern);
-  font-size: 1.375rem;
-  line-height: 1.4;
-  font-weight: 400;
-}
-.card-category {
-  font-size: 1.25rem;
-  line-height: 1.1;
-}
-.card-copy {
-  gap: 14px;
-}
-.card-art {
-  max-height: 175px;
-}
-.progress {
-  font-size: 1.5rem;
-}
 .text-button,
 .menu-row,
-.custom-label,
 dialog p,
 .notice {
   font-size: 1.375rem;
@@ -102,9 +68,6 @@ dialog p,
 .menu-row {
   font-weight: 500;
   min-height: 62px;
-}
-.custom-label input {
-  font-size: 1.5rem;
 }
 .notice {
   color: var(--parchment);
@@ -199,15 +162,12 @@ dialog p,
   box-shadow:
     inset 0 1px #fff2,
     0 5px 10px #0008;
-  min-height: 96px;
+  min-height: 84px;
 }
 .pack-copy strong {
   font-size: 1.65rem;
   line-height: 1.05;
   font-weight: 600;
-}
-.pack-art {
-  width: 66px;
 }
 .checkbox {
   width: 30px;
@@ -274,11 +234,16 @@ dialog p,
   font-size: 1.25rem;
 }
 .pack-selector small {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 24px;
   color: #ceb48a;
   font-size: 1rem;
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+}
+.pack-selector small span:last-child {
+  margin-left: 3px;
 }
 .pack-selector > span:last-child {
   margin-left: auto;
@@ -312,22 +277,6 @@ dialog p,
   .setup > .primary {
     min-height: 60px;
   }
-}
-.card-front {
-  background: var(--parchment);
-  border: 22px solid transparent;
-  border-image: url("/art/card-front.webp") 80 fill / 22px stretch;
-  padding: 10px 13px 22px;
-  gap: 9px;
-}
-.previous-card {
-  background: var(--parchment);
-  border: 20px solid transparent;
-  border-image: url("/art/card-front.webp") 80 fill / 20px stretch;
-  padding: 10px 10px 18px;
-}
-.previous-card .card-copy h2 {
-  font-size: 2.1rem;
 }
 dialog {
   /* Quiet interior beneath body text; the painted frame keeps its richness. */
@@ -693,35 +642,9 @@ dialog.closing {
   .pack-copy strong {
     font-size: 1.4rem;
   }
-  .pack-art {
-    width: 50px;
-  }
-  .card-front {
-    padding: 8px 8px 18px;
-  }
-  .card-copy p {
-    font-size: 1.25rem;
-  }
-  .card-art {
-    max-height: 135px;
-  }
-  .card-category {
-    font-size: 1.25rem;
-  }
-  .card-copy h2 {
-    font-size: 2rem;
-  }
   dialog {
     padding: 10px 8px;
     border-width: 20px;
-  }
-}
-@media (min-width: 700px) {
-  .card-art {
-    max-height: 225px;
-  }
-  .card-copy p {
-    font-size: 1.5rem;
   }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -740,9 +663,9 @@ dialog.closing {
 }
 
 /* Pack identity is shared by setup tiles, the pause legend, and card footers. */
+
 .pack-logo {
   display: inline-grid;
-  position: relative;
   width: 28px;
   height: 28px;
   flex: none;
@@ -753,20 +676,27 @@ dialog.closing {
   width: 100%;
   height: 100%;
 }
-.pack-logo img {
-  position: relative;
-  object-fit: contain;
-  background: var(--parchment);
-  border-radius: 50%;
+/* Every pack supplies one single-colour silhouette; the finish is ours, so a
+   new pack matches the set without bringing its own palette. */
+.pack-logo-gilt,
+.pack-logo-seal::before,
+.pack-logo-seal::after {
+  -webkit-mask: var(--pack-seal) center / contain no-repeat;
+  mask: var(--pack-seal) center / contain no-repeat;
+}
+.pack-logo-gilt {
+  display: block;
+  background: linear-gradient(160deg, #f6dfa6, #d1a75f 52%, #94703a);
+}
+/* The mask would clip a shadow on the gilt itself, so the slot carries it. */
+.pack-logo:not(.pack-logo-watermark) {
+  filter: drop-shadow(0 2px 1px #000b);
 }
 .pack-logo-fallback {
   display: grid;
   place-items: center;
   font: 600 20px/1 var(--font-tavern);
-  color: #926329;
-}
-.pack-logo:has(img:not([style*="none"])) .pack-logo-fallback {
-  visibility: hidden;
+  color: #d1a75f;
 }
 .card-pack-marks {
   display: flex;
@@ -776,14 +706,15 @@ dialog.closing {
   min-height: 24px;
 }
 .pack-logo-watermark {
-  width: 22px;
-  height: 22px;
+  width: max(22px, 4.68cqw);
+  height: max(22px, 4.68cqw);
+}
+.pack-logo-watermark .pack-logo-fallback {
+  color: #926329;
 }
 .pack-logo-seal {
   position: relative;
   display: block;
-  width: 100%;
-  height: 100%;
   filter: saturate(0.75);
 }
 .pack-logo-seal::before,
@@ -791,8 +722,6 @@ dialog.closing {
   content: "";
   position: absolute;
   inset: 0;
-  -webkit-mask: var(--pack-seal) center / contain no-repeat;
-  mask: var(--pack-seal) center / contain no-repeat;
 }
 .pack-logo-seal::before {
   background: rgb(76 46 20 / 0.42);
@@ -802,21 +731,112 @@ dialog.closing {
   background: rgb(255 241 202 / 0.52);
   transform: translate(0.6px, 0.75px);
 }
-.pack-copy .pack-logo {
-  margin-top: 2px;
+.pack .pack-logo {
+  width: 46px;
+  height: 46px;
+  margin: 0 4px 0 2px;
 }
-.pack-copy .pack-logo img,
-.active-pack-list .pack-logo img {
-  background: none;
+.pack-selector small .pack-logo {
+  width: 22px;
+  height: 22px;
 }
+/* The pause legend is marks only, so it never reads as more menu rows. */
 .active-pack-list {
-  display: grid;
-  gap: 10px;
-  padding: 12px 0;
-  font-size: 22px;
-}
-.active-pack-list > div {
   display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 18px;
+  padding: 18px 0;
+  border-bottom: 1px solid #a7825144;
+}
+.active-pack-list .pack-logo {
+  width: 30px;
+  height: 30px;
+}
+
+/* Play-screen furniture: the count on a brass medallion and the menu on a
+   matching stud, both cut from the painted bezel. */
+.playing .topbar {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  min-height: 68px;
+}
+.progress,
+.icon-button.menu-button {
+  border: 0;
+  border-radius: 50%;
+  /* The bezel's ring is 84% of its square; scale it to the circle's edge. */
+  background: url("/art/bezel.webp") center / 119% no-repeat #16312e;
+  box-shadow:
+    0 3px 0 #150e09,
+    0 7px 12px #000a;
+}
+.progress {
+  grid-column: 2;
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 12px;
+  justify-content: center;
+  width: 68px;
+  height: 68px;
+  color: #fff0cf;
+  line-height: 1;
+  text-shadow: 0 1px 2px #000c;
+  white-space: nowrap;
+}
+.progress strong {
+  font: 700 24px/1 var(--font-card-title);
+  font-variant-numeric: lining-nums;
+}
+.progress .muted {
+  margin-top: 2px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: #d9b877;
+}
+.icon-button.menu-button {
+  grid-column: 3;
+  justify-self: end;
+  width: 54px;
+  height: 54px;
+  color: #f0d29b;
+}
+/* The stud is disabled for the length of every flip and discard; it must not
+   blink each time a card is played. */
+.icon-button.menu-button:disabled {
+  opacity: 1;
+}
+.menu-button .menu-icon {
+  gap: 4px;
+}
+.menu-button .menu-icon i {
+  width: 18px;
+  box-shadow: 0 1px 1px #000a;
+}
+/* Tablet: the furniture grows with the card so it reads from the same seats. */
+@media (min-width: 700px) {
+  .playing .topbar {
+    min-height: 84px;
+  }
+  .progress {
+    width: 84px;
+    height: 84px;
+  }
+  .progress strong {
+    font-size: 30px;
+  }
+  .progress .muted {
+    font-size: 16px;
+  }
+  .icon-button.menu-button {
+    width: 64px;
+    height: 64px;
+  }
+  .menu-button .menu-icon {
+    gap: 5px;
+  }
+  .menu-button .menu-icon i {
+    width: 22px;
+  }
 }

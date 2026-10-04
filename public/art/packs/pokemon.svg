@@ -1,7 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" role="img" aria-label="Pokémon pack">
-  <circle cx="24" cy="24" r="21" fill="#f4f0e6" stroke="#181410" stroke-width="3"/>
-  <path d="M3 24a21 21 0 0 1 42 0Z" fill="#c8352b"/>
-  <path d="M3 24h42" stroke="#181410" stroke-width="5"/>
-  <circle cx="24" cy="24" r="7.5" fill="#181410"/>
-  <circle cx="24" cy="24" r="4.5" fill="#f4f0e6"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <g fill="none" stroke="#000" stroke-width="44">
+    <circle cx="256" cy="256" r="196"/>
+    <path d="M82 256h112M318 256h112"/>
+    <circle cx="256" cy="256" r="80" stroke-width="38"/>
+  </g>
 </svg>

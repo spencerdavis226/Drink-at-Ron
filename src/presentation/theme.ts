@@ -8,7 +8,6 @@ export const theme = {
   },
   assets: {
     back: "art/card-back.webp",
-    front: "art/card-front.webp",
     table: "art/table.webp",
     tankard: "art/tankard.webp",
     button: "art/button.webp",

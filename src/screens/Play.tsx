@@ -110,15 +110,6 @@ export function Play({
   return (
     <>
       <section className="table">
-        <div
-          className="progress"
-          aria-label={`Card ${session.discarded + 1} of ${session.config.limit ?? "endless"}`}
-        >
-          <span>
-            {session.discarded + 1}{" "}
-            <span className="muted">/ {session.config.limit ?? "∞"}</span>
-          </span>
-        </div>
         <span className="sr-only" role="status" aria-live="polite">
           {session.phase === "revealed" &&
           session.roll?.returned &&

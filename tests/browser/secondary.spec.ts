@@ -38,15 +38,13 @@ test("unselected packs stay readable and selection is unambiguous", async ({
   expect(unselected.opacity).toBe(1);
   expect(unselected.filter).toBe("none");
   expect(unselected.mark).toBe("+");
-  // The pack title and mark share one copy slot when a name wraps.
+  // The pack's own mark leads the tile; there is no shared tankard art.
   expect(
-    await other.evaluate((el) => {
-      const copy = el.querySelector(".pack-copy")!;
-      return (
-        copy.querySelector("strong")!.parentElement === copy &&
-        copy.querySelector(".pack-logo")!.parentElement === copy
-      );
-    }),
+    await other.evaluate(
+      (el) =>
+        el.firstElementChild!.classList.contains("pack-logo") &&
+        !el.querySelector("img, .pack-art"),
+    ),
   ).toBe(true);
   await other.click();
   await expect(other).toHaveAttribute("aria-pressed", "true");
@@ -56,21 +54,43 @@ test("unselected packs stay readable and selection is unambiguous", async ({
   await expect(core).toHaveAttribute("aria-pressed", "false");
   await expect(dialog).not.toContainText("Always included");
 });
-test("selecting VIP night reveals its one-line setup reminder", async ({
+test("the pack dialog carries no prose and closes on a tap outside it", async ({
   page,
 }) => {
   await page.goto("./");
   await page.getByRole("button", { name: "Choose packs" }).click();
-  const vip = page
-    .getByRole("dialog")
-    .getByRole("button", { name: "VIP night", exact: true });
-  await expect(page.locator(".pack-hint")).toHaveCount(0);
-  await vip.click();
-  const hint = page.locator(".pack-hint");
-  await expect(hint).toHaveCount(1);
-  await expect(hint).toContainText("guest of honor");
-  await vip.click();
-  await expect(page.locator(".pack-hint")).toHaveCount(0);
+  const dialog = page.getByRole("dialog");
+  for (const name of ["VIP night", "Pokémon night"])
+    await dialog.getByRole("button", { name, exact: true }).click();
+  await expect(dialog.locator("p")).toHaveCount(0);
+  // A tap on the panel's own frame is inside it and must not dismiss.
+  const box = (await dialog.boundingBox())!;
+  await page.mouse.click(box.x + 6, box.y + box.height / 2);
+  await expect(dialog).toBeVisible();
+  await page.mouse.click(box.x + box.width / 2, box.y / 2);
+  await expect(dialog).toHaveCount(0);
+});
+test("@release the pack count stays readable with every pack selected", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 320, height: 568 });
+  await page.goto("./");
+  await page.getByRole("button", { name: "Choose packs" }).click();
+  const dialog = page.getByRole("dialog");
+  for (const name of ["The House deck", "VIP night", "Pokémon night"])
+    await dialog.getByRole("button", { name, exact: true }).click();
+  await dialog.getByRole("button", { name: "Done" }).click();
+  const row = page.locator(".pack-selector");
+  await expect(row.locator(".pack-logo")).toHaveCount(4);
+  const count = row.getByText("368 cards");
+  await expect(count).toBeVisible();
+  expect(
+    await count.evaluate((el) => {
+      const text = el.getBoundingClientRect();
+      const box = el.closest(".pack-selector")!.getBoundingClientRect();
+      return el.scrollWidth <= el.clientWidth + 1 && text.right <= box.right;
+    }),
+  ).toBe(true);
 });
 test("@release House and VIP are selectable add-ons and Core can be deselected", async ({
   page,
@@ -97,7 +117,7 @@ test("@release House and VIP are selectable add-ons and Core can be deselected",
     key,
   );
   expect(session.config.packIds).toEqual(["core", "house"]);
-  expect(session.cards).toHaveLength(219);
+  expect(session.cards).toHaveLength(218);
   expect(
     session.cards.some((card: { id: string }) => card.id === "house.sheet-091"),
   ).toBe(true);

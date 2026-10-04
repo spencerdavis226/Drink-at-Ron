@@ -9,7 +9,8 @@ const sizes = {
   "Phone 390": { width: 390, height: 844 },
   "Large phone": { width: 430, height: 932 },
   iPad: { width: 768, height: 1024 },
-  Landscape: { width: 844, height: 390 },
+  // Tablet landscape: phones show the rotate prompt and never play sideways.
+  Landscape: { width: 1180, height: 820 },
   "Split view": { width: 375, height: 667 },
 };
 export default function Workshop() {

@@ -102,7 +102,5 @@ export const vipPack: PackDefinition = {
   title: "VIP night",
   description:
     "For a birthday, a bachelorette, or just someone's night. Crown one guest of honor and let every card favor or roast the VIP.",
-  setupHint:
-    "VIP night: choose one guest of honor (the VIP) before you play. Every card favors or roasts them.",
   cardIds: vipCards.map((card) => card.id),
 };

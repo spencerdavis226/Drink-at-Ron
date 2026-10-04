@@ -59,11 +59,6 @@ export function validateCatalog(cs: CardDefinition[], ps: PackDefinition[]) {
     )
       fail("Invalid or duplicate pack");
     if (
-      p.setupHint !== undefined &&
-      (typeof p.setupHint !== "string" || !p.setupHint.trim())
-    )
-      fail(`Invalid pack setup hint: ${p.id}`);
-    if (
       p.artwork !== undefined &&
       (typeof p.artwork !== "string" ||
         !/^art\/[a-zA-Z0-9/_-]+\.(svg|png|webp|avif)$/.test(p.artwork))

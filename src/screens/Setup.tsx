@@ -2,6 +2,7 @@ import { useState } from "react";
 import { MODE_LIMITS, type Preferences } from "../app/persistence";
 import type { PackDefinition } from "../game/types";
 import { Button, DeckChoices, Modal, PackTile } from "../components/UI";
+import { PackLogo } from "../components/PackMarks";
 
 export function Setup({
   prefs,
@@ -57,14 +58,23 @@ export function Setup({
         <Button
           variant="menu-row"
           className="pack-selector"
+          aria-label={`Choose packs. ${
+            selected.length
+              ? `${selected.map((pack) => pack.title).join(", ")}, ${cardCount} cards`
+              : "Pick at least one"
+          }`}
           onClick={() => setPacksOpen(true)}
         >
           <span>
             <strong>Choose packs</strong>
+            {/* Marks, not names: four pack titles never fit one phone row. */}
             <small>
-              {selected.length
-                ? `${selected.map((pack) => pack.title).join(", ")} · ${cardCount} cards`
-                : "Pick at least one"}
+              {selected.map((pack) => (
+                <PackLogo key={pack.id} pack={pack} decorative />
+              ))}
+              <span>
+                {selected.length ? `${cardCount} cards` : "Pick at least one"}
+              </span>
             </small>
           </span>
           <span aria-hidden="true">›</span>
@@ -82,16 +92,12 @@ export function Setup({
         <Modal title="Card packs" onClose={() => setPacksOpen(false)}>
           <div className="addon-list">
             {packs.map((pack) => (
-              <div key={pack.id}>
-                <PackTile
-                  pack={pack}
-                  selected={selected.includes(pack)}
-                  onToggle={() => toggle(pack.id)}
-                />
-                {selected.includes(pack) && pack.setupHint && (
-                  <p className="pack-hint">{pack.setupHint}</p>
-                )}
-              </div>
+              <PackTile
+                key={pack.id}
+                pack={pack}
+                selected={selected.includes(pack)}
+                onToggle={() => toggle(pack.id)}
+              />
             ))}
           </div>
           <Button onClick={() => setPacksOpen(false)}>Done</Button>

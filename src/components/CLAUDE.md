@@ -4,7 +4,7 @@
 - `FullScreenDice.tsx`: portals a transparent full-viewport stage to `document.body`; owns the roll lifecycle (warm while reading, roll, settle 700 ms, fade 180 ms, reveal). It must fall back to the saved values on hidden, resize, Reduced Motion, timeout, or WebGL loss. Keep the lazy `import()`.
 - `UI.tsx`: `Button` focuses itself on click (preserve this; Safari does not focus buttons on tap, and `Modal` restores focus to the opener), `Modal` is a native `<dialog>` with `showModal()` and an exit animation, `IconButton` requires a label.
 - `PortraitGate.tsx`: blocks play in phone landscape (user-agent sniff, `orientation: landscape`, and a short side under 600px). iPad landscape plays.
-- `PackMarks.tsx`: pack seals and logos; new packs need a mapping here.
+- `PackMarks.tsx`: paints each pack's single-colour `logo` as a CSS mask (gilded in setup and menus, debossed in card footers). A new pack needs only its SVG and `logo` path; no mapping here.
 - `Atmosphere.tsx`: decorative looping background; `aria-hidden`, paused when the page is hidden.
 
 Buttons should be at least 44px touch targets, labelled, and free of outer focus rings (the project uses a brightness shift). Do not add hover-only affordances; this is a touch app.

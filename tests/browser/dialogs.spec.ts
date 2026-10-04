@@ -135,9 +135,10 @@ test("Escape closes the menu and restores focus to its opener", async ({
 }) => {
   await seed(page, game());
   const opener = page.getByRole("button", { name: "Open game menu" });
+  // The menu is a brass stud cut from the painted bezel, like the counter.
   expect(
     await opener.evaluate((button) => getComputedStyle(button).backgroundImage),
-  ).not.toContain("bezel.webp");
+  ).toContain("bezel.webp");
   await opener.click();
   await expect(page.getByRole("dialog")).toContainText("Paused");
   await page.keyboard.press("Escape");

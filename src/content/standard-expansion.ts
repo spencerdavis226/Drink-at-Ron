@@ -202,13 +202,6 @@ const drafts: Draft[] = [
 
   // --- Dice: temporary rules ------------------------------------------------
   [
-    "banned-number",
-    "Banned Number",
-    "rule",
-    "Roll d6. Nobody may say it until your next turn. Slip: drink 3.",
-    roll(1, 6, "{total} is banned until your next turn. Slip: drink 3."),
-  ],
-  [
     "heavy-hand",
     "Heavy Hand",
     "rule",

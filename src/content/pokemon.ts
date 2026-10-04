@@ -951,7 +951,5 @@ export const pokemonPack: PackDefinition = {
   title: "Pokémon night",
   description:
     "A whole region of wild encounters, gym battles, catches, and rivals. The board stayed home; the dice came along.",
-  setupHint:
-    "Pokémon night: pick a starter, blame the dice, and never trust a Zubat.",
   cardIds: pokemonCards.map((card) => card.id),
 };

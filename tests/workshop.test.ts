@@ -13,8 +13,8 @@ test("seeded workshop preserves the pool and reproduces order", () => {
 test("Core composition matches the trimmed content brief", () => {
   const core = packs.find((p) => p.id === "core")!;
   const coreCards = cards.filter((c) => core.cardIds.includes(c.id));
-  // Sample set (34), trimmed classics (45), trimmed standard expansion (38).
-  expect(coreCards).toHaveLength(117);
+  // Sample set (34), trimmed classics (45), trimmed standard expansion (37).
+  expect(coreCards).toHaveLength(116);
   expect(
     Object.fromEntries(
       ["sip", "group", "category", "challenge", "rule"].map((c) => [
@@ -22,8 +22,8 @@ test("Core composition matches the trimmed content brief", () => {
         coreCards.filter((card) => card.category === c).length,
       ]),
     ),
-  ).toEqual({ sip: 18, group: 23, category: 9, challenge: 51, rule: 16 });
-  expect(coreCards.filter((c) => c.dice)).toHaveLength(39);
+  ).toEqual({ sip: 18, group: 23, category: 9, challenge: 51, rule: 15 });
+  expect(coreCards.filter((c) => c.dice)).toHaveLength(38);
 });
 
 test("each supplied sheet row lands in the House deck and VIP night", () => {
@@ -41,5 +41,5 @@ test("each supplied sheet row lands in the House deck and VIP night", () => {
   expect(vip.cardIds.slice(-4)).toEqual(
     [3, 4, 5, 6].map((row) => `vip.sheet-${String(row).padStart(3, "0")}`),
   );
-  expect(cards).toHaveLength(369); // 117 core + 102 house + 16 vip + 134 Pokémon
+  expect(cards).toHaveLength(368); // 116 core + 102 house + 16 vip + 134 Pokémon
 });

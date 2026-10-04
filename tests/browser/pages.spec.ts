@@ -159,9 +159,10 @@ test("Core logo matches selection, card, pause legend and previous card", async 
   await page.getByRole("button", { name: "Choose packs" }).click();
   await expect(
     page
+      .getByRole("dialog")
       .getByRole("button", { name: /The Core deck/ })
-      .locator(".pack-logo img"),
-  ).toHaveAttribute("src", /art\/packs\/core.svg$/);
+      .locator(".pack-logo"),
+  ).toHaveAttribute("data-seal", /art\/packs\/core.svg$/);
   await page.getByRole("button", { name: "Done" }).click();
   await page.getByRole("button", { name: "Play", exact: true }).click();
   await seedPlain(page);
@@ -170,15 +171,15 @@ test("Core logo matches selection, card, pause legend and previous card", async 
   await expect(page.locator(".card-category")).toHaveCount(0);
   await expect(page.locator(".card-pack-marks .pack-logo")).toHaveAttribute(
     "data-seal",
-    /art\/packs\/core-seal.svg$/,
+    /art\/packs\/core.svg$/,
   );
   await page.locator(".game-card").click();
   await expect(page.locator(".card-stage")).not.toHaveClass(
     /discard|settle|deal/,
   );
   await page.getByRole("button", { name: "Open game menu" }).click();
-  await expect(page.locator(".active-pack-list img")).toHaveAttribute(
-    "src",
+  await expect(page.locator(".active-pack-list .pack-logo")).toHaveAttribute(
+    "data-seal",
     /art\/packs\/core.svg$/,
   );
   await page
@@ -186,5 +187,5 @@ test("Core logo matches selection, card, pause legend and previous card", async 
     .click();
   await expect(
     page.locator(".previous-card .card-pack-marks .pack-logo"),
-  ).toHaveAttribute("data-seal", /art\/packs\/core-seal.svg$/);
+  ).toHaveAttribute("data-seal", /art\/packs\/core.svg$/);
 });

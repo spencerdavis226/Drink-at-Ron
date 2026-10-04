@@ -130,13 +130,6 @@ p {
      never rendered soft. Zero without a top inset (desktop, SE-sized phones). */
   margin-top: min(20px, var(--top-safe));
 }
-.wordmark {
-  font:
-    bold 1.5rem Georgia,
-    serif;
-  letter-spacing: -0.6px;
-  text-shadow: 0 2px 3px #000;
-}
 .install-button.icon-button {
   margin-left: auto;
   width: auto;
@@ -268,16 +261,6 @@ p {
   --pack-mark-border: #8a6a3d;
   --pack-mark-ink: #e6cf9f;
 }
-.pack-art {
-  width: 72px;
-  flex-shrink: 0;
-  transform: rotate(-8deg);
-}
-.pack-art img {
-  width: 100%;
-  display: block;
-  filter: drop-shadow(0 6px 4px #0007);
-}
 .pack-copy strong {
   font:
     bold 1.5rem/1.1 Georgia,
@@ -369,16 +352,18 @@ p {
   line-height: 1.4;
 }
 .playing {
-  max-width: 650px;
+  /* Room for a tablet-sized card: it is read from across a table. */
+  width: min(100%, 860px);
   display: flex;
   flex-direction: column;
   /* Everything on the play screen that is not the card: the app's own top and
-     bottom padding (safe areas included), the topbar and its inset clearance,
-     the counter, the gaps, and room for the stacked deck's offset and shadow.
-     The card takes whatever height is left, so the screen never scrolls. */
+     bottom padding (safe areas included), the top row (counter and menu) and
+     its inset clearance, the gap under it, and room for the stacked deck's
+     offset and shadow. The card takes whatever height is left, so the screen
+     never scrolls. */
   --play-chrome: calc(
     max(16px, var(--top-safe)) + min(20px, var(--top-safe)) +
-      max(24px, env(safe-area-inset-bottom)) + 130px
+      max(24px, env(safe-area-inset-bottom)) + 112px
   );
 }
 /* The play screen is one fixed view: with the card fitted there is nothing to
@@ -391,17 +376,7 @@ html:has(.playing) {
   align-items: center;
   flex-direction: column;
   flex: 1;
-  padding-top: 4px;
-  gap: 18px;
-}
-.progress {
-  align-self: center;
-  text-align: center;
-  font:
-    normal 1.35rem Georgia,
-    serif;
-  color: #f0d9ac;
-  line-height: 1.3;
+  padding-top: 10px;
 }
 .muted {
   color: #ac9472;
@@ -412,13 +387,14 @@ html:has(.playing) {
   perspective: 1600px;
   /* Width-limited on tall screens, height-limited on short ones (a Safari tab
      with its toolbar showing is about 650px tall on a 6.1in iPhone). The
-     220px floor keeps the rules readable on tiny viewports, which scroll. */
+     220px floor keeps the rules readable on tiny viewports, which scroll. The
+     760px ceiling lets an iPad show a card large enough for the whole table. */
   width: max(
     220px,
     min(
       calc(100% - 8px),
       calc((var(--app-height) - var(--play-chrome)) * 2 / 3),
-      470px
+      760px
     )
   );
   min-height: 0;
@@ -516,60 +492,8 @@ html:has(.playing) {
   transform: rotateY(0deg);
 }
 .card-front {
-  background-image: url("/art/card-front.webp");
   transform: rotateY(180deg);
-  padding: 9% 11% 12%;
   color: #372412;
-  justify-content: center;
-  gap: 10px;
-}
-.card-category {
-  text-transform: capitalize;
-  font:
-    normal 1.05rem Georgia,
-    serif;
-  color: #79572d;
-}
-.card-art {
-  width: 78%;
-  height: auto;
-  max-height: 190px;
-  object-fit: contain;
-  display: block;
-  flex-shrink: 0;
-  margin: 0 auto 4px;
-  filter: drop-shadow(0 8px 5px #5a351426);
-}
-.card-copy {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  margin: auto 0;
-  gap: 15px;
-}
-.card-copy h2 {
-  font:
-    bold clamp(1.9rem, 7.6vw, 2.6rem)/1.04 Georgia,
-    serif;
-  letter-spacing: -1px;
-  color: #3c2715;
-  text-wrap: balance;
-  text-shadow: 0 1px #fff6;
-}
-.divider {
-  display: block;
-  height: 1px;
-  width: 44%;
-  background: linear-gradient(90deg, transparent, #9a703d, transparent);
-  font-size: 0;
-  margin: 0;
-}
-.card-copy p {
-  font-size: 1.12rem;
-  line-height: 1.55;
-  color: #422e1c;
-  text-wrap: pretty;
 }
 .flip .game-card {
   animation: lift-turn var(--motion-flip, 560ms)
@@ -689,18 +613,7 @@ dialog p {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: url("/art/card-front.webp") center/100% 100%;
-  border-radius: 12px;
-  padding: 40px 28px;
   margin-bottom: 22px;
-  gap: 14px;
-  color: #3c2715;
-}
-.previous-card .card-art {
-  height: 120px;
-}
-.previous-card .card-copy h2 {
-  font-size: 2rem;
 }
 .complete {
   text-align: center;
@@ -756,21 +669,11 @@ dialog p {
   .playing {
     --play-chrome: calc(
       max(26px, var(--top-safe)) + min(20px, var(--top-safe)) +
-        max(24px, env(safe-area-inset-bottom)) + 148px
+        max(24px, env(safe-area-inset-bottom)) + 138px
     );
   }
   .playing .table {
     padding-top: 16px;
-    gap: 24px;
-  }
-  .card-front {
-    gap: 16px;
-  }
-  .card-art {
-    max-height: 235px;
-  }
-  .card-copy p {
-    font-size: 1.25rem;
   }
 }
 @media (max-width: 360px) {
@@ -781,23 +684,8 @@ dialog p {
     gap: 6px;
     padding-right: 12px;
   }
-  .pack-art {
-    width: 58px;
-  }
   .pack-copy strong {
     font-size: 1.25rem;
-  }
-  .card-front {
-    padding: 9% 11% 12%;
-  }
-  .card-art {
-    max-height: 145px;
-  }
-  .card-copy p {
-    font-size: 1.05rem;
-  }
-  .card-category {
-    font-size: 1rem;
   }
 }
 @media (prefers-reduced-motion: reduce) {

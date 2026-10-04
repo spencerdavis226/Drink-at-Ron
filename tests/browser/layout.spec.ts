@@ -108,7 +108,7 @@ test("every pack seal stays inside the parchment at supported widths", async ({
       const mark = page.locator(".card-footer .pack-logo");
       await expect(mark).toHaveAttribute(
         "data-seal",
-        new RegExp(`art/packs/${pack.id}-seal\\.svg$`),
+        new RegExp(`art/packs/${pack.id}\\.svg$`),
       );
       const geometry = await mark.evaluate((element) => {
         const seal = element.getBoundingClientRect();
@@ -132,7 +132,7 @@ test("every pack seal stays inside the parchment at supported widths", async ({
         geometry.inside,
         `${pack.id} seal stays inside at ${viewport.width}px`,
       ).toBe(true);
-      expect(geometry.mask).toContain(`${pack.id}-seal.svg`);
+      expect(geometry.mask).toContain(`packs/${pack.id}.svg`);
     }
   }
 });

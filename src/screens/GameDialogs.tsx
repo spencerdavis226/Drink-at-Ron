@@ -80,12 +80,14 @@ export function GameDialogs({
           </Button>
         )}
         {session && (
-          <div className="active-pack-list" aria-label="Packs in this game">
+          // Marks only, so the legend never reads as more menu rows.
+          <div
+            className="active-pack-list"
+            role="group"
+            aria-label="Packs in this game"
+          >
             {selectedPacks(session.config.packIds).map((pack) => (
-              <div key={pack.id}>
-                <PackLogo pack={pack} decorative />
-                <span>{pack.title}</span>
-              </div>
+              <PackLogo key={pack.id} pack={pack} />
             ))}
           </div>
         )}

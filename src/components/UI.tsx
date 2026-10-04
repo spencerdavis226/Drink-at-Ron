@@ -100,12 +100,9 @@ export function PackTile({
       aria-pressed={selected}
       onClick={onToggle}
     >
-      <span className="pack-art">
-        <Artwork src={asset(pack.artwork ?? theme.assets.tankard)} alt="" />
-      </span>
+      <PackLogo pack={pack} decorative />
       <span className="pack-copy">
         <strong>{pack.title}</strong>
-        <PackLogo pack={pack} decorative />
       </span>
       <span className="checkbox" aria-hidden="true">
         {selected ? "✓" : "+"}
@@ -171,6 +168,19 @@ export function Modal({
       onCancel={(e) => {
         e.preventDefault();
         onClose();
+      }}
+      // A tap on the dimmed table outside the panel dismisses it, as a sheet
+      // does on iOS. Clicks inside always land on a child, never the dialog.
+      onClick={(e) => {
+        if (e.target !== e.currentTarget) return;
+        const box = e.currentTarget.getBoundingClientRect();
+        if (
+          e.clientX < box.left ||
+          e.clientX > box.right ||
+          e.clientY < box.top ||
+          e.clientY > box.bottom
+        )
+          onClose();
       }}
       aria-labelledby="dialog-title"
     >

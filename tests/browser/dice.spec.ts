@@ -307,6 +307,27 @@ test("WebGL failure immediately reveals the saved result", async ({ page }) => {
   await page.reload();
   expect((await saved(page)).roll).toEqual(committed.roll);
 });
+test("a WebGL context lost before the roll is rebuilt and still thrown", async ({
+  page,
+}) => {
+  test.skip(!(await webgl(page)), "WebGL unavailable (headless Linux WebKit)");
+  await seed(page);
+  const stage = page.locator(".roll-stage");
+  await expect(stage).toHaveAttribute("data-renderer", "ready", {
+    timeout: 15000,
+  });
+  await page
+    .locator(".roll-stage canvas:not(.dice-shadow-layer)")
+    .dispatchEvent("webglcontextlost");
+  await expect(stage).toHaveAttribute("data-renderer", "fallback");
+  await page.locator(".game-card").click();
+  const committed = await saved(page);
+  await expect(stage).toHaveAttribute(
+    "data-renderer",
+    `settled:${committed.roll.values.join(",")}`,
+    { timeout: 15000 },
+  );
+});
 test("resize interruption settles without another roll", async ({ page }) => {
   await seed(page);
   await page.locator(".game-card").click();

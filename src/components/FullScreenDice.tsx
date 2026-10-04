@@ -41,25 +41,26 @@ export default function FullScreenDice({
 
   // Warm the lazy renderer while the revealed card is being read. A restored
   // result stays static; it never replays or allocates a WebGL context.
-  useEffect(() => {
-    stopped.current = false;
-    if (
-      (initial.current.roll && !initial.current.rolling) ||
-      document.hidden ||
-      (matchMedia("(prefers-reduced-motion: reduce)").matches && !forceMotion())
-    )
-      return;
-    let canceled = false;
+  // `warm` can run again: iOS may drop the WebGL context while the app is in
+  // the background, and the next roll should still be thrown, not tiled.
+  const generation = useRef(0);
+  const lost = useRef(false);
+  const warm = useRef(() => {});
+  warm.current = () => {
+    const mine = ++generation.current;
+    const current = () => mine === generation.current && !stopped.current;
     const started = performance.now();
+    lost.current = false;
+    stage.current?.dispose();
+    stage.current = null;
     setStatus("loading");
+    setStopReason("");
     ready.current = import("../presentation/dice/library")
       .then(({ createDiceStage }) =>
-        canceled || stopped.current
-          ? null
-          : createDiceStage(`#${CSS.escape(stageId)}`),
+        current() ? createDiceStage(`#${CSS.escape(stageId)}`) : null,
       )
       .then((created) => {
-        if (canceled || stopped.current) {
+        if (!current()) {
           created?.dispose();
           return null;
         }
@@ -71,7 +72,8 @@ export default function FullScreenDice({
           ?.addEventListener(
             "webglcontextlost",
             () => {
-              if (canceled || stopped.current) return;
+              if (!current()) return;
+              lost.current = true;
               setStatus("fallback");
               setStopReason("webgl");
             },
@@ -82,14 +84,37 @@ export default function FullScreenDice({
         return created;
       })
       .catch(() => {
-        if (!canceled) {
+        if (current()) {
+          lost.current = true;
           setStatus("fallback");
           setStopReason("webgl");
         }
         return null;
       });
+  };
+  const latestRoll = useRef(roll);
+  latestRoll.current = roll;
+  useEffect(() => {
+    stopped.current = false;
+    const reduced = () =>
+      matchMedia("(prefers-reduced-motion: reduce)").matches && !forceMotion();
+    if (initial.current.roll && !initial.current.rolling) return;
+    if (!document.hidden && !reduced()) warm.current();
+    // Back from the background before the roll: rebuild a stage that was
+    // never made or whose context the system took.
+    const onVisible = () => {
+      if (
+        !document.hidden &&
+        !latestRoll.current &&
+        !reduced() &&
+        (!ready.current || lost.current)
+      )
+        warm.current();
+    };
+    document.addEventListener("visibilitychange", onVisible);
     return () => {
-      canceled = true;
+      document.removeEventListener("visibilitychange", onVisible);
+      generation.current++;
       stage.current?.dispose();
       stage.current = null;
     };
@@ -168,6 +193,8 @@ export default function FullScreenDice({
     window.addEventListener("resize", resize);
     reduced.addEventListener("change", onReduced);
     void (async () => {
+      // One more attempt if the stage was lost while the card was being read.
+      if (!ready.current || lost.current) warm.current();
       const renderer = await ready.current;
       if (canceled) return;
       if (!renderer) {
