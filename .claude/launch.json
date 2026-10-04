@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "dev-phone",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev:phone", "--", "--port", "5173", "--strictPort"],
+      "port": 5173
+    }
+  ]
+}

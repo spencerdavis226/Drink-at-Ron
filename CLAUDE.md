@@ -27,6 +27,5 @@ A pass-the-phone drinking-card game, a Vite + React 19 + TypeScript PWA hosted o
 - Read `docs/STATUS.md` first, but only the top sections; it is long and mostly history.
 - Verify with the narrowest check that proves the change, then say exactly what ran. `npm test` is fast (about 1s) and covers engine and content; layout and iOS-edge behavior need a production build plus Playwright (see AGENTS.md for the `TEST_PORT` pattern).
 - Emulated WebKit is not an iPhone. Never claim installed-app, Safari-toolbar, frost-strip, haptic, or performance behavior without a physical-device result in `docs/DEVICE_CHECKLIST.md`.
-- `scripts/_temporary-card-edit.mjs` is an untracked scratch script that rewrites card modules from stale copy (it still contains the denied `core.deez-nuts`). Never run it; ask the user before deleting it.
 - Card copy follows `docs/CARD_VOICE_REFERENCE.md` and `docs/AUTHORING.md`; supplied House/Pokémon wording stays as supplied.
 - Commits and pushes to `main` publish the live site (the workflow deploys on every push to `main`). Always ask first.
