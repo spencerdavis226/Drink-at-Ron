@@ -48,10 +48,13 @@ export function CardFace({
     const fits = (size: number) => {
       heading.style.fontSize = `${size}px`;
       const lineHeight = parseFloat(getComputedStyle(heading).lineHeight);
+      // Fractional height: a rounded offsetHeight lets the search settle on a
+      // size that still spills a sub-pixel past the band.
+      const height = heading.getBoundingClientRect().height;
       return (
-        heading.offsetHeight <= title.clientHeight + 1 &&
+        height <= title.clientHeight + 1 &&
         heading.scrollWidth <= title.clientWidth + 1 &&
-        heading.offsetHeight / lineHeight <= 2.1
+        height / lineHeight <= 2.1
       );
     };
     const measure = () => {

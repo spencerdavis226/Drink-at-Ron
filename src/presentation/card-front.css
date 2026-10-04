@@ -30,11 +30,12 @@
 .study-title {
   z-index: 2;
   position: absolute;
-  /* Safe area inside the painted teal recess: the bronze arch dips to ~9% at
-     the centre and the ornament vines reach ~11.5% at the sides, so glyph
-     tops and quote marks stay clear with the box starting below that. */
-  inset: 11% 17% auto;
-  height: 13.5%;
+  /* Safe area inside the painted teal recess, measured on the frame art: the
+     top arch stud dips to 8.9% and the bottom finial rises to 22.2% at the
+     centre, and the hop cones reach 20% in from each side. The box is centred
+     between the two (15.6%) and clears all four. */
+  inset: 9.75% 21% auto;
+  height: 11.75%;
   display: grid;
   place-items: safe center;
   overflow: auto;
