@@ -34,6 +34,24 @@ function isStandaloneApp() {
     ("standalone" in navigator && navigator.standalone === true)
   );
 }
+// A new release's worker can take control before the app has mounted (the
+// first render is held for its art) or before the update hook is listening.
+// Catch that takeover here so the Update game offer is never lost. The first
+// install also fires controllerchange; it replaces nothing, so it is ignored.
+const takeover: { seen: boolean; notify: (() => void) | null } = {
+  seen: false,
+  notify: null,
+};
+if ("serviceWorker" in navigator) {
+  let controlled = !!navigator.serviceWorker.controller;
+  navigator.serviceWorker.addEventListener("controllerchange", () => {
+    if (controlled) {
+      takeover.seen = true;
+      takeover.notify?.();
+    }
+    controlled = true;
+  });
+}
 function App() {
   const [loaded] = useState(loadSession),
     [corrupt, setCorrupt] = useState(loaded.corrupt),
@@ -66,6 +84,13 @@ function App() {
       if (registration?.active) setCachedReady(true);
     },
   });
+  useEffect(() => {
+    takeover.notify = () => setUpdateReady(true);
+    if (takeover.seen) setUpdateReady(true);
+    return () => {
+      takeover.notify = null;
+    };
+  }, []);
   useEffect(() => {
     const media = window.matchMedia("(display-mode: standalone)");
     const update = () => setStandalone(isStandaloneApp());

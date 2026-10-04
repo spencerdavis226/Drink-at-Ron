@@ -2,6 +2,16 @@
 
 Updated 2026-10-04. **Single authoritative handoff.** Read `AGENTS.md` first. Older handoffs are in `docs/STATUS_ARCHIVE.md` (reference only). Direct user instructions win.
 
+## Update offer survives an early takeover; update check hardened (2026-10-04, committed locally, not pushed)
+
+**Trigger.** CI run `37212135022` (`10fd5a4`, no app change) failed in `npm run test:update`: `forceUpdate` timed out after 30 s waiting for the second new worker to take over (`scripts/check-update.ts`). The other failure that day (`38e45f8`) was unrelated: a WebKit release-smoke `toHaveText` timeout in `game.spec.ts`, not looked into.
+
+**Found.** The CI timeout itself was not reproduced (8 old-script runs under 8x and 20x CPU throttling and with a forced in-flight update check all passed), so its exact cause is unproven. Probing it did expose a real app bug: when a new release's worker takes control before the app has mounted (the first render is held for its art) or before the update hook is listening, the takeover went unnoticed and Update game was never offered that session. A probe that swaps the build while the reloaded page is still loading, at 8x CPU throttle, failed 4 of 5 runs before the fix and passed 5 of 5 after it.
+
+**Change.** `src/main.tsx` listens for `controllerchange` at module load (ignoring the first install) and sets the Update game offer from it; the existing `onNeedReload` path is unchanged, and an active game is still never reloaded. `scripts/check-update.ts` now records the controlling worker before the next build is served and waits for a different controller, instead of attaching a `controllerchange` listener after the swap; it retries `registration.update()` every 3 s within the same 30 s budget; and `settled` waits for the table to exist.
+
+**Verified.** `npm test` 103 passed; typecheck clean; build and budgets passed (94.9 KiB initial gzip); release smoke 34/34; update flow passed 5 consecutive local runs. **Not verified:** that CI no longer flakes (needs runs on GitHub), and the early-takeover case on a real installed iPhone. The probe was a temporary script and is not part of the suite, because it depends on CPU throttling to hit the window.
+
 ## Review pass: pack marks, play-screen furniture, tablet card, cleanup (2026-10-04, committed locally as `1d64f5c` plus a docs commit, not pushed)
 
 **Request.** Review the app, then implement the findings plus three owner requests: a cleaner pack selector with no prose, a less cheap top area on the play screen, and a much larger card on iPad (it is read from across a coffee table). The owner wants text kept to a minimum everywhere.

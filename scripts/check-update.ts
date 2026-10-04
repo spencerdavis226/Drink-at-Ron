@@ -59,34 +59,52 @@ const server = createServer(async (req, res) => {
 await new Promise<void>((r) => server.listen(0, "127.0.0.1", r));
 const address = server.address() as { port: number };
 /**
- * A new worker activating under the open page fires controllerchange. Set a
- * flag before forcing the check so the script can wait for the takeover
- * itself: with autoUpdate the worker never waits, it claims the page.
+ * With autoUpdate a new worker never waits: it claims the open page. Remember
+ * which worker controls the page BEFORE the next build is put on the server,
+ * so the takeover is detected however early it happens. (Listening for
+ * controllerchange after the swap could miss a takeover started by the app's
+ * own update check.)
  */
-async function switched(page: Page) {
+type Probe = { __controller?: ServiceWorker | null };
+async function remember(page: Page) {
   await page.evaluate(() => {
-    (window as unknown as { __swSwitched?: boolean }).__swSwitched = false;
-    navigator.serviceWorker.addEventListener("controllerchange", () => {
-      (window as unknown as { __swSwitched?: boolean }).__swSwitched = true;
-    });
+    (window as unknown as Probe).__controller =
+      navigator.serviceWorker.controller;
   });
 }
 async function forceUpdate(page: Page) {
-  await page.evaluate(async () => {
-    const registration = await navigator.serviceWorker.ready;
-    await registration.update();
-  });
-  await page.waitForFunction(
-    () => (window as unknown as { __swSwitched?: boolean }).__swSwitched,
-  );
+  // The browser may merge update() into a check that is already running and
+  // read the old worker; ask again until the new one has taken over.
+  const deadline = Date.now() + 30000;
+  for (;;) {
+    await page.evaluate(async () => {
+      const registration = await navigator.serviceWorker.ready;
+      await registration.update();
+    });
+    try {
+      await page.waitForFunction(
+        () =>
+          navigator.serviceWorker.controller !==
+          (window as unknown as Probe).__controller,
+        undefined,
+        { timeout: 3000 },
+      );
+      return;
+    } catch (error) {
+      if (Date.now() > deadline) throw error;
+    }
+  }
 }
 const release = (page: Page) =>
   page.locator("html").getAttribute("data-release");
 const stored = (page: Page) =>
   page.evaluate(() => localStorage.getItem("drink-at-ron.session.v1"));
 const settled = (page: Page) =>
+  // The first render is held until the art decodes, so "no motion class" is
+  // only meaningful once the table itself exists.
   page.waitForFunction(
     () =>
+      !!document.querySelector(".card-stage") &&
       !document.querySelector(
         ".card-stage.flip,.card-stage.settle,.card-stage.deal",
       ),
@@ -122,8 +140,8 @@ try {
 
   // Build B ships while the card sits on the table: the open page keeps
   // playing, and the new worker takes control so every navigation is current.
+  await remember(page);
   directory = builds[0];
-  await switched(page);
   await forceUpdate(page);
   assert.equal(
     await page.getByRole("button", { name: "Update game" }).count(),
@@ -139,8 +157,8 @@ try {
   assert.equal(await stored(page), saved);
 
   // Build C ships mid-game too, then the game finishes and Update game reloads.
+  await remember(page);
   directory = builds[1];
-  await switched(page);
   await forceUpdate(page);
   assert.equal(
     await page.getByRole("button", { name: "Update game" }).count(),
