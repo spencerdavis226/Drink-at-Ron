@@ -22,6 +22,15 @@
       crossorigin
     />
     <title>Drink at Ron</title>
+    <script>
+      // Installed Home Screen app: flag it before first paint so the page is
+      // laid out at the full screen height from the first frame (style.css).
+      if (
+        navigator.standalone === true ||
+        matchMedia("(display-mode: standalone)").matches
+      )
+        document.documentElement.classList.add("standalone");
+    </script>
   </head>
   <body>
     <div id="root"></div>

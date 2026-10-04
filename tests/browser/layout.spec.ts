@@ -199,14 +199,17 @@ test("an iOS top inset keeps topbar controls below the status-bar frost", async 
         getComputedStyle(document.body, "::before").height,
       ),
       visibleHeight: document.documentElement.clientHeight,
+      standalone: document.documentElement.classList.contains("standalone"),
     };
   });
   expect(chrome.chrome).toBe("#271c11");
   expect(chrome.html).toBe("rgb(39, 28, 17)");
-  // The OS-only chin must not push our bottom fade beneath the paintable view.
+  // In a browser tab the wood is sized to the visible viewport, so Safari's
+  // toolbars never push it beneath the paintable view.
+  expect(chrome.standalone).toBe(false);
   expect(chrome.backdropHeight).toBeCloseTo(chrome.visibleHeight, 0);
   // The wood runs to the last row with no fade; the page background equals
-  // that edge so the OS-owned strip continues it.
+  // that edge, which is what iOS shows before the page has painted.
   const atmosphere = await page.locator(".atmosphere").evaluate((el) => ({
     height: parseFloat(getComputedStyle(el).height),
     mask: getComputedStyle(el).maskImage,
@@ -226,7 +229,7 @@ test("an iOS top inset keeps topbar controls below the status-bar frost", async 
         data[((info.height - 1) * info.width + x) * info.channels + channel];
     return sum / info.width;
   });
-  // The last painted row needs to meet the OS-owned strip's chrome colour.
+  // The last painted row is wood whose average is the chrome colour.
   for (const [channel, target] of edgePixel.map(
     (value, i) => [value, [39, 28, 17][i]] as const,
   )) {
@@ -240,6 +243,79 @@ test("an iOS top inset keeps topbar controls below the status-bar frost", async 
     .boundingBox();
   expect(menu, "game menu is laid out").not.toBeNull();
   expect(menu!.y).toBeGreaterThanOrEqual(79);
+});
+test("@release the installed app lays out at the full screen height and never scrolls the root", async ({
+  page,
+}) => {
+  // Installed iOS apps report navigator.standalone. Emulation cannot reproduce
+  // their short svh/dvh viewport (see docs/DEVICE_CHECKLIST.md); this checks
+  // the layout targets the large viewport, which is the full screen there.
+  await page.addInitScript(() =>
+    Object.defineProperty(navigator, "standalone", { value: true }),
+  );
+  await page.setViewportSize({ width: 393, height: 852 });
+  await page.goto("./");
+  await expect(page.locator("html")).toHaveClass(/standalone/);
+  const measure = () =>
+    page.evaluate(() => {
+      const html = document.documentElement;
+      const root = document.querySelector("#root")!;
+      const lvh = document.createElement("div");
+      lvh.style.cssText = "position:fixed;top:0;height:100lvh;width:0";
+      document.body.append(lvh);
+      const screenHeight = lvh.getBoundingClientRect().height;
+      lvh.remove();
+      window.scrollTo(0, 80);
+      return {
+        screenHeight,
+        html: html.getBoundingClientRect().height,
+        htmlOverflow: getComputedStyle(html).overflowY,
+        bodyOverflow: getComputedStyle(document.body).overflowY,
+        root: root.getBoundingClientRect().height,
+        rootOverflow: getComputedStyle(root).overflowY,
+        app: document.querySelector(".app")!.getBoundingClientRect().bottom,
+        backdrop: parseFloat(
+          getComputedStyle(document.body, "::before").height,
+        ),
+        atmosphere: document
+          .querySelector(".atmosphere")!
+          .getBoundingClientRect().height,
+        scrollY: window.scrollY,
+        pageScroll: html.scrollHeight - html.clientHeight,
+      };
+    });
+  const check = (m: Awaited<ReturnType<typeof measure>>) => {
+    expect(m.screenHeight).toBe(852);
+    // The document, the scroller, the layout and both backdrop layers all end
+    // on the last row of the screen.
+    for (const value of [m.html, m.root, m.app, m.backdrop, m.atmosphere])
+      expect(value).toBeCloseTo(m.screenHeight, 0);
+    // The root cannot scroll or be dragged off the top; tall content scrolls
+    // inside #root instead.
+    expect(m.htmlOverflow).toBe("hidden");
+    expect(m.bodyOverflow).toBe("hidden");
+    expect(m.rootOverflow).toBe("auto");
+    expect(m.pageScroll).toBe(0);
+    expect(m.scrollY).toBe(0);
+  };
+  check(await measure());
+  // The bottom row is wood, not a flat fill.
+  const { data, info } = await sharp(
+    await page.screenshot({ animations: "disabled" }),
+  )
+    .raw()
+    .toBuffer({ resolveWithObject: true });
+  const lastRow = new Set<number>();
+  for (let x = 0; x < info.width; x++)
+    lastRow.add(data[((info.height - 1) * info.width + x) * info.channels]);
+  expect(lastRow.size).toBeGreaterThan(4);
+
+  await seed(page, revealed(longestRule));
+  await expect(page.locator(".study-rules p")).toBeVisible();
+  check(await measure());
+  const card = (await page.locator(".game-card").boundingBox())!;
+  expect(Math.abs(card.width / card.height - 2 / 3)).toBeLessThan(0.01);
+  expect(card.y + card.height).toBeLessThanOrEqual(852);
 });
 test("@release a short phone scrolls long rules with a visible overflow affordance", async ({
   page,

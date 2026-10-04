@@ -430,7 +430,7 @@ dialog.closing {
   top: 0;
   right: 0;
   left: 0;
-  height: 100dvh;
+  height: var(--backdrop-height);
   z-index: -1;
   pointer-events: none;
   overflow: hidden;

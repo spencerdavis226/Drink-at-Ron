@@ -77,6 +77,24 @@ function App() {
     };
   }, []);
   useEffect(() => {
+    document.documentElement.classList.toggle("standalone", standalone);
+    if (!standalone) return;
+    // iOS can launch or resume the installed app with the page resting one
+    // status-bar inset down. The root never scrolls there (style.css), so hold
+    // it at the top, where the page covers the whole screen.
+    const pin = () => {
+      if (window.scrollY !== 0) window.scrollTo(0, 0);
+    };
+    const events = ["scroll", "resize", "pageshow", "orientationchange"];
+    pin();
+    for (const name of events) window.addEventListener(name, pin);
+    document.addEventListener("visibilitychange", pin);
+    return () => {
+      for (const name of events) window.removeEventListener(name, pin);
+      document.removeEventListener("visibilitychange", pin);
+    };
+  }, [standalone]);
+  useEffect(() => {
     if (!("serviceWorker" in navigator)) return;
     const check = () => {
       navigator.serviceWorker

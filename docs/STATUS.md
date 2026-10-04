@@ -1,6 +1,36 @@
 # Current state and implementation plan
 
-Updated 2026-09-26. **Single authoritative handoff for OpenCode Go, Codex, and other editors.** Read `AGENTS.md` first. This replaces the old numbered model-routing plan; historical studies are references, not new work orders. Direct user instructions win.
+Updated 2026-10-04. **Single authoritative handoff for OpenCode Go, Codex, and other editors.** Read `AGENTS.md` first. This replaces the old numbered model-routing plan; historical studies are references, not new work orders. Direct user instructions win.
+
+## Installed app is full screen (2026-10-04, local, uncommitted)
+
+**Result.** The strip under the installed app and the flat band behind the status bar are not system-owned. They are the page's own background showing where the document is not painted. Fixed in CSS plus one small effect; the wood now covers the whole display in the installed app on the iOS 18.5 and iOS 27.0 iPhone simulators. This supersedes the two sections below ("Wood to the edges", "installed iPhone bottom strip") and the claim that WebKit bug 301994 puts the strip outside the DOM. Screenshots: `docs/evidence/standalone-ios27-{before,after}.jpg`.
+
+**Mechanism (measured, iPhone 16 Pro / 17 Pro simulators, 402×874, top inset 62).** With `viewport-fit=cover` + `black-translucent`, the installed web view is the full 874pt, but WebKit sizes the layout to 812 (`100%`, `svh`, `clientHeight`), i.e. screen minus the top inset. Only `100lvh`/`100vh` report 874. While the document is 812 tall it sits in one of two places, and both show a 62pt flat band of page background: at the top of the screen with the band at the bottom (iOS 18.5 always; iOS 27 on some launches: the "chin"), or one inset down at `scrollY = -62` with the band behind the status bar and the top inset applied twice (iOS 27 on other launches; iOS draws its scroll-edge blur over the band, which is the "frost"). Once the document is 874 tall and at `scrollY = 0`, the page paints the whole screen and there is no frost. A finger drag can otherwise pull the page back to `-62`, where it rests.
+
+| Variation (installed app unless noted) | Measured | Verdict |
+| --- | --- | --- |
+| Shipped build, iOS 27.0 | `html` 812, wood ends at 812, flat 62pt strip below; other launches: `scrollY -62`, flat band on top, content 62pt low | Reproduces the device screenshot |
+| Shipped metas on a probe page, iOS 18.5 | inner 812, `dvh`/`svh`/`100%` 812, `lvh`/`vh` 874; a 1400pt fixed ruler is clipped at 812; strip takes the `body` background colour | Same bug predates iOS 26 |
+| Fixed layer `height: 100lvh`, `screen.height`, `bottom: -200px` (document still 812) | Element box reaches 874+, paint still stops at 812 on 18.5 | No effect alone |
+| `html { height/min-height: 100lvh }` | 18.5: inner becomes 874, ruler reaches the bottom. 27.0: wood reaches the bottom | Removes the bottom strip |
+| Same, plus `scrollTo(0, 0)` on 27.0 | `scrollY 0`, `.app 0..874`, no frost, status bar over wood | Full screen |
+| Same, then drag the page down | Scrolls to `-62` and stays | Needs a lock |
+| `html, body { overflow: hidden }` + the above | Drag produces no scroll events; stays at 0 | Lock works |
+| Web manifest present vs absent (cloned web clips) | Identical geometry | Not a factor |
+| Safari tab, iOS 27.0 iPhone and iPad | inner 714 / 1124, `lvh` 754 / 1153; layout unchanged by this work | Tab path untouched |
+
+Not tested: `apple-mobile-web-app-status-bar-style` `default`/`black`, `viewport-fit` absent, manifest `display: fullscreen`/`minimal-ui`, `apple-touch-startup-image`. They were unnecessary once the shipped configuration filled the screen; `default` reportedly trades the bug for an opaque status bar ([jargon-gym PR 181](https://github.com/behnamazimi/jargon-gym/pull/181), 2026-10-04).
+
+**Sources checked 2026-10-04.** [WebKit 301994](https://bugs.webkit.org/show_bug.cgi?id=301994) is still REOPENED (last comments 2026-07-20 to 2026-08-04, reproduces on 26.5.2 and 27 beta). [WebKit 301108](https://bugs.webkit.org/show_bug.cgi?id=301108) is NEW. Other installed apps fix the same gap by sizing to `100lvh`/`100vh` ([ghostly PR 651](https://github.com/MiguelMedeiros/ghostly/pull/651), 2026-09-29; [bunyan PR 3](https://github.com/alieldinHosni/bunyan/pull/3), 2026-09-29). One report found nothing could paint in the strip on a real iPhone on iOS 26.6.1 ([busssss PR 23](https://github.com/tpdbf5509/busssss/pull/23), 2026-09-05); that was not reproduced here, so a physical check is still required.
+
+**Change.** `index.html`: an inline script adds `html.standalone` before first paint when `navigator.standalone` or `(display-mode: standalone)`. `src/style.css`: `--app-height` (`100svh`; `100lvh` when standalone) and `--backdrop-height` (`100dvh`; `100lvh` when standalone) replace the literal units in `.app`, `.playing`, the card-stage width and the two backdrop layers; when standalone, `html` and `body` are `height: 100lvh; overflow: hidden` and `#root` is the scroller (`overflow: hidden auto; overscroll-behavior: none`). `src/presentation/theme.css`: `.atmosphere` uses `--backdrop-height`. `src/main.tsx`: one effect keeps the class in sync and holds `scrollY` at 0 (start, scroll, resize, pageshow, orientationchange, visibilitychange) while standalone. The browser-tab layout, engine, session schema, storage key, card frame, dice and manifest are unchanged. `tests/browser/layout.spec.ts`: the tab edge test now asserts it is not standalone; a new `@release` test poses `navigator.standalone` and checks the document, `#root`, `.app` and both backdrop layers end on the last row, the root cannot scroll, the bottom row is wood, and the 2:3 card still fits.
+
+**Verified.** iOS 27.0 simulator (iPhone 17 Pro), installed app: cold launch, play screen, card flip by tap, background/resume all at `inner 874`, `scrollY 0`, `.app 0..874`. The app installed through Safari from the previous build (service worker + manifest) picked the fix up on its second launch with no reinstall. iOS 18.5 simulator (iPhone 16 Pro): cold launch full screen with the home indicator over wood. `npm test` 98 passed; Pages-path build and budgets passed (2738 KiB runtime; 94.3 KiB initial + 147.8 KiB lazy gzip); layout + pages specs 28/28; release smoke 24/24; update flow passed. Full production E2E on a quiet machine: 150 passed, 3 intentional WebKit offline skips, 1 flaky (`game.spec.ts:607`, the known WebKit menu-focus assertion, passed on retry). An earlier E2E run made while three simulators were booting had 1 failure (`game.spec.ts:204`, Chromium) and 3 flaky; that test then passed 6/6 in isolation. Not run: `npm run test:workshop`.
+
+**Not verified.** A physical iPhone or iPad (simulators are not device evidence; record the result in `docs/DEVICE_CHECKLIST.md`). iPad installed app: the iPad Pro 11 (iOS 27.0) simulator never finished loading web content in the installed app or in Safari's Add to Home Screen dialog, so only its Safari tab was seen. Landscape and rotation in the installed app. Small phones without a notch. Setup content taller than the screen scrolling inside `#root` on a real device.
+
+**Leftovers on this Mac.** The iOS 27.0 simulator runtime (about 7.5 GB) and two simulators, "Ron iOS27" and "Ron iPad27", were added for this work and can be deleted in Xcode. Nothing is committed or pushed. Next task: authorization to commit and deploy, then reopen the installed app on the physical iPhone and iPad and record both edges.
 
 ## Wood to the edges (2026-10-03, local, uncommitted)
 
