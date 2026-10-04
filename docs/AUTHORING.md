@@ -21,7 +21,7 @@ export const exampleCards: CardDefinition[] = [{
 export const examplePack: PackDefinition = {
   version: 1,
   id: 'fireside',
-  logo: 'art/packs/fireside.svg', // Create a distinct small pack mark.
+  logo: 'art/packs/fireside.svg', // One single-colour silhouette; the app tints it.
   title: 'By the fireside',
   description: 'Stories and gentle mischief for a cozy table.',
   cardIds: exampleCards.map(card => card.id),

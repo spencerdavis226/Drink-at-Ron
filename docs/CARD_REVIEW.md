@@ -6,7 +6,7 @@ the Review column is intentionally blank so you can mark it up.
 
 ## The Core deck (`core`)
 
-117 cards · 18 sip · 23 group · 9 category · 51 challenge · 16 rule · 39 dice
+116 cards · 18 sip · 23 group · 9 category · 51 challenge · 15 rule · 38 dice
 
 | Review | Title | ID | Cat | Rules | Dice |
 | --- | --- | --- | --- | --- | --- |
@@ -123,7 +123,6 @@ the Review column is intentionally blank so you can mark it up.
 | ☐ | Question Master | `core.question-master` | rule | Until your next turn: anyone who answers your question drinks 2. |  |
 | ☐ | Eight Is Mate | `core.kings-eight` | rule | Pick a mate until your next turn. When one of you drinks, both drink. |  |
 | ☐ | Dungeon Master | `core.dungeon-master` | rule | Until your next turn, you narrate in third person. Slip = drink 2. |  |
-| ☐ | Banned Number | `core.banned-number` | rule | Roll d6. Nobody may say it until your next turn. Slip: drink 3. | 1d6 — {total} is banned until your next turn. Slip: drink 3. |
 | ☐ | Heavy Hand | `core.heavy-hand` | rule | Roll d6. All drinks are doubled until your next turn. | 1d6 — Double every drink until your next turn. |
 | ☐ | Personal Space | `core.personal-space` | rule | Until your next turn, everyone sits on their own hands. Slip: drink 2. |  |
 | ☐ | Formal Night | `core.formal-night` | rule | Until your next turn, everyone addresses others as my liege. Slip: drink 2. |  |

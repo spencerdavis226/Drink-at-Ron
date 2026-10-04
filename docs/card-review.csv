@@ -112,7 +112,6 @@ pack,id,title,category,rules,dice,review
 "core","core.question-master","Question Master","rule","Until your next turn: anyone who answers your question drinks 2.","",""
 "core","core.kings-eight","Eight Is Mate","rule","Pick a mate until your next turn. When one of you drinks, both drink.","",""
 "core","core.dungeon-master","Dungeon Master","rule","Until your next turn, you narrate in third person. Slip = drink 2.","",""
-"core","core.banned-number","Banned Number","rule","Roll d6. Nobody may say it until your next turn. Slip: drink 3.","1d6 — {total} is banned until your next turn. Slip: drink 3.",""
 "core","core.heavy-hand","Heavy Hand","rule","Roll d6. All drinks are doubled until your next turn.","1d6 — Double every drink until your next turn.",""
 "core","core.personal-space","Personal Space","rule","Until your next turn, everyone sits on their own hands. Slip: drink 2.","",""
 "core","core.formal-night","Formal Night","rule","Until your next turn, everyone addresses others as my liege. Slip: drink 2.","",""

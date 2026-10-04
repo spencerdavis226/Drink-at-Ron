@@ -10,6 +10,8 @@ Automated browser emulation is not evidence of actual iOS Home Screen behavior. 
   - 2026-10-04 simulators only (not device evidence): reproduced on iOS 27.0 and fixed by sizing the installed app's document to `100lvh` and pinning it at the top; full screen on iPhone 17 Pro (iOS 27.0) and iPhone 16 Pro (iOS 18.5). See `docs/evidence/standalone-ios27-{before,after}.jpg`. Physical iPhone and iPad recheck pending after deployment; the installed iPad app and landscape were not observed even in the simulator.
 - [ ] Wake lock: in the installed app start a game, leave it untouched 5+ minutes; the screen must stay on, then dim normally after ending the game or backgrounding. Check Low Power Mode.
 - [ ] iPad landscape (full screen, 1366×1024 and 1180×820) plays without a rotate prompt and the card fits; phones in landscape still show the prompt.
+- [ ] iPad card size (2026-10-04, unverified): in portrait the card should nearly fill the screen and its rules read from standing distance around a coffee table; check dice size against it, the brass counter and menu at the top, and that nothing scrolls.
+- [ ] Reveal a dice card, switch apps for a minute, return and roll: the 3D dice should still throw (the stage is rebuilt if iOS dropped it).
 - [ ] Wait for offline readiness, enable airplane mode, close and reopen. Reveal/discard multiple cards and verify artwork works.
 - [ ] Reveal a card, switch apps, lock/unlock, and reopen. Same card and count persist.
 - [ ] Rapidly tap during reveal and discard. Exactly one action occurs per transition.
@@ -46,6 +48,6 @@ Sound has been removed; there are no audio checks. Verify the visual and dice it
 Automated evidence is recorded in `docs/studies/README.md`. Keep the following pending until observed on physical hardware:
 
 - [ ] Approve the short, long, and temporary-rule front studies on an iPhone and iPad.
-- [ ] Play Short (30 cards from the 117-card Core deck) using the playtest record, then sample more cards in Infinite with the House deck. Engine tests cover the full shuffle cycle.
+- [ ] Play Short (30 cards from the 116-card Core deck) using the playtest record, then sample more cards in Infinite with the House deck. Engine tests cover the full shuffle cycle.
 - [ ] Verify the published `/Drink-at-Ron/` URL, Home Screen installation, offline relaunch, and updates on iOS.
 - [ ] Evaluate the approved frame and live title sharpness, scrolling with enlarged text, and flip smoothness on physical devices.
