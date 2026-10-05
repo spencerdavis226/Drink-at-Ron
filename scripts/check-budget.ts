@@ -11,11 +11,13 @@ async function walk(dir: string): Promise<string[]> {
     )
   ).flat();
 }
-// Budgets match how the app loads: the critical-path entry stays small, while
-// lazily-loaded feature chunks (e.g. the 3D dice library) get their own tier.
+// Budgets match how the app loads. The startup chunk has no byte cap (the
+// owner dropped the old 100 KiB limit on 2026-10-05: art and fonts dominate
+// the first screen, not script); it is reported, and the real guard is that
+// card text never reaches it (below). Lazy chunks (the 3D dice library, each
+// pack's cards) keep their own tier.
 const RUNTIME_LIMIT = 3 * 1024 * 1024;
 const IMAGE_LIMIT = 500 * 1024;
-const INITIAL_JS_LIMIT = 100 * 1024;
 const LAZY_JS_LIMIT = 200 * 1024;
 
 const files = await walk("dist");
@@ -43,8 +45,7 @@ for (const file of files) {
     if (name && initialChunks.has(name)) {
       initialJs += gzip;
       initialCode += code;
-    }
-    else lazyJs += gzip;
+    } else lazyJs += gzip;
     if (
       /Card workshop|Front study|workshop-viewport|core\.dice-toast-study|core\.dice-title-study/.test(
         code,
@@ -65,10 +66,7 @@ const leaked = cards.find((card) => {
 });
 if (leaked) throw Error(`Card text reached the initial chunk: ${leaked.id}`);
 // Conservatively count all runtime files, including SW, rather than undercount precache.
-if (cache > RUNTIME_LIMIT)
-  throw Error(`Runtime cache exceeds 3 MiB: ${cache}`);
-if (initialJs > INITIAL_JS_LIMIT)
-  throw Error(`Initial JavaScript exceeds 100 KiB gzip: ${initialJs}`);
+if (cache > RUNTIME_LIMIT) throw Error(`Runtime cache exceeds 3 MiB: ${cache}`);
 if (lazyJs > LAZY_JS_LIMIT)
   throw Error(`Lazy JavaScript exceeds 200 KiB gzip: ${lazyJs}`);
 console.log(

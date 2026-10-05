@@ -22,6 +22,43 @@ export function shuffle(
   }
   return next;
 }
+/**
+ * In a finite game, make every quest finishable: move enough of its cards
+ * into the draws before the last one that the goal can be met and its finale
+ * still dealt. The rest of the shuffle is untouched, and an endless game is
+ * left to chance.
+ */
+export function paceQuests(
+  order: string[],
+  cards: CardDefinition[],
+  quests: readonly QuestState[] | undefined,
+  limit: number | null,
+  random: Random = Math.random,
+): string[] {
+  if (limit === null || !quests?.length) return order;
+  const next = [...order];
+  const window = Math.min(limit - 1, next.length);
+  const questOf = new Map(cards.map((c) => [c.id, c.quest]));
+  for (const { packId, goal } of quests) {
+    const tagged = (i: number) => questOf.get(next[i]) === packId;
+    const inside = () =>
+      next.slice(0, window).filter((_, i) => tagged(i)).length;
+    const pick = (from: number, to: number, want: boolean) => {
+      const spots = [];
+      for (let i = from; i < to; i++)
+        if (tagged(i) === want && !(want === false && questOf.get(next[i])))
+          spots.push(i);
+      return spots[Math.floor(random() * spots.length)];
+    };
+    while (inside() < goal) {
+      const out = pick(window, next.length, true);
+      const into = pick(0, window, false);
+      if (out === undefined || into === undefined) break;
+      [next[out], next[into]] = [next[into], next[out]];
+    }
+  }
+  return next;
+}
 export function validConfig(c: GameConfig): boolean {
   return (
     !!c &&
@@ -79,8 +116,14 @@ export function createSession(
     version: 2,
     config: { ...config, packIds: [...config.packIds] },
     cards,
-    order: shuffle(
-      cards.map((c) => c.id),
+    order: paceQuests(
+      shuffle(
+        cards.map((c) => c.id),
+        random,
+      ),
+      cards,
+      quests,
+      config.limit,
       random,
     ),
     position: 0,
@@ -195,8 +238,14 @@ export function replaySession(
     ...s,
     config: { ...s.config, packIds: [...s.config.packIds] },
     cards: s.cards.map((c) => structuredClone(c)),
-    order: shuffle(
-      s.cards.map((c) => c.id),
+    order: paceQuests(
+      shuffle(
+        s.cards.map((c) => c.id),
+        random,
+      ),
+      s.cards,
+      s.quests,
+      s.config.limit,
       random,
     ),
     position: 0,

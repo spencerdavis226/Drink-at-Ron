@@ -16,7 +16,7 @@ async function seedOneBadgeShort(page: Page) {
     ...session.order.filter((id) => id !== "pokemon.jasmine"),
   ];
   session.phase = "revealed";
-  session.quests![0].count = 3;
+  session.quests![0].count = 7;
   await page.goto("./");
   await page.evaluate(
     ({ key, session }) => localStorage.setItem(key, JSON.stringify(session)),
@@ -32,7 +32,7 @@ for (const width of [320, 390])
     await page.setViewportSize({ width, height: 700 });
     await seedOneBadgeShort(page);
     const meter = page.locator(".quest-meter");
-    await expect(meter).toHaveAccessibleName("Badges: 3 of 4");
+    await expect(meter).toHaveAccessibleName("Badges: 7 of 8");
     await expect(meter).not.toHaveClass(/due/);
     // The meter shares the top row with the medallion without overlapping it.
     const [left, middle] = await Promise.all([
@@ -44,7 +44,7 @@ for (const width of [320, 390])
     await page.screenshot({ path: info.outputPath(`meter-${width}.png`) });
 
     await page.locator(".game-card").click();
-    await expect(meter).toHaveAccessibleName("Badges: 4 of 4");
+    await expect(meter).toHaveAccessibleName("Badges: 8 of 8");
     await expect(meter).toHaveClass(/due/);
     await page.getByRole("button", { name: "Reveal card" }).click();
     await expect(page.locator(".study-title h2")).toHaveText("Pokémon League");
@@ -58,7 +58,7 @@ for (const width of [320, 390])
       (key) => JSON.parse(localStorage.getItem(key)!),
       key,
     );
-    expect(saved.quests[0]).toMatchObject({ count: 4, due: true, shown: 0 });
+    expect(saved.quests[0]).toMatchObject({ count: 8, due: true, shown: 0 });
   });
 
 test("packs without a quest show no meter", async ({ page }) => {

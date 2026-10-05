@@ -12,8 +12,9 @@ import { cardFactory, roll, rollTable } from "./author";
 // Keep IDs stable: active sessions snapshot their text and order.
 //
 // Badge quest: gym cards earn the table a badge when they are put aside, and
-// the fourth badge makes the Pokémon League the next card. Four, not eight,
-// because a Short game draws only three or four gyms on average.
+// the eighth badge makes the Pokémon League the next card. A Short game would
+// draw only three or four gyms by chance, so finite games pace eight of the
+// fifteen gyms into the deal (`paceQuests` in the engine).
 const card = cardFactory("pokemon");
 
 const gyms = new Set(
@@ -984,7 +985,7 @@ const league = card(
   "league",
   "Pokémon League",
   "challenge",
-  "Four badges! The whole table takes on the Champion. Roll d20.",
+  "Eight badges! The whole table takes on the Champion. Roll d20.",
   rollTable(1, 20, [
     {
       min: 1,
@@ -1018,5 +1019,5 @@ export const pokemonPack: PackDefinition = {
   description:
     "A whole region of wild encounters, gym battles, catches, and rivals. The board stayed home; the dice came along.",
   cardIds: deck.map((card) => card.id),
-  quest: { label: "Badges", goal: 4, finaleId: league.id },
+  quest: { label: "Badges", goal: 8, finaleId: league.id },
 };

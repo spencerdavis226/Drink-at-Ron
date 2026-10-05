@@ -13,7 +13,7 @@ Read `docs/AUTHORING.md` and `docs/CARD_VOICE_REFERENCE.md` before editing. Card
 
 `catalog.ts` aggregates everything for tests, scripts and the workshop only. The app imports `manifest.generated.ts` (run `npm run content:manifest` after changing packs or card IDs; the build does it too and a test catches a stale file) and loads card text through `loaders.ts`, one lazy chunk per content module. A new pack needs a loader entry. Never import a content module statically from app code; the budget check fails the build if card text reaches the initial chunk.
 
-Pack quests: a pack may declare `quest: { label, goal, finaleId }`. The finale is a card in the module but not in `cardIds`; cards tagged `quest: "<packId>"` advance the meter when put aside. Validation requires at least `goal` tagged cards. Pokémon: 15 gym cards, goal 4, finale `pokemon.league`.
+Pack quests: a pack may declare `quest: { label, goal, finaleId }`. The finale is a card in the module but not in `cardIds`; cards tagged `quest: "<packId>"` advance the meter when put aside. Validation requires at least `goal` tagged cards. Pokémon: 15 gym cards, goal 8, finale `pokemon.league`. Finite games pace enough tagged cards into the deal to reach the goal (`paceQuests`), so a goal no longer needs to fit chance draws.
 
 Rules enforced by `npm run build` (`scripts/validate-content.ts`) and unit tests:
 

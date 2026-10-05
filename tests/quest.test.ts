@@ -183,3 +183,53 @@ describe("pack quests", () => {
       );
   });
 });
+
+describe("quest pacing", () => {
+  const seeded = (seed: number) => () => {
+    seed = (seed * 16807) % 2147483647;
+    return (seed - 1) / 2147483646;
+  };
+  it("puts enough quest cards before the last draw of a finite game", () => {
+    for (let seed = 1; seed <= 50; seed++) {
+      const s = createSession(
+        { version: 1, packIds: ["quest"], limit: 3 },
+        catalog,
+        [pack],
+        seeded(seed),
+      );
+      expect(s.order.slice(0, 2).sort(), `seed ${seed}`).toEqual([
+        "quest.gym-a",
+        "quest.gym-b",
+      ]);
+    }
+  });
+
+  it("leaves an endless game to chance", () => {
+    const orders = new Set(
+      Array.from(
+        { length: 30 },
+        (_, seed) =>
+          createSession(
+            { version: 1, packIds: ["quest"], limit: null },
+            catalog,
+            [pack],
+            seeded(seed + 1),
+          ).order[2],
+      ),
+    );
+    expect(orders.has("quest.gym-a") || orders.has("quest.gym-b")).toBe(true);
+  });
+
+  it("paces a replay too", () => {
+    const s = replaySession(
+      createSession(
+        { version: 1, packIds: ["quest"], limit: 3 },
+        catalog,
+        [pack],
+        rng,
+      ),
+      seeded(7),
+    );
+    expect(s.order[2]).toBe("quest.wild");
+  });
+});

@@ -24,6 +24,9 @@ export function workshopSession(seed: string, first: string, revealed = true) {
   );
   if (session.order.includes(first))
     session.order = [first, ...session.order.filter((id) => id !== first)];
+  // A quest finale is never in the deck order: preview it as dealt.
+  const quest = session.quests?.find((q) => q.finale.id === first);
+  if (quest) Object.assign(quest, { count: quest.goal, due: true });
   if (revealed) session.phase = "revealed";
   return { session, random };
 }

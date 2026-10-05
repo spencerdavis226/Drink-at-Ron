@@ -399,7 +399,7 @@ export const packs: PackDefinition[] = [
       "pokemon.bugsy",
       "pokemon.jasmine",
     ],
-    quest: { label: "Badges", goal: 4, finaleId: "pokemon.league" },
+    quest: { label: "Badges", goal: 8, finaleId: "pokemon.league" },
   },
   {
     version: 1,

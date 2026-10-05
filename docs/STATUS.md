@@ -2,6 +2,20 @@
 
 Updated 2026-10-05. **Single authoritative handoff.** Read `AGENTS.md` first. Older handoffs are in `docs/STATUS_ARCHIVE.md` (reference only). Direct user instructions win.
 
+## Leaner tests, no initial-JS cap, eight Pokémon badges (2026-10-05, on branch `cabin-weekend-pack`, PR #3, not on `main`)
+
+**Request.** Remove unnecessary tests and the 100 KiB limit; make the Pokémon quest all 8 badges.
+
+**Budget.** `check-budget.ts` no longer caps initial JS (owner decision); it still reports it (85.9 KiB gzip), keeps the lazy (200 KiB), runtime (3 MiB) and image (500 KiB) limits, and still fails the build if card text reaches the initial chunk. AGENTS.md updated.
+
+**Tests trimmed.** The workshop every-card sweep (5 viewports × every card × normal and enlarged) now runs a 34-card stress set (`tests/workshop/stress-set.ts`: 12 longest rules, 6 longest titles, every choice card, the 3 dice cards with most dice, quest finales, first card of each pack). Title fit checks distinct titles of 12+ characters (152, was 685 per pass); the wide-letter test still covers short titles. The sweep's pack-mark check now expects every pack containing a shared card (Cabin weekend shares House rows; the old single-mark check would have failed since that pack existed) and polls for the marks. The isolation test now snapshots storage after the app has mounted (it raced the app's first settings save). The workshop can preview a quest finale (marks its quest due). Release smoke still runs in Chromium and WebKit: headless Linux WebKit has no WebGL, so the dice-render checks only really run in Chromium. Full E2E and workshop stay manual-only in CI, as before.
+
+**Eight badges.** `pokemon` quest goal 8; League copy "Eight badges!". By chance alone a Short Pokémon-only game would reach 8 gyms 0.5% of the time (Long 33%; with Core mixed in 0% and 1.5%), so `paceQuests` (engine) now moves enough tagged cards into the draws before a finite game's last one; replays are paced too; endless games are untouched. A 30-card game with Pokémon therefore always contains at least 8 gym cards in its first 29 draws.
+
+**Verified.** `npm test` 121 passed (new: pacing in `tests/quest.test.ts`, eight-badge Short game across 40 seeds in `tests/workshop.test.ts`); typecheck clean; build and budgets passed; full production E2E Chromium 86/86; workshop (title fit, stress sweep at 5 viewports, card review, isolation, viewport, overlay) 12/12 twice in about 3.5 min, Chromium. `dice-texture.spec.ts` still fails identically on the baseline build in this container (older Chromium), not run in the timings above.
+
+**Not verified.** WebKit locally (CI runs the release smoke in WebKit), any device, how an 8-gym Short game feels at the table.
+
 ## Per-pack card loading, pack quests, Pokémon badge quest (2026-10-05, on branch `cabin-weekend-pack`, PR #3, not on `main`)
 
 **Request.** Owner approved steps 1 to 3 of the suggested order: load each pack's cards separately, ship Most Likely To as plain vote cards (already done), then Feature A (shared progress and a finale) with the Pokémon badge quest as the first user.
@@ -60,7 +74,7 @@ The owner's goal: packs that change how the game plays, not just add cards. Toda
 
 **Suggested order:** per-pack loading (done) → vote pack (done) → A + Pokémon badge quest (done, 2026-10-05) → dungeon crawl (reuses quests; would add a finale at the end of a finite game and loot) → B + rules tray + awards → secret and timer card packs.
 
-**Open owner questions (2026-10-05).** Whether to redefine the 100 KiB initial budget as "everything loaded before the first screen" (JS, art, fonts) and whether to trim the test suite (drop the every-card workshop sweep or sample it, run WebKit only in the release smoke, retire obsolete study pages). No budget or test-scope change has been made.
+**Owner decisions (2026-10-05).** Initial-JS cap removed; workshop sweeps trimmed to a stress set (see the entry at the top).
 
 ## Cabin weekend pack from CABIIN 2.0 (2026-10-05, local only, not committed)
 

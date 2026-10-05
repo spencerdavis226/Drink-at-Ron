@@ -1,6 +1,7 @@
 import { test, expect } from "vitest";
 import { workshopSession, workshopCards } from "../src/workshop/session";
 import { cards, packs } from "../src/content/catalog";
+import { createSession } from "../src/game/engine";
 test("seeded workshop preserves the pool and reproduces order", () => {
   const a = workshopSession("a", "core.house-special").session;
   expect(a).toEqual(workshopSession("a", "core.house-special").session);
@@ -78,5 +79,26 @@ test("Most Likely To is 250 standalone vote cards", () => {
     expect(card.rules).toMatch(
       /Point on three: most votes (drinks [23]|finishes their drink|takes a shot)\.$/,
     );
+  }
+});
+
+test("a Short game with Pokémon can always earn all eight badges", async () => {
+  const pokemon = packs.find((p) => p.id === "pokemon")!;
+  expect(pokemon.quest).toMatchObject({ goal: 8, finaleId: "pokemon.league" });
+  const gyms = cards.filter((c) => c.quest === "pokemon");
+  expect(gyms).toHaveLength(15);
+  let seed = 11;
+  const random = () => ((seed = (seed * 16807) % 2147483647) - 1) / 2147483646;
+  for (let i = 0; i < 40; i++) {
+    const s = createSession(
+      { version: 1, packIds: ["core", "house", "pokemon"], limit: 30 },
+      cards,
+      packs,
+      random,
+    );
+    const early = s.order
+      .slice(0, 29)
+      .filter((id) => gyms.some((g) => g.id === id));
+    expect(early.length).toBeGreaterThanOrEqual(8);
   }
 });
