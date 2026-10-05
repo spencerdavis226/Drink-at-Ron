@@ -18,7 +18,10 @@ export function workshopSession(seed: string, first: string, revealed = true) {
   const random = seededRandom(seed);
   // A quest finale is never in the deck order: preview it in its quest mode,
   // as dealt.
-  const quest = packs.find((p) => p.quest?.finaleId === first)?.id;
+  // Quest-only cards (gym leaders) and finales preview in their quest mode.
+  const quest = packs.find(
+    (p) => p.quest?.finaleId === first || p.quest?.cardIds.includes(first),
+  )?.id;
   const session = createSession(
     {
       version: 1,

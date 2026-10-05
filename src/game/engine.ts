@@ -83,10 +83,14 @@ export function createSession(
     config.packIds.some((id) => !packs.some((p) => p.id === id))
   )
     throw new Error("Choose a valid deck and at least one pack.");
+  // A quest mode also deals its own pack's quest-only cards.
   const selected = new Set(
     packs
       .filter((p) => config.packIds.includes(p.id))
-      .flatMap((p) => p.cardIds),
+      .flatMap((p) => [
+        ...p.cardIds,
+        ...(p.id === config.quest ? (p.quest?.cardIds ?? []) : []),
+      ]),
   );
   const cards = catalog
     .filter((c) => selected.has(c.id))

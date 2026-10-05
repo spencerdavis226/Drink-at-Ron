@@ -1,5 +1,6 @@
 import type { CardDefinition, PackDefinition } from "../game/types";
 import { cardFactory, roll, rollTable } from "./author";
+import { gymLeaders, league } from "./pokemon-league";
 
 // Pokémon night: every playable moment from the three supplied board sheets
 // (Kanto, Johto, Hoenn), morphed from board spaces into shared-deck cards.
@@ -11,32 +12,12 @@ import { cardFactory, roll, rollTable } from "./author";
 // reference/pokemon_board_spaces.json; never rewrite it to match this file.
 // Keep IDs stable: active sessions snapshot their text and order.
 //
-// Pokémon League mode: gym cards earn the table a badge when they are put
-// aside, the eighth badge deals the Pokémon League, and beating it ends the
-// game. Eight of the fifteen gyms are spread through the first 40 draws
-// (`paceQuest` in the engine), so a run lasts about 30 to 40 cards. In the
-// Short, Long and Infinite modes these are ordinary cards.
+// Pokémon League mode (`pokemon-league.ts`): the 24 gym leaders play only in
+// that mode; each earns the table a badge, the eighth badge deals the Pokémon
+// League, and beating it ends the game. Eight leaders are spread through the
+// first 40 draws (`paceQuest` in the engine), so a run lasts about 30 to 40
+// cards. The regular deck below has no gym leaders.
 const card = cardFactory("pokemon");
-
-const gyms = new Set(
-  [
-    "gym-battle",
-    "misty",
-    "chuck",
-    "pryce",
-    "clair",
-    "flannery",
-    "winona",
-    "tate-liza",
-    "brawly",
-    "norman",
-    "viridian",
-    "erika",
-    "sootopolis",
-    "bugsy",
-    "jasmine",
-  ].map((id) => `pokemon.${id}`),
-);
 
 const deck: CardDefinition[] = [
   // --- Wild encounters (straight prompts) ----------------------------------
@@ -350,65 +331,6 @@ const deck: CardDefinition[] = [
     rollTable(1, 6, [
       { min: 1, max: 5, step: 2, instruction: "Drink 2." },
       { min: 2, max: 6, step: 2, instruction: "Give 2." },
-    ]),
-  ),
-  card(
-    "misty",
-    "Misty",
-    "group",
-    "Misty's water attacks splash everywhere. You drink 2; everyone else drinks 1.",
-  ),
-  card(
-    "chuck",
-    "Chuck",
-    "challenge",
-    "Chuck wants to arm wrestle. Loser drinks 5. Nobody accepts? Give 5.",
-  ),
-  card(
-    "pryce",
-    "Pryce",
-    "sip",
-    "Pryce says ice Pokémon are cool. If your drink is ice cold, drink 2. If not, drink 4.",
-  ),
-  card(
-    "clair",
-    "Clair",
-    "challenge",
-    "Clair's dragons! Drink 2, then roll d6. Odd: drink 4 more. Even: safe.",
-    rollTable(1, 6, [
-      { min: 1, max: 5, step: 2, instruction: "Drink 4 more." },
-      {
-        min: 2,
-        max: 6,
-        step: 2,
-        instruction: "Safe. The dragon is impressed.",
-      },
-    ]),
-  ),
-  card(
-    "flannery",
-    "Flannery",
-    "challenge",
-    "Flannery's fire battle! Roll d6. 1-3: drink your roll. 4-6: take a high-proof shot.",
-    rollTable(1, 6, [
-      { min: 1, max: 3, instruction: "Drink {total}." },
-      { min: 4, max: 6, instruction: "Burned. Take a high-proof shot." },
-    ]),
-  ),
-  card(
-    "winona",
-    "Winona",
-    "challenge",
-    "Winona's flying battle! Stand on furniture until your next turn. Drink 3 to calm your nerves.",
-  ),
-  card(
-    "tate-liza",
-    "Tate & Liza",
-    "challenge",
-    "Tate and Liza! Pick a partner. Roll 2d6. 8 or higher: you both give 3. Under 8: you both drink 4.",
-    rollTable(2, 6, [
-      { min: 2, max: 7, instruction: "Under 8. You both drink 4." },
-      { min: 8, max: 12, instruction: "8 or higher! You both give 3." },
     ]),
   ),
 
@@ -912,28 +834,10 @@ const deck: CardDefinition[] = [
     "Relicanth used Dive! Kneel under the table until your next turn. Surface early: drink 2.",
   ),
   card(
-    "brawly",
-    "Brawly",
-    "challenge",
-    "Brawly wants a high five. They may hit as hard as they can. Drink for every high five.",
-  ),
-  card(
-    "norman",
-    "Norman",
-    "rule",
-    "Norman's gym! Call another player daddy for the rest of the game. Drink 4, or drink 8 to keep your dignity.",
-  ),
-  card(
     "koffing",
     "Koffing",
     "sip",
     "Koffing used Haze! If there's anything nearby to smoke, smoke it to avoid 2 drinks.",
-  ),
-  card(
-    "viridian",
-    "Viridian",
-    "group",
-    "Viridian Gym! First, drink 1. If you're a guy, guys drink 3. If you're a girl, girls drink 3.",
   ),
   card(
     "battle-of-sexes",
@@ -941,76 +845,9 @@ const deck: CardDefinition[] = [
     "group",
     "If you're a guy, guys drink 1. If you're a girl, girls drink 1.",
   ),
-  card(
-    "erika",
-    "Erika",
-    "challenge",
-    "Erika's grass battle! Roll d6. 1-3: stun spore; drink 2. 4-6: mega drain; finish your drink.",
-    rollTable(1, 6, [
-      { min: 1, max: 3, instruction: "Stun Spore. Drink 2." },
-      { min: 4, max: 6, instruction: "Mega Drain. Finish your drink." },
-    ]),
-  ),
-  card(
-    "sootopolis",
-    "Sootopolis",
-    "challenge",
-    "Sootopolis Gym! Roll d6. Even: chug a glass of water. Odd: chug your drink to completion.",
-    rollTable(1, 6, [
-      {
-        min: 1,
-        max: 5,
-        step: 2,
-        instruction: "Chug your drink to completion.",
-      },
-      { min: 2, max: 6, step: 2, instruction: "Chug a glass of water." },
-    ]),
-  ),
-  card(
-    "bugsy",
-    "Bugsy",
-    "group",
-    "Bugsy's gym! Bugs are tiny. Drink 1. Everyone shorter than you drinks 1. Shortest drinks again.",
-  ),
-  card(
-    "jasmine",
-    "Jasmine",
-    "sip",
-    "Olivine Gym: it's hardly even a battle. Just drink 2.",
-  ),
 ];
 
-// The quest finale: dealt when the table earns its fourth badge, never
-// shuffled into the deck.
-const league = card(
-  "league",
-  "Pokémon League",
-  "challenge",
-  "Eight badges! The whole table takes on the Champion. Roll d20.",
-  rollTable(1, 20, [
-    {
-      min: 1,
-      max: 5,
-      instruction: "The Champion sweeps. Everyone finishes their drink.",
-    },
-    { min: 6, max: 12, instruction: "A close fight. Everyone drinks 3." },
-    {
-      min: 13,
-      max: 19,
-      instruction: "Victory! Hand out 5 drinks while everyone toasts you.",
-    },
-    {
-      min: 20,
-      max: 20,
-      instruction: "Hall of Fame. Make a rule for the rest of the game.",
-    },
-  ]),
-);
-
-export const pokemonCards: CardDefinition[] = [
-  ...deck.map((c) => (gyms.has(c.id) ? { ...c, quest: "pokemon" } : c)),
-  league,
-];
+export const pokemonCards: CardDefinition[] = [...deck, ...gymLeaders, league];
 
 export const pokemonPack: PackDefinition = {
   version: 1,
@@ -1026,6 +863,7 @@ export const pokemonPack: PackDefinition = {
     label: "Badges",
     goal: 8,
     length: 40,
+    cardIds: gymLeaders.map((card) => card.id),
     finaleId: league.id,
   },
 };

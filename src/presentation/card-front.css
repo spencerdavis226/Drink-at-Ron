@@ -346,3 +346,68 @@
     transform: translateY(14px);
   }
 }
+
+/* A ribbon card (a Pokémon League gym leader): a gold banner across the top
+   of the parchment and a gilded title, so a gym battle reads from across the
+   table. The banner catches the light once when the card turns face up. */
+.card-ribbon {
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+  align-self: center;
+  margin: max(6px, 1.3cqw) 0 0;
+  padding: max(3px, 0.75cqw) max(16px, 3.8cqw);
+  overflow: hidden;
+  clip-path: polygon(
+    0 0,
+    100% 0,
+    calc(100% - max(9px, 2cqw)) 50%,
+    100% 100%,
+    0 100%,
+    max(9px, 2cqw) 50%
+  );
+  background: linear-gradient(180deg, #f3d48a 0%, #d3a24f 55%, #a87632 100%);
+  color: #3a2208;
+  font: 700 max(11px, 2.55cqw) / 1.1 var(--font-tavern);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  box-shadow:
+    inset 0 1px #fff7,
+    inset 0 -1px #5b3a1266;
+}
+.card-ribbon span {
+  position: relative;
+}
+.card-ribbon::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    100deg,
+    transparent 30%,
+    rgb(255 250 228 / 0.85) 50%,
+    transparent 70%
+  );
+  transform: translateX(-120%);
+}
+.face .card-ribbon::after {
+  animation: ribbon-shine 1.1s ease-out 0.55s 1 both;
+}
+@keyframes ribbon-shine {
+  to {
+    transform: translateX(120%);
+  }
+}
+.has-ribbon .study-title h2 {
+  color: #f6d27c;
+  text-shadow: 0 1px 0 #2a1806;
+}
+.has-ribbon .study-rules {
+  padding-top: max(4px, 0.9cqw);
+}
+@media (prefers-reduced-motion: reduce) {
+  .face .card-ribbon::after {
+    animation: none;
+  }
+}

@@ -3,8 +3,8 @@ import { createSession } from "../../src/game/engine";
 import { cards, packs } from "../../src/content/catalog";
 const key = "drink-at-ron.session.v1";
 
-// A Pokémon League game one badge short, with a plain gym card (Jasmine, no
-// dice) revealed.
+// A Pokémon League game one badge short, with a gym leader without dice
+// (Jasmine) revealed.
 async function seedOneBadgeShort(page: Page) {
   const session = createSession(
     { version: 1, packIds: ["pokemon"], limit: null, quest: "pokemon" },
@@ -12,8 +12,8 @@ async function seedOneBadgeShort(page: Page) {
     packs,
   );
   session.order = [
-    "pokemon.jasmine",
-    ...session.order.filter((id) => id !== "pokemon.jasmine"),
+    "pokemon.gym-jasmine",
+    ...session.order.filter((id) => id !== "pokemon.gym-jasmine"),
   ];
   session.phase = "revealed";
   session.quest!.count = 7;
@@ -41,6 +41,15 @@ for (const width of [320, 390])
     ]);
     expect(left!.x).toBeGreaterThanOrEqual(0);
     expect(left!.x + left!.width).toBeLessThanOrEqual(middle!.x);
+    // A gym leader carries its ribbon and stays inside the card.
+    const ribbon = page.locator(".game-card .card-ribbon");
+    await expect(ribbon).toHaveText("Gym Leader · Mineral Badge");
+    const [card, banner] = await Promise.all([
+      page.locator(".game-card").boundingBox(),
+      ribbon.boundingBox(),
+    ]);
+    expect(banner!.x).toBeGreaterThan(card!.x);
+    expect(banner!.x + banner!.width).toBeLessThan(card!.x + card!.width);
     await page.screenshot({ path: info.outputPath(`meter-${width}.png`) });
 
     await page.locator(".game-card").click();

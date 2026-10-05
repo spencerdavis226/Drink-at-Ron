@@ -16,8 +16,9 @@ import type {
   SessionState,
 } from "../src/game/types";
 
-// A small quest deck: two cards advance the meter, two do not, and the
-// finale sits outside the shuffle. Independent of shipped content.
+// A small quest deck: two quest-only cards advance the meter, two regular
+// cards do not, and the finale sits outside the shuffle. Independent of
+// shipped content.
 const plain = (id: string, extra: Partial<CardDefinition> = {}) =>
   ({
     version: 1,
@@ -43,13 +44,14 @@ const pack: PackDefinition = {
   id: "quest",
   title: "Quest",
   description: "Test",
-  cardIds: ["quest.gym-a", "quest.gym-b", "quest.wild", "quest.cave"],
+  cardIds: ["quest.wild", "quest.cave"],
   quest: {
     mode: "Quest run",
     summary: "Earn 2 badges",
     label: "Badges",
     goal: 2,
     length: 3,
+    cardIds: ["quest.gym-a", "quest.gym-b"],
     finaleId: "quest.finale",
   },
 };
@@ -102,7 +104,7 @@ describe("quest mode", () => {
     roundTrip(s);
   });
 
-  it("the same pack in a plain mode plays without a quest", () => {
+  it("the same pack in a plain mode plays without a quest or its cards", () => {
     const s = createSession(
       { version: 1, packIds: ["quest"], limit: 30 },
       catalog,
@@ -110,6 +112,7 @@ describe("quest mode", () => {
       rng,
     );
     expect("quest" in s).toBe(false);
+    expect([...s.order].sort()).toEqual(["quest.cave", "quest.wild"]);
   });
 
   it("advances on quest cards, deals the finale, and ends on it", () => {
@@ -177,6 +180,8 @@ describe("quest mode", () => {
       { goal: 0 },
       { length: 2 },
       { finaleId: "quest.wild" },
+      { cardIds: ["quest.gym-a", "quest.wild"] },
+      { cardIds: ["quest.gym-a", "quest.missing"] },
       { finaleId: "quest.missing" },
       { label: " " },
       { mode: "" },

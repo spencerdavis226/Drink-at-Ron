@@ -19,7 +19,7 @@ test("every pack has a loader that returns exactly its cards", async () => {
     const loaded = await loadPackCards([pack.id]);
     const expected = [
       ...pack.cardIds,
-      ...(pack.quest ? [pack.quest.finaleId] : []),
+      ...(pack.quest ? [...pack.quest.cardIds, pack.quest.finaleId] : []),
     ];
     expect(loaded.map((c) => c.id).sort(), pack.id).toEqual(
       [...expected].sort(),

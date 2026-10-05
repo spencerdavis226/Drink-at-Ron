@@ -18,7 +18,8 @@ export function QuestMeter({ session }: { session: SessionState }) {
         {pack && <PackLogo pack={pack} decorative />}
         <span>
           <small>{quest.label}</small>
-          <strong>
+          {/* Keyed by the count so each new badge replays the pop. */}
+          <strong key={quest.count} className={quest.count ? "earned" : ""}>
             {quest.count}/{quest.goal}
           </strong>
         </span>

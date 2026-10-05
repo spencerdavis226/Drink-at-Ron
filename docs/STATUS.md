@@ -2,6 +2,20 @@
 
 Updated 2026-10-05. **Single authoritative handoff.** Read `AGENTS.md` first. Older handoffs are in `docs/STATUS_ARCHIVE.md` (reference only). Direct user instructions win.
 
+## Gym leaders: 24, League-only, harder, with a ribbon (2026-10-05, branch `pokemon-gym-leaders`, not on `main`)
+
+**Request.** Mark gym leaders on the card in League mode; make every leader a real challenge; take leaders out of the regular Pokémon deck (League only); cover all 24 gym leaders of Gens 1–3.
+
+**Change.** `PackQuest.cardIds`: quest-only cards dealt only in that mode (engine `createSession`, `loaders.ts`, validation, setup card count, workshop preview). New `src/content/pokemon-league.ts` holds the 24 leaders (Kanto: Brock, Misty, Lt. Surge, Erika, Koga, Sabrina, Blaine, Giovanni; Johto: Falkner, Bugsy, Whitney, Morty, Chuck, Jasmine, Pryce, Clair; Hoenn: Roxanne, Brawly, Wattson, Flannery, Norman, Winona, Tate & Liza, Wallace) as `pokemon.gym-*`, and the League finale. The 14 old leader cards (`pokemon.misty`, `chuck`, `pryce`, `clair`, `flannery`, `winona`, `tate-liza`, `brawly`, `norman`, `viridian`, `erika`, `sootopolis`, `bugsy`, `jasmine`) are retired; `pokemon.gym-battle` stays in the regular deck as an ordinary card. The regular Pokémon deck is 120 cards; catalog 695. Difficulty: most battles lose more often than they win (Brock 60% drink 5; Giovanni 50% shot plus 3; Whitney's Rollout up to 10; Lt. Surge and Wattson punish matching dice), feats cost a finished drink on failure, and every leader still earns the badge when put aside. Copy was written for the mode at the owner's request and is not source-sheet text.
+
+**Indicator.** `CardDefinition.ribbon` (optional, ≤ 32 characters, validated): a gold banner over the rules ("Gym Leader · Boulder Badge"), a gilded title, and a one-time shine when the card turns face up. The badge count on the meter pops when it rises. Both respect reduced motion.
+
+**Fit.** Measured every leader on the production build: no overflow at 375×667 or 390×844; at 320×568 the rules scroll by 16px (6px for Pryce), against 6px for plain cards of similar length there (40px for the longest), after compacting the ribbon and shortening Sabrina and Tate & Liza.
+
+**Verified.** `npm test` 118 passed (League test: 24 leaders, ribbons, never in the plain deck, all 24 dealt in League, 8 within 39 draws across 40 seeds); typecheck clean; build and budgets passed; full production E2E Chromium 86 passed plus the count fix in `secondary.spec.ts` (670 cards with every pack in a plain mode), then `secondary` and `quest` specs 10/10; workshop 12/12. `quest.spec.ts` now checks the ribbon text and that it stays inside the card.
+
+**Not verified.** WebKit locally, devices, whether the leaders feel hard but fair at the table.
+
 ## Pokémon League mode; House and Cabin share nothing (2026-10-05, on branch `cabin-weekend-pack`, PR #3, not on `main`)
 
 **Request.** Make Pokémon its own mode beside Short/Long/Infinite (forcing the Pokémon pack on, plain modes can still include Pokémon cards). The 8 CABIIN rows of the house sheet belong to Cabin only, not shared.

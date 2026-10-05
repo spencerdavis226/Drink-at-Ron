@@ -36,6 +36,8 @@ export interface CardDefinition {
   /** The id of the pack whose quest meter this card advances when it is put
    * aside (a gym battle earns a badge). */
   quest?: string;
+  /** A short gold ribbon on the card face, e.g. "Gym Leader · Boulder Badge". */
+  ribbon?: string;
 }
 /** A pack's game mode: a table-wide meter that, on reaching its goal, deals
  * the finale, and the game ends when the finale is put aside. The finale is
@@ -52,6 +54,8 @@ export interface PackQuest {
   /** The quest's cards are spread through this many draws, so the finale is
    * dealt by then. */
   length: number;
+  /** Cards that only play in this mode (not in `cardIds`). */
+  cardIds: string[];
   finaleId: string;
 }
 /** A quest's progress in one game. `due` means the finale is the card in

@@ -24,7 +24,7 @@ const select = (chosen: typeof packs, loaded: CardDefinition[][]) => {
   const wanted = new Set(
     chosen.flatMap((pack) => [
       ...pack.cardIds,
-      ...(pack.quest ? [pack.quest.finaleId] : []),
+      ...(pack.quest ? [...pack.quest.cardIds, pack.quest.finaleId] : []),
     ]),
   );
   const byId = new Map<string, CardDefinition>();
