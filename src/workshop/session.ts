@@ -16,17 +16,24 @@ export const workshopCards = cards;
 export const workshopPacks = packs;
 export function workshopSession(seed: string, first: string, revealed = true) {
   const random = seededRandom(seed);
+  // A quest finale is never in the deck order: preview it in its quest mode,
+  // as dealt.
+  const quest = packs.find((p) => p.quest?.finaleId === first)?.id;
   const session = createSession(
-    { version: 1, packIds: packs.map((p) => p.id), limit: null },
+    {
+      version: 1,
+      packIds: packs.map((p) => p.id),
+      limit: null,
+      ...(quest ? { quest } : {}),
+    },
     workshopCards,
     workshopPacks,
     random,
   );
   if (session.order.includes(first))
     session.order = [first, ...session.order.filter((id) => id !== first)];
-  // A quest finale is never in the deck order: preview it as dealt.
-  const quest = session.quests?.find((q) => q.finale.id === first);
-  if (quest) Object.assign(quest, { count: quest.goal, due: true });
+  if (session.quest?.finale.id === first)
+    Object.assign(session.quest, { count: session.quest.goal, due: true });
   if (revealed) session.phase = "revealed";
   return { session, random };
 }

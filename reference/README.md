@@ -26,7 +26,8 @@ material, not game content:
 
 - **House**: `src/content/custom.ts` restores the 102 house rows that have a
   description (blank row 75 and title-only row 106 are excluded) as
-  `house.sheet-003`…`house.sheet-105`. The 2026-09-26 logic pass made minimal
+  `house.sheet-003`…`house.sheet-105`; the 8 rows that are CABIIN spaces
+  (12, 16, 24, 28, 40, 42, 53, 54) ship in Cabin weekend as `cabin.*` cards. The 2026-09-26 logic pass made minimal
   clarity edits to six ambiguous rows; those edits exist only in the shipping
   source, never in this folder.
 - **VIP**: the four VIP rows become `vip.sheet-003`…`vip.sheet-006` in the same

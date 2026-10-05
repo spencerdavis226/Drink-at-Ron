@@ -3,18 +3,14 @@ import { packs } from "./manifest.generated";
 
 // Card text is the largest part of the app, so each pack's cards are a lazy
 // chunk fetched only when a game starts. A resumed game never needs them: its
-// save carries its own card snapshot. A loader may return more cards than its
-// pack uses (Cabin weekend shares House rows); `loadPackCards` keeps only the
-// pack's cards and its quest finale.
+// save carries its own card snapshot. `loadPackCards` keeps the chosen packs'
+// cards and their quest finales.
 const loaders: Record<string, () => Promise<CardDefinition[]>> = {
   core: () => import("./sample").then((m) => m.coreCards),
   house: () => import("./custom").then((m) => m.houseCards),
   vip: () => import("./vip").then((m) => m.vipCards),
   pokemon: () => import("./pokemon").then((m) => m.pokemonCards),
-  cabin: () =>
-    Promise.all([import("./cabin"), import("./custom")]).then(
-      ([cabin, custom]) => [...cabin.cabinCards, ...custom.houseCards],
-    ),
+  cabin: () => import("./cabin").then((m) => m.cabinCards),
   likely: () => import("./likely").then((m) => m.likelyCards),
 };
 

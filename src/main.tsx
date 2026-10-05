@@ -26,7 +26,7 @@ import { Completion } from "./screens/Completion";
 import { GameDialogs, type DialogName } from "./screens/GameDialogs";
 import { useWakeLock } from "./app/wakeLock";
 import { PortraitGate } from "./components/PortraitGate";
-import { QuestMeters } from "./components/QuestMeters";
+import { QuestMeter } from "./components/QuestMeter";
 import "./style.css";
 import "./presentation/theme.css";
 import "./presentation/card-front.css";
@@ -181,10 +181,12 @@ function App() {
       packs.some((pack) => pack.id === id),
     );
     if (!packIds.length || starting) return;
+    const { quest, ...rest } = prefs.config;
     const config = {
-      ...prefs.config,
+      ...rest,
       packIds,
       limit: MODE_LIMITS[prefs.choice],
+      ...(prefs.choice === "quest" && quest ? { quest } : {}),
     };
     setPrefs({ ...prefs, config });
     const ready = loadedPackCards(packIds);
@@ -218,7 +220,7 @@ function App() {
               <>
                 {/* One row of table furniture: a pack quest's meter, the
                     count on a brass medallion, the menu on a matching stud. */}
-                <QuestMeters session={display} />
+                <QuestMeter session={display} />
                 <div
                   className="progress"
                   role="img"

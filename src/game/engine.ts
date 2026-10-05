@@ -23,39 +23,36 @@ export function shuffle(
   return next;
 }
 /**
- * In a finite game, make every quest finishable: move enough of its cards
- * into the draws before the last one that the goal can be met and its finale
- * still dealt. The rest of the shuffle is untouched, and an endless game is
- * left to chance.
+ * Spread a quest's cards through its run: move enough of them into the draws
+ * before the run's last one that the goal is met and the finale still lands
+ * in time. The rest of the shuffle is untouched.
  */
-export function paceQuests(
+export function paceQuest(
   order: string[],
   cards: CardDefinition[],
-  quests: readonly QuestState[] | undefined,
-  limit: number | null,
+  quest: QuestState | undefined,
   random: Random = Math.random,
 ): string[] {
-  if (limit === null || !quests?.length) return order;
+  if (!quest) return order;
   const next = [...order];
-  const window = Math.min(limit - 1, next.length);
-  const questOf = new Map(cards.map((c) => [c.id, c.quest]));
-  for (const { packId, goal } of quests) {
-    const tagged = (i: number) => questOf.get(next[i]) === packId;
-    const inside = () =>
-      next.slice(0, window).filter((_, i) => tagged(i)).length;
-    const pick = (from: number, to: number, want: boolean) => {
-      const spots = [];
-      for (let i = from; i < to; i++)
-        if (tagged(i) === want && !(want === false && questOf.get(next[i])))
-          spots.push(i);
-      return spots[Math.floor(random() * spots.length)];
-    };
-    while (inside() < goal) {
-      const out = pick(window, next.length, true);
-      const into = pick(0, window, false);
-      if (out === undefined || into === undefined) break;
-      [next[out], next[into]] = [next[into], next[out]];
-    }
+  const window = Math.min(quest.length - 1, next.length);
+  const tagged = new Set(
+    cards.filter((c) => c.quest === quest.packId).map((c) => c.id),
+  );
+  const spots = (from: number, to: number, want: boolean) => {
+    const found = [];
+    for (let i = from; i < to; i++)
+      if (tagged.has(next[i]) === want) found.push(i);
+    return found;
+  };
+  let short = quest.goal - spots(0, window, true).length;
+  while (short-- > 0) {
+    const out = spots(window, next.length, true);
+    const into = spots(0, window, false);
+    if (!out.length || !into.length) break;
+    const a = out[Math.floor(random() * out.length)],
+      b = into[Math.floor(random() * into.length)];
+    [next[a], next[b]] = [next[b], next[a]];
   }
   return next;
 }
@@ -67,7 +64,11 @@ export function validConfig(c: GameConfig): boolean {
     c.packIds.every((id) => typeof id === "string") &&
     new Set(c.packIds).size === c.packIds.length &&
     (c.limit === null ||
-      (Number.isInteger(c.limit) && c.limit >= 1 && c.limit <= 500))
+      (Number.isInteger(c.limit) && c.limit >= 1 && c.limit <= 500)) &&
+    (c.quest === undefined ||
+      (typeof c.quest === "string" &&
+        c.packIds.includes(c.quest) &&
+        c.limit === null))
   );
 }
 export function createSession(
@@ -91,39 +92,33 @@ export function createSession(
     .filter((c) => selected.has(c.id))
     .map((c) => structuredClone(c));
   if (!cards.length) throw new Error("This deck has no cards.");
-  // A quest runs only when its finale was loaded with the cards; a partial
-  // catalog (a single-card fixture) simply plays without it.
-  const quests: QuestState[] = packs.flatMap((p) => {
-    const finale =
-      p.quest &&
-      config.packIds.includes(p.id) &&
-      catalog.find((c) => c.id === p.quest!.finaleId);
-    if (!finale) return [];
-    const { label, goal } = p.quest!;
-    return [
-      {
-        packId: p.id,
-        label,
-        goal,
-        count: 0,
-        due: false,
-        shown: 0,
-        finale: structuredClone(finale),
-      },
-    ];
-  });
+  let quest: QuestState | undefined;
+  if (config.quest) {
+    const rules = packs.find((p) => p.id === config.quest)?.quest;
+    const finale = catalog.find((c) => c.id === rules?.finaleId);
+    if (!rules || !finale) throw new Error("This pack has no quest.");
+    const { label, goal, length } = rules;
+    quest = {
+      packId: config.quest,
+      label,
+      goal,
+      length,
+      count: 0,
+      due: false,
+      finale: structuredClone(finale),
+    };
+  }
   return {
     version: 2,
     config: { ...config, packIds: [...config.packIds] },
     cards,
-    order: paceQuests(
+    order: paceQuest(
       shuffle(
         cards.map((c) => c.id),
         random,
       ),
       cards,
-      quests,
-      config.limit,
+      quest,
       random,
     ),
     position: 0,
@@ -133,28 +128,21 @@ export function createSession(
     previousId: null,
     roll: null,
     previousRoll: null,
-    ...(quests.length ? { quests } : {}),
+    ...(quest ? { quest } : {}),
   };
 }
-/** The quest whose finale is in play, if any. */
-export function dueQuest(s: SessionState) {
-  return s.quests?.find((q) => q.due);
-}
+/** The quest's finale is dealt between deck cards and takes no position. */
 export function currentCard(s: SessionState) {
-  return (
-    dueQuest(s)?.finale ?? s.cards.find((c) => c.id === s.order[s.position])!
-  );
+  return s.quest?.due
+    ? s.quest.finale
+    : s.cards.find((c) => c.id === s.order[s.position])!;
 }
-/** A deck card or a quest finale, for history such as the previous card. */
+/** A deck card or the quest finale, for history such as the previous card. */
 export function findCard(s: SessionState, id: string | null) {
   return (
     s.cards.find((c) => c.id === id) ??
-    s.quests?.find((q) => q.finale.id === id)?.finale
+    (s.quest?.finale.id === id ? s.quest.finale : undefined)
   );
-}
-/** Finales put aside so far; they count as draws but take no deck position. */
-export function finalesShown(s: SessionState) {
-  return (s.quests ?? []).reduce((sum, q) => sum + q.shown, 0);
 }
 /** A revealed choice card whose option has not been picked yet. */
 export function awaitingChoice(s: SessionState) {
@@ -178,11 +166,11 @@ export function skipRoll(
 }
 function discard(s: SessionState, random: Random): SessionState {
   const history = { previousRoll: s.roll, roll: null };
-  const card = currentCard(s),
-    due = dueQuest(s);
+  const card = currentCard(s);
   const discarded = s.discarded + 1,
     previousId = card.id;
-  if (s.config.limit !== null && discarded === s.config.limit)
+  // A quest mode ends when its finale is put aside; a finite game at its limit.
+  if (s.quest?.due || (s.config.limit !== null && discarded === s.config.limit))
     return {
       ...s,
       previousRoll: s.roll,
@@ -190,25 +178,10 @@ function discard(s: SessionState, random: Random): SessionState {
       discarded,
       previousId,
     };
-  // A finale is drawn between deck cards: the deck position stays put and
-  // its meter starts over, so a long game can earn it again.
-  if (due)
-    return {
-      ...s,
-      ...history,
-      discarded,
-      previousId,
-      phase: "hidden",
-      quests: s.quests!.map((q) =>
-        q === due ? { ...q, count: 0, due: false, shown: q.shown + 1 } : q,
-      ),
-    };
-  const quests = s.quests?.map((q) =>
-    q.packId === card.quest
-      ? { ...q, count: q.count + 1, due: q.count + 1 >= q.goal }
-      : q,
-  );
-  if (quests) s = { ...s, quests };
+  if (s.quest && card.quest === s.quest.packId) {
+    const count = s.quest.count + 1;
+    s = { ...s, quest: { ...s.quest, count, due: count >= s.quest.goal } };
+  }
   if (s.position + 1 === s.order.length)
     return {
       ...s,
@@ -238,14 +211,13 @@ export function replaySession(
     ...s,
     config: { ...s.config, packIds: [...s.config.packIds] },
     cards: s.cards.map((c) => structuredClone(c)),
-    order: paceQuests(
+    order: paceQuest(
       shuffle(
         s.cards.map((c) => c.id),
         random,
       ),
       s.cards,
-      s.quests,
-      s.config.limit,
+      s.quest,
       random,
     ),
     position: 0,
@@ -255,15 +227,14 @@ export function replaySession(
     previousId: null,
     roll: null,
     previousRoll: null,
-    ...(s.quests
+    ...(s.quest
       ? {
-          quests: s.quests.map((q) => ({
-            ...q,
-            finale: structuredClone(q.finale),
+          quest: {
+            ...s.quest,
+            finale: structuredClone(s.quest.finale),
             count: 0,
             due: false,
-            shown: 0,
-          })),
+          },
         }
       : {}),
   };

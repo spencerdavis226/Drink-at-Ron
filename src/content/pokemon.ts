@@ -11,10 +11,11 @@ import { cardFactory, roll, rollTable } from "./author";
 // reference/pokemon_board_spaces.json; never rewrite it to match this file.
 // Keep IDs stable: active sessions snapshot their text and order.
 //
-// Badge quest: gym cards earn the table a badge when they are put aside, and
-// the eighth badge makes the Pokémon League the next card. A Short game would
-// draw only three or four gyms by chance, so finite games pace eight of the
-// fifteen gyms into the deal (`paceQuests` in the engine).
+// Pokémon League mode: gym cards earn the table a badge when they are put
+// aside, the eighth badge deals the Pokémon League, and beating it ends the
+// game. Eight of the fifteen gyms are spread through the first 40 draws
+// (`paceQuest` in the engine), so a run lasts about 30 to 40 cards. In the
+// Short, Long and Infinite modes these are ordinary cards.
 const card = cardFactory("pokemon");
 
 const gyms = new Set(
@@ -1019,5 +1020,12 @@ export const pokemonPack: PackDefinition = {
   description:
     "A whole region of wild encounters, gym battles, catches, and rivals. The board stayed home; the dice came along.",
   cardIds: deck.map((card) => card.id),
-  quest: { label: "Badges", goal: 8, finaleId: league.id },
+  quest: {
+    mode: "Pokémon League",
+    summary: "Earn 8 badges",
+    label: "Badges",
+    goal: 8,
+    length: 40,
+    finaleId: league.id,
+  },
 };

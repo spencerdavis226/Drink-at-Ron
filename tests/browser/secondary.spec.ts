@@ -124,7 +124,7 @@ test("@release House and VIP are selectable add-ons and Core can be deselected",
     key,
   );
   expect(session.config.packIds).toEqual(["core", "house"]);
-  expect(session.cards).toHaveLength(207);
+  expect(session.cards).toHaveLength(199);
   expect(
     session.cards.some((card: { id: string }) => card.id === "house.sheet-091"),
   ).toBe(true);

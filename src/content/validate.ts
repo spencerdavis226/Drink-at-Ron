@@ -63,15 +63,18 @@ export function validateCatalog(cs: CardDefinition[], ps: PackDefinition[]) {
     )
       fail(`Invalid card membership: ${p.id}`);
     if (p.quest !== undefined) {
-      const { label, goal, finaleId } = p.quest;
+      const { mode, summary, label, goal, length, finaleId } = p.quest;
       const advancing = cs.filter(
         (c) => c.quest === p.id && p.cardIds.includes(c.id),
       ).length;
       if (
-        typeof label !== "string" ||
-        !label.trim() ||
+        [mode, summary, label].some(
+          (text) => typeof text !== "string" || !text.trim(),
+        ) ||
         !Number.isSafeInteger(goal) ||
         goal < 1 ||
+        !Number.isSafeInteger(length) ||
+        length <= goal ||
         !ids.has(finaleId) ||
         p.cardIds.includes(finaleId) ||
         advancing < goal

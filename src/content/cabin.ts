@@ -1,5 +1,6 @@
 import type { CardDefinition, PackDefinition } from "../game/types";
 import { cardFactory, choice, roll, rollTable } from "./author";
+import { cabinSheetCards } from "./custom";
 
 // Cabin weekend: Spencer's CABIIN 2.0 board game (raw sheet kept at
 // `reference/cabiin-2/`) translated into the one-card format. Teams became
@@ -8,12 +9,12 @@ import { cardFactory, choice, roll, rollTable } from "./author";
 // turn. Spaces that only work on the board (the legend, zone scaffolding),
 // guess-the-roll spaces, spaces that depend on another card, and lore that
 // needs its backstory were left out. The CABIIN-born cards that used to sit
-// in Core live here now under `cabin.*` IDs; their old `core.*` IDs are
-// retired and old saves keep their own snapshot. A few House rows that
-// already carried CABIIN spaces are shared by ID, untouched.
+// in Core, and the CABIIN spaces written into the house sheet (verbatim, from
+// `custom.ts`), live here now under `cabin.*` IDs; their old IDs are retired
+// and old saves keep their own snapshot. No card is shared with another pack.
 const card = cardFactory("cabin");
 
-export const cabinCards: CardDefinition[] = [
+const authored: CardDefinition[] = [
   // --- Sip -------------------------------------------------------------------
   card(
     "fuck-you",
@@ -568,18 +569,8 @@ export const cabinCards: CardDefinition[] = [
   ),
 ];
 
-// House rows that already carry a CABIIN space, shared by ID and left exactly
-// as the supplied sheet wrote them.
-const sharedHouseIds = [
-  "house.sheet-012", // Maddy Booty
-  "house.sheet-016", // Ursaring
-  "house.sheet-024", // Wench (Seems Like a Real Piece of Shit)
-  "house.sheet-028", // No take, Give (No Take Just Throw)
-  "house.sheet-040", // Pokemon (Pokemon League)
-  "house.sheet-042", // Pet that dog (Mosby)
-  "house.sheet-053", // Abra like a Slut (Kadabra)
-  "house.sheet-054", // Whinnie the Pooh (Deans)
-];
+// The CABIIN spaces from the house sheet join the authored cards.
+export const cabinCards: CardDefinition[] = [...authored, ...cabinSheetCards];
 
 export const cabinPack: PackDefinition = {
   version: 1,
@@ -588,5 +579,5 @@ export const cabinPack: PackDefinition = {
   title: "Cabin weekend",
   description:
     "CABIIN 2.0, off the board: trips, home states, airports and the crew's worst decisions.",
-  cardIds: [...cabinCards.map((card) => card.id), ...sharedHouseIds],
+  cardIds: cabinCards.map((card) => card.id),
 };

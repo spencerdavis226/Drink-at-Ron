@@ -1,20 +1,17 @@
 import { packs } from "../content/manifest.generated";
 import { validateCatalog } from "../content/validate";
 import { validateRoll } from "../game/dice";
-import {
-  currentCard,
-  findCard,
-  finalesShown,
-  validConfig,
-} from "../game/engine";
+import { currentCard, findCard, validConfig } from "../game/engine";
 import type { GameConfig, SessionState } from "../game/types";
 export const SAVE_KEY = "drink-at-ron.session.v1";
 export const SETTINGS_KEY = "drink-at-ron.settings.v1";
-export type DeckChoice = "short" | "long" | "infinite";
+/** A length, or a pack's quest mode (`config.quest` names the pack). */
+export type DeckChoice = "short" | "long" | "infinite" | "quest";
 export const MODE_LIMITS: Record<DeckChoice, number | null> = {
   short: 30,
   long: 60,
   infinite: null,
+  quest: null,
 };
 export interface Preferences {
   config: GameConfig;
@@ -29,32 +26,26 @@ const knownPackIds = (ids: readonly string[]) => {
   const known = packs.map((pack) => pack.id).filter((id) => ids.includes(id));
   return known.length ? known : [packs[0].id];
 };
-function validateQuests(s: SessionState) {
-  const quests = s.quests;
-  if (!Array.isArray(quests) || !quests.length) throw Error("Invalid quests");
-  validateCatalog(
-    quests.map((q) => q?.finale),
-    [],
-  );
+function validateQuest(s: SessionState) {
+  const q = s.quest;
   const whole = (n: unknown, min: number): n is number =>
     Number.isSafeInteger(n) && (n as number) >= min;
+  if ((q === undefined) !== (s.config.quest === undefined))
+    throw Error("Invalid quest");
+  if (!q) return;
+  validateCatalog([q.finale], []);
   if (
-    new Set(quests.map((q) => q.packId)).size !== quests.length ||
-    quests.filter((q) => q.due).length > 1 ||
-    quests.some(
-      (q) =>
-        !s.config.packIds.includes(q.packId) ||
-        typeof q.label !== "string" ||
-        !q.label.trim() ||
-        !whole(q.goal, 1) ||
-        !whole(q.count, 0) ||
-        q.count > q.goal ||
-        q.due !== (q.count === q.goal) ||
-        !whole(q.shown, 0) ||
-        s.cards.some((c) => c.id === q.finale.id),
-    )
+    q.packId !== s.config.quest ||
+    typeof q.label !== "string" ||
+    !q.label.trim() ||
+    !whole(q.goal, 1) ||
+    !whole(q.length, q.goal + 1) ||
+    !whole(q.count, 0) ||
+    q.count > q.goal ||
+    q.due !== (q.count === q.goal) ||
+    s.cards.some((c) => c.id === q.finale.id)
   )
-    throw Error("Invalid quests");
+    throw Error("Invalid quest");
 }
 export function parseSession(raw: string): SessionState {
   const parsed = JSON.parse(raw);
@@ -98,17 +89,19 @@ export function parseSession(raw: string): SessionState {
     !["hidden", "revealed", "complete"].includes(s.phase)
   )
     throw Error("Invalid progress");
-  if (s.quests !== undefined) validateQuests(s);
+  validateQuest(s);
   if (s.previousId !== null && !findCard(s, s.previousId))
     throw Error("Invalid previous card");
   if ((s.discarded === 0) !== (s.previousId === null))
     throw Error("Invalid history");
-  // Every draw is a deck position or a quest finale put aside.
-  const drawn = s.cycle * s.cards.length + s.position + finalesShown(s);
+  const drawn = s.cycle * s.cards.length + s.position;
   if (s.phase === "complete") {
+    // A finite game ends at its limit; a quest mode on its finale, which is
+    // drawn without taking a deck position.
     if (
-      s.config.limit === null ||
-      s.discarded !== s.config.limit ||
+      !(s.config.limit !== null
+        ? s.discarded === s.config.limit
+        : s.quest?.due) ||
       s.discarded !== drawn + 1 ||
       s.previousId !== currentCard(s).id
     )
@@ -163,7 +156,16 @@ export function loadPreferences(): Preferences {
     // Legacy saves may still carry sound/ambience/atmosphere; they are ignored.
     if (p && validConfig(p.config)) {
       let choice: DeckChoice;
-      if (["short", "long", "infinite"].includes(p.choice)) {
+      const { quest, ...config } = p.config;
+      if (
+        p.choice === "quest" &&
+        packs.some((pack) => pack.id === quest && pack.quest)
+      ) {
+        return {
+          config: { ...config, packIds: knownPackIds(config.packIds), quest },
+          choice: "quest",
+        };
+      } else if (["short", "long", "infinite"].includes(p.choice)) {
         choice = p.choice;
       } else if (p.choice === "endless") {
         choice = "infinite";
@@ -180,8 +182,8 @@ export function loadPreferences(): Preferences {
       }
       return {
         config: {
-          ...p.config,
-          packIds: knownPackIds(p.config.packIds),
+          ...config,
+          packIds: knownPackIds(config.packIds),
           limit: MODE_LIMITS[choice],
         },
         choice,

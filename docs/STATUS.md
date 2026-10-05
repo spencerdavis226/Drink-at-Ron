@@ -2,6 +2,20 @@
 
 Updated 2026-10-05. **Single authoritative handoff.** Read `AGENTS.md` first. Older handoffs are in `docs/STATUS_ARCHIVE.md` (reference only). Direct user instructions win.
 
+## Pokémon League mode; House and Cabin share nothing (2026-10-05, on branch `cabin-weekend-pack`, PR #3, not on `main`)
+
+**Request.** Make Pokémon its own mode beside Short/Long/Infinite (forcing the Pokémon pack on, plain modes can still include Pokémon cards). The 8 CABIIN rows of the house sheet belong to Cabin only, not shared.
+
+**Decision (recommended to and accepted from the owner's framing).** A quest is a game mode, not something that warps every game containing the pack. Pokémon League: holds the Pokémon pack on (others can join), no card limit, 8 gyms spread through the first 40 draws, the eighth badge deals the League, and putting the League aside ends the game (runs of about 30 to 40 cards). In Short/Long/Infinite the gym cards are ordinary cards: no meter, no reordering.
+
+**Change.** `PackQuest` gains `mode`, `summary`, `length`; `GameConfig.quest` (pack id; requires the pack selected and `limit: null`); `SessionState.quest` (single, optional; replaces `quests`). Engine: the quest exists only when `config.quest` is set; `paceQuest` spreads `goal` tagged cards through the first `length` draws (new games and replays); the finale completes the game; the "meter starts over" path and `finalesShown` are gone. `parseSession`: quest present iff `config.quest`, completion is "limit reached" or "finale put aside". Setup (`Setup.tsx`): one wide choice per quest pack under the lengths (pack mark, mode, summary); choosing it adds and locks the pack (`PackTile locked`, `aria-disabled`); choosing a length clears it. Preferences persist `choice: "quest"` with `config.quest`. `QuestMeters` became `QuestMeter`.
+
+**House/Cabin.** `custom.ts` now splits the restored sheet: `houseCards` (94) and `cabinSheetCards` (rows 12, 16, 24, 28, 40, 42, 53, 54 as `cabin.maddy-booty`, `cabin.ursaring`, `cabin.wench`, `cabin.no-take-give`, `cabin.first-name-only`, `cabin.pet-that-dog`, `cabin.abra-like-a-slut`, `cabin.whinnie-the-pooh`, wording unchanged). Cabin is 85 cards with no shared IDs; the Cabin loader no longer pulls House. A unit test fails if any card is in two packs.
+
+**Verified.** `npm test` 118 passed; typecheck clean; build and budgets passed (86.1 KiB initial, not capped); full production E2E Chromium 86/87, the one failure being `dice.spec.ts:93`, a pre-existing test bug now fixed (it required a bold amount, but the d20 card's 1 and 20 read "Take a shot."/"Give a shot.", so it failed on about 1 roll in 10; 40/40 after the fix); update flow passed; workshop 12/12; `quest.spec.ts` covers the setup mode (pressed state, locked pack, meter at 0/8, saved config) and that a plain mode with Pokémon has no meter. Screenshot at 320×568: the mode row fits; Play sits just below the fold on that smallest phone, as the setup screen scrolls.
+
+**Not verified.** WebKit locally, devices, the run length at the table.
+
 ## Leaner tests, no initial-JS cap, eight Pokémon badges (2026-10-05, on branch `cabin-weekend-pack`, PR #3, not on `main`)
 
 **Request.** Remove unnecessary tests and the 100 KiB limit; make the Pokémon quest all 8 badges.

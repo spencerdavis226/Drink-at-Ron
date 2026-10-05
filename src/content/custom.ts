@@ -10,7 +10,7 @@ import { cardFactory, choice, roll } from "./author";
 const houseCard = cardFactory("house");
 const vipCard = cardFactory("vip");
 
-export const houseCards: CardDefinition[] = [
+const sheetRows: CardDefinition[] = [
   houseCard(
     "sheet-003",
     "That's Two Beers?",
@@ -532,6 +532,27 @@ export const houseCards: CardDefinition[] = [
     "Things you should never say to a police officer",
   ),
 ];
+
+// Rows that are CABIIN board spaces written into the sheet. At the owner's
+// request (2026-10-05) they belong to Cabin weekend alone: same sheet wording,
+// `cabin.*` IDs, and no longer in the House deck. Their old `house.sheet-*`
+// IDs are retired; saved games keep their own snapshot.
+const cabinRows: Record<string, string> = {
+  "house.sheet-012": "maddy-booty",
+  "house.sheet-016": "ursaring",
+  "house.sheet-024": "wench",
+  "house.sheet-028": "no-take-give",
+  "house.sheet-040": "first-name-only",
+  "house.sheet-042": "pet-that-dog",
+  "house.sheet-053": "abra-like-a-slut",
+  "house.sheet-054": "whinnie-the-pooh",
+};
+
+export const houseCards = sheetRows.filter((card) => !cabinRows[card.id]);
+
+export const cabinSheetCards: CardDefinition[] = sheetRows
+  .filter((card) => cabinRows[card.id])
+  .map((card) => ({ ...card, id: `cabin.${cabinRows[card.id]}` }));
 
 // VIP rows from the same sheet, same rule: exact copy, no softening.
 export const customVipCards: CardDefinition[] = [

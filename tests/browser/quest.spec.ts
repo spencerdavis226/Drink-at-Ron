@@ -3,11 +3,11 @@ import { createSession } from "../../src/game/engine";
 import { cards, packs } from "../../src/content/catalog";
 const key = "drink-at-ron.session.v1";
 
-// A Pokémon game one badge short of the League, with a plain gym card
-// (Jasmine, no dice) revealed.
+// A Pokémon League game one badge short, with a plain gym card (Jasmine, no
+// dice) revealed.
 async function seedOneBadgeShort(page: Page) {
   const session = createSession(
-    { version: 1, packIds: ["pokemon"], limit: null },
+    { version: 1, packIds: ["pokemon"], limit: null, quest: "pokemon" },
     cards,
     packs,
   );
@@ -16,7 +16,7 @@ async function seedOneBadgeShort(page: Page) {
     ...session.order.filter((id) => id !== "pokemon.jasmine"),
   ];
   session.phase = "revealed";
-  session.quests![0].count = 7;
+  session.quest!.count = 7;
   await page.goto("./");
   await page.evaluate(
     ({ key, session }) => localStorage.setItem(key, JSON.stringify(session)),
@@ -49,21 +49,72 @@ for (const width of [320, 390])
     await page.getByRole("button", { name: "Reveal card" }).click();
     await expect(page.locator(".study-title h2")).toHaveText("Pokémon League");
     await expect(page.locator(".game-card")).toHaveAccessibleName(/^Roll /);
-    await page.screenshot({ path: info.outputPath(`league-${width}.png`) });
 
-    // The finale survives a reload, then puts the meter back to zero.
+    // The finale survives a reload.
     await page.reload();
     await expect(page.locator(".study-title h2")).toHaveText("Pokémon League");
     const saved = await page.evaluate(
       (key) => JSON.parse(localStorage.getItem(key)!),
       key,
     );
-    expect(saved.quests[0]).toMatchObject({ count: 8, due: true, shown: 0 });
+    expect(saved.quest).toMatchObject({ count: 8, due: true });
   });
 
-test("packs without a quest show no meter", async ({ page }) => {
+test("@release Pokémon League is a mode that holds its pack on", async ({
+  page,
+}, info) => {
+  await page.setViewportSize({ width: 320, height: 568 });
   await page.goto("./");
+  const mode = page.getByRole("button", {
+    name: "Pokémon League, Earn 8 badges",
+  });
+  await mode.click();
+  await expect(mode).toHaveAttribute("aria-pressed", "true");
+  await expect(
+    page.getByRole("button", { name: "Short, 30 cards" }),
+  ).toHaveAttribute("aria-pressed", "false");
+  await page.screenshot({ path: info.outputPath("setup-320.png") });
+  // Its pack is on and cannot be switched off while the mode is chosen.
+  await page.getByRole("button", { name: "Choose packs" }).click();
+  const pokemon = page
+    .getByRole("dialog")
+    .getByRole("button", { name: /Pokémon night/ });
+  await expect(pokemon).toHaveAttribute("aria-pressed", "true");
+  await expect(pokemon).toHaveAttribute("aria-disabled", "true");
+  await page.getByRole("button", { name: "Done" }).click();
+  await page.getByRole("button", { name: "Play", exact: true }).click();
+  await expect(page.locator(".progress")).toBeVisible();
+  await expect(page.locator(".quest-meter")).toHaveAccessibleName(
+    "Badges: 0 of 8",
+  );
+  const saved = await page.evaluate(
+    (key) => JSON.parse(localStorage.getItem(key)!),
+    key,
+  );
+  expect(saved.config).toMatchObject({
+    packIds: ["core", "pokemon"],
+    limit: null,
+    quest: "pokemon",
+  });
+});
+
+test("a plain mode plays the Pokémon pack without a meter", async ({
+  page,
+}) => {
+  await page.goto("./");
+  await page.getByRole("button", { name: "Choose packs" }).click();
+  await page
+    .getByRole("dialog")
+    .getByRole("button", { name: /Pokémon night/ })
+    .click();
+  await page.getByRole("button", { name: "Done" }).click();
   await page.getByRole("button", { name: "Play", exact: true }).click();
   await expect(page.locator(".progress")).toBeVisible();
   await expect(page.locator(".quest-meter")).toHaveCount(0);
+  const saved = await page.evaluate(
+    (key) => JSON.parse(localStorage.getItem(key)!),
+    key,
+  );
+  expect(saved.config.quest).toBeUndefined();
+  expect(saved.quest).toBeUndefined();
 });

@@ -27,14 +27,7 @@ export type CardFactory = (
  * module uses this so IDs, defaults and the dice field stay consistent.
  */
 export function cardFactory(namespace: string): CardFactory {
-  return (
-    id,
-    title,
-    category,
-    rules,
-    dice,
-    artwork = PLACEHOLDER_ART,
-  ) => ({
+  return (id, title, category, rules, dice, artwork = PLACEHOLDER_ART) => ({
     version: 1,
     id: `${namespace}.${id}`,
     title,

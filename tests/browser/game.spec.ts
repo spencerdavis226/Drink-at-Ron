@@ -94,11 +94,14 @@ test("@release legacy finite game, rapid taps, restore, previous card, replay an
   await expect(page.locator(".game-card")).toBeVisible();
   expect(errors).toEqual([]);
 });
-test("only three modes appear and every pack can be toggled", async ({
+test("three lengths and the quest modes appear, and every pack can be toggled", async ({
   page,
 }) => {
   await page.goto("./");
-  await expect(page.locator(".lengths button")).toHaveCount(3);
+  await expect(
+    page.getByRole("group", { name: "Game length" }).getByRole("button"),
+  ).toHaveCount(3);
+  await expect(page.locator(".quest-mode")).toHaveCount(1);
   await expect(
     page.getByRole("button", { name: "Short, 30 cards" }),
   ).toHaveAttribute("aria-pressed", "true");

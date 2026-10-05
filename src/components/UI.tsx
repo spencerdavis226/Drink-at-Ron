@@ -87,10 +87,13 @@ export function Artwork({
 export function PackTile({
   pack,
   selected,
+  locked = false,
   onToggle,
 }: {
   pack: PackDefinition;
   selected: boolean;
+  /** Held on by the chosen mode (a quest mode needs its own pack). */
+  locked?: boolean;
   onToggle: () => void;
 }) {
   return (
@@ -98,7 +101,8 @@ export function PackTile({
       variant="choice"
       className="pack"
       aria-pressed={selected}
-      onClick={onToggle}
+      aria-disabled={locked || undefined}
+      onClick={locked ? undefined : onToggle}
     >
       <PackLogo pack={pack} decorative />
       <span className="pack-copy">

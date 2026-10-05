@@ -118,17 +118,15 @@ the Review column is intentionally blank so you can mark it up.
 
 ## The House deck (`house`)
 
-102 cards · 32 sip · 15 group · 14 category · 29 challenge · 12 rule · 19 dice
+94 cards · 29 sip · 15 group · 14 category · 27 challenge · 9 rule · 15 dice
 
 | Review | Title | ID | Cat | Rules | Dice |
 | --- | --- | --- | --- | --- | --- |
 | ☐ | California Sober | `house.sheet-004` | sip | Get pitted and smoke something, then drink 1d6 water. Else, take a shot. | 1d6 — Drink {total} water. |
 | ☐ | The Game Giveth | `house.sheet-006` | sip | Give 3 drinks. If "The Game Taketh" was already played, multiply by 1d6. |  |
 | ☐ | The Game Taketh | `house.sheet-007` | sip | Take 3 drinks. If "The Game Giveth" was already played, multiply by 1d6. |  |
-| ☐ | Ursaring | `house.sheet-016` | sip | Give 13 and apologize |  |
 | ☐ | Never Have I Ever | `house.sheet-026` | sip | Drink if you've been to Mexico |  |
 | ☐ | Michael Mouse | `house.sheet-027` | sip | How many distinct Disney parks have you been to? Drink that many |  |
-| ☐ | No take, Give | `house.sheet-028` | sip | Give d6 drinks | 1d6 — Give {total}. |
 | ☐ | Batrick | `house.sheet-031` | sip | Take a (rabies) shot |  |
 | ☐ | Same | `house.sheet-036` | sip | You called Same, give d6 | 1d6 — Give {total}. |
 | ☐ | Same | `house.sheet-037` | sip | You didn't call Same, take d6 | 1d6 — Drink {total}. |
@@ -136,7 +134,6 @@ the Review column is intentionally blank so you can mark it up.
 | ☐ | Drink, bitch | `house.sheet-045` | sip | If you drank last card, drink again, bitch |  |
 | ☐ | Never Have I Ever | `house.sheet-050` | sip | Drink if you've flown First Class |  |
 | ☐ | The Cino | `house.sheet-051` | sip | Drink if you've lost money in the casino |  |
-| ☐ | Whinnie the Pooh | `house.sheet-054` | sip | Pooh-bear 1d6 drinks | 1d6 — Drink {total}. |
 | ☐ | Could ya just | `house.sheet-055` | sip | Drink 1 |  |
 | ☐ | Bu-bu-buff.. | `house.sheet-059` | sip | Drink 1d6 for almost getting buffaloed | 1d6 — Drink {total}. |
 | ☐ | Straight to jail | `house.sheet-063` | sip | Finish your drink |  |
@@ -187,12 +184,10 @@ the Review column is intentionally blank so you can mark it up.
 | ☐ | Fetch | `house.sheet-008` | challenge | Get something from outside in under 30 seconds or drink 1d20 | 1d20 — Drink {total}. |
 | ☐ | Steve's Beans | `house.sheet-009` | challenge | Text Steve and tell them his beans are good. Else drink 2d6 | 2d6 — Drink {total}. |
 | ☐ | Drink at Ron | `house.sheet-011` | challenge | If Ron is there, drink at him. Else, call and drink at him. Else else, drink 2 |  |
-| ☐ | Maddy Booty | `house.sheet-012` | challenge | Roll 1d20. You drink until the group counts to it, or you finish your drink. | 1d20 — Drink until the group counts to {total}, or finish your drink. |
 | ☐ | Medusa | `house.sheet-014` | challenge | The first person you make eye contact with must get stoned. |  |
 | ☐ | Send Help | `house.sheet-017` | challenge | Convince someone to drink 1. Else, take a shot. |  |
 | ☐ | Headache Simulator | `house.sheet-023` | challenge | Wear Becca's glasses for a round. Else drink 2d6 | 2d6 — Drink {total}. |
 | ☐ | FMK | `house.sheet-029` | challenge | Blink 182, Green Day, Weezer |  |
-| ☐ | Pet that dog | `house.sheet-042` | challenge | Better pet any dog in the room, or take 1d6 | 1d6 — Drink {total}. |
 | ☐ | Fiend | `house.sheet-046` | challenge | Pop in a fresh zyn, velo, nic pouch |  |
 | ☐ | Battery Life | `house.sheet-047` | challenge | Closest guess to your phone's battery gives 2 drinks |  |
 | ☐ | Rock, Paper, Scissors | `house.sheet-048` | challenge | Challenge a player, loser drinks 1d6 | 1d6 — Drink {total}. |
@@ -214,12 +209,9 @@ the Review column is intentionally blank so you can mark it up.
 | ☐ | Opinions | `house.sheet-104` | challenge | Give your most Joe/Becca opinion |  |
 | ☐ | Caveman | `house.sheet-010` | rule | You can only grunt until your next turn |  |
 | ☐ | Mr Freeze | `house.sheet-015` | rule | Anyone you touch can't move or talk until you stop touching them |  |
-| ☐ | Wench | `house.sheet-024` | rule | You are the drink wench until your next turn |  |
 | ☐ | Potty Mouth | `house.sheet-030` | rule | No more cursing for the rest of the game. Drink when you fuck up. |  |
 | ☐ | Rawr XD | `house.sheet-032` | rule | You have to use T-Rex arms until your next turn |  |
 | ☐ | This Sucks | `house.sheet-039` | rule | Buffalo switches hands for the rest of the game |  |
-| ☐ | Pokemon | `house.sheet-040` | rule | Speak only your first name until your next turn |  |
-| ☐ | Abra like a Slut | `house.sheet-053` | rule | Reverse the turn order for the rest of the game |  |
 | ☐ | Goof Dog | `house.sheet-091` | rule | Keep your eyes as open as possible until your next turn |  |
 | ☐ | Da Rulez | `house.sheet-097` | rule | Until your next turn, you can't use your hands to drink |  |
 | ☐ | Da Rulez | `house.sheet-099` | rule | Until your next turn, the next person to say "beer" drinks |  |
@@ -396,9 +388,6 @@ the Review column is intentionally blank so you can mark it up.
 
 | Review | Title | ID | Cat | Rules | Dice |
 | --- | --- | --- | --- | --- | --- |
-| ☐ | Ursaring | `house.sheet-016` | sip | Give 13 and apologize |  |
-| ☐ | No take, Give | `house.sheet-028` | sip | Give d6 drinks | 1d6 — Give {total}. |
-| ☐ | Whinnie the Pooh | `house.sheet-054` | sip | Pooh-bear 1d6 drinks | 1d6 — Drink {total}. |
 | ☐ | Fuck You In Particular | `cabin.fuck-you` | sip | Roll d6. Drink 10 minus your roll. | 1d6 — 1-1: Drink 9. 2-2: Drink 8. 3-3: Drink 7. 4-4: Drink 6. 5-5: Drink 5. 6-6: Drink 4. |
 | ☐ | For Safety | `cabin.for-safety` | sip | Make your next drink a water or something hydrating. |  |
 | ☐ | International Eric | `cabin.international-eric` | sip | Take a shot of liquor. You like it now. |  |
@@ -418,6 +407,9 @@ the Review column is intentionally blank so you can mark it up.
 | ☐ | God's Chosen | `cabin.gods-chosen` | sip | Had COVID? Drink 3. Never had it? Give 3. |  |
 | ☐ | Do Not Cum | `cabin.do-not-cum` | sip | Roll d6. Cum. Drink that many. | 1d6 — Drink {total}. |
 | ☐ | Mustard Tiger | `cabin.mustard-tiger` | sip | Drink as much as whoever has drunk the most this game. |  |
+| ☐ | Ursaring | `cabin.ursaring` | sip | Give 13 and apologize |  |
+| ☐ | No take, Give | `cabin.no-take-give` | sip | Give d6 drinks | 1d6 — Give {total}. |
+| ☐ | Whinnie the Pooh | `cabin.whinnie-the-pooh` | sip | Pooh-bear 1d6 drinks | 1d6 — Drink {total}. |
 | ☐ | Thanos Snap | `cabin.thanos-snap` | group | Pick half the table. Everyone you didn't pick drinks 2. |  |
 | ☐ | Corporate Meeting | `cabin.corporate-meeting` | group | This could have been an email. Anyone working tomorrow drinks 3. |  |
 | ☐ | Café d'Époque | `cabin.cafe-depoque` | group | Everyone here is a total skank. Now you are too. Hit on someone; you both drink 2. |  |
@@ -429,8 +421,6 @@ the Review column is intentionally blank so you can mark it up.
 | ☐ | Final Showdown | `cabin.final-showdown` | group | Play Thunderstruck. Anyone who finishes 2 drinks before it ends gives 5. |  |
 | ☐ | Medium Rare Chicken | `cabin.medium-rare-chicken` | group | Everyone drinks 2 for every player who has thrown up this trip. |  |
 | ☐ | Ski Team | `cabin.ski-team` | group | Skier? Skiers drink 2. Snowboarder? Snowboarders drink 2. Neither? Drink 4 and grow up. |  |
-| ☐ | Maddy Booty | `house.sheet-012` | challenge | Roll 1d20. You drink until the group counts to it, or you finish your drink. | 1d20 — Drink until the group counts to {total}, or finish your drink. |
-| ☐ | Pet that dog | `house.sheet-042` | challenge | Better pet any dog in the room, or take 1d6 | 1d6 — Drink {total}. |
 | ☐ | Smooth Brain | `cabin.smooth-brain` | challenge | Tell a story about a time you were REAL dumb. Drink 2. |  |
 | ☐ | FaceTime Trivia | `cabin.facetime-trivia` | challenge | The group asks you trivia. Wrong: drink 2 and nobody talks to you until your next turn. |  |
 | ☐ | County Commissioner | `cabin.county-commissioner` | challenge | Campaign to be in charge. Drink 1 per player who wouldn't vote for you. |  |
@@ -463,9 +453,8 @@ the Review column is intentionally blank so you can mark it up.
 | ☐ | What Is? Give | `cabin.what-is-give` | challenge | Have someone get you the drink they have. Roll d6. You both drink your roll minus 3. | 1d6 — 1-3: Nobody drinks. 4-4: You both drink 1. 5-5: You both drink 2. 6-6: You both drink 3. |
 | ☐ | Kadabra | `cabin.kadabra` | challenge | Abra's dumbass brother. Swap seats with anyone. |  |
 | ☐ | It's Gotta Go | `cabin.its-gotta-go` | challenge | Finish your drink. |  |
-| ☐ | Wench | `house.sheet-024` | rule | You are the drink wench until your next turn |  |
-| ☐ | Pokemon | `house.sheet-040` | rule | Speak only your first name until your next turn |  |
-| ☐ | Abra like a Slut | `house.sheet-053` | rule | Reverse the turn order for the rest of the game |  |
+| ☐ | Maddy Booty | `cabin.maddy-booty` | challenge | Roll 1d20. You drink until the group counts to it, or you finish your drink. | 1d20 — Drink until the group counts to {total}, or finish your drink. |
+| ☐ | Pet that dog | `cabin.pet-that-dog` | challenge | Better pet any dog in the room, or take 1d6 | 1d6 — Drink {total}. |
 | ☐ | Bitch Babe | `cabin.bitch-babe` | rule | Give 2. Until your next turn, call your left neighbor babe and everyone else bitch. |  |
 | ☐ | Freddie's Run | `cabin.freddies-run` | rule | Until your next turn, fetch anything anyone asks for. Refuse: drink 3. |  |
 | ☐ | I'm the Captain Now | `cabin.im-the-captain-now` | rule | Reverse the turn order for the rest of the game, then take another card now. |  |
@@ -481,6 +470,9 @@ the Review column is intentionally blank so you can mark it up.
 | ☐ | Dream Team | `cabin.dream-team` | rule | Until your next turn, you may split your drinks with anyone beside you. |  |
 | ☐ | President | `cabin.president` | rule | Until your next turn, give anyone orders. Refuse: drink 2. |  |
 | ☐ | 3rd World Christmas | `cabin.christmas` | rule | Give someone a gift. They wear or use it for the rest of the game. |  |
+| ☐ | Wench | `cabin.wench` | rule | You are the drink wench until your next turn |  |
+| ☐ | Pokemon | `cabin.first-name-only` | rule | Speak only your first name until your next turn |  |
+| ☐ | Abra like a Slut | `cabin.abra-like-a-slut` | rule | Reverse the turn order for the rest of the game |  |
 
 ## Most Likely To (`likely`)
 
