@@ -1,4 +1,5 @@
 import type { CardDefinition } from "../game/types";
+import { finaleCardIds } from "../game/engine";
 import { packs } from "./manifest.generated";
 
 // Card text is the largest part of the app, so each pack's cards are a lazy
@@ -24,7 +25,9 @@ const select = (chosen: typeof packs, loaded: CardDefinition[][]) => {
   const wanted = new Set(
     chosen.flatMap((pack) => [
       ...pack.cardIds,
-      ...(pack.quest ? [pack.quest.finaleId] : []),
+      ...(pack.quest
+        ? [...pack.quest.cardIds, ...finaleCardIds(pack.quest)]
+        : []),
     ]),
   );
   const byId = new Map<string, CardDefinition>();

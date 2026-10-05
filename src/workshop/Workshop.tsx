@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { validateCatalog } from "../content/catalog";
+import { packCardIds } from "../game/engine";
 import { workshopCards as cards, workshopPacks as packs } from "./session";
 import { Button } from "../components/UI";
 
@@ -38,7 +39,7 @@ export default function Workshop() {
     (c) =>
       (category === "all" || c.category === category) &&
       (pack === "all" ||
-        packs.find((p) => p.id === pack)?.cardIds.includes(c.id)) &&
+        packCardIds(packs.find((p) => p.id === pack)!).includes(c.id)) &&
       `${c.title} ${c.rules}`.toLowerCase().includes(query.toLowerCase()),
   );
   const card = cards.find((c) => c.id === selected)!;

@@ -36,11 +36,20 @@ export interface CardDefinition {
   /** The id of the pack whose quest meter this card advances when it is put
    * aside (a gym battle earns a badge). */
   quest?: string;
+  /** A short gold ribbon on the card face, e.g. "Gym Leader · Boulder Badge". */
+  ribbon?: string;
+}
+/** One stage of a quest's finale: `pick` cards drawn at random from
+ * `cardIds` when the game starts (e.g. the Elite Four: 4 of 9). */
+export interface QuestStage {
+  label: string;
+  pick: number;
+  cardIds: string[];
 }
 /** A pack's game mode: a table-wide meter that, on reaching its goal, deals
- * the finale, and the game ends when the finale is put aside. The finale is
- * authored with the pack's cards but is not in `cardIds`, so it never enters
- * the shuffle. */
+ * the finale stages one card at a time between deck cards, and the game ends
+ * when the last is put aside. Finale cards are authored with the pack's cards
+ * but are in no deck list, so they never enter the shuffle. */
 export interface PackQuest {
   /** The mode's name on the setup screen, e.g. "Pokémon League". */
   mode: string;
@@ -52,10 +61,14 @@ export interface PackQuest {
   /** The quest's cards are spread through this many draws, so the finale is
    * dealt by then. */
   length: number;
-  finaleId: string;
+  /** Cards that only play in this mode (not in `cardIds`). */
+  cardIds: string[];
+  finale: QuestStage[];
 }
-/** A quest's progress in one game. `due` means the finale is the card in
- * play (or the next one drawn). */
+/** A quest's progress in one game. `stages` snapshots each stage's pool and
+ * `finale` holds the cards picked at the start, in the order they are dealt.
+ * `due` means the goal is met: `finale[step]` is the card in play (or the
+ * next one drawn). */
 export interface QuestState {
   packId: string;
   label: string;
@@ -63,7 +76,9 @@ export interface QuestState {
   length: number;
   count: number;
   due: boolean;
-  finale: CardDefinition;
+  stages: { label: string; pick: number; cards: CardDefinition[] }[];
+  finale: string[];
+  step: number;
 }
 export interface PackDefinition {
   version: 1;

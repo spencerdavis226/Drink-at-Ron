@@ -23,7 +23,14 @@ export function Setup({
   const selected = packs.filter((pack) =>
     prefs.config.packIds.includes(pack.id),
   );
-  const cardCount = new Set(selected.flatMap((pack) => pack.cardIds)).size;
+  const cardCount = new Set(
+    selected.flatMap((pack) => [
+      ...pack.cardIds,
+      ...(pack.id === prefs.config.quest && prefs.choice === "quest"
+        ? (pack.quest?.cardIds ?? [])
+        : []),
+    ]),
+  ).size;
   const limit = MODE_LIMITS[prefs.choice];
   const questPack = prefs.choice === "quest" ? prefs.config.quest : undefined;
   const chooseLength = (choice: DeckChoice) => {

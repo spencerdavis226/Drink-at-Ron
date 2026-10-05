@@ -1,4 +1,4 @@
-import { createSession } from "../game/engine";
+import { createSession, finaleCardIds } from "../game/engine";
 import { cards, packs } from "../content/catalog";
 export function seededRandom(seed: string) {
   let state = 2166136261;
@@ -18,7 +18,13 @@ export function workshopSession(seed: string, first: string, revealed = true) {
   const random = seededRandom(seed);
   // A quest finale is never in the deck order: preview it in its quest mode,
   // as dealt.
-  const quest = packs.find((p) => p.quest?.finaleId === first)?.id;
+  // Quest-only cards (gym leaders) and finales preview in their quest mode.
+  const quest = packs.find(
+    (p) =>
+      !!p.quest &&
+      (p.quest.cardIds.includes(first) ||
+        finaleCardIds(p.quest).includes(first)),
+  )?.id;
   const session = createSession(
     {
       version: 1,
@@ -32,8 +38,23 @@ export function workshopSession(seed: string, first: string, revealed = true) {
   );
   if (session.order.includes(first))
     session.order = [first, ...session.order.filter((id) => id !== first)];
-  if (session.quest?.finale.id === first)
-    Object.assign(session.quest, { count: session.quest.goal, due: true });
+  // A finale card previews as dealt: swap it into its own stage's picks and
+  // make that the step in play.
+  const q = session.quest;
+  const stage = q?.stages.findIndex((s) => s.cards.some((c) => c.id === first));
+  if (q && stage !== undefined && stage >= 0) {
+    const start = q.stages.slice(0, stage).reduce((sum, s) => sum + s.pick, 0);
+    const picks = q.finale.slice(start, start + q.stages[stage].pick);
+    const rest = picks.filter((id) => id !== first);
+    const finale = [...q.finale];
+    finale.splice(
+      start,
+      picks.length,
+      first,
+      ...rest.slice(0, picks.length - 1),
+    );
+    Object.assign(q, { count: q.goal, due: true, finale, step: start });
+  }
   if (revealed) session.phase = "revealed";
   return { session, random };
 }

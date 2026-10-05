@@ -2,6 +2,34 @@
 
 Updated 2026-10-05. **Single authoritative handoff.** Read `AGENTS.md` first. Older handoffs are in `docs/STATUS_ARCHIVE.md` (reference only). Direct user instructions win.
 
+## League gauntlet: Legendary, Elite Four, Champion (2026-10-05, branch `pokemon-gym-leaders`, PR #4, not on `main`)
+
+**Request.** After 8 badges: one Legendary, then 4 random Elite Four members from Gens 1–3, then a random Champion. Also: proposals for making the mode more immersive, and image-generation prompts in a Markdown file.
+
+**Change.** A quest's single finale card became ordered stages (`PackQuest.finale: { label, pick, cardIds }[]`). `createSession` snapshots each stage's pool and picks the run's cards at random (`QuestState.stages`, `finale`, `step`); after the goal they are dealt one at a time between deck cards, and putting the last aside ends the game. Replays re-pick. Saves validate the picks against the pools, the stage order, and `discarded = cycle × cards + position + step`. The meter shows the stage: "Legendary" and "Champion" with "VS", "Elite Four 2/4". Content (`pokemon-league.ts`): 8 Legendaries (Articuno, Zapdos, Moltres, Mewtwo, Lugia, Ho-Oh, Latias & Latios, Deoxys; ribbon "Legendary Encounter", catches are rare), 9 Elite Four (Lorelei, Bruno, Agatha, Will, Karen, Sidney, Phoebe, Glacia, Drake; ribbon "Elite Four · <Type>"; Lance is a Champion here and Koga stays a gym leader, so neither repeats), 3 Champions (Blue, Lance, Steven; ribbon "Champion · <Region>"; whole-table fights). `pokemon.league` is retired; Champion IDs are `pokemon.league-champion-*` because `pokemon.champion-lance` is an existing regular-deck card. Catalog 714.
+
+**Fit.** On the production build no gauntlet card overflows at 375×667; at 320×568 most scroll by 16px (the same as gym leaders) after shortening Lugia, Phoebe, Lance and Steven.
+
+**Art prompts.** `docs/art-prompts/pokemon-league.md`: shared style block plus prompts for 24 original badge pins, a badge case, a League mode emblem, three gauntlet banners, a Hall of Fame scene, and an optional League card back (a frame change that needs owner sign-off). Designs are original and only evoke each badge's name.
+
+**Immersion roadmap (proposed, not built).** 1) Stage banners that sweep across the table when the gauntlet and each stage begin. 2) Badge case: tap the meter to see the badges earned and the leaders beaten; a Hall of Fame completion screen for the run. 3) Tiered ribbons: bronze gym, pearl Legendary, violet Elite Four, crimson-and-gold Champion. 4) Region runs: pick Kanto, Johto or Hoenn and face that region's 8 leaders in canonical order, then its own Elite Four and Champion (Mixed stays as today). 5) Hardcore option: a badge only on a win; a lost leader is shuffled back in (needs per-outcome quest progress and won/lost plaques on non-dice leaders). 6) Pokémon Center water break after badge 4, and rival encounters paced between badges. 7) Optional League card back and banner art from the prompts file.
+
+**Verified.** `npm test` 119 passed (quest tests now cover a two-stage finale: random picks per stage, stage order, the meter stage, completion on the last card, tampered picks rejected); typecheck clean; build and budgets passed; full production E2E Chromium 88/88 (`quest.spec.ts` covers the eighth badge opening the gauntlet with the Legendary, a reload mid-gauntlet, and the Elite Four counting 2 of 4 to 3 of 4); workshop 12/12; update flow passed. Not verified: WebKit locally, devices, the gauntlet at the table.
+
+## Gym leaders: 24, League-only, harder, with a ribbon (2026-10-05, branch `pokemon-gym-leaders`, not on `main`)
+
+**Request.** Mark gym leaders on the card in League mode; make every leader a real challenge; take leaders out of the regular Pokémon deck (League only); cover all 24 gym leaders of Gens 1–3.
+
+**Change.** `PackQuest.cardIds`: quest-only cards dealt only in that mode (engine `createSession`, `loaders.ts`, validation, setup card count, workshop preview). New `src/content/pokemon-league.ts` holds the 24 leaders (Kanto: Brock, Misty, Lt. Surge, Erika, Koga, Sabrina, Blaine, Giovanni; Johto: Falkner, Bugsy, Whitney, Morty, Chuck, Jasmine, Pryce, Clair; Hoenn: Roxanne, Brawly, Wattson, Flannery, Norman, Winona, Tate & Liza, Wallace) as `pokemon.gym-*`, and the League finale. The 14 old leader cards (`pokemon.misty`, `chuck`, `pryce`, `clair`, `flannery`, `winona`, `tate-liza`, `brawly`, `norman`, `viridian`, `erika`, `sootopolis`, `bugsy`, `jasmine`) are retired; `pokemon.gym-battle` stays in the regular deck as an ordinary card. The regular Pokémon deck is 120 cards; catalog 695. Difficulty: most battles lose more often than they win (Brock 60% drink 5; Giovanni 50% shot plus 3; Whitney's Rollout up to 10; Lt. Surge and Wattson punish matching dice), feats cost a finished drink on failure, and every leader still earns the badge when put aside. Copy was written for the mode at the owner's request and is not source-sheet text.
+
+**Indicator.** `CardDefinition.ribbon` (optional, ≤ 32 characters, validated): a gold banner over the rules ("Gym Leader · Boulder Badge"), a gilded title, and a one-time shine when the card turns face up. The badge count on the meter pops when it rises. Both respect reduced motion.
+
+**Fit.** Measured every leader on the production build: no overflow at 375×667 or 390×844; at 320×568 the rules scroll by 16px (6px for Pryce), against 6px for plain cards of similar length there (40px for the longest), after compacting the ribbon and shortening Sabrina and Tate & Liza.
+
+**Verified.** `npm test` 118 passed (League test: 24 leaders, ribbons, never in the plain deck, all 24 dealt in League, 8 within 39 draws across 40 seeds); typecheck clean; build and budgets passed; full production E2E Chromium 86 passed plus the count fix in `secondary.spec.ts` (670 cards with every pack in a plain mode), then `secondary` and `quest` specs 10/10; workshop 12/12. `quest.spec.ts` now checks the ribbon text and that it stays inside the card.
+
+**Not verified.** WebKit locally, devices, whether the leaders feel hard but fair at the table.
+
 ## Pokémon League mode; House and Cabin share nothing (2026-10-05, on branch `cabin-weekend-pack`, PR #3, not on `main`)
 
 **Request.** Make Pokémon its own mode beside Short/Long/Infinite (forcing the Pokémon pack on, plain modes can still include Pokémon cards). The 8 CABIIN rows of the house sheet belong to Cabin only, not shared.
@@ -87,6 +115,17 @@ The owner's goal: packs that change how the game plays, not just add cards. Toda
 - **Mario Party bonus awards (needs B).** End-of-game awards: most drinks given, most votes, unluckiest roller.
 - **Fluxx rule changers (needs C).** Cards that rewrite rules and sit in the tray.
 - **Travel/airport pack.** Considered; overlaps House (Spirit Airlines, Never Have I Ever countries) and Cabin weekend.
+
+**Pokémon League immersion (owner wants all of these; 2026-10-05).**
+- **Stage banners.** A full-width banner sweeps across the table when the gauntlet starts and at each stage ("A Legendary appears", "The Elite Four", "The Champion"). Art: `docs/art-prompts/pokemon-league.md` §4; CSS-only first.
+- **Badge case.** Tap the meter for a modal of the badges earned and the leaders beaten (art §1, §2).
+- **Hall of Fame.** Beating the Champion replaces the generic completion screen with a recap of the run: leaders beaten, the Legendary, the Elite Four, the Champion, cards drawn (art §5).
+- **Tiered ribbons.** Bronze gym leaders, pearl Legendaries, violet Elite Four, crimson-and-gold Champion. CSS only.
+- **Region runs.** Choose Kanto, Johto or Hoenn: that region's 8 leaders in canonical order, then that region's own Elite Four and Champion; today's random mix stays as "Mixed".
+- **Hardcore option.** A badge only on a win; a lost leader is shuffled back in. Needs per-outcome quest progress on dice leaders and Won/Lost plaques on feat leaders.
+- **Pacing beats.** A Pokémon Center water break after badge 4; rival battles (Blue, Silver, May) paced between badges.
+- **League card back.** A special back for gauntlet cards (art §6). Changes the approved frame, so it needs owner sign-off.
+- **Mode emblem.** A League mark for the setup button and meter (art §3).
 
 **Suggested order:** per-pack loading (done) → vote pack (done) → A + Pokémon badge quest (done, 2026-10-05) → dungeon crawl (reuses quests; would add a finale at the end of a finite game and loot) → B + rules tray + awards → secret and timer card packs.
 

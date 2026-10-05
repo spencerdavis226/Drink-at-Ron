@@ -1,5 +1,6 @@
 import { writeFile } from "node:fs/promises";
 import { cards, packs } from "../src/content/catalog";
+import { finaleCardIds } from "../src/game/engine";
 import { diceNotation } from "../src/game/dice";
 import type { CardDefinition } from "../src/game/types";
 
@@ -50,7 +51,8 @@ for (const pack of packs) {
   const packCards = byCategory(
     cards.filter(
       (card) =>
-        pack.cardIds.includes(card.id) || card.id === pack.quest?.finaleId,
+        pack.cardIds.includes(card.id) ||
+        (!!pack.quest && finaleCardIds(pack.quest).includes(card.id)),
     ),
   );
   const counts = CATEGORY_ORDER.map(
@@ -87,7 +89,9 @@ const csv: string[] = ["pack,id,title,category,rules,dice,review"];
 for (const pack of packs)
   for (const card of byCategory(
     cards.filter(
-      (c) => pack.cardIds.includes(c.id) || c.id === pack.quest?.finaleId,
+      (c) =>
+        pack.cardIds.includes(c.id) ||
+        (!!pack.quest && finaleCardIds(pack.quest).includes(c.id)),
     ),
   ))
     csv.push(

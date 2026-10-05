@@ -29,6 +29,11 @@ export function validateCatalog(cs: CardDefinition[], ps: PackDefinition[]) {
       fail(`Invalid artwork: ${c.id}`);
     if (c.quest !== undefined && (typeof c.quest !== "string" || !c.quest))
       fail(`Invalid quest: ${c.id}`);
+    if (
+      c.ribbon !== undefined &&
+      (typeof c.ribbon !== "string" || !c.ribbon.trim() || c.ribbon.length > 32)
+    )
+      fail(`Invalid ribbon: ${c.id}`);
   }
   const packIds = new Set<string>();
   for (const p of ps) {
@@ -63,9 +68,15 @@ export function validateCatalog(cs: CardDefinition[], ps: PackDefinition[]) {
     )
       fail(`Invalid card membership: ${p.id}`);
     if (p.quest !== undefined) {
-      const { mode, summary, label, goal, length, finaleId } = p.quest;
+      const { mode, summary, label, goal, length, finale, cardIds } = p.quest;
+      const finaleIds = Array.isArray(finale)
+        ? finale.flatMap((stage) =>
+            Array.isArray(stage?.cardIds) ? stage.cardIds : [],
+          )
+        : [];
+      const playable = [...p.cardIds, ...(cardIds ?? [])];
       const advancing = cs.filter(
-        (c) => c.quest === p.id && p.cardIds.includes(c.id),
+        (c) => c.quest === p.id && playable.includes(c.id),
       ).length;
       if (
         [mode, summary, label].some(
@@ -75,8 +86,22 @@ export function validateCatalog(cs: CardDefinition[], ps: PackDefinition[]) {
         goal < 1 ||
         !Number.isSafeInteger(length) ||
         length <= goal ||
-        !ids.has(finaleId) ||
-        p.cardIds.includes(finaleId) ||
+        !Array.isArray(cardIds) ||
+        new Set(cardIds).size !== cardIds.length ||
+        cardIds.some((id) => !ids.has(id) || p.cardIds.includes(id)) ||
+        !Array.isArray(finale) ||
+        !finale.length ||
+        finale.some(
+          (stage) =>
+            typeof stage?.label !== "string" ||
+            !stage.label.trim() ||
+            !Number.isSafeInteger(stage.pick) ||
+            stage.pick < 1 ||
+            !Array.isArray(stage.cardIds) ||
+            stage.pick > stage.cardIds.length,
+        ) ||
+        new Set(finaleIds).size !== finaleIds.length ||
+        finaleIds.some((id) => !ids.has(id) || playable.includes(id)) ||
         advancing < goal
       )
         fail(`Invalid quest: ${p.id}`);

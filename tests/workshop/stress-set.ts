@@ -20,7 +20,12 @@ export const stressCards = [
         .filter((c) => c.dice)
         .sort((a, b) => b.dice!.count - a.dice!.count)
         .slice(0, 3),
-      ...cards.filter((c) => packs.some((p) => p.quest?.finaleId === c.id)),
+      // One card of each finale stage.
+      ...packs.flatMap((p) =>
+        (p.quest?.finale ?? []).map((stage) =>
+          cards.find((c) => c.id === stage.cardIds[0])!,
+        ),
+      ),
       ...packs.map((p) => cards.find((c) => c.id === p.cardIds[0])!),
     ].map((c) => [c.id, c]),
   ).values(),

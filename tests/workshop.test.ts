@@ -1,7 +1,7 @@
 import { test, expect } from "vitest";
 import { workshopSession, workshopCards } from "../src/workshop/session";
 import { cards, packs } from "../src/content/catalog";
-import { createSession } from "../src/game/engine";
+import { createSession, finaleCardIds } from "../src/game/engine";
 test("seeded workshop preserves the pool and reproduces order", () => {
   const a = workshopSession("a", "core.house-special").session;
   expect(a).toEqual(workshopSession("a", "core.house-special").session);
@@ -10,7 +10,10 @@ test("seeded workshop preserves the pool and reproduces order", () => {
   expect(new Set(a.order).size).toBe(
     new Set(packs.flatMap((p) => p.cardIds)).size,
   );
-  expect(workshopCards.length).toBe(a.order.length + 1);
+  const questOnly = packs.flatMap((p) =>
+    p.quest ? [...p.quest.cardIds, ...finaleCardIds(p.quest)] : [],
+  );
+  expect(workshopCards.length).toBe(a.order.length + questOnly.length);
   expect(a.order).not.toEqual(
     workshopSession("b", "core.house-special").session.order,
   );
@@ -69,7 +72,7 @@ test("each supplied sheet row lands in the House deck, Cabin weekend or VIP nigh
   expect(vip.cardIds.slice(-4)).toEqual(
     [3, 4, 5, 6].map((row) => `vip.sheet-${String(row).padStart(3, "0")}`),
   );
-  expect(cards).toHaveLength(685); // 105 core + 94 house + 16 vip + 134 Pokémon (+1 quest finale) + 85 cabin + 250 likely
+  expect(cards).toHaveLength(714); // 105 core + 94 house + 16 vip + 120 Pokémon (+24 League-only gym leaders, 20 gauntlet cards) + 85 cabin + 250 likely
 });
 
 test("Cabin weekend owns its CABIIN cards and shares none", () => {
@@ -106,18 +109,45 @@ test("Most Likely To is 250 standalone vote cards", () => {
   }
 });
 
-test("the Pokémon League mode always lets the table earn all eight badges", () => {
+test("the Pokémon League mode deals all 24 gym leaders and always reaches eight badges", () => {
   const pokemon = packs.find((p) => p.id === "pokemon")!;
   expect(pokemon.quest).toMatchObject({
     mode: "Pokémon League",
     goal: 8,
     length: 40,
-    finaleId: "pokemon.league",
   });
-  const gyms = new Set(
-    cards.filter((c) => c.quest === "pokemon").map((c) => c.id),
+  // After the eighth badge: 1 of 8 Legendaries, 4 of 9 Elite Four, 1 of 3
+  // Champions.
+  expect(
+    pokemon.quest!.finale.map(({ label, pick, cardIds }) => [
+      label,
+      pick,
+      cardIds.length,
+    ]),
+  ).toEqual([
+    ["Legendary", 1, 8],
+    ["Elite Four", 4, 9],
+    ["Champion", 1, 3],
+  ]);
+  for (const id of finaleCardIds(pokemon.quest!))
+    expect(cards.find((c) => c.id === id)!.ribbon).toMatch(
+      /^(Legendary Encounter|Elite Four · \w+|Champion · \w+)$/,
+    );
+  const leaders = cards.filter((c) => c.quest === "pokemon");
+  expect(leaders).toHaveLength(24);
+  expect(pokemon.quest!.cardIds).toEqual(leaders.map((c) => c.id));
+  for (const leader of leaders) {
+    expect(leader.ribbon).toMatch(/^Gym Leader · \w+ Badge$/);
+    // Gym leaders are League-only: never in the regular Pokémon deck.
+    expect(pokemon.cardIds).not.toContain(leader.id);
+  }
+  const ids = new Set(leaders.map((c) => c.id));
+  const regular = createSession(
+    { version: 1, packIds: ["pokemon"], limit: 60 },
+    cards,
+    packs,
   );
-  expect(gyms.size).toBe(15);
+  expect(regular.order.some((id) => ids.has(id))).toBe(false);
   let seed = 11;
   const random = () => ((seed = (seed * 16807) % 2147483647) - 1) / 2147483646;
   for (let i = 0; i < 40; i++) {
@@ -132,8 +162,9 @@ test("the Pokémon League mode always lets the table earn all eight badges", () 
       packs,
       random,
     );
+    expect(s.order.filter((id) => ids.has(id))).toHaveLength(24);
     expect(
-      s.order.slice(0, 39).filter((id) => gyms.has(id)).length,
+      s.order.slice(0, 39).filter((id) => ids.has(id)).length,
     ).toBeGreaterThanOrEqual(8);
   }
 });

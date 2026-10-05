@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { CardDefinition } from "../game/types";
+import { packCardIds } from "../game/engine";
 import { workshopCards as cards, workshopPacks as packs } from "./session";
 import "./card-review.css";
 
@@ -61,7 +62,9 @@ function handoffMarkdown(decisions: Decisions) {
     "",
   ];
   const appendCard = (card: CardDefinition, decision: Decision) => {
-    const pack = packs.find((candidate) => candidate.cardIds.includes(card.id));
+    const pack = packs.find((candidate) =>
+      packCardIds(candidate).includes(card.id),
+    );
     lines.push(
       `### ${card.id}`,
       "",

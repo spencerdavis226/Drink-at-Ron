@@ -860,8 +860,30 @@ dialog.closing {
   color: #d9b877;
 }
 .quest-meter strong {
+  display: inline-block;
   font: 700 18px/1 var(--font-card-title);
   font-variant-numeric: lining-nums;
+}
+/* A badge was just earned: the count pops. */
+.quest-meter strong.earned {
+  animation: badge-pop 520ms cubic-bezier(0.22, 1.4, 0.36, 1);
+}
+@keyframes badge-pop {
+  0% {
+    transform: scale(1);
+  }
+  35% {
+    transform: scale(1.45);
+    color: #ffe39a;
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .quest-meter strong.earned {
+    animation: none;
+  }
 }
 /* The finale is in play: the meter catches the light. */
 .quest-meter.due {

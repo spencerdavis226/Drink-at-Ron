@@ -242,7 +242,7 @@ the Review column is intentionally blank so you can mark it up.
 
 ## Pokémon night (`pokemon`)
 
-135 cards · 23 sip · 27 group · 5 category · 54 challenge · 26 rule · 27 dice
+140 cards · 21 sip · 24 group · 5 category · 65 challenge · 25 rule · 36 dice
 
 | Review | Title | ID | Cat | Rules | Dice |
 | --- | --- | --- | --- | --- | --- |
@@ -262,13 +262,11 @@ the Review column is intentionally blank so you can mark it up.
 | ☐ | Starter | `pokemon.starter` | sip | Choose your starter: drink 2 (grass), give 2 (fire), or everyone drinks 1 (water). |  |
 | ☐ | Doduo | `pokemon.doduo` | sip | Doduo used Double-Edge! Give 4 drinks, then drink 1. |  |
 | ☐ | Rocket Grunt | `pokemon.rocket-grunt` | sip | A Rocket Grunt sends five Rattata. Drink as many as you want, then laugh at him. |  |
-| ☐ | Pryce | `pokemon.pryce` | sip | Pryce says ice Pokémon are cool. If your drink is ice cold, drink 2. If not, drink 4. |  |
 | ☐ | Rare Candy | `pokemon.rare-candy` | sip | Rare Candy! Level up: take another card now. No passing the device. |  |
 | ☐ | Bellsprout | `pokemon.bellsprout` | sip | Bellsprout used Growth! Drink 1 and take another card now. |  |
 | ☐ | Jigglypuff | `pokemon.jigglypuff` | sip | Jigglypuff used Sing! Everyone else fell asleep. Take another card now. |  |
 | ☐ | Shroomish | `pokemon.shroomish` | sip | Shroomish used Leech Seed! Take a drink from somebody else's cup. |  |
 | ☐ | Koffing | `pokemon.koffing` | sip | Koffing used Haze! If there's anything nearby to smoke, smoke it to avoid 2 drinks. |  |
-| ☐ | Jasmine | `pokemon.jasmine` | sip | Olivine Gym: it's hardly even a battle. Just drink 2. |  |
 | ☐ | Beedrill | `pokemon.beedrill` | group | Beedrill used Twinneedle! Pick two players. Both drink 2. |  |
 | ☐ | Gloom | `pokemon.gloom` | group | Gloom used Sludge Bomb! You and the two players beside you drink 4. |  |
 | ☐ | Meowth | `pokemon.meowth` | group | Meowth used Pay Day! Everyone but you drinks 1. |  |
@@ -281,7 +279,6 @@ the Review column is intentionally blank so you can mark it up.
 | ☐ | Rival May | `pokemon.may` | group | Rival May blocks the path! Everyone in a relationship drinks 3. If nobody is, everyone drinks 5. |  |
 | ☐ | Team Rocket | `pokemon.team-rocket` | group | Team Rocket blasts off! Everyone recites the motto. Last to finish drinks 2. |  |
 | ☐ | Pokémon Master | `pokemon.pokemon-master` | group | Throw the Master Ball! Take 2 victory drinks while everyone toasts you. |  |
-| ☐ | Misty | `pokemon.misty` | group | Misty's water attacks splash everywhere. You drink 2; everyone else drinks 1. |  |
 | ☐ | Geodude | `pokemon.geodude` | group | Magnitude! Drink as many as you want; the player on your left drinks one less. Go around the table. |  |
 | ☐ | Day Care | `pokemon.day-care` | group | You visited the Day Care! Give 1 for each sibling you have. None? Drink 2. |  |
 | ☐ | Whismur | `pokemon.whismur` | group | Whismur used Uproar! The group picks a phrase. Shout it up to 3 times; give that many drinks. |  |
@@ -293,9 +290,7 @@ the Review column is intentionally blank so you can mark it up.
 | ☐ | Clamperl | `pokemon.clamperl` | group | Clamperl is evolving! Choose: all girls drink 3, or all guys drink 3. |  |
 | ☐ | Luvdisc | `pokemon.luvdisc` | group | Luvdisc used Splash! It's super effective: everyone finishes their drinks. |  |
 | ☐ | Pound | `pokemon.pound` | group | Jigglypuff used Pound! Everyone pounds the table. Last to pound drinks 2. |  |
-| ☐ | Viridian | `pokemon.viridian` | group | Viridian Gym! First, drink 1. If you're a guy, guys drink 3. If you're a girl, girls drink 3. |  |
 | ☐ | Battle of the Sexes | `pokemon.battle-of-sexes` | group | If you're a guy, guys drink 1. If you're a girl, girls drink 1. |  |
-| ☐ | Bugsy | `pokemon.bugsy` | group | Bugsy's gym! Bugs are tiny. Drink 1. Everyone shorter than you drinks 1. Shortest drinks again. |  |
 | ☐ | Pokédex | `pokemon.pokedex` | category | Going clockwise, name Pokémon in Pokédex order. First to repeat or skip a number drinks 2. |  |
 | ☐ | Type Matchup | `pokemon.type-matchup` | category | Name a type. Going clockwise, name a Pokémon of that type. Repeat or blank: drink 2. |  |
 | ☐ | Who's That? | `pokemon.whos-that` | category | Describe a Pokémon without naming it. First to guess gives 2. Nobody guesses? Drink 2. |  |
@@ -314,11 +309,6 @@ the Review column is intentionally blank so you can mark it up.
 | ☐ | Champion Lance | `pokemon.champion-lance` | challenge | Champion Lance! Finish a full drink to take his title, or drink 6. |  |
 | ☐ | Elite Four | `pokemon.elite-four` | challenge | Challenge the Elite Four! Roll 4d6. Total 10 or less: you win and give 4. Higher: drink 4. | 4d6 — 4-10: You win! Give 4. 11-24: Drink 4. |
 | ☐ | Gym Battle | `pokemon.gym-battle` | challenge | Gym battle! Roll d6. Even: give 2. Odd: drink 2. | 1d6 — 1-5: Drink 2. 2-6: Give 2. |
-| ☐ | Chuck | `pokemon.chuck` | challenge | Chuck wants to arm wrestle. Loser drinks 5. Nobody accepts? Give 5. |  |
-| ☐ | Clair | `pokemon.clair` | challenge | Clair's dragons! Drink 2, then roll d6. Odd: drink 4 more. Even: safe. | 1d6 — 1-5: Drink 4 more. 2-6: Safe. The dragon is impressed. |
-| ☐ | Flannery | `pokemon.flannery` | challenge | Flannery's fire battle! Roll d6. 1-3: drink your roll. 4-6: take a high-proof shot. | 1d6 — 1-3: Drink {total}. 4-6: Burned. Take a high-proof shot. |
-| ☐ | Winona | `pokemon.winona` | challenge | Winona's flying battle! Stand on furniture until your next turn. Drink 3 to calm your nerves. |  |
-| ☐ | Tate & Liza | `pokemon.tate-liza` | challenge | Tate and Liza! Pick a partner. Roll 2d6. 8 or higher: you both give 3. Under 8: you both drink 4. | 2d6 — 2-7: Under 8. You both drink 4. 8-12: 8 or higher! You both give 3. |
 | ☐ | Delibird | `pokemon.delibird` | challenge | Delibird used Present! Roll d6. 1-3: drink that many. 4-6: give that many. | 1d6 — 1-3: Drink {total}. 4-6: Give {total}. |
 | ☐ | Raikou | `pokemon.raikou` | challenge | Raikou appears! Roll d6. 3: catch it and give 5. Anything else: take a bomb shot. | 1d6 — 1-2: Zapped. Take a bomb shot. 3-3: Caught it! Give 5. 4-6: Zapped. Take a bomb shot. |
 | ☐ | Entei | `pokemon.entei` | challenge | Entei appears! Roll d6. 3: catch it and give 5. Anything else: take a high-proof shot. | 1d6 — 1-2: Burned. Take a high-proof shot. 3-3: Caught it! Give 5. 4-6: Burned. Take a high-proof shot. |
@@ -351,10 +341,26 @@ the Review column is intentionally blank so you can mark it up.
 | ☐ | Grimer | `pokemon.grimer` | challenge | Grimer used Sludge Bomb! Have every player combine their drinks in a glass, then finish it! |  |
 | ☐ | Pelipper | `pokemon.pelipper` | challenge | Pelipper used Stockpile! Mix a splash of everyone's drink. Roll d6. Even: swallow it. Odd: choose who drinks it. | 1d6 — 1-5: Spit Up! Choose who drinks it. 2-6: Swallow it. |
 | ☐ | Fiery Path | `pokemon.fiery-path` | challenge | Fiery Path! Take off an article of clothing. Drink 4 to stay hydrated. |  |
-| ☐ | Brawly | `pokemon.brawly` | challenge | Brawly wants a high five. They may hit as hard as they can. Drink for every high five. |  |
-| ☐ | Erika | `pokemon.erika` | challenge | Erika's grass battle! Roll d6. 1-3: stun spore; drink 2. 4-6: mega drain; finish your drink. | 1d6 — 1-3: Stun Spore. Drink 2. 4-6: Mega Drain. Finish your drink. |
-| ☐ | Sootopolis | `pokemon.sootopolis` | challenge | Sootopolis Gym! Roll d6. Even: chug a glass of water. Odd: chug your drink to completion. | 1d6 — 1-5: Chug your drink to completion. 2-6: Chug a glass of water. |
-| ☐ | Pokémon League | `pokemon.league` | challenge | Eight badges! The whole table takes on the Champion. Roll d20. | 1d20 — 1-5: The Champion sweeps. Everyone finishes their drink. 6-12: A close fight. Everyone drinks 3. 13-19: Victory! Hand out 5 drinks while everyone toasts you. 20-20: Hall of Fame. Make a rule for the rest of the game. |
+| ☐ | Articuno | `pokemon.legendary-articuno` | challenge | Blizzard hits the table. Roll d20. 1–13: everyone drinks 3. 14–20: caught; give 8. | 1d20 — 1-13: Frozen. Everyone drinks 3. 14-20: Caught! Give 8. |
+| ☐ | Zapdos | `pokemon.legendary-zapdos` | challenge | Thunder. Roll 2d6. Under 9: you and both neighbors drink the total. 9 or more: caught. | 2d6 — 2-8: Struck. You and both neighbors drink {total}. 9-12: Caught! Give {total}. |
+| ☐ | Moltres | `pokemon.legendary-moltres` | challenge | Sky Attack. Roll d20. 1–12: take a high-proof shot. 13–20: caught; give a shot. | 1d20 — 1-12: Scorched. Take a high-proof shot. 13-20: Caught! Give a shot. |
+| ☐ | Mewtwo | `pokemon.legendary-mewtwo` | challenge | Psystrike. Roll d20. 1–15: finish your drink. 16–19: drink 4. 20: caught. | 1d20 — 1-15: Overpowered. Finish your drink. 16-19: You hold on. Drink 4. 20-20: Caught! Everyone else finishes their drink. |
+| ☐ | Lugia | `pokemon.legendary-lugia` | challenge | Roll d20: everyone drinks that many seconds. 20: caught; you're spared. | 1d20 — 1-19: Everyone drinks for {total} seconds. 20-20: Caught! Everyone else drinks for 20 seconds. |
+| ☐ | Ho-Oh | `pokemon.legendary-ho-oh` | challenge | Sacred Fire. Roll d6. Drink that many, then give twice that. | 1d6 — 1-1: Drink 1, then give 2. 2-2: Drink 2, then give 4. 3-3: Drink 3, then give 6. 4-4: Drink 4, then give 8. 5-5: Drink 5, then give 10. 6-6: Drink 6, then give 12. |
+| ☐ | Latias & Latios | `pokemon.legendary-eon-duo` | challenge | Pick a partner. Roll 2d6. Matching dice: caught; both give 10. Else both drink half. | 2d6 — 2-2: They slip away. You both drink 1. 3-3: They slip away. You both drink 2. 4-4: They slip away. You both drink 2. 5-5: They slip away. You both drink 3. 6-6: They slip away. You both drink 3. 7-7: They slip away. You both drink 4. 8-8: They slip away. You both drink 4. 9-9: They slip away. You both drink 5. 10-10: They slip away. You both drink 5. 11-11: They slip away. You both drink 6. 12-12: They slip away. You both drink 6. |
+| ☐ | Deoxys | `pokemon.legendary-deoxys` | challenge | Psycho Boost. Roll d20. 1–10: drink 6. 11–19: drink 3. 20: caught; give 10. | 1d20 — 1-10: Psycho Boost lands. Drink 6. 11-19: Glancing blow. Drink 3. 20-20: Caught! Give 10. |
+| ☐ | Lorelei | `pokemon.elite-lorelei` | challenge | Chug a glass of ice water, then roll d6 and drink that many. | 1d6 — 1-1: Brain freeze. Drink 1. 2-2: Brain freeze. Drink 2. 3-3: Brain freeze. Drink 3. 4-4: Brain freeze. Drink 4. 5-5: Brain freeze. Drink 5. 6-6: Brain freeze. Drink 6. |
+| ☐ | Bruno | `pokemon.elite-bruno` | challenge | Arm-wrestle the two strongest players back to back. Each loss: drink 5. |  |
+| ☐ | Agatha | `pokemon.elite-agatha` | challenge | Drink 3. Until your next turn you can't say anyone's name. Each slip: drink 3. |  |
+| ☐ | Will | `pokemon.elite-will` | challenge | The table secretly picks a number from 1 to 10. Three guesses; each miss: drink 2. |  |
+| ☐ | Karen | `pokemon.elite-karen` | challenge | Tell the table something you've never told them, or finish your drink. |  |
+| ☐ | Sidney | `pokemon.elite-sidney` | challenge | Roll 2d6. Under 7: finish your drink. Exactly 7: drink 7. Over 7: give 5. | 2d6 — 2-6: Crunched. Finish your drink. 7-7: A standoff. Drink 7. 8-12: You beat him. Give 5. |
+| ☐ | Phoebe | `pokemon.elite-phoebe` | challenge | Eyes shut; someone swaps drinks with you. Guess who, or drink 4 of theirs. |  |
+| ☐ | Glacia | `pokemon.elite-glacia` | challenge | Roll d20. 1–12: drink 6, ice cold. 13–19: drink 3. 20: give 8. | 1d20 — 1-12: Sheer Cold. Drink 6. 13-19: You thaw out. Drink 3. 20-20: You shatter her ice. Give 8. |
+| ☐ | Drake | `pokemon.elite-drake` | challenge | Dragon Claw. Roll 3d6. Drink half the total, rounded up, plus 2. | 3d6 — 3-3: Drink 4. 4-4: Drink 4. 5-5: Drink 5. 6-6: Drink 5. 7-7: Drink 6. 8-8: Drink 6. 9-9: Drink 7. 10-10: Drink 7. 11-11: Drink 8. 12-12: Drink 8. 13-13: Drink 9. 14-14: Drink 9. 15-15: Drink 10. 16-16: Drink 10. 17-17: Drink 11. 18-18: Drink 11. |
+| ☐ | Blue | `pokemon.league-champion-blue` | challenge | Your rival got here first. Roll d20. 1–8: all finish. 9–16: all drink 4. 17–20: you win. | 1d20 — 1-8: Blue smells you. Everyone finishes their drink. 9-16: Close fight. Everyone drinks 4. 17-20: Champion! Hand out 10 and take a victory lap. |
+| ☐ | Lance | `pokemon.league-champion-lance` | challenge | Hyper Beam. Roll d20. 1–10: all finish. 11–18: all drink 3. 19–20: you win. | 1d20 — 1-10: Hyper Beam sweeps the table. Everyone finishes their drink. 11-18: Close fight. Everyone drinks 3. 19-20: Hall of Fame! Make a rule for the rest of the night. |
+| ☐ | Steven | `pokemon.league-champion-steven` | challenge | Roll 2d6. Under 9: everyone drinks the total. 9 or more: you win; give it. | 2d6 — 2-8: Meteor Mash. Everyone drinks {total}. 9-12: Champion! Give {total}, split however you like. |
 | ☐ | Lickitung | `pokemon.lickitung` | rule | Lickitung used Lick! Give 2 and keep your tongue out until your next turn. |  |
 | ☐ | Team Magma | `pokemon.team-magma` | rule | Team Magma recruited you! If you're on Team Magma, make a rule for the rest of the game. Otherwise, drink 7. |  |
 | ☐ | Team Aqua | `pokemon.team-aqua` | rule | Team Aqua recruited you! If you're on Team Aqua, make a rule for the rest of the game. Otherwise, drink 7. |  |
@@ -380,7 +386,6 @@ the Review column is intentionally blank so you can mark it up.
 | ☐ | Barboach | `pokemon.barboach` | rule | Barboach used Mud-slap! Name a player. For the rest of the game, they may slap you once after a full drink. |  |
 | ☐ | Mawile | `pokemon.mawile` | rule | Mawile used Vicegrip! Until your next turn, grab a player and squeeze them. Drink 4 and apologize. |  |
 | ☐ | Relicanth | `pokemon.relicanth` | rule | Relicanth used Dive! Kneel under the table until your next turn. Surface early: drink 2. |  |
-| ☐ | Norman | `pokemon.norman` | rule | Norman's gym! Call another player daddy for the rest of the game. Drink 4, or drink 8 to keep your dignity. |  |
 
 ## Cabin weekend (`cabin`)
 

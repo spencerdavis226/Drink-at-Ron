@@ -88,7 +88,7 @@ test("@release the pack count stays readable with every pack selected", async ({
   await dialog.getByRole("button", { name: "Done" }).click();
   const row = page.locator(".pack-selector");
   await expect(row.locator(".pack-logo")).toHaveCount(6);
-  const count = row.getByText("684 cards");
+  const count = row.getByText("670 cards");
   await expect(count).toBeVisible();
   expect(
     await count.evaluate((el) => {

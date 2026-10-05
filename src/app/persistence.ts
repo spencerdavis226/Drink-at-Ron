@@ -33,8 +33,30 @@ function validateQuest(s: SessionState) {
   if ((q === undefined) !== (s.config.quest === undefined))
     throw Error("Invalid quest");
   if (!q) return;
-  validateCatalog([q.finale], []);
+  if (!Array.isArray(q.stages) || !q.stages.length || !Array.isArray(q.finale))
+    throw Error("Invalid quest");
+  const pool = q.stages.flatMap((stage) =>
+    Array.isArray(stage?.cards) ? stage.cards : [],
+  );
+  validateCatalog(pool, []);
+  // The finale is each stage's picks, in stage order, with no repeats.
+  let at = 0;
+  for (const stage of q.stages) {
+    const picks = q.finale.slice(at, at + stage.pick);
+    if (
+      typeof stage.label !== "string" ||
+      !stage.label.trim() ||
+      !whole(stage.pick, 1) ||
+      stage.pick > stage.cards.length ||
+      picks.length !== stage.pick ||
+      picks.some((id) => !stage.cards.some((c) => c.id === id))
+    )
+      throw Error("Invalid quest");
+    at += stage.pick;
+  }
   if (
+    at !== q.finale.length ||
+    new Set(q.finale).size !== q.finale.length ||
     q.packId !== s.config.quest ||
     typeof q.label !== "string" ||
     !q.label.trim() ||
@@ -43,7 +65,10 @@ function validateQuest(s: SessionState) {
     !whole(q.count, 0) ||
     q.count > q.goal ||
     q.due !== (q.count === q.goal) ||
-    s.cards.some((c) => c.id === q.finale.id)
+    !whole(q.step, 0) ||
+    q.step >= q.finale.length ||
+    (!q.due && q.step !== 0) ||
+    pool.some((c) => s.cards.some((d) => d.id === c.id))
   )
     throw Error("Invalid quest");
 }
@@ -60,6 +85,20 @@ export function parseSession(raw: string): SessionState {
     parsed.roll = null;
     parsed.previousRoll = null;
   }
+  // League saves from before the gauntlet carried one finale card: read it
+  // as a one-card stage, so a game in progress survives the update.
+  const legacy = parsed?.quest;
+  if (
+    legacy?.finale &&
+    !Array.isArray(legacy.finale) &&
+    typeof legacy.finale === "object"
+  )
+    parsed.quest = {
+      ...legacy,
+      stages: [{ label: "League", pick: 1, cards: [legacy.finale] }],
+      finale: [legacy.finale.id],
+      step: 0,
+    };
   const s = parsed as SessionState;
   if (
     !s ||
@@ -94,14 +133,15 @@ export function parseSession(raw: string): SessionState {
     throw Error("Invalid previous card");
   if ((s.discarded === 0) !== (s.previousId === null))
     throw Error("Invalid history");
-  const drawn = s.cycle * s.cards.length + s.position;
+  // Finale cards are draws that take no deck position.
+  const q = s.quest;
+  const drawn = s.cycle * s.cards.length + s.position + (q?.due ? q.step : 0);
   if (s.phase === "complete") {
-    // A finite game ends at its limit; a quest mode on its finale, which is
-    // drawn without taking a deck position.
+    // A finite game ends at its limit; a quest mode on its last finale card.
     if (
       !(s.config.limit !== null
         ? s.discarded === s.config.limit
-        : s.quest?.due) ||
+        : q?.due && q.step === q.finale.length - 1) ||
       s.discarded !== drawn + 1 ||
       s.previousId !== currentCard(s).id
     )
