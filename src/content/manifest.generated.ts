@@ -409,7 +409,46 @@ export const packs: PackDefinition[] = [
         "pokemon.gym-tate-liza",
         "pokemon.gym-wallace",
       ],
-      finaleId: "pokemon.league",
+      finale: [
+        {
+          label: "Legendary",
+          pick: 1,
+          cardIds: [
+            "pokemon.legendary-articuno",
+            "pokemon.legendary-zapdos",
+            "pokemon.legendary-moltres",
+            "pokemon.legendary-mewtwo",
+            "pokemon.legendary-lugia",
+            "pokemon.legendary-ho-oh",
+            "pokemon.legendary-eon-duo",
+            "pokemon.legendary-deoxys",
+          ],
+        },
+        {
+          label: "Elite Four",
+          pick: 4,
+          cardIds: [
+            "pokemon.elite-lorelei",
+            "pokemon.elite-bruno",
+            "pokemon.elite-agatha",
+            "pokemon.elite-will",
+            "pokemon.elite-karen",
+            "pokemon.elite-sidney",
+            "pokemon.elite-phoebe",
+            "pokemon.elite-glacia",
+            "pokemon.elite-drake",
+          ],
+        },
+        {
+          label: "Champion",
+          pick: 1,
+          cardIds: [
+            "pokemon.league-champion-blue",
+            "pokemon.league-champion-lance",
+            "pokemon.league-champion-steven",
+          ],
+        },
+      ],
     },
   },
   {

@@ -1,6 +1,11 @@
 import type { CardDefinition, PackDefinition } from "../game/types";
 import { cardFactory, roll, rollTable } from "./author";
-import { gymLeaders, league } from "./pokemon-league";
+import {
+  champions,
+  eliteFourMembers,
+  gymLeaders,
+  legendaries,
+} from "./pokemon-league";
 
 // Pokémon night: every playable moment from the three supplied board sheets
 // (Kanto, Johto, Hoenn), morphed from board spaces into shared-deck cards.
@@ -13,8 +18,9 @@ import { gymLeaders, league } from "./pokemon-league";
 // Keep IDs stable: active sessions snapshot their text and order.
 //
 // Pokémon League mode (`pokemon-league.ts`): the 24 gym leaders play only in
-// that mode; each earns the table a badge, the eighth badge deals the Pokémon
-// League, and beating it ends the game. Eight leaders are spread through the
+// that mode; each earns the table a badge, and the eighth badge starts the
+// gauntlet (a Legendary, four of the Elite Four, the Champion). Beating the
+// Champion ends the game. Eight leaders are spread through the
 // first 40 draws (`paceQuest` in the engine), so a run lasts about 30 to 40
 // cards. The regular deck below has no gym leaders.
 const card = cardFactory("pokemon");
@@ -847,7 +853,13 @@ const deck: CardDefinition[] = [
   ),
 ];
 
-export const pokemonCards: CardDefinition[] = [...deck, ...gymLeaders, league];
+export const pokemonCards: CardDefinition[] = [
+  ...deck,
+  ...gymLeaders,
+  ...legendaries,
+  ...eliteFourMembers,
+  ...champions,
+];
 
 export const pokemonPack: PackDefinition = {
   version: 1,
@@ -864,6 +876,16 @@ export const pokemonPack: PackDefinition = {
     goal: 8,
     length: 40,
     cardIds: gymLeaders.map((card) => card.id),
-    finaleId: league.id,
+    // After the eighth badge: a Legendary, four of the Elite Four, then the
+    // Champion, picked at random when the game starts.
+    finale: [
+      { label: "Legendary", pick: 1, cardIds: legendaries.map((c) => c.id) },
+      {
+        label: "Elite Four",
+        pick: 4,
+        cardIds: eliteFourMembers.map((c) => c.id),
+      },
+      { label: "Champion", pick: 1, cardIds: champions.map((c) => c.id) },
+    ],
   },
 };

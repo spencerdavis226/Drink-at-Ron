@@ -2,6 +2,20 @@
 
 Updated 2026-10-05. **Single authoritative handoff.** Read `AGENTS.md` first. Older handoffs are in `docs/STATUS_ARCHIVE.md` (reference only). Direct user instructions win.
 
+## League gauntlet: Legendary, Elite Four, Champion (2026-10-05, branch `pokemon-gym-leaders`, PR #4, not on `main`)
+
+**Request.** After 8 badges: one Legendary, then 4 random Elite Four members from Gens 1–3, then a random Champion. Also: proposals for making the mode more immersive, and image-generation prompts in a Markdown file.
+
+**Change.** A quest's single finale card became ordered stages (`PackQuest.finale: { label, pick, cardIds }[]`). `createSession` snapshots each stage's pool and picks the run's cards at random (`QuestState.stages`, `finale`, `step`); after the goal they are dealt one at a time between deck cards, and putting the last aside ends the game. Replays re-pick. Saves validate the picks against the pools, the stage order, and `discarded = cycle × cards + position + step`. The meter shows the stage: "Legendary" and "Champion" with "VS", "Elite Four 2/4". Content (`pokemon-league.ts`): 8 Legendaries (Articuno, Zapdos, Moltres, Mewtwo, Lugia, Ho-Oh, Latias & Latios, Deoxys; ribbon "Legendary Encounter", catches are rare), 9 Elite Four (Lorelei, Bruno, Agatha, Will, Karen, Sidney, Phoebe, Glacia, Drake; ribbon "Elite Four · <Type>"; Lance is a Champion here and Koga stays a gym leader, so neither repeats), 3 Champions (Blue, Lance, Steven; ribbon "Champion · <Region>"; whole-table fights). `pokemon.league` is retired; Champion IDs are `pokemon.league-champion-*` because `pokemon.champion-lance` is an existing regular-deck card. Catalog 714.
+
+**Fit.** On the production build no gauntlet card overflows at 375×667; at 320×568 most scroll by 16px (the same as gym leaders) after shortening Lugia, Phoebe, Lance and Steven.
+
+**Art prompts.** `docs/art-prompts/pokemon-league.md`: shared style block plus prompts for 24 original badge pins, a badge case, a League mode emblem, three gauntlet banners, a Hall of Fame scene, and an optional League card back (a frame change that needs owner sign-off). Designs are original and only evoke each badge's name.
+
+**Immersion roadmap (proposed, not built).** 1) Stage banners that sweep across the table when the gauntlet and each stage begin. 2) Badge case: tap the meter to see the badges earned and the leaders beaten; a Hall of Fame completion screen for the run. 3) Tiered ribbons: bronze gym, pearl Legendary, violet Elite Four, crimson-and-gold Champion. 4) Region runs: pick Kanto, Johto or Hoenn and face that region's 8 leaders in canonical order, then its own Elite Four and Champion (Mixed stays as today). 5) Hardcore option: a badge only on a win; a lost leader is shuffled back in (needs per-outcome quest progress and won/lost plaques on non-dice leaders). 6) Pokémon Center water break after badge 4, and rival encounters paced between badges. 7) Optional League card back and banner art from the prompts file.
+
+**Verified.** `npm test` 119 passed (quest tests now cover a two-stage finale: random picks per stage, stage order, the meter stage, completion on the last card, tampered picks rejected); typecheck clean; build and budgets passed; full production E2E Chromium 88/88 (`quest.spec.ts` covers the eighth badge opening the gauntlet with the Legendary, a reload mid-gauntlet, and the Elite Four counting 2 of 4 to 3 of 4); workshop 12/12; update flow passed. Not verified: WebKit locally, devices, the gauntlet at the table.
+
 ## Gym leaders: 24, League-only, harder, with a ribbon (2026-10-05, branch `pokemon-gym-leaders`, not on `main`)
 
 **Request.** Mark gym leaders on the card in League mode; make every leader a real challenge; take leaders out of the regular Pokémon deck (League only); cover all 24 gym leaders of Gens 1–3.

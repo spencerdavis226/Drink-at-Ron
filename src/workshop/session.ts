@@ -1,4 +1,4 @@
-import { createSession } from "../game/engine";
+import { createSession, finaleCardIds } from "../game/engine";
 import { cards, packs } from "../content/catalog";
 export function seededRandom(seed: string) {
   let state = 2166136261;
@@ -20,7 +20,10 @@ export function workshopSession(seed: string, first: string, revealed = true) {
   // as dealt.
   // Quest-only cards (gym leaders) and finales preview in their quest mode.
   const quest = packs.find(
-    (p) => p.quest?.finaleId === first || p.quest?.cardIds.includes(first),
+    (p) =>
+      !!p.quest &&
+      (p.quest.cardIds.includes(first) ||
+        finaleCardIds(p.quest).includes(first)),
   )?.id;
   const session = createSession(
     {
@@ -35,8 +38,16 @@ export function workshopSession(seed: string, first: string, revealed = true) {
   );
   if (session.order.includes(first))
     session.order = [first, ...session.order.filter((id) => id !== first)];
-  if (session.quest?.finale.id === first)
-    Object.assign(session.quest, { count: session.quest.goal, due: true });
+  // A finale card previews as dealt: put it first in the finale, then make
+  // the finale due.
+  const q = session.quest;
+  if (q && q.stages.some((stage) => stage.cards.some((c) => c.id === first)))
+    Object.assign(q, {
+      count: q.goal,
+      due: true,
+      finale: [first, ...q.finale.filter((id) => id !== first)],
+      step: 0,
+    });
   if (revealed) session.phase = "revealed";
   return { session, random };
 }

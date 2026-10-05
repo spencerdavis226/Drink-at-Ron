@@ -2,6 +2,7 @@ import type {
   CardDefinition,
   GameConfig,
   PackDefinition,
+  PackQuest,
   QuestState,
   SessionState,
 } from "./types";
@@ -99,8 +100,16 @@ export function createSession(
   let quest: QuestState | undefined;
   if (config.quest) {
     const rules = packs.find((p) => p.id === config.quest)?.quest;
-    const finale = catalog.find((c) => c.id === rules?.finaleId);
-    if (!rules || !finale) throw new Error("This pack has no quest.");
+    if (!rules) throw new Error("This pack has no quest.");
+    const stages = rules.finale.map(({ label, pick, cardIds }) => {
+      const pool = cardIds.map((id) => catalog.find((c) => c.id === id));
+      if (pool.some((c) => !c)) throw new Error("A finale card is missing.");
+      return {
+        label,
+        pick,
+        cards: (pool as CardDefinition[]).map((c) => structuredClone(c)),
+      };
+    });
     const { label, goal, length } = rules;
     quest = {
       packId: config.quest,
@@ -109,7 +118,9 @@ export function createSession(
       length,
       count: 0,
       due: false,
-      finale: structuredClone(finale),
+      stages,
+      finale: pickFinale(stages, random),
+      step: 0,
     };
   }
   return {
@@ -135,17 +146,45 @@ export function createSession(
     ...(quest ? { quest } : {}),
   };
 }
-/** The quest's finale is dealt between deck cards and takes no position. */
+/** Every card a quest's finale stages can deal. */
+export function finaleCardIds(rules: PackQuest): string[] {
+  return rules.finale.flatMap((stage) => stage.cardIds);
+}
+/** Draw each stage's cards at random, in stage order. */
+export function pickFinale(
+  stages: QuestState["stages"],
+  random: Random = Math.random,
+): string[] {
+  return stages.flatMap(({ pick, cards }) =>
+    shuffle(
+      cards.map((c) => c.id),
+      random,
+    ).slice(0, pick),
+  );
+}
+/** The stage a finale card belongs to, and its place within that stage. */
+export function finaleStage(quest: QuestState, step = quest.step) {
+  let first = 0;
+  for (const stage of quest.stages) {
+    if (step < first + stage.pick)
+      return { label: stage.label, index: step - first, size: stage.pick };
+    first += stage.pick;
+  }
+  throw new Error("Invalid finale step");
+}
+const finaleCard = (quest: QuestState, id: string) =>
+  quest.stages.flatMap((stage) => stage.cards).find((c) => c.id === id);
+/** Finale cards are dealt between deck cards and take no deck position. */
 export function currentCard(s: SessionState) {
   return s.quest?.due
-    ? s.quest.finale
+    ? finaleCard(s.quest, s.quest.finale[s.quest.step])!
     : s.cards.find((c) => c.id === s.order[s.position])!;
 }
-/** A deck card or the quest finale, for history such as the previous card. */
+/** A deck card or a finale card, for history such as the previous card. */
 export function findCard(s: SessionState, id: string | null) {
   return (
     s.cards.find((c) => c.id === id) ??
-    (s.quest?.finale.id === id ? s.quest.finale : undefined)
+    (s.quest && id !== null ? finaleCard(s.quest, id) : undefined)
   );
 }
 /** A revealed choice card whose option has not been picked yet. */
@@ -173,14 +212,27 @@ function discard(s: SessionState, random: Random): SessionState {
   const card = currentCard(s);
   const discarded = s.discarded + 1,
     previousId = card.id;
-  // A quest mode ends when its finale is put aside; a finite game at its limit.
-  if (s.quest?.due || (s.config.limit !== null && discarded === s.config.limit))
+  const lastFinale =
+    !!s.quest?.due && s.quest.step === s.quest.finale.length - 1;
+  // A quest mode ends when its last finale card is put aside; a finite game
+  // at its limit.
+  if (lastFinale || (s.config.limit !== null && discarded === s.config.limit))
     return {
       ...s,
       previousRoll: s.roll,
       phase: "complete",
       discarded,
       previousId,
+    };
+  // The next finale card is dealt; the deck waits where it is.
+  if (s.quest?.due)
+    return {
+      ...s,
+      ...history,
+      discarded,
+      previousId,
+      phase: "hidden",
+      quest: { ...s.quest, step: s.quest.step + 1 },
     };
   if (s.quest && card.quest === s.quest.packId) {
     const count = s.quest.count + 1;
@@ -235,9 +287,11 @@ export function replaySession(
       ? {
           quest: {
             ...s.quest,
-            finale: structuredClone(s.quest.finale),
+            stages: structuredClone(s.quest.stages),
+            finale: pickFinale(s.quest.stages, random),
             count: 0,
             due: false,
+            step: 0,
           },
         }
       : {}),

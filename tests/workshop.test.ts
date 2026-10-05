@@ -1,7 +1,7 @@
 import { test, expect } from "vitest";
 import { workshopSession, workshopCards } from "../src/workshop/session";
 import { cards, packs } from "../src/content/catalog";
-import { createSession } from "../src/game/engine";
+import { createSession, finaleCardIds } from "../src/game/engine";
 test("seeded workshop preserves the pool and reproduces order", () => {
   const a = workshopSession("a", "core.house-special").session;
   expect(a).toEqual(workshopSession("a", "core.house-special").session);
@@ -11,7 +11,7 @@ test("seeded workshop preserves the pool and reproduces order", () => {
     new Set(packs.flatMap((p) => p.cardIds)).size,
   );
   const questOnly = packs.flatMap((p) =>
-    p.quest ? [...p.quest.cardIds, p.quest.finaleId] : [],
+    p.quest ? [...p.quest.cardIds, ...finaleCardIds(p.quest)] : [],
   );
   expect(workshopCards.length).toBe(a.order.length + questOnly.length);
   expect(a.order).not.toEqual(
@@ -72,7 +72,7 @@ test("each supplied sheet row lands in the House deck, Cabin weekend or VIP nigh
   expect(vip.cardIds.slice(-4)).toEqual(
     [3, 4, 5, 6].map((row) => `vip.sheet-${String(row).padStart(3, "0")}`),
   );
-  expect(cards).toHaveLength(695); // 105 core + 94 house + 16 vip + 120 Pokémon (+24 League-only gym leaders and the finale) + 85 cabin + 250 likely
+  expect(cards).toHaveLength(714); // 105 core + 94 house + 16 vip + 120 Pokémon (+24 League-only gym leaders, 20 gauntlet cards) + 85 cabin + 250 likely
 });
 
 test("Cabin weekend owns its CABIIN cards and shares none", () => {
@@ -115,8 +115,24 @@ test("the Pokémon League mode deals all 24 gym leaders and always reaches eight
     mode: "Pokémon League",
     goal: 8,
     length: 40,
-    finaleId: "pokemon.league",
   });
+  // After the eighth badge: 1 of 8 Legendaries, 4 of 9 Elite Four, 1 of 3
+  // Champions.
+  expect(
+    pokemon.quest!.finale.map(({ label, pick, cardIds }) => [
+      label,
+      pick,
+      cardIds.length,
+    ]),
+  ).toEqual([
+    ["Legendary", 1, 8],
+    ["Elite Four", 4, 9],
+    ["Champion", 1, 3],
+  ]);
+  for (const id of finaleCardIds(pokemon.quest!))
+    expect(cards.find((c) => c.id === id)!.ribbon).toMatch(
+      /^(Legendary Encounter|Elite Four · \w+|Champion · \w+)$/,
+    );
   const leaders = cards.filter((c) => c.quest === "pokemon");
   expect(leaders).toHaveLength(24);
   expect(pokemon.quest!.cardIds).toEqual(leaders.map((c) => c.id));

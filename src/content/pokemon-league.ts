@@ -262,28 +262,294 @@ export const gymLeaders: CardDefinition[] = [
   ),
 ];
 
-// The finale: dealt when the table earns its eighth badge, never shuffled.
-export const league = card(
-  "league",
-  "Pokémon League",
-  "challenge",
-  "Eight badges! The whole table takes on the Champion. Roll d20.",
-  rollTable(1, 20, [
+// --- The League gauntlet ------------------------------------------------------
+// After the eighth badge: one Legendary, four of the Elite Four, then the
+// Champion, each picked at random when the game starts and dealt one at a
+// time. None is ever shuffled into the deck. Beating the Champion ends the
+// game.
+
+const finale = (
+  id: string,
+  name: string,
+  ribbon: string,
+  rules: string,
+  dice?: DiceDefinition,
+): CardDefinition => ({
+  ...card(id, name, "challenge", rules, dice),
+  ribbon,
+});
+
+const legendary = (
+  id: string,
+  name: string,
+  rules: string,
+  dice?: DiceDefinition,
+) => finale(`legendary-${id}`, name, "Legendary Encounter", rules, dice);
+
+export const legendaries: CardDefinition[] = [
+  legendary(
+    "articuno",
+    "Articuno",
+    "Blizzard hits the table. Roll d20. 1–13: everyone drinks 3. 14–20: caught; give 8.",
+    rollTable(1, 20, [
+      { min: 1, max: 13, instruction: "Frozen. Everyone drinks 3." },
+      { min: 14, max: 20, instruction: "Caught! Give 8." },
+    ]),
+  ),
+  legendary(
+    "zapdos",
+    "Zapdos",
+    "Thunder. Roll 2d6. Under 9: you and both neighbors drink the total. 9 or more: caught.",
+    rollTable(2, 6, [
+      {
+        min: 2,
+        max: 8,
+        instruction: "Struck. You and both neighbors drink {total}.",
+      },
+      { min: 9, max: 12, instruction: "Caught! Give {total}." },
+    ]),
+  ),
+  legendary(
+    "moltres",
+    "Moltres",
+    "Sky Attack. Roll d20. 1–12: take a high-proof shot. 13–20: caught; give a shot.",
+    rollTable(1, 20, [
+      { min: 1, max: 12, instruction: "Scorched. Take a high-proof shot." },
+      { min: 13, max: 20, instruction: "Caught! Give a shot." },
+    ]),
+  ),
+  legendary(
+    "mewtwo",
+    "Mewtwo",
+    "Psystrike. Roll d20. 1–15: finish your drink. 16–19: drink 4. 20: caught.",
+    rollTable(1, 20, [
+      { min: 1, max: 15, instruction: "Overpowered. Finish your drink." },
+      { min: 16, max: 19, instruction: "You hold on. Drink 4." },
+      {
+        min: 20,
+        max: 20,
+        instruction: "Caught! Everyone else finishes their drink.",
+      },
+    ]),
+  ),
+  legendary(
+    "lugia",
+    "Lugia",
+    "Roll d20: everyone drinks that many seconds. 20: caught; you're spared.",
+    rollTable(1, 20, [
+      {
+        min: 1,
+        max: 19,
+        instruction: "Everyone drinks for {total} seconds.",
+      },
+      {
+        min: 20,
+        max: 20,
+        instruction: "Caught! Everyone else drinks for 20 seconds.",
+      },
+    ]),
+  ),
+  legendary(
+    "ho-oh",
+    "Ho-Oh",
+    "Sacred Fire. Roll d6. Drink that many, then give twice that.",
+    rollTable(
+      1,
+      6,
+      [1, 2, 3, 4, 5, 6].map((n) => ({
+        min: n,
+        max: n,
+        instruction: `Drink ${n}, then give ${n * 2}.`,
+      })),
+    ),
+  ),
+  legendary(
+    "eon-duo",
+    "Latias & Latios",
+    "Pick a partner. Roll 2d6. Matching dice: caught; both give 10. Else both drink half.",
     {
-      min: 1,
-      max: 5,
-      instruction: "The Champion sweeps. Everyone finishes their drink.",
+      ...rollTable(
+        2,
+        6,
+        Array.from({ length: 11 }, (_, i) => ({
+          min: i + 2,
+          max: i + 2,
+          instruction: `They slip away. You both drink ${Math.ceil((i + 2) / 2)}.`,
+        })),
+      ),
+      doubles: "Caught both! You both give 10.",
     },
-    { min: 6, max: 12, instruction: "A close fight. Everyone drinks 3." },
-    {
-      min: 13,
-      max: 19,
-      instruction: "Victory! Hand out 5 drinks while everyone toasts you.",
-    },
-    {
-      min: 20,
-      max: 20,
-      instruction: "Hall of Fame. Make a rule for the rest of the game.",
-    },
-  ]),
-);
+  ),
+  legendary(
+    "deoxys",
+    "Deoxys",
+    "Psycho Boost. Roll d20. 1–10: drink 6. 11–19: drink 3. 20: caught; give 10.",
+    rollTable(1, 20, [
+      { min: 1, max: 10, instruction: "Psycho Boost lands. Drink 6." },
+      { min: 11, max: 19, instruction: "Glancing blow. Drink 3." },
+      { min: 20, max: 20, instruction: "Caught! Give 10." },
+    ]),
+  ),
+];
+
+const eliteFour = (
+  id: string,
+  name: string,
+  type: string,
+  rules: string,
+  dice?: DiceDefinition,
+) => finale(`elite-${id}`, name, `Elite Four · ${type}`, rules, dice);
+
+export const eliteFourMembers: CardDefinition[] = [
+  eliteFour(
+    "lorelei",
+    "Lorelei",
+    "Ice",
+    "Chug a glass of ice water, then roll d6 and drink that many.",
+    rollTable(
+      1,
+      6,
+      [1, 2, 3, 4, 5, 6].map((n) => ({
+        min: n,
+        max: n,
+        instruction: `Brain freeze. Drink ${n}.`,
+      })),
+    ),
+  ),
+  eliteFour(
+    "bruno",
+    "Bruno",
+    "Fighting",
+    "Arm-wrestle the two strongest players back to back. Each loss: drink 5.",
+  ),
+  eliteFour(
+    "agatha",
+    "Agatha",
+    "Ghost",
+    "Drink 3. Until your next turn you can't say anyone's name. Each slip: drink 3.",
+  ),
+  eliteFour(
+    "will",
+    "Will",
+    "Psychic",
+    "The table secretly picks a number from 1 to 10. Three guesses; each miss: drink 2.",
+  ),
+  eliteFour(
+    "karen",
+    "Karen",
+    "Dark",
+    "Tell the table something you've never told them, or finish your drink.",
+  ),
+  eliteFour(
+    "sidney",
+    "Sidney",
+    "Dark",
+    "Roll 2d6. Under 7: finish your drink. Exactly 7: drink 7. Over 7: give 5.",
+    rollTable(2, 6, [
+      { min: 2, max: 6, instruction: "Crunched. Finish your drink." },
+      { min: 7, max: 7, instruction: "A standoff. Drink 7." },
+      { min: 8, max: 12, instruction: "You beat him. Give 5." },
+    ]),
+  ),
+  eliteFour(
+    "phoebe",
+    "Phoebe",
+    "Ghost",
+    "Eyes shut; someone swaps drinks with you. Guess who, or drink 4 of theirs.",
+  ),
+  eliteFour(
+    "glacia",
+    "Glacia",
+    "Ice",
+    "Roll d20. 1–12: drink 6, ice cold. 13–19: drink 3. 20: give 8.",
+    rollTable(1, 20, [
+      { min: 1, max: 12, instruction: "Sheer Cold. Drink 6." },
+      { min: 13, max: 19, instruction: "You thaw out. Drink 3." },
+      { min: 20, max: 20, instruction: "You shatter her ice. Give 8." },
+    ]),
+  ),
+  eliteFour(
+    "drake",
+    "Drake",
+    "Dragon",
+    "Dragon Claw. Roll 3d6. Drink half the total, rounded up, plus 2.",
+    rollTable(
+      3,
+      6,
+      Array.from({ length: 16 }, (_, i) => ({
+        min: i + 3,
+        max: i + 3,
+        instruction: `Drink ${Math.ceil((i + 3) / 2) + 2}.`,
+      })),
+    ),
+  ),
+];
+
+const champion = (
+  id: string,
+  name: string,
+  region: string,
+  rules: string,
+  dice: DiceDefinition,
+) => finale(`league-champion-${id}`, name, `Champion · ${region}`, rules, dice);
+
+// The last card of the run: the whole table fights, and winning ends it.
+export const champions: CardDefinition[] = [
+  champion(
+    "blue",
+    "Blue",
+    "Kanto",
+    "Your rival got here first. Roll d20. 1–8: all finish. 9–16: all drink 4. 17–20: you win.",
+    rollTable(1, 20, [
+      {
+        min: 1,
+        max: 8,
+        instruction: "Blue smells you. Everyone finishes their drink.",
+      },
+      { min: 9, max: 16, instruction: "Close fight. Everyone drinks 4." },
+      {
+        min: 17,
+        max: 20,
+        instruction: "Champion! Hand out 10 and take a victory lap.",
+      },
+    ]),
+  ),
+  champion(
+    "lance",
+    "Lance",
+    "Johto",
+    "Hyper Beam. Roll d20. 1–10: all finish. 11–18: all drink 3. 19–20: you win.",
+    rollTable(1, 20, [
+      {
+        min: 1,
+        max: 10,
+        instruction:
+          "Hyper Beam sweeps the table. Everyone finishes their drink.",
+      },
+      { min: 11, max: 18, instruction: "Close fight. Everyone drinks 3." },
+      {
+        min: 19,
+        max: 20,
+        instruction: "Hall of Fame! Make a rule for the rest of the night.",
+      },
+    ]),
+  ),
+  champion(
+    "steven",
+    "Steven",
+    "Hoenn",
+    "Roll 2d6. Under 9: everyone drinks the total. 9 or more: you win; give it.",
+    rollTable(2, 6, [
+      {
+        min: 2,
+        max: 8,
+        instruction: "Meteor Mash. Everyone drinks {total}.",
+      },
+      {
+        min: 9,
+        max: 12,
+        instruction: "Champion! Give {total}, split however you like.",
+      },
+    ]),
+  ),
+];

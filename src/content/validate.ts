@@ -68,7 +68,12 @@ export function validateCatalog(cs: CardDefinition[], ps: PackDefinition[]) {
     )
       fail(`Invalid card membership: ${p.id}`);
     if (p.quest !== undefined) {
-      const { mode, summary, label, goal, length, finaleId, cardIds } = p.quest;
+      const { mode, summary, label, goal, length, finale, cardIds } = p.quest;
+      const finaleIds = Array.isArray(finale)
+        ? finale.flatMap((stage) =>
+            Array.isArray(stage?.cardIds) ? stage.cardIds : [],
+          )
+        : [];
       const playable = [...p.cardIds, ...(cardIds ?? [])];
       const advancing = cs.filter(
         (c) => c.quest === p.id && playable.includes(c.id),
@@ -84,8 +89,19 @@ export function validateCatalog(cs: CardDefinition[], ps: PackDefinition[]) {
         !Array.isArray(cardIds) ||
         new Set(cardIds).size !== cardIds.length ||
         cardIds.some((id) => !ids.has(id) || p.cardIds.includes(id)) ||
-        !ids.has(finaleId) ||
-        playable.includes(finaleId) ||
+        !Array.isArray(finale) ||
+        !finale.length ||
+        finale.some(
+          (stage) =>
+            typeof stage?.label !== "string" ||
+            !stage.label.trim() ||
+            !Number.isSafeInteger(stage.pick) ||
+            stage.pick < 1 ||
+            !Array.isArray(stage.cardIds) ||
+            stage.pick > stage.cardIds.length,
+        ) ||
+        new Set(finaleIds).size !== finaleIds.length ||
+        finaleIds.some((id) => !ids.has(id) || playable.includes(id)) ||
         advancing < goal
       )
         fail(`Invalid quest: ${p.id}`);

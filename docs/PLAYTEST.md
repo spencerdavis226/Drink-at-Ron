@@ -51,7 +51,7 @@ Status: **prepared, no results recorded.** Kit prepared 2026-09-21 at commit `3e
 
 Add rows or annotate the sheet below. Mark each card: `fine`, `confusing`, `skipped`, or `remove`.
 
-Use the generated [card review sheet](CARD_REVIEW.md) or [CSV](card-review.csv) to record per-card observations for all 695 cards (105 Core, 94 House, 16 VIP, 120 Pokémon plus 24 League-only gym leaders and the League finale, 85 Cabin, 250 Most Likely To). Keep this file for session findings and decisions. The House IDs include their source sheet row numbers for comparison.
+Use the generated [card review sheet](CARD_REVIEW.md) or [CSV](card-review.csv) to record per-card observations for all 714 cards (105 Core, 94 House, 16 VIP, 120 Pokémon plus 24 League-only gym leaders and 20 gauntlet cards, 85 Cabin, 250 Most Likely To). Keep this file for session findings and decisions. The House IDs include their source sheet row numbers for comparison.
 
 ## Device checks
 
