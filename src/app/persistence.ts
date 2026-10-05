@@ -85,6 +85,20 @@ export function parseSession(raw: string): SessionState {
     parsed.roll = null;
     parsed.previousRoll = null;
   }
+  // League saves from before the gauntlet carried one finale card: read it
+  // as a one-card stage, so a game in progress survives the update.
+  const legacy = parsed?.quest;
+  if (
+    legacy?.finale &&
+    !Array.isArray(legacy.finale) &&
+    typeof legacy.finale === "object"
+  )
+    parsed.quest = {
+      ...legacy,
+      stages: [{ label: "League", pick: 1, cards: [legacy.finale] }],
+      finale: [legacy.finale.id],
+      step: 0,
+    };
   const s = parsed as SessionState;
   if (
     !s ||

@@ -146,6 +146,16 @@ export function createSession(
     ...(quest ? { quest } : {}),
   };
 }
+/** Every card a pack can deal: its deck, its quest-only cards and its
+ * quest's finale. */
+export function packCardIds(pack: PackDefinition): string[] {
+  return [
+    ...pack.cardIds,
+    ...(pack.quest
+      ? [...pack.quest.cardIds, ...finaleCardIds(pack.quest)]
+      : []),
+  ];
+}
 /** Every card a quest's finale stages can deal. */
 export function finaleCardIds(rules: PackQuest): string[] {
   return rules.finale.flatMap((stage) => stage.cardIds);

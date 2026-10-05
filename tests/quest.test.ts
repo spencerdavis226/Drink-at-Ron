@@ -214,6 +214,21 @@ describe("quest mode", () => {
     expect(tamper((q) => delete q.config.quest)).toThrow();
   });
 
+  it("a League save from before the gauntlet loads as a one-card stage", () => {
+    const s = draw(draw(gymsFirst()));
+    const { stages: _stages, step: _step, finale: _finale, ...rest } = s.quest!;
+    const boss = catalog[6];
+    const old = { ...s, quest: { ...rest, finale: boss } };
+    const loaded = parseSession(JSON.stringify(old));
+    expect(loaded.quest).toMatchObject({
+      due: true,
+      step: 0,
+      finale: ["quest.boss"],
+      stages: [{ label: "League", pick: 1, cards: [boss] }],
+    });
+    expect(currentCard(loaded).id).toBe("quest.boss");
+  });
+
   it("catalog validation requires a reachable goal and unshuffled finale stages", () => {
     expect(() => validateCatalog(catalog, [pack])).not.toThrow();
     const rules = pack.quest!;

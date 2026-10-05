@@ -38,16 +38,23 @@ export function workshopSession(seed: string, first: string, revealed = true) {
   );
   if (session.order.includes(first))
     session.order = [first, ...session.order.filter((id) => id !== first)];
-  // A finale card previews as dealt: put it first in the finale, then make
-  // the finale due.
+  // A finale card previews as dealt: swap it into its own stage's picks and
+  // make that the step in play.
   const q = session.quest;
-  if (q && q.stages.some((stage) => stage.cards.some((c) => c.id === first)))
-    Object.assign(q, {
-      count: q.goal,
-      due: true,
-      finale: [first, ...q.finale.filter((id) => id !== first)],
-      step: 0,
-    });
+  const stage = q?.stages.findIndex((s) => s.cards.some((c) => c.id === first));
+  if (q && stage !== undefined && stage >= 0) {
+    const start = q.stages.slice(0, stage).reduce((sum, s) => sum + s.pick, 0);
+    const picks = q.finale.slice(start, start + q.stages[stage].pick);
+    const rest = picks.filter((id) => id !== first);
+    const finale = [...q.finale];
+    finale.splice(
+      start,
+      picks.length,
+      first,
+      ...rest.slice(0, picks.length - 1),
+    );
+    Object.assign(q, { count: q.goal, due: true, finale, step: start });
+  }
   if (revealed) session.phase = "revealed";
   return { session, random };
 }
