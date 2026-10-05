@@ -16,6 +16,8 @@ Updated 2026-10-05. **Single authoritative handoff.** Read `AGENTS.md` first. Ol
 
 **Not verified.** WebKit locally, devices, the run length at the table.
 
+**Gym spreading kept (owner, 2026-10-05).** Owner asked why gyms are not simply shuffled through the whole deck. By chance alone the 8th of 15 gyms lands near draw 8(N+1)/16: about 68 with Pokémon only (134 cards), 120 with Core added, 342 with all six packs. The 40-draw spread keeps a run night-sized whatever the pack mix; the owner chose to keep it. Alternatives on file: spread through ~30% of the deck capped at 60, or a run-length choice (quick ~25 / normal ~40 / epic ~70) under the mode.
+
 ## Leaner tests, no initial-JS cap, eight Pokémon badges (2026-10-05, on branch `cabin-weekend-pack`, PR #3, not on `main`)
 
 **Request.** Remove unnecessary tests and the 100 KiB limit; make the Pokémon quest all 8 badges.
