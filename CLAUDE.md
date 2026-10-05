@@ -13,7 +13,7 @@ A pass-the-phone drinking-card game, a Vite + React 19 + TypeScript PWA hosted o
 | Path | Role |
 | --- | --- |
 | `src/game` | Pure engine: shuffle, advance, dice sampling. No DOM, no React. |
-| `src/content` | Card and pack data (684 cards, 6 packs), loaded lazily through `registry.ts`, plus `validate.ts`. |
+| `src/content` | Card and pack data (685 cards incl. one quest finale, 6 packs). App code imports `manifest.generated.ts` and loads card text per pack via `loaders.ts`. |
 | `src/app/persistence.ts` | localStorage save/load, v1→v2 migration, preferences. |
 | `src/presentation` | Controller (animation state machine), theme, CSS, dice renderer adapter, imprint sprite. |
 | `src/components`, `src/screens` | React UI; `main.tsx` wires state, PWA update, and dialogs. |

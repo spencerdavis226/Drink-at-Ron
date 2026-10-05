@@ -11,7 +11,9 @@ Read `docs/AUTHORING.md` and `docs/CARD_VOICE_REFERENCE.md` before editing. Card
 | `cabin.ts` (+ 8 House rows shared by ID) | `cabin` | 77 own, 85 in the pack |
 | `likely.ts` | `likely` (vote cards, IDs `likely.NNN` by list position) | 250 |
 
-`catalog.ts` is a lazy chunk in production. App code reads it through `registry.ts` (`catalog()` after `loadCatalog()`); never import `catalog.ts` statically from `src/` outside the workshop, or the card text returns to the initial bundle budget.
+`catalog.ts` aggregates everything for tests, scripts and the workshop only. The app imports `manifest.generated.ts` (run `npm run content:manifest` after changing packs or card IDs; the build does it too and a test catches a stale file) and loads card text through `loaders.ts`, one lazy chunk per content module. A new pack needs a loader entry. Never import a content module statically from app code; the budget check fails the build if card text reaches the initial chunk.
+
+Pack quests: a pack may declare `quest: { label, goal, finaleId }`. The finale is a card in the module but not in `cardIds`; cards tagged `quest: "<packId>"` advance the meter when put aside. Validation requires at least `goal` tagged cards. Pokémon: 15 gym cards, goal 4, finale `pokemon.league`.
 
 Rules enforced by `npm run build` (`scripts/validate-content.ts`) and unit tests:
 

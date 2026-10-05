@@ -795,6 +795,61 @@ dialog.closing {
   letter-spacing: 0.02em;
   color: #d9b877;
 }
+/* A pack quest's meter takes the free left slot: the pack's mark beside a
+   small label and the count, on the same dark teal as the medallion. */
+.quest-meters {
+  grid-column: 1;
+  justify-self: start;
+  display: flex;
+  gap: 6px;
+}
+.quest-meter {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  padding: 4px 11px 4px 7px;
+  border: 1px solid #3c6258;
+  border-radius: 22px;
+  background: linear-gradient(180deg, #2b5148 0%, #17332e 100%);
+  box-shadow:
+    inset 0 1px rgb(255 238 199 / 0.2),
+    0 2px 0 #0e0a07,
+    0 5px 12px rgb(0 0 0 / 0.42);
+  color: #fff0cf;
+  font-family: var(--font-tavern);
+  line-height: 1;
+  white-space: nowrap;
+  transition:
+    border-color 300ms,
+    box-shadow 300ms;
+}
+.quest-meter .pack-logo {
+  width: 24px;
+  height: 24px;
+}
+.quest-meter > span {
+  display: grid;
+  gap: 2px;
+}
+.quest-meter small {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: #d9b877;
+}
+.quest-meter strong {
+  font: 700 18px/1 var(--font-card-title);
+  font-variant-numeric: lining-nums;
+}
+/* The finale is in play: the meter catches the light. */
+.quest-meter.due {
+  border-color: #e5c27c;
+  box-shadow:
+    inset 0 1px rgb(255 238 199 / 0.3),
+    0 0 0 2px rgb(229 194 124 / 0.35),
+    0 0 18px rgb(229 194 124 / 0.45);
+}
 .icon-button.menu-button {
   grid-column: 3;
   justify-self: end;
@@ -832,6 +887,21 @@ dialog.closing {
   .icon-button.menu-button {
     width: 64px;
     height: 64px;
+  }
+  .quest-meter {
+    min-height: 54px;
+    padding: 5px 14px 5px 9px;
+    border-radius: 27px;
+  }
+  .quest-meter .pack-logo {
+    width: 30px;
+    height: 30px;
+  }
+  .quest-meter small {
+    font-size: 14px;
+  }
+  .quest-meter strong {
+    font-size: 22px;
   }
   .menu-button .menu-icon {
     gap: 5px;

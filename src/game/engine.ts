@@ -2,6 +2,7 @@ import type {
   CardDefinition,
   GameConfig,
   PackDefinition,
+  QuestState,
   SessionState,
 } from "./types";
 export type Random = () => number;
@@ -53,6 +54,27 @@ export function createSession(
     .filter((c) => selected.has(c.id))
     .map((c) => structuredClone(c));
   if (!cards.length) throw new Error("This deck has no cards.");
+  // A quest runs only when its finale was loaded with the cards; a partial
+  // catalog (a single-card fixture) simply plays without it.
+  const quests: QuestState[] = packs.flatMap((p) => {
+    const finale =
+      p.quest &&
+      config.packIds.includes(p.id) &&
+      catalog.find((c) => c.id === p.quest!.finaleId);
+    if (!finale) return [];
+    const { label, goal } = p.quest!;
+    return [
+      {
+        packId: p.id,
+        label,
+        goal,
+        count: 0,
+        due: false,
+        shown: 0,
+        finale: structuredClone(finale),
+      },
+    ];
+  });
   return {
     version: 2,
     config: { ...config, packIds: [...config.packIds] },
@@ -68,10 +90,28 @@ export function createSession(
     previousId: null,
     roll: null,
     previousRoll: null,
+    ...(quests.length ? { quests } : {}),
   };
 }
+/** The quest whose finale is in play, if any. */
+export function dueQuest(s: SessionState) {
+  return s.quests?.find((q) => q.due);
+}
 export function currentCard(s: SessionState) {
-  return s.cards.find((c) => c.id === s.order[s.position])!;
+  return (
+    dueQuest(s)?.finale ?? s.cards.find((c) => c.id === s.order[s.position])!
+  );
+}
+/** A deck card or a quest finale, for history such as the previous card. */
+export function findCard(s: SessionState, id: string | null) {
+  return (
+    s.cards.find((c) => c.id === id) ??
+    s.quests?.find((q) => q.finale.id === id)?.finale
+  );
+}
+/** Finales put aside so far; they count as draws but take no deck position. */
+export function finalesShown(s: SessionState) {
+  return (s.quests ?? []).reduce((sum, q) => sum + q.shown, 0);
 }
 /** A revealed choice card whose option has not been picked yet. */
 export function awaitingChoice(s: SessionState) {
@@ -95,8 +135,10 @@ export function skipRoll(
 }
 function discard(s: SessionState, random: Random): SessionState {
   const history = { previousRoll: s.roll, roll: null };
+  const card = currentCard(s),
+    due = dueQuest(s);
   const discarded = s.discarded + 1,
-    previousId = currentCard(s).id;
+    previousId = card.id;
   if (s.config.limit !== null && discarded === s.config.limit)
     return {
       ...s,
@@ -105,6 +147,25 @@ function discard(s: SessionState, random: Random): SessionState {
       discarded,
       previousId,
     };
+  // A finale is drawn between deck cards: the deck position stays put and
+  // its meter starts over, so a long game can earn it again.
+  if (due)
+    return {
+      ...s,
+      ...history,
+      discarded,
+      previousId,
+      phase: "hidden",
+      quests: s.quests!.map((q) =>
+        q === due ? { ...q, count: 0, due: false, shown: q.shown + 1 } : q,
+      ),
+    };
+  const quests = s.quests?.map((q) =>
+    q.packId === card.quest
+      ? { ...q, count: q.count + 1, due: q.count + 1 >= q.goal }
+      : q,
+  );
+  if (quests) s = { ...s, quests };
   if (s.position + 1 === s.order.length)
     return {
       ...s,
@@ -145,5 +206,16 @@ export function replaySession(
     previousId: null,
     roll: null,
     previousRoll: null,
+    ...(s.quests
+      ? {
+          quests: s.quests.map((q) => ({
+            ...q,
+            finale: structuredClone(q.finale),
+            count: 0,
+            due: false,
+            shown: 0,
+          })),
+        }
+      : {}),
   };
 }

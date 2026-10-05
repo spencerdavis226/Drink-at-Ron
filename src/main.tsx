@@ -1,7 +1,8 @@
 import React, { useEffect, useState, type CSSProperties } from "react";
 import { createRoot } from "react-dom/client";
 import { useRegisterSW } from "virtual:pwa-register/react";
-import { catalog, loadCatalog } from "./content/registry";
+import { packs } from "./content/manifest.generated";
+import { loadedPackCards, loadPackCards } from "./content/loaders";
 import { createSession, replaySession } from "./game/engine";
 import {
   loadPreferences,
@@ -25,6 +26,7 @@ import { Completion } from "./screens/Completion";
 import { GameDialogs, type DialogName } from "./screens/GameDialogs";
 import { useWakeLock } from "./app/wakeLock";
 import { PortraitGate } from "./components/PortraitGate";
+import { QuestMeters } from "./components/QuestMeters";
 import "./style.css";
 import "./presentation/theme.css";
 import "./presentation/card-front.css";
@@ -53,7 +55,6 @@ if ("serviceWorker" in navigator) {
   });
 }
 function App() {
-  const { cards, packs } = catalog();
   const [loaded] = useState(loadSession),
     [corrupt, setCorrupt] = useState(loaded.corrupt),
     [notice, setNotice] = useState(loaded.unavailable),
@@ -62,7 +63,9 @@ function App() {
     [updateReady, setUpdateReady] = useState(false),
     [modal, setModal] = useState<DialogName>(null),
     [standalone, setStandalone] = useState(isStandaloneApp),
-    [hidden, setHidden] = useState(document.hidden);
+    [hidden, setHidden] = useState(document.hidden),
+    [starting, setStarting] = useState(false),
+    [loadFailed, setLoadFailed] = useState(false);
   const { controller, session, outgoing, motion, transition, finishingRoll } =
     usePresentation(
       () =>
@@ -168,18 +171,30 @@ function App() {
       document.removeEventListener("visibilitychange", onVisibility);
     };
   }, []);
+  // Warm the selected packs' card chunks while setup is open, so Play starts
+  // from memory. Card text never blocks the first screen.
+  useEffect(() => {
+    if (!display) void loadPackCards(prefs.config.packIds).catch(() => {});
+  }, [display, prefs.config.packIds]);
   const start = () => {
     const packIds = prefs.config.packIds.filter((id) =>
       packs.some((pack) => pack.id === id),
     );
-    if (!packIds.length) return;
+    if (!packIds.length || starting) return;
     const config = {
       ...prefs.config,
       packIds,
       limit: MODE_LIMITS[prefs.choice],
     };
     setPrefs({ ...prefs, config });
-    controller.start(createSession(config, cards, packs));
+    const ready = loadedPackCards(packIds);
+    if (ready) return controller.start(createSession(config, ready, packs));
+    setStarting(true);
+    setLoadFailed(false);
+    loadPackCards(packIds)
+      .then((cards) => controller.start(createSession(config, cards, packs)))
+      .catch(() => setLoadFailed(true))
+      .finally(() => setStarting(false));
   };
   const finish = (id: number) => controller.finish(id);
   const styles = Object.fromEntries(
@@ -201,8 +216,9 @@ function App() {
           <header className="topbar">
             {active ? (
               <>
-                {/* One row of table furniture: the count on a brass
-                    medallion, the menu on a matching stud. */}
+                {/* One row of table furniture: a pack quest's meter, the
+                    count on a brass medallion, the menu on a matching stud. */}
+                <QuestMeters session={display} />
                 <div
                   className="progress"
                   role="img"
@@ -244,6 +260,11 @@ function App() {
         {notice && (
           <Notice>
             Saving is unavailable. This game may not survive closing the app.
+          </Notice>
+        )}
+        {loadFailed && !display && (
+          <Notice>
+            Couldn’t load the cards. Check the connection and try again.
           </Notice>
         )}
         {corrupt ? (
@@ -327,31 +348,28 @@ const renderApp = () =>
     </React.StrictMode>,
   );
 if (import.meta.env.DEV && params.get("preview") === "1") {
-  void Promise.all([import("./workshop/Preview"), loadCatalog()]).then(
-    ([{ default: Preview }]) =>
-      root.render(
-        <React.StrictMode>
-          <Preview />
-        </React.StrictMode>,
-      ),
+  void import("./workshop/Preview").then(({ default: Preview }) =>
+    root.render(
+      <React.StrictMode>
+        <Preview />
+      </React.StrictMode>,
+    ),
   );
 } else if (import.meta.env.DEV && params.get("review") === "1") {
-  void Promise.all([import("./workshop/CardReview"), loadCatalog()]).then(
-    ([{ default: CardReview }]) =>
-      root.render(
-        <React.StrictMode>
-          <CardReview />
-        </React.StrictMode>,
-      ),
+  void import("./workshop/CardReview").then(({ default: CardReview }) =>
+    root.render(
+      <React.StrictMode>
+        <CardReview />
+      </React.StrictMode>,
+    ),
   );
 } else if (import.meta.env.DEV && params.get("workshop") === "1") {
-  void Promise.all([import("./workshop/Workshop"), loadCatalog()]).then(
-    ([{ default: Workshop }]) =>
-      root.render(
-        <React.StrictMode>
-          <Workshop />
-        </React.StrictMode>,
-      ),
+  void import("./workshop/Workshop").then(({ default: Workshop }) =>
+    root.render(
+      <React.StrictMode>
+        <Workshop />
+      </React.StrictMode>,
+    ),
   );
 } else {
   // The painted surfaces are CSS images, which WebKit only discovers once the
@@ -374,13 +392,8 @@ if (import.meta.env.DEV && params.get("preview") === "1") {
   // A dead connection must not strand the app on bare wood; the themed
   // fallbacks take over after the cap.
   const cap = new Promise((resolve) => window.setTimeout(resolve, 4000));
-  // The card catalog is a lazy chunk fetched alongside the art. Unlike the
-  // art it has no fallback, so the first render always waits for it.
-  const content = loadCatalog();
   void Promise.race([
     Promise.all([...firstScreen.map(preloadUrl), ...fonts]),
     cap,
-  ])
-    .then(() => content)
-    .then(renderApp);
+  ]).then(renderApp);
 }

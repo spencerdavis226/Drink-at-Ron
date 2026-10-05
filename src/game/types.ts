@@ -33,6 +33,28 @@ export interface CardDefinition {
   category: Category;
   artwork: string;
   dice?: DiceDefinition;
+  /** The id of the pack whose quest meter this card advances when it is put
+   * aside (a gym battle earns a badge). */
+  quest?: string;
+}
+/** A pack mechanic: a table-wide meter that, on reaching its goal, makes the
+ * finale the next card. The finale is authored with the pack's cards but is
+ * not in `cardIds`, so it never enters the shuffle. */
+export interface PackQuest {
+  label: string;
+  goal: number;
+  finaleId: string;
+}
+/** A quest's progress in one game. `due` means the finale is the card in
+ * play (or the next one drawn); `shown` counts finales already put aside. */
+export interface QuestState {
+  packId: string;
+  label: string;
+  goal: number;
+  count: number;
+  due: boolean;
+  shown: number;
+  finale: CardDefinition;
 }
 export interface PackDefinition {
   version: 1;
@@ -43,6 +65,7 @@ export interface PackDefinition {
   artwork?: string;
   /** One single-colour silhouette; the app tints it wherever it appears. */
   logo?: string;
+  quest?: PackQuest;
 }
 export interface GameConfig {
   version: 1;
@@ -61,4 +84,6 @@ export interface SessionState {
   discarded: number;
   phase: "hidden" | "revealed" | "complete";
   previousId: string | null;
+  /** Present only when a selected pack has a quest; older saves omit it. */
+  quests?: QuestState[];
 }

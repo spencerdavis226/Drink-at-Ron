@@ -118,6 +118,7 @@ test("@release House and VIP are selectable add-ons and Core can be deselected",
   await house.click();
   await page.getByRole("button", { name: "Done" }).click();
   await page.getByRole("button", { name: "Play", exact: true }).click();
+  await expect(page.locator(".progress")).toBeVisible();
   const session = await page.evaluate(
     (key) => JSON.parse(localStorage.getItem(key)!),
     key,

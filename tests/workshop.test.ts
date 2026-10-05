@@ -5,7 +5,11 @@ test("seeded workshop preserves the pool and reproduces order", () => {
   const a = workshopSession("a", "core.house-special").session;
   expect(a).toEqual(workshopSession("a", "core.house-special").session);
   expect(a.order[0]).toBe("core.house-special");
-  expect(new Set(a.order).size).toBe(workshopCards.length);
+  // Quest finales are catalog cards that never enter the shuffle.
+  expect(new Set(a.order).size).toBe(
+    new Set(packs.flatMap((p) => p.cardIds)).size,
+  );
+  expect(workshopCards.length).toBe(a.order.length + 1);
   expect(a.order).not.toEqual(
     workshopSession("b", "core.house-special").session.order,
   );
@@ -42,7 +46,7 @@ test("each supplied sheet row lands in the House deck and VIP night", () => {
   expect(vip.cardIds.slice(-4)).toEqual(
     [3, 4, 5, 6].map((row) => `vip.sheet-${String(row).padStart(3, "0")}`),
   );
-  expect(cards).toHaveLength(684); // 105 core + 102 house + 16 vip + 134 Pokémon + 77 cabin + 250 likely
+  expect(cards).toHaveLength(685); // 105 core + 102 house + 16 vip + 134 Pokémon (+1 quest finale) + 77 cabin + 250 likely
 });
 
 test("Cabin weekend owns its CABIIN cards and shares a few House rows", () => {

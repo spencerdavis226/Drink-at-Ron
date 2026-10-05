@@ -27,6 +27,8 @@ export function validateCatalog(cs: CardDefinition[], ps: PackDefinition[]) {
         fail(`Missing ${key}: ${c.id}`);
     if (!/^art\/[a-zA-Z0-9/_-]+\.(svg|png|webp|avif)$/.test(c.artwork))
       fail(`Invalid artwork: ${c.id}`);
+    if (c.quest !== undefined && (typeof c.quest !== "string" || !c.quest))
+      fail(`Invalid quest: ${c.id}`);
   }
   const packIds = new Set<string>();
   for (const p of ps) {
@@ -60,5 +62,21 @@ export function validateCatalog(cs: CardDefinition[], ps: PackDefinition[]) {
       p.cardIds.some((id) => !ids.has(id))
     )
       fail(`Invalid card membership: ${p.id}`);
+    if (p.quest !== undefined) {
+      const { label, goal, finaleId } = p.quest;
+      const advancing = cs.filter(
+        (c) => c.quest === p.id && p.cardIds.includes(c.id),
+      ).length;
+      if (
+        typeof label !== "string" ||
+        !label.trim() ||
+        !Number.isSafeInteger(goal) ||
+        goal < 1 ||
+        !ids.has(finaleId) ||
+        p.cardIds.includes(finaleId) ||
+        advancing < goal
+      )
+        fail(`Invalid quest: ${p.id}`);
+    }
   }
 }

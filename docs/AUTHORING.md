@@ -1,7 +1,7 @@
 # Adding a card pack
 
 1. Add card definitions and a pack definition in a module under `src/content`.
-2. Import and append them to the exported `cards` and `packs` arrays in `catalog.ts`.
+2. Import and append them to the exported `cards` and `packs` arrays in `catalog.ts`, add a loader for the pack in `loaders.ts`, and run `npm run content:manifest`.
 3. Put referenced artwork under `public/art`. A card's `artwork` must be a key in the registry in `src/presentation/artwork.ts`; the shared placeholder is `art/tankard.webp`. To ship a finished illustration, add the file and a registry entry (public path plus `scene: 'painted'`) instead of branching on a card ID in `CardFace`.
 4. Run `npm test` and `npm run build`. The build checks fields, IDs, membership, and resolves every card's artwork through that same registry, failing on an unregistered reference or a missing file.
 5. Inspect each card at small iPhone size and enlarged text. The group should understand a rule on one reading.
@@ -55,3 +55,7 @@ Per-card illustration briefs are retired. Every card renders in the shared paint
 Each registered pack needs a distinct `logo`, such as `logo: 'art/packs/core.svg'`. Keep logo paths stable and add the file under public/art/packs; the build rejects missing files and reused logo paths. The same mark appears in setup, the pause legend, and card footers. The Core diamond is reserved for Core. Optional typing keeps older pack fixtures compatible, but release validation requires explicit logos for all registered packs.
 
 A shared card shows marks for selected packs containing it, in catalog order. Marks follow the installed catalog as cosmetic metadata; they do not alter or rewrite a saved session. Stable namespaced IDs preserve the known origin's mark for retired cards in older saves. Unknown removed packs do not acquire an invented Core mark. Keep old pack metadata and logo assets available across releases when possible. Gameplay, snapshots, and shuffled order are unchanged.
+
+## Pack quests
+
+A pack can change the game with a quest: a table-wide meter shown in the play screen's top row. Declare `quest: { label, goal, finaleId }` on the pack and tag the cards that advance it with `quest: "<packId>"`. A tagged card adds one when it is put aside; reaching the goal makes the finale the next card, then the meter starts over (a long game can earn it again). Author the finale in the same module but leave it out of `cardIds` so it never enters the shuffle, and include it in what the pack's loader returns. Pick a goal a Short game can reach: a Short game draws 30 cards, so the expected number of tagged cards is roughly 30 × tagged ÷ pack size.

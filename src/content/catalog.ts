@@ -5,7 +5,6 @@ import { pokemonCards, pokemonPack } from "./pokemon";
 import { cabinCards, cabinPack } from "./cabin";
 import { likelyCards, likelyPack } from "./likely";
 import type { CardDefinition, PackDefinition } from "../game/types";
-import { installCatalog } from "./registry";
 export { validateCatalog } from "./validate";
 
 // The runtime catalog. Six opt-in packs: the generated main deck, the
@@ -28,7 +27,3 @@ export const packs: PackDefinition[] = [
   cabinPack,
   likelyPack,
 ];
-
-// Importing the catalog installs it. The app loads this module lazily (see
-// `registry.ts`) so card content stays out of the initial chunk.
-installCatalog({ cards, packs });

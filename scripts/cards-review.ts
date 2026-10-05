@@ -48,7 +48,10 @@ const md: string[] = [
 
 for (const pack of packs) {
   const packCards = byCategory(
-    cards.filter((card) => pack.cardIds.includes(card.id)),
+    cards.filter(
+      (card) =>
+        pack.cardIds.includes(card.id) || card.id === pack.quest?.finaleId,
+    ),
   );
   const counts = CATEGORY_ORDER.map(
     (c) => `${packCards.filter((card) => card.category === c).length} ${c}`,
@@ -83,7 +86,9 @@ md.push(
 const csv: string[] = ["pack,id,title,category,rules,dice,review"];
 for (const pack of packs)
   for (const card of byCategory(
-    cards.filter((c) => pack.cardIds.includes(c.id)),
+    cards.filter(
+      (c) => pack.cardIds.includes(c.id) || c.id === pack.quest?.finaleId,
+    ),
   ))
     csv.push(
       [

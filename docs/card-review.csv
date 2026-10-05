@@ -330,6 +330,7 @@ pack,id,title,category,rules,dice,review
 "pokemon","pokemon.brawly","Brawly","challenge","Brawly wants a high five. They may hit as hard as they can. Drink for every high five.","",""
 "pokemon","pokemon.erika","Erika","challenge","Erika's grass battle! Roll d6. 1-3: stun spore; drink 2. 4-6: mega drain; finish your drink.","1d6 — 1-3: Stun Spore. Drink 2. 4-6: Mega Drain. Finish your drink.",""
 "pokemon","pokemon.sootopolis","Sootopolis","challenge","Sootopolis Gym! Roll d6. Even: chug a glass of water. Odd: chug your drink to completion.","1d6 — 1-5: Chug your drink to completion. 2-6: Chug a glass of water.",""
+"pokemon","pokemon.league","Pokémon League","challenge","Four badges! The whole table takes on the Champion. Roll d20.","1d20 — 1-5: The Champion sweeps. Everyone finishes their drink. 6-12: A close fight. Everyone drinks 3. 13-19: Victory! Hand out 5 drinks while everyone toasts you. 20-20: Hall of Fame. Make a rule for the rest of the game.",""
 "pokemon","pokemon.lickitung","Lickitung","rule","Lickitung used Lick! Give 2 and keep your tongue out until your next turn.","",""
 "pokemon","pokemon.team-magma","Team Magma","rule","Team Magma recruited you! If you're on Team Magma, make a rule for the rest of the game. Otherwise, drink 7.","",""
 "pokemon","pokemon.team-aqua","Team Aqua","rule","Team Aqua recruited you! If you're on Team Aqua, make a rule for the rest of the game. Otherwise, drink 7.","",""

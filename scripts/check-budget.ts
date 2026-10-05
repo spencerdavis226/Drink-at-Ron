@@ -1,6 +1,7 @@
 import { readdir, readFile, stat } from "node:fs/promises";
 import { join } from "node:path";
 import { gzipSync } from "node:zlib";
+import { cards } from "../src/content/catalog";
 async function walk(dir: string): Promise<string[]> {
   return (
     await Promise.all(
@@ -28,7 +29,8 @@ const initialChunks = new Set(
 );
 let cache = 0,
   initialJs = 0,
-  lazyJs = 0;
+  lazyJs = 0,
+  initialCode = "";
 for (const file of files) {
   const size = (await stat(file)).size;
   if (/\.(js|css|html|svg|png|webp|avif|woff2)$/.test(file)) cache += size;
@@ -38,7 +40,10 @@ for (const file of files) {
     const code = await readFile(file, "utf8");
     const gzip = gzipSync(code).length;
     const name = file.split("/").at(-1);
-    if (name && initialChunks.has(name)) initialJs += gzip;
+    if (name && initialChunks.has(name)) {
+      initialJs += gzip;
+      initialCode += code;
+    }
     else lazyJs += gzip;
     if (
       /Card workshop|Front study|workshop-viewport|core\.dice-toast-study|core\.dice-title-study/.test(
@@ -48,6 +53,17 @@ for (const file of files) {
       throw Error("Developer workshop leaked into production");
   }
 }
+// Card text loads per pack when a game starts (src/content/loaders.ts); a
+// static import of a content module would quietly put it back on the
+// critical path.
+// Compare each card's first sentence, case-insensitively: some packs build
+// their rules from a template at runtime.
+const haystack = initialCode.toLowerCase();
+const leaked = cards.find((card) => {
+  const lead = card.rules.split(/[.!?]/)[0].toLowerCase();
+  return lead.length >= 20 && haystack.includes(lead);
+});
+if (leaked) throw Error(`Card text reached the initial chunk: ${leaked.id}`);
 // Conservatively count all runtime files, including SW, rather than undercount precache.
 if (cache > RUNTIME_LIMIT)
   throw Error(`Runtime cache exceeds 3 MiB: ${cache}`);

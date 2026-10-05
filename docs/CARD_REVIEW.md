@@ -250,7 +250,7 @@ the Review column is intentionally blank so you can mark it up.
 
 ## Pokémon night (`pokemon`)
 
-134 cards · 23 sip · 27 group · 5 category · 53 challenge · 26 rule · 26 dice
+135 cards · 23 sip · 27 group · 5 category · 54 challenge · 26 rule · 27 dice
 
 | Review | Title | ID | Cat | Rules | Dice |
 | --- | --- | --- | --- | --- | --- |
@@ -362,6 +362,7 @@ the Review column is intentionally blank so you can mark it up.
 | ☐ | Brawly | `pokemon.brawly` | challenge | Brawly wants a high five. They may hit as hard as they can. Drink for every high five. |  |
 | ☐ | Erika | `pokemon.erika` | challenge | Erika's grass battle! Roll d6. 1-3: stun spore; drink 2. 4-6: mega drain; finish your drink. | 1d6 — 1-3: Stun Spore. Drink 2. 4-6: Mega Drain. Finish your drink. |
 | ☐ | Sootopolis | `pokemon.sootopolis` | challenge | Sootopolis Gym! Roll d6. Even: chug a glass of water. Odd: chug your drink to completion. | 1d6 — 1-5: Chug your drink to completion. 2-6: Chug a glass of water. |
+| ☐ | Pokémon League | `pokemon.league` | challenge | Four badges! The whole table takes on the Champion. Roll d20. | 1d20 — 1-5: The Champion sweeps. Everyone finishes their drink. 6-12: A close fight. Everyone drinks 3. 13-19: Victory! Hand out 5 drinks while everyone toasts you. 20-20: Hall of Fame. Make a rule for the rest of the game. |
 | ☐ | Lickitung | `pokemon.lickitung` | rule | Lickitung used Lick! Give 2 and keep your tongue out until your next turn. |  |
 | ☐ | Team Magma | `pokemon.team-magma` | rule | Team Magma recruited you! If you're on Team Magma, make a rule for the rest of the game. Otherwise, drink 7. |  |
 | ☐ | Team Aqua | `pokemon.team-aqua` | rule | Team Aqua recruited you! If you're on Team Aqua, make a rule for the rest of the game. Otherwise, drink 7. |  |

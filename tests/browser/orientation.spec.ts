@@ -17,6 +17,7 @@ test("@release mobile landscape blocks play without changing the saved game", as
   await page.setViewportSize({ width: 390, height: 844 });
   await expect(gate).toHaveCount(0);
   await page.getByRole("button", { name: "Play", exact: true }).click();
+  await expect(page.locator(".progress")).toBeVisible();
   await expect(page.locator(".card-stage")).not.toHaveClass(/deal/);
   await page.getByRole("button", { name: "Reveal card" }).click();
   await expect(page.locator(".card-stage")).not.toHaveClass(/flip/);
@@ -91,6 +92,7 @@ test("rotation during a roll keeps its predetermined saved result", async ({
 test("rotation over the pause menu restores that menu", async ({ page }) => {
   await page.goto("./");
   await page.getByRole("button", { name: "Play", exact: true }).click();
+  await expect(page.locator(".progress")).toBeVisible();
   await page.getByRole("button", { name: "Open game menu" }).click();
   await expect(page.getByRole("dialog", { name: "Paused" })).toBeVisible();
   await page.setViewportSize({ width: 844, height: 390 });

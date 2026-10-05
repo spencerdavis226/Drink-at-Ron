@@ -1,7 +1,12 @@
-import { catalog } from "../content/registry";
+import { packs } from "../content/manifest.generated";
 import { validateCatalog } from "../content/validate";
 import { validateRoll } from "../game/dice";
-import { validConfig } from "../game/engine";
+import {
+  currentCard,
+  findCard,
+  finalesShown,
+  validConfig,
+} from "../game/engine";
 import type { GameConfig, SessionState } from "../game/types";
 export const SAVE_KEY = "drink-at-ron.session.v1";
 export const SETTINGS_KEY = "drink-at-ron.settings.v1";
@@ -21,10 +26,36 @@ export const defaults: Preferences = {
 };
 /** Keep only installed packs; never let a stale selection empty the deck. */
 const knownPackIds = (ids: readonly string[]) => {
-  const { packs } = catalog();
   const known = packs.map((pack) => pack.id).filter((id) => ids.includes(id));
   return known.length ? known : [packs[0].id];
 };
+function validateQuests(s: SessionState) {
+  const quests = s.quests;
+  if (!Array.isArray(quests) || !quests.length) throw Error("Invalid quests");
+  validateCatalog(
+    quests.map((q) => q?.finale),
+    [],
+  );
+  const whole = (n: unknown, min: number): n is number =>
+    Number.isSafeInteger(n) && (n as number) >= min;
+  if (
+    new Set(quests.map((q) => q.packId)).size !== quests.length ||
+    quests.filter((q) => q.due).length > 1 ||
+    quests.some(
+      (q) =>
+        !s.config.packIds.includes(q.packId) ||
+        typeof q.label !== "string" ||
+        !q.label.trim() ||
+        !whole(q.goal, 1) ||
+        !whole(q.count, 0) ||
+        q.count > q.goal ||
+        q.due !== (q.count === q.goal) ||
+        !whole(q.shown, 0) ||
+        s.cards.some((c) => c.id === q.finale.id),
+    )
+  )
+    throw Error("Invalid quests");
+}
 export function parseSession(raw: string): SessionState {
   const parsed = JSON.parse(raw);
   // Retain the storage key so existing installs discover and migrate their saves.
@@ -67,25 +98,28 @@ export function parseSession(raw: string): SessionState {
     !["hidden", "revealed", "complete"].includes(s.phase)
   )
     throw Error("Invalid progress");
-  if (s.previousId !== null && !s.cards.some((c) => c.id === s.previousId))
+  if (s.quests !== undefined) validateQuests(s);
+  if (s.previousId !== null && !findCard(s, s.previousId))
     throw Error("Invalid previous card");
   if ((s.discarded === 0) !== (s.previousId === null))
     throw Error("Invalid history");
+  // Every draw is a deck position or a quest finale put aside.
+  const drawn = s.cycle * s.cards.length + s.position + finalesShown(s);
   if (s.phase === "complete") {
     if (
       s.config.limit === null ||
       s.discarded !== s.config.limit ||
-      s.discarded !== s.cycle * s.cards.length + s.position + 1 ||
-      s.previousId !== s.order[s.position]
+      s.discarded !== drawn + 1 ||
+      s.previousId !== currentCard(s).id
     )
       throw Error("Invalid completion");
   } else if (
-    s.discarded !== s.cycle * s.cards.length + s.position ||
+    s.discarded !== drawn ||
     (s.config.limit !== null && s.discarded >= s.config.limit)
   )
     throw Error("Invalid count");
-  const current = s.cards.find((c) => c.id === s.order[s.position])!;
-  const previous = s.cards.find((c) => c.id === s.previousId);
+  const current = currentCard(s);
+  const previous = findCard(s, s.previousId);
   validateRoll(s.roll, current.dice);
   validateRoll(s.previousRoll, previous?.dice);
   if (

@@ -35,6 +35,7 @@ test("@release the screen stays awake only while a game is active", async ({
     });
   expect(await state()).toEqual({ total: 0, held: 0 });
   await page.getByRole("button", { name: "Play", exact: true }).click();
+  await expect(page.locator(".progress")).toBeVisible();
   await expect.poll(state).toEqual({ total: 1, held: 1 });
   await page.getByRole("button", { name: "Open game menu" }).click();
   await page.getByRole("button", { name: "End game" }).first().click();
