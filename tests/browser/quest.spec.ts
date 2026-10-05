@@ -1,5 +1,12 @@
 import { test, expect, type Page } from "@playwright/test";
-import { createSession } from "../../src/game/engine";
+import {
+  advance,
+  createSession,
+  currentCard,
+  skipRoll,
+} from "../../src/game/engine";
+import { returnToCard, rollDice } from "../../src/game/dice";
+import type { SessionState } from "../../src/game/types";
 import { cards, packs } from "../../src/content/catalog";
 const key = "drink-at-ron.session.v1";
 
@@ -61,13 +68,20 @@ for (const width of [320, 390])
     expect(banner!.x + banner!.width).toBeLessThan(card!.x + card!.width);
     await page.screenshot({ path: info.outputPath(`meter-${width}.png`) });
 
-    // The eighth badge opens the gauntlet: the Legendary comes first.
+    // The eighth badge opens the gauntlet: the Legendary comes first, under
+    // a pearl banner that never blocks the card.
     await page.locator(".game-card").click();
     await expect(meter).toHaveAccessibleName("Legendary");
     await expect(meter).toHaveClass(/due/);
+    const stageBanner = page.locator(".stage-banner");
+    await expect(stageBanner).toHaveText(/Pokémon League\s*A Legendary appears/);
+    await expect(stageBanner).toHaveClass(/banner-pearl/);
+    await page.screenshot({ path: info.outputPath(`banner-${width}.png`) });
     await page.getByRole("button", { name: "Reveal card" }).click();
     await expect(page.locator(".study-title h2")).toHaveText("Articuno");
     await expect(ribbon).toHaveText("Legendary Encounter");
+    await expect(stageBanner).toHaveCount(0);
+    await expect(page.locator(".study-face")).toHaveClass(/tone-pearl/);
     await expect(page.locator(".game-card")).toHaveAccessibleName(/^Roll /);
 
     // The gauntlet survives a reload.
@@ -178,4 +192,87 @@ test("the Elite Four count through the meter, and the Champion ends the run", as
   );
   await page.locator(".game-card").click();
   await expect(meter).toHaveAccessibleName("Elite Four: 3 of 4");
+});
+
+async function seed(page: Page, session: SessionState) {
+  await page.goto("./");
+  await page.evaluate(
+    ({ key, session }) => localStorage.setItem(key, JSON.stringify(session)),
+    { key, session },
+  );
+  await page.reload();
+}
+// Play a League game through the engine: gyms first, rolling every dice card,
+// until `stop` says when to hand it to the browser.
+function playLeague(stop: (s: SessionState) => boolean) {
+  let s = createSession(
+    { version: 1, packIds: ["pokemon"], limit: null, quest: "pokemon" },
+    cards,
+    packs,
+  );
+  const gyms = s.order.filter((id) => id.startsWith("pokemon.gym-"));
+  s.order = [...gyms, ...s.order.filter((id) => !gyms.includes(id))];
+  while (!stop(s)) {
+    s = advance(s);
+    const card = currentCard(s);
+    if (card.dice?.choice) s = skipRoll(s);
+    else {
+      if (card.dice) s = returnToCard(rollDice(s));
+      s = advance(s);
+    }
+  }
+  return s;
+}
+
+test("the badge case opens from the meter and names the leaders beaten", async ({
+  page,
+}, info) => {
+  await page.setViewportSize({ width: 320, height: 568 });
+  const session = playLeague((s) => s.quest!.count === 5);
+  await seed(page, session);
+  const meter = page.locator(".quest-meter");
+  await expect(meter).toHaveAccessibleName("Badges: 5 of 8");
+  await meter.click();
+  const dialog = page.getByRole("dialog", { name: "Badges" });
+  await expect(dialog).toBeVisible();
+  const slots = dialog.locator(".badge-slot");
+  await expect(slots).toHaveCount(8);
+  await expect(dialog.locator(".badge-slot.earned")).toHaveCount(5);
+  const first = cards.find((c) => c.id === session.order[0])!;
+  await expect(slots.first()).toContainText(first.title);
+  // The gauntlet is not spoiled.
+  await expect(dialog.locator(".stage-record dd")).toHaveText([
+    "Not yet faced",
+    "Not yet faced",
+    "Not yet faced",
+  ]);
+  // Fits a small phone without the page scrolling sideways.
+  const box = await dialog.boundingBox();
+  expect(box!.x).toBeGreaterThanOrEqual(0);
+  expect(box!.x + box!.width).toBeLessThanOrEqual(320);
+  await page.screenshot({ path: info.outputPath("badge-case-320.png") });
+  await dialog.getByRole("button", { name: "Back to game" }).click();
+  await expect(dialog).toHaveCount(0);
+  await expect(meter).toBeFocused();
+});
+
+test("@release beating the Champion opens the Hall of Fame", async ({
+  page,
+}, info) => {
+  await page.setViewportSize({ width: 320, height: 568 });
+  const session = playLeague((s) => s.phase === "complete");
+  const champion = session.quest!.finale.at(-1)!;
+  await seed(page, session);
+  const hall = page.locator(".hall-of-fame");
+  await expect(hall.locator("h1")).toHaveText(/Hall of\s*Fame\./);
+  await expect(hall.locator(".hall-kicker")).toHaveText("Pokémon League");
+  await expect(hall.locator(".badge-slot.earned")).toHaveCount(8);
+  await expect(hall.locator(".stage-record > div.cleared")).toHaveCount(3);
+  const name = cards.find((c) => c.id === champion)!.title;
+  await expect(hall.locator(".stage-record dd").last()).toHaveText(name);
+  await page.screenshot({
+    path: info.outputPath("hall-of-fame-320.png"),
+    fullPage: true,
+  });
+  await expect(page.getByRole("button", { name: "Play again" })).toBeVisible();
 });

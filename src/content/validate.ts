@@ -1,5 +1,6 @@
 import { validateDice } from "../game/dice";
 import type { CardDefinition, PackDefinition } from "../game/types";
+import { RIBBON_TONES } from "../game/types";
 
 // Structural validation for cards and packs. Kept apart from `catalog.ts` so
 // saved-session parsing can use it without pulling card content into the
@@ -34,6 +35,11 @@ export function validateCatalog(cs: CardDefinition[], ps: PackDefinition[]) {
       (typeof c.ribbon !== "string" || !c.ribbon.trim() || c.ribbon.length > 32)
     )
       fail(`Invalid ribbon: ${c.id}`);
+    if (
+      c.ribbonTone !== undefined &&
+      (!c.ribbon || !RIBBON_TONES.includes(c.ribbonTone))
+    )
+      fail(`Invalid ribbon tone: ${c.id}`);
   }
   const packIds = new Set<string>();
   for (const p of ps) {
@@ -95,6 +101,10 @@ export function validateCatalog(cs: CardDefinition[], ps: PackDefinition[]) {
           (stage) =>
             typeof stage?.label !== "string" ||
             !stage.label.trim() ||
+            (stage.intro !== undefined &&
+              (typeof stage.intro !== "string" ||
+                !stage.intro.trim() ||
+                stage.intro.length > 28)) ||
             !Number.isSafeInteger(stage.pick) ||
             stage.pick < 1 ||
             !Array.isArray(stage.cardIds) ||

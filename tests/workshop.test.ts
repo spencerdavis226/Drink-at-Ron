@@ -129,15 +129,24 @@ test("the Pokémon League mode deals all 24 gym leaders and always reaches eight
     ["Elite Four", 4, 9],
     ["Champion", 1, 3],
   ]);
-  for (const id of finaleCardIds(pokemon.quest!))
-    expect(cards.find((c) => c.id === id)!.ribbon).toMatch(
-      /^(Legendary Encounter|Elite Four · \w+|Champion · \w+)$/,
-    );
+  // Each stage has its own ribbon finish; gym leaders keep the gold default.
+  const tones = ["pearl", "violet", "crimson"];
+  for (const [i, stage] of pokemon.quest!.finale.entries()) {
+    expect(stage.intro).toBeTruthy();
+    for (const id of stage.cardIds) {
+      const card = cards.find((c) => c.id === id)!;
+      expect(card.ribbon).toMatch(
+        /^(Legendary Encounter|Elite Four · \w+|Champion · \w+)$/,
+      );
+      expect(card.ribbonTone).toBe(tones[i]);
+    }
+  }
   const leaders = cards.filter((c) => c.quest === "pokemon");
   expect(leaders).toHaveLength(24);
   expect(pokemon.quest!.cardIds).toEqual(leaders.map((c) => c.id));
   for (const leader of leaders) {
     expect(leader.ribbon).toMatch(/^Gym Leader · \w+ Badge$/);
+    expect(leader.ribbonTone).toBeUndefined();
     // Gym leaders are League-only: never in the regular Pokémon deck.
     expect(pokemon.cardIds).not.toContain(leader.id);
   }

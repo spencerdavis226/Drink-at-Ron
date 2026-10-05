@@ -172,15 +172,45 @@ export function pickFinale(
     ).slice(0, pick),
   );
 }
-/** The stage a finale card belongs to, and its place within that stage. */
+/** The stage a finale card belongs to (`stage` counts from 0), and its place
+ * within that stage. */
 export function finaleStage(quest: QuestState, step = quest.step) {
   let first = 0;
-  for (const stage of quest.stages) {
+  for (const [number, stage] of quest.stages.entries()) {
     if (step < first + stage.pick)
-      return { label: stage.label, index: step - first, size: stage.pick };
+      return {
+        label: stage.label,
+        stage: number,
+        index: step - first,
+        size: stage.pick,
+      };
     first += stage.pick;
   }
   throw new Error("Invalid finale step");
+}
+/** A quest run so far, for the badge case and the Hall of Fame: the meter's
+ * count, the quest cards behind it that are still in this cycle's order (an
+ * endless game reshuffles, so earlier ones can be gone), and each finale
+ * stage with the cards already put aside. Picks not yet dealt stay hidden. */
+export function questRecord(s: SessionState) {
+  const q = s.quest;
+  if (!q) return null;
+  const earned = s.order
+    .slice(0, s.position)
+    .map((id) => s.cards.find((c) => c.id === id)!)
+    .filter((c) => c.quest === q.packId)
+    .slice(0, q.count);
+  const won = q.due && s.phase === "complete";
+  const beaten = won ? q.finale.length : q.due ? q.step : 0;
+  let first = 0;
+  const stages = q.stages.map((stage) => {
+    const cards = q.finale
+      .slice(first, Math.min(first + stage.pick, beaten))
+      .map((id) => finaleCard(q, id)!);
+    first += stage.pick;
+    return { label: stage.label, size: stage.pick, cards };
+  });
+  return { label: q.label, goal: q.goal, count: q.count, earned, stages, won };
 }
 const finaleCard = (quest: QuestState, id: string) =>
   quest.stages.flatMap((stage) => stage.cards).find((c) => c.id === id);

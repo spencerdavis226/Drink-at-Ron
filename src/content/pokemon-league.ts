@@ -1,4 +1,4 @@
-import type { CardDefinition, DiceDefinition } from "../game/types";
+import type { CardDefinition, DiceDefinition, RibbonTone } from "../game/types";
 import { cardFactory, choice, rollTable } from "./author";
 
 // Pokémon League mode only: the 24 gym leaders of Kanto, Johto and Hoenn and
@@ -272,11 +272,13 @@ const finale = (
   id: string,
   name: string,
   ribbon: string,
+  ribbonTone: RibbonTone,
   rules: string,
   dice?: DiceDefinition,
 ): CardDefinition => ({
   ...card(id, name, "challenge", rules, dice),
   ribbon,
+  ribbonTone,
 });
 
 const legendary = (
@@ -284,7 +286,8 @@ const legendary = (
   name: string,
   rules: string,
   dice?: DiceDefinition,
-) => finale(`legendary-${id}`, name, "Legendary Encounter", rules, dice);
+) =>
+  finale(`legendary-${id}`, name, "Legendary Encounter", "pearl", rules, dice);
 
 export const legendaries: CardDefinition[] = [
   legendary(
@@ -398,7 +401,7 @@ const eliteFour = (
   type: string,
   rules: string,
   dice?: DiceDefinition,
-) => finale(`elite-${id}`, name, `Elite Four · ${type}`, rules, dice);
+) => finale(`elite-${id}`, name, `Elite Four · ${type}`, "violet", rules, dice);
 
 export const eliteFourMembers: CardDefinition[] = [
   eliteFour(
@@ -491,7 +494,15 @@ const champion = (
   region: string,
   rules: string,
   dice: DiceDefinition,
-) => finale(`league-champion-${id}`, name, `Champion · ${region}`, rules, dice);
+) =>
+  finale(
+    `league-champion-${id}`,
+    name,
+    `Champion · ${region}`,
+    "crimson",
+    rules,
+    dice,
+  );
 
 // The last card of the run: the whole table fights, and winning ends it.
 export const champions: CardDefinition[] = [

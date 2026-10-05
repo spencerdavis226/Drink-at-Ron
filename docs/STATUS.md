@@ -2,7 +2,23 @@
 
 Updated 2026-10-05. **Single authoritative handoff.** Read `AGENTS.md` first. Older handoffs are in `docs/STATUS_ARCHIVE.md` (reference only). Direct user instructions win.
 
-## League gauntlet: Legendary, Elite Four, Champion (2026-10-05, branch `pokemon-gym-leaders`, PR #4, not on `main`)
+## League immersion, phase 1: tiered ribbons, stage banners, badge case, Hall of Fame (2026-10-05, branch `league-immersion`, not on `main`)
+
+**Request.** Start the immersion roadmap (below) with the items that need no art and no rule change.
+
+**Change.**
+- Tiered ribbons: `CardDefinition.ribbonTone` (optional `"pearl" | "violet" | "crimson"`, validated, needs a `ribbon`; gold when absent). Legendaries are pearl, the Elite Four violet, Champions crimson; gym leaders keep the approved gold. The title takes the ribbon's colour (`.study-face.tone-*`). Games saved before this keep gold ribbons (cards are snapshotted).
+- Stage banners: `QuestStage.intro` (optional, ≤ 28 characters, display only, never saved): "A Legendary appears", "The Elite Four await", "The Champion awaits". `StageBanner.tsx` sweeps a cloth banner in the stage's tone across the table while the stage's first card is dealt face down (2.6 s, fade only under reduced motion, `pointer-events: none`, `role="status"`). It reappears if the app reloads on that face-down card.
+- Badge case: the meter is now a button (disabled while cards move) that opens a dialog titled with the meter label ("Badges"): 8 medal slots with badge and leader names, then each stage with the cards beaten. Picks not yet dealt are never shown.
+- Hall of Fame: beating the Champion swaps the completion screen's tankard and toast for "Pokémon League / Hall of Fame." and the same record.
+- Engine: `questRecord(session)` derives the run from the save (quest cards in this cycle's order behind the position, capped at the count; finale picks already put aside), so the save format is unchanged. `finaleStage` also returns the stage number.
+- Medals are lettered gold discs for now; the painted badges from `docs/art-prompts/pokemon-league.md` §1 replace them when the art exists. Banner art (§4) and the Hall of Fame scene (§5) are likewise optional upgrades.
+
+**Verified.** `npm test` 122 passed (record without spoilers, completion record, tone and intro validation; League stages have intros and tones); typecheck clean; build and budgets passed (88.3 KiB gzip initial, card text not in the initial chunk); full production E2E Chromium 90/90, including new `quest.spec.ts` checks for the pearl banner on the eighth badge, the badge case at 320×568 (names, no spoilers, focus returns to the meter) and the Hall of Fame after a full engine-played run. Screenshots reviewed at 320 and 390 px. Not verified: WebKit locally (CI runs it), devices, how the banner timing feels at the table.
+
+**Next.** Owner picks the next roadmap item: art drop-in (badges, emblem, banners), region runs, pacing beats, or hardcore.
+
+## League gauntlet: Legendary, Elite Four, Champion (2026-10-05, branch `pokemon-gym-leaders`, PR #4, merged to `main` as e6f7115)
 
 **Request.** After 8 badges: one Legendary, then 4 random Elite Four members from Gens 1–3, then a random Champion. Also: proposals for making the mode more immersive, and image-generation prompts in a Markdown file.
 
@@ -117,10 +133,10 @@ The owner's goal: packs that change how the game plays, not just add cards. Toda
 - **Travel/airport pack.** Considered; overlaps House (Spirit Airlines, Never Have I Ever countries) and Cabin weekend.
 
 **Pokémon League immersion (owner wants all of these; 2026-10-05).**
-- **Stage banners.** A full-width banner sweeps across the table when the gauntlet starts and at each stage ("A Legendary appears", "The Elite Four", "The Champion"). Art: `docs/art-prompts/pokemon-league.md` §4; CSS-only first.
-- **Badge case.** Tap the meter for a modal of the badges earned and the leaders beaten (art §1, §2).
-- **Hall of Fame.** Beating the Champion replaces the generic completion screen with a recap of the run: leaders beaten, the Legendary, the Elite Four, the Champion, cards drawn (art §5).
-- **Tiered ribbons.** Bronze gym leaders, pearl Legendaries, violet Elite Four, crimson-and-gold Champion. CSS only.
+- **Stage banners.** Built in CSS (2026-10-05); painted banner art (§4) is an optional upgrade.
+- **Badge case.** Built with lettered medals (2026-10-05); painted badges (§1, §2) pending.
+- **Hall of Fame.** Built (2026-10-05); the painted scene (§5) is an optional upgrade.
+- **Tiered ribbons.** Built (2026-10-05): pearl, violet, crimson; gym leaders stay gold.
 - **Region runs.** Choose Kanto, Johto or Hoenn: that region's 8 leaders in canonical order, then that region's own Elite Four and Champion; today's random mix stays as "Mixed".
 - **Hardcore option.** A badge only on a win; a lost leader is shuffled back in. Needs per-outcome quest progress on dice leaders and Won/Lost plaques on feat leaders.
 - **Pacing beats.** A Pokémon Center water break after badge 4; rival battles (Blue, Silver, May) paced between badges.

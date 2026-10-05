@@ -879,13 +879,24 @@ export const pokemonPack: PackDefinition = {
     // After the eighth badge: a Legendary, four of the Elite Four, then the
     // Champion, picked at random when the game starts.
     finale: [
-      { label: "Legendary", pick: 1, cardIds: legendaries.map((c) => c.id) },
+      {
+        label: "Legendary",
+        intro: "A Legendary appears",
+        pick: 1,
+        cardIds: legendaries.map((c) => c.id),
+      },
       {
         label: "Elite Four",
+        intro: "The Elite Four await",
         pick: 4,
         cardIds: eliteFourMembers.map((c) => c.id),
       },
-      { label: "Champion", pick: 1, cardIds: champions.map((c) => c.id) },
+      {
+        label: "Champion",
+        intro: "The Champion awaits",
+        pick: 1,
+        cardIds: champions.map((c) => c.id),
+      },
     ],
   },
 };
