@@ -39,7 +39,7 @@ the Review column is intentionally blank so you can mark it up.
 | ☐ | Respect Your Elders | `core.elders` | group | Oldest player drinks 2. You owe them this. |  |
 | ☐ | Youth Is Wasted | `core.youth` | group | Youngest player drinks 2. Youth is wasted on them. |  |
 | ☐ | Big Friendly Giant | `core.tallest` | group | Tallest player drinks 2. |  |
-| ☐ | New Blood | `core.new-blood` | group | First time Drink-at-Ron players drink 13. Get absolutely fucked. |  |
+| ☐ | New Blood | `core.new-blood` | group | First time Side Quest players drink 13. Get absolutely fucked. |  |
 | ☐ | Fashionably Late | `core.late-arrival` | group | Last to arrive drinks 2. Sinner. |  |
 | ☐ | Couples Drink | `core.couples` | group | Couples drink 2. Singles give 2 and sulk. |  |
 | ☐ | Birthday Month | `core.birthday` | group | Your birthday this month? Drink 2. Everyone else toasts you. |  |

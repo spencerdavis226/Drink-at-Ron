@@ -1,4 +1,4 @@
-# Drink at Ron — game and content brief
+# Side Quest — game and content brief
 
 For the intended humor, specificity, and card-writing personality, also use [Card voice and theme reference](CARD_VOICE_REFERENCE.md). It distills the reusable creative direction from Spencer's earlier CABIIN card set without importing that game's board, team, zone, or movement rules.
 

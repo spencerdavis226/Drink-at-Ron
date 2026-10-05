@@ -54,7 +54,7 @@ export const classicCards: CardDefinition[] = [
     "new-blood",
     "New Blood",
     "group",
-    "First time Drink-at-Ron players drink 13. Get absolutely fucked.",
+    "First time Side Quest players drink 13. Get absolutely fucked.",
   ),
   card(
     "late-arrival",

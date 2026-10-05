@@ -2,6 +2,16 @@
 
 Updated 2026-10-05. **Single authoritative handoff.** Read `AGENTS.md` first. Older handoffs are in `docs/STATUS_ARCHIVE.md` (reference only). Direct user instructions win.
 
+## Rename to Side Quest (2026-10-05, branch `side-quest-rename`, not on `main`)
+
+**Request.** Owner renamed the app from Drink at Ron to Side Quest and wants the name carried through the app and repo.
+
+**Change.** Manifest `name`/`short_name` "Side Quest" and description "The main quest can wait." (`vite.config.ts`); `<title>` and `apple-mobile-web-app-title` (`index.html`); setup wordmark "Side / Quest"; non-quest completion screen gains a "Side quest complete" kicker above "To good company."; Core card New Blood now says "First time Side Quest players"; package name `side-quest`; dice colorset label; workshop review export filenames and heading; README, AGENTS, CLAUDE and doc headings.
+
+**Kept on purpose.** Repo name and `BASE_PATH=/Drink-at-Ron/` (renaming moves the URL; installed Home Screen copies would need re-adding); `drink-at-ron.session.v1`, `.settings.v1`, `.card-review.v1` storage keys; `reference/` files; the supplied House card "Drink at Ron" (`house.sheet-011`, verbatim); history in `STATUS_ARCHIVE.md` and `docs/studies`. Icons, card back and tankard art are unchanged (a tankard still fits); a Side Quest emblem is a separate art task.
+
+**Next.** Owner reviews and decides on merge/publish; optional repo rename; optional new icon/emblem art.
+
 ## League immersion, phase 1: tiered ribbons, stage banners, badge case, Hall of Fame (2026-10-05, branch `league-immersion`, not on `main`)
 
 **Request.** Start the immersion roadmap (below) with the items that need no art and no rule change.

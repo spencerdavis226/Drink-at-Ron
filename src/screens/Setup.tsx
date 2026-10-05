@@ -66,9 +66,9 @@ export function Setup({
     <section className="setup">
       <div className="intro">
         <h1>
-          Drink
+          Side
           <br />
-          <em>at Ron</em>
+          <em>Quest</em>
         </h1>
       </div>
       <div className="setup-section">

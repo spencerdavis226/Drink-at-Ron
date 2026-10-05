@@ -1,6 +1,8 @@
-# Drink at Ron
+# Side Quest
 
 A portrait-first party card game for one shared iPhone or iPad. Choose packs and a deck length, tap to reveal, then tap to discard. No accounts, backend, or paid services.
+
+Side Quest was called Drink at Ron (a riff on Drink-O-Tron) until 2026-10-05. The repository, the `/Drink-at-Ron/` URL, the `drink-at-ron.*` storage keys, and the raw files in `reference/` keep the old name on purpose: changing them would break installed copies and saved games, or alter supplied sources.
 
 See the authoritative [current status, execution plan, and portable handoff](docs/STATUS.md). Agents should read [AGENTS.md](AGENTS.md) first.
 

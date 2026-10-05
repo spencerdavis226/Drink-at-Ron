@@ -42,6 +42,7 @@ export function Completion({
       ) : (
         <>
           <Artwork src={asset(theme.assets.tankard)} alt="" />
+          <p className="hall-kicker">Side quest complete</p>
           <h1>
             To good
             <br />

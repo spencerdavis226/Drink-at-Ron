@@ -1,4 +1,4 @@
-# Drink at Ron — agent entry point
+# Side Quest — agent entry point
 
 Read `docs/STATUS.md` before planning or editing. It is the single current handoff (evidence, approved constraints, next task); it supersedes historical plans/study notes, and direct user instructions take precedence. Update it in place at handoff with changed files, commit, verification, risks, and next task — do not add competing plan documents.
 

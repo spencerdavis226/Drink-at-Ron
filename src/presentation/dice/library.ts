@@ -16,7 +16,7 @@ export async function createDiceStage(selector: string) {
     light_intensity: 0.7,
     color_spotlight: 0xffedce,
     theme_customColorset: {
-      name: "Ron's brass and enamel",
+      name: "Side Quest brass and enamel",
       foreground: "#fff0c9",
       background: "#123f45",
       outline: "none",
