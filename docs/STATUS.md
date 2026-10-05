@@ -116,6 +116,17 @@ The owner's goal: packs that change how the game plays, not just add cards. Toda
 - **Fluxx rule changers (needs C).** Cards that rewrite rules and sit in the tray.
 - **Travel/airport pack.** Considered; overlaps House (Spirit Airlines, Never Have I Ever countries) and Cabin weekend.
 
+**Pokémon League immersion (owner wants all of these; 2026-10-05).**
+- **Stage banners.** A full-width banner sweeps across the table when the gauntlet starts and at each stage ("A Legendary appears", "The Elite Four", "The Champion"). Art: `docs/art-prompts/pokemon-league.md` §4; CSS-only first.
+- **Badge case.** Tap the meter for a modal of the badges earned and the leaders beaten (art §1, §2).
+- **Hall of Fame.** Beating the Champion replaces the generic completion screen with a recap of the run: leaders beaten, the Legendary, the Elite Four, the Champion, cards drawn (art §5).
+- **Tiered ribbons.** Bronze gym leaders, pearl Legendaries, violet Elite Four, crimson-and-gold Champion. CSS only.
+- **Region runs.** Choose Kanto, Johto or Hoenn: that region's 8 leaders in canonical order, then that region's own Elite Four and Champion; today's random mix stays as "Mixed".
+- **Hardcore option.** A badge only on a win; a lost leader is shuffled back in. Needs per-outcome quest progress on dice leaders and Won/Lost plaques on feat leaders.
+- **Pacing beats.** A Pokémon Center water break after badge 4; rival battles (Blue, Silver, May) paced between badges.
+- **League card back.** A special back for gauntlet cards (art §6). Changes the approved frame, so it needs owner sign-off.
+- **Mode emblem.** A League mark for the setup button and meter (art §3).
+
 **Suggested order:** per-pack loading (done) → vote pack (done) → A + Pokémon badge quest (done, 2026-10-05) → dungeon crawl (reuses quests; would add a finale at the end of a finite game and loot) → B + rules tray + awards → secret and timer card packs.
 
 **Owner decisions (2026-10-05).** Initial-JS cap removed; workshop sweeps trimmed to a stress set (see the entry at the top).
