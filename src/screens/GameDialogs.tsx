@@ -3,6 +3,7 @@ import type { SessionState } from "../game/types";
 import { Button, Modal } from "../components/UI";
 import { PackLogo } from "../components/PackMarks";
 import { selectedPacks } from "../presentation/packs";
+import { findCard } from "../game/engine";
 import { CardFrame } from "../components/Cards";
 import { theme } from "../presentation/theme";
 export type DialogName = "menu" | "previous" | "end" | "install" | null;
@@ -110,7 +111,7 @@ export function GameDialogs({
         <CardFrame
           roll={session.previousRoll}
           packIds={session.config.packIds}
-          card={session.cards.find((c) => c.id === session.previousId)!}
+          card={findCard(session, session.previousId)!}
         />
         <Button onClick={() => setModal(null)}>Back to game</Button>
       </Modal>

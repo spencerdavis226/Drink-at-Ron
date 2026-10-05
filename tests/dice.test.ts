@@ -335,11 +335,15 @@ describe("choice cards", () => {
   const lastSave = (persist: ReturnType<typeof vi.fn>) =>
     parseSession(JSON.stringify(persist.mock.calls.at(-1)![0]));
   it("marks the supplied do-it-or-roll rows and rejects bad labels", () => {
-    expect(diceCards.filter((c) => c.dice!.choice).map((c) => c.id)).toEqual(
-      [4, 8, 9, 23, 42, 62].map(
+    expect(diceCards.filter((c) => c.dice!.choice).map((c) => c.id)).toEqual([
+      ...[4, 8, 9, 23, 62].map(
         (row) => `house.sheet-0${String(row).padStart(2, "0")}`,
       ),
-    );
+      "cabin.mint-chev",
+      "cabin.fourth-meal",
+      // Sheet row 42, a CABIIN space, now plays in Cabin weekend.
+      "cabin.pet-that-dog",
+    ]);
     for (const choice of [
       {},
       { skip: "Do it" },

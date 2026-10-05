@@ -45,6 +45,7 @@ test("@release legacy finite game, rapid taps, restore, previous card, replay an
   page.on("pageerror", (error) => errors.push(error.message));
   await page.goto("./");
   await page.getByRole("button", { name: "Play", exact: true }).click();
+  await expect(page.locator(".progress")).toBeVisible();
   // An in-progress game with a former custom limit keeps its original finish.
   await page.evaluate((k) => {
     const s = JSON.parse(localStorage.getItem(k)!);
@@ -96,17 +97,20 @@ test("@release legacy finite game, rapid taps, restore, previous card, replay an
   await expect(page.locator(".game-card")).toBeVisible();
   expect(errors).toEqual([]);
 });
-test("only three modes appear and every pack can be toggled", async ({
+test("three lengths and the quest modes appear, and every pack can be toggled", async ({
   page,
 }) => {
   await page.goto("./");
-  await expect(page.locator(".lengths button")).toHaveCount(3);
+  await expect(
+    page.getByRole("group", { name: "Game length" }).getByRole("button"),
+  ).toHaveCount(3);
+  await expect(page.locator(".quest-mode")).toHaveCount(1);
   await expect(
     page.getByRole("button", { name: "Short, 30 cards" }),
   ).toHaveAttribute("aria-pressed", "true");
   await page.getByRole("button", { name: "Choose packs" }).click();
   const dialog = page.getByRole("dialog");
-  await expect(dialog.locator(".pack")).toHaveCount(4);
+  await expect(dialog.locator(".pack")).toHaveCount(6);
   await expect(dialog).not.toContainText("Always included");
   const core = dialog.getByRole("button", { name: /The Core deck/ });
   await core.click();
@@ -125,6 +129,7 @@ test("only three modes appear and every pack can be toggled", async ({
 test("Short and Infinite create the advertised limits", async ({ page }) => {
   await page.goto("./");
   await page.getByRole("button", { name: "Play", exact: true }).click();
+  await expect(page.locator(".progress")).toBeVisible();
   expect(
     await page.evaluate(
       (k) => JSON.parse(localStorage.getItem(k)!).config.limit,
@@ -140,6 +145,7 @@ test("Short and Infinite create the advertised limits", async ({ page }) => {
     .click();
   await page.getByRole("button", { name: "Infinite, Keeps going" }).click();
   await page.getByRole("button", { name: "Play", exact: true }).click();
+  await expect(page.locator(".progress")).toBeVisible();
   expect(
     await page.evaluate(
       (k) => JSON.parse(localStorage.getItem(k)!).config.limit,
@@ -166,6 +172,7 @@ test("storage failure still allows play", async ({ page }) => {
   await page.goto("./");
   await expect(page.getByText(/Saving is unavailable/)).toBeVisible();
   await page.getByRole("button", { name: "Play", exact: true }).click();
+  await expect(page.locator(".progress")).toBeVisible();
   await page.getByRole("button", { name: "Reveal card" }).click();
   await expect(page.locator(".study-title h2")).toBeVisible();
 });
@@ -177,6 +184,7 @@ test("portrait phone, iPad, and large text retain readable rules", async ({
   test.setTimeout(90000);
   await page.goto("./");
   await page.getByRole("button", { name: "Play", exact: true }).click();
+  await expect(page.locator(".progress")).toBeVisible();
   await forcePlainFirst(page, 6);
   for (const viewport of [
     { width: 375, height: 667 },
@@ -208,6 +216,7 @@ test("reduced motion and keyboard play", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("./");
   await page.getByRole("button", { name: "Play", exact: true }).click();
+  await expect(page.locator(".progress")).toBeVisible();
   // Let the reduced-motion deal settle before activating the card; otherwise
   // Enter can arrive while the controller still holds the deal motion and is
   // (correctly) ignored, leaving the card hidden.
@@ -235,6 +244,7 @@ test("offline reload keeps the same revealed card", async ({
   await page.evaluate(() => navigator.serviceWorker.ready);
   await page.reload();
   await page.getByRole("button", { name: "Play", exact: true }).click();
+  await expect(page.locator(".progress")).toBeVisible();
   await page.getByRole("button", { name: "Reveal card" }).click();
   await ready(page);
   const title = await page.locator(".study-title h2").innerText();
@@ -261,6 +271,7 @@ test("representative Core cards keep edge clearance and a 2:3 frame across devic
   await page.evaluate(() => localStorage.clear());
   await page.reload();
   await page.getByRole("button", { name: "Play", exact: true }).click();
+  await expect(page.locator(".progress")).toBeVisible();
   const original = await page.evaluate(
     (k) => JSON.parse(localStorage.getItem(k)!),
     key,
@@ -350,6 +361,7 @@ test("@release rules taps discard, while scrolling and cancelled gestures keep t
   await page.evaluate(() => localStorage.clear());
   await page.reload();
   await page.getByRole("button", { name: "Play", exact: true }).click();
+  await expect(page.locator(".progress")).toBeVisible();
   const original = await page.evaluate(
     (k) => JSON.parse(localStorage.getItem(k)!),
     key,
@@ -453,6 +465,7 @@ test("mode and add-ons persist while interruption restores a stable card", async
     /VIP night/,
   );
   await page.getByRole("button", { name: "Play", exact: true }).click();
+  await expect(page.locator(".progress")).toBeVisible();
   const config = await page.evaluate(
     (k) => JSON.parse(localStorage.getItem(k)!).config,
     key,
@@ -481,6 +494,7 @@ test("minimal interface and a real two-sided flip", async ({ page }) => {
     page.locator(".helper, .footnote, .eyebrow, .tap-hint"),
   ).toHaveCount(0);
   await page.getByRole("button", { name: "Play", exact: true }).click();
+  await expect(page.locator(".progress")).toBeVisible();
   await expect(page.locator(".card-front")).toHaveAttribute(
     "aria-hidden",
     "true",
@@ -530,6 +544,7 @@ test("legacy audio and atmosphere preferences are ignored and toggles are gone",
   );
   await page.reload();
   await page.getByRole("button", { name: "Play", exact: true }).click();
+  await expect(page.locator(".progress")).toBeVisible();
   await page.getByRole("button", { name: "Open game menu" }).click();
   // The ambience is always on and the audio/atmosphere switches are removed.
   await expect(page.locator(".atmosphere")).toBeVisible();
@@ -543,6 +558,7 @@ test("canceled animations and backgrounding settle without additional draws", as
 }) => {
   await page.goto("./");
   await page.getByRole("button", { name: "Play", exact: true }).click();
+  await expect(page.locator(".progress")).toBeVisible();
   await forcePlainFirst(page, 1);
   await page.getByRole("button", { name: "Reveal card" }).click();
   await page
@@ -613,6 +629,7 @@ test("readable fallback when artwork fails and keyboard focus returns", async ({
   await page.route("**/art/tankard.webp", (route) => route.abort());
   await page.goto("./");
   await page.getByRole("button", { name: "Play", exact: true }).click();
+  await expect(page.locator(".progress")).toBeVisible();
   await page.getByRole("button", { name: "Reveal card" }).click();
   await ready(page);
   await expect(page.locator(".study-rules p")).toBeVisible();

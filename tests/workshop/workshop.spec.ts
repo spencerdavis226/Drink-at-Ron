@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { packs } from "../../src/content/catalog";
+import { packsOf, stressCards } from "./stress-set";
 const preview = (page: import("@playwright/test").Page) =>
   page.frameLocator("iframe");
 // Changing card/text size navigates the preview iframe. Wait for the requested
@@ -42,6 +42,10 @@ test("workshop previews are isolated, readable, and use real motion", async ({
   page,
 }) => {
   await page.goto("/");
+  // The app saves its settings once it mounts; snapshot after that.
+  await expect(
+    page.getByRole("button", { name: "Play", exact: true }),
+  ).toBeVisible();
   await page.evaluate(() =>
     localStorage.setItem("workshop-sentinel", "unchanged"),
   );
@@ -110,9 +114,8 @@ test("viewport presets set real width and height on the preview", async ({
     ).toEqual({ w: width, h: height });
   }
 });
-// One test per viewport. A single combined sweep exceeded its budget on the
-// software-rendered CI WebKit runner; splitting keeps the same assertions while
-// giving each viewport its own budget.
+// One test per viewport over the stress set (`stress-set.ts`): the cards that
+// can break the shared template, not all of them.
 for (const size of [
   "Small phone",
   "Large phone",
@@ -120,18 +123,12 @@ for (const size of [
   "Landscape",
   "Split view",
 ]) {
-  test(`all study cards retain their ratio at ${size}`, async ({ page }) => {
-    // 116 main, 102 House, 16 VIP and 134 Pokémon cards; each iteration
-    // re-reads the preview, and software-rendered WebKit is the slow case.
-    test.setTimeout(600000);
+  test(`stress cards retain their ratio at ${size}`, async ({ page }) => {
+    test.setTimeout(180000);
     await page.setViewportSize({ width: 1400, height: 1100 });
     await page.goto("/?workshop=1");
     const picker = page.getByLabel("Card", { exact: true });
-    const ids = await picker
-      .locator("option")
-      .evaluateAll((options) =>
-        options.map((o) => (o as HTMLOptionElement).value),
-      );
+    const ids = stressCards.map((card) => card.id);
     const frame = preview(page);
     await page.getByLabel("Viewport", { exact: true }).selectOption(size);
     let normalHeight: number | undefined;
@@ -151,13 +148,22 @@ for (const size of [
           ).toBeLessThanOrEqual(1);
         }
         await expect(frame.locator(".study-category")).toHaveCount(0);
-        const pack = packs.find((p) => p.cardIds.includes(id))!;
-        await expect(
-          frame.locator(".card-pack-marks .pack-logo"),
-        ).toHaveAttribute(
-          "data-seal",
-          new RegExp(`art\\/packs\\/${pack.id}\\.svg$`),
-        );
+        // A shared card carries every pack it belongs to, in catalog order.
+        await expect
+          .poll(() =>
+            frame
+              .locator(".card-pack-marks .pack-logo")
+              .evaluateAll((marks) =>
+                marks.map((m) => m.getAttribute("data-seal")),
+              ),
+          )
+          .toEqual(
+            packsOf(id).map((pack) =>
+              expect.stringMatching(
+                new RegExp(`art\\/packs\\/${pack.id}\\.svg$`),
+              ),
+            ),
+          );
         expect(
           await frame.locator(".game-card").evaluate((el) => {
             const box = el.getBoundingClientRect();

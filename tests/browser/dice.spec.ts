@@ -88,9 +88,12 @@ for (const index of [0, 1])
     });
     expect(external).toEqual([]);
     expect((await saved(page)).discarded).toBe(0);
-    await expect(
-      page.locator(".resolved-instruction strong").first(),
-    ).toBeVisible();
+    // Amounts are bold. Some results have none: the d20 card's 1 and 20 read
+    // "Take a shot." and "Give a shot.", which failed this check on 1 roll in 10.
+    const amounts = page.locator(".resolved-instruction strong");
+    if (/\d/.test(committed.roll.instruction))
+      await expect(amounts.first()).toBeVisible();
+    else await expect(amounts).toHaveCount(0);
   });
 test("@release a restored unrolled dice card rolls by tapping the card", async ({
   page,
@@ -463,7 +466,7 @@ for (const viewport of [
     }, info) => {
       test.skip(!(await webgl(page)), "WebGL unavailable");
       await page.setViewportSize(viewport);
-      const source = cards.find((c) => c.id === "core.two-beers-math")!;
+      const source = cards.find((c) => c.id === "house.sheet-003")!;
       const card = {
         ...source,
         rules: "Roll 4d6. Give the total.",

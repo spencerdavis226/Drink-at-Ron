@@ -1,19 +1,18 @@
 # Card review sheet
 
-Generated 2026-10-04 by `npm run cards:review`. Do not edit by hand — edit the
+Generated 2026-10-05 by `npm run cards:review`. Do not edit by hand — edit the
 source modules under `src/content` and regenerate. Each row is one card;
 the Review column is intentionally blank so you can mark it up.
 
 ## The Core deck (`core`)
 
-116 cards · 18 sip · 23 group · 9 category · 51 challenge · 15 rule · 38 dice
+105 cards · 16 sip · 22 group · 9 category · 43 challenge · 15 rule · 36 dice
 
 | Review | Title | ID | Cat | Rules | Dice |
 | --- | --- | --- | --- | --- | --- |
 | ☐ | House Special | `core.house-special` | sip | Drink 3. |  |
 | ☐ | Bar Tab | `core.bar-tab` | sip | Give 3. |  |
 | ☐ | Bad Influence | `core.bad-influence` | sip | Pick someone. Both drink 2. |  |
-| ☐ | Fuck You In Particular | `core.you-specifically` | sip | Pick someone. They drink 6. |  |
 | ☐ | U Up? | `core.bad-text` | sip | Anyone who sent a regrettable late-night text drinks 3. |  |
 | ☐ | Corporate Wellness | `core.fake-sick` | sip | Anyone who faked sick to skip work drinks 3. |  |
 | ☐ | Financial Genius | `core.crypto-bro` | sip | Crypto owners drink 2. Everyone else gives 2. |  |
@@ -27,7 +26,6 @@ the Review column is intentionally blank so you can mark it up.
 | ☐ | Empty the Tank | `core.empty-the-tank` | sip | Roll d6. Drink your roll. The die knows what you did. | 1d6 — Drink {total}. |
 | ☐ | Loose Change | `core.loose-change` | sip | Roll d6. Give that many, split between two people. | 1d6 — Give {total}, split between two people. |
 | ☐ | Big Spender | `core.big-spender` | sip | Roll 2d6. Give the total. Announce it like it's charity. | 2d6 — Give {total}. |
-| ☐ | For Safety | `core.for-safety` | sip | Your next drink is water. Announce it like a heroic choice. |  |
 | ☐ | Last Call | `core.last-call` | group | Everyone drinks 2. |  |
 | ☐ | Cheap Date | `core.cheap-date` | group | Cheapest drink at the table drinks 3. |  |
 | ☐ | Big Money | `core.baller` | group | Priciest drink at the table gives 4. |  |
@@ -50,7 +48,6 @@ the Review column is intentionally blank so you can mark it up.
 | ☐ | Round for the Table | `core.round-for-the-table` | group | Roll d6. Everyone drinks your roll. You just watch. | 1d6 — Everyone but you drinks {total}. |
 | ☐ | Group Roll | `core.group-roll` | group | Roll d20. 10+: everyone gives you 1. Else everyone drinks 1. | 1d20 — 1-9: Everyone drinks 1. 10-20: Everyone gives you 1. |
 | ☐ | Committee | `core.committee` | group | Roll d6. Point at that many people. Each drinks 1. | 1d6 — Point at {total} players to drink 1 each. |
-| ☐ | Thanos Snap | `core.thanos-snap` | group | Pick half the table. Everyone picked drinks 2. |  |
 | ☐ | Categories | `core.categories` | category | Pick a category. First repeat or blank drinks 3. |  |
 | ☐ | Rhyme Time | `core.rhyme-time` | category | Pick a word. First bad rhyme drinks 3. |  |
 | ☐ | Rock Paper Drink | `core.rock-paper-drink` | category | Challenge someone. Loser drinks 3. |  |
@@ -60,14 +57,12 @@ the Review column is intentionally blank so you can mark it up.
 | ☐ | Ex-Cuses | `core.ex-cuses` | category | Name an ex. First repeat, blank or cringe drinks 3. |  |
 | ☐ | Cheap Beers | `core.cheap-beers` | category | Name cheap beers. First repeat or blank drinks 3. |  |
 | ☐ | Creepy Crawlies | `core.creepy-crawlies` | category | Name bugs. First repeat or blank drinks 3. |  |
-| ☐ | Smooth Brain | `core.smooth-brain` | challenge | Admit something dumb you believed. Drink 2. |  |
 | ☐ | Dice Tax | `core.dice-tax` | challenge | Roll d6. Drink half, round up. | 1d6 — 1-2: Drink 1. 3-4: Drink 2. 5-6: Drink 3. |
 | ☐ | Give a Shit | `core.give-a-shit` | challenge | Roll d6. Give that many. | 1d6 — Give {total}. |
 | ☐ | Fuckin' Math | `core.fuckin-math` | challenge | Roll d6. Drink 7 minus your roll. | 1d6 — 1-1: Drink 6. 2-2: Drink 5. 3-3: Drink 4. 4-4: Drink 3. 5-5: Drink 2. 6-6: Drink 1. |
 | ☐ | Pathetic | `core.low-roller` | challenge | Roll d6. 1–2: drink 4. Else give 2. | 1d6 — 1-2: Drink 4. 3-6: Give 2. |
 | ☐ | Big Dick Energy | `core.high-roller` | challenge | Roll d6. 5–6: give 5. Else drink 2. | 1d6 — 1-4: Drink 2. 5-6: Give 5. |
 | ☐ | Same Shit | `core.same-shit` | challenge | Roll 2d6. Doubles: give total. Else drink 3. | 2d6 — 2-12: Drink 3. |
-| ☐ | That's Two Beers | `core.two-beers-math` | challenge | Roll 4d6. Give the total. | 4d6 — Give {total}. |
 | ☐ | Snake Eyes | `core.snake-eyes` | challenge | Roll 2d6. Double 1s: drink 11. Else give 3. | 2d6 — 2-2: Drink 11. 3-12: Give 3. |
 | ☐ | Lucky Bastard | `core.lucky-bastard` | challenge | Roll 2d6. 9+: give 5. Under 9: drink 3. | 2d6 — 2-8: Drink 3. 9-12: Give 5. |
 | ☐ | Fuck Around & Find Out | `core.fuck-around` | challenge | Roll d20. 1: take a shot. 20: give a shot. Else drink 2. | 1d20 — 1-1: Take a shot. 2-19: Drink 2. 20-20: Give a shot. |
@@ -93,17 +88,11 @@ the Review column is intentionally blank so you can mark it up.
 | ☐ | Dice Debt | `core.dice-debt` | challenge | Roll d6. Drink 7 minus your roll. Show your work. | 1d6 — 1-1: Drink 6. 2-2: Drink 5. 3-3: Drink 4. 4-4: Drink 3. 5-5: Drink 2. 6-6: Drink 1. |
 | ☐ | Lucky Sevens | `core.lucky-sevens` | challenge | Roll 2d6. A 7: give 7. Doubles: drink 4. Else drink 2. | 2d6 — 2-6: Drink 2. 7-7: Give 7. 8-12: Drink 2. |
 | ☐ | Boxcars | `core.boxcars` | challenge | Roll 2d6. Double 6s: everyone else drinks 4. | 2d6 — 2-11: Nothing happens. 12-12: Everyone else drinks 4. |
-| ☐ | Samesies | `core.samesies` | challenge | Roll 2d6. Doubles: give the total. Else drink half. | 2d6 — 2-2: Drink 1. 3-4: Drink 2. 5-6: Drink 3. 7-8: Drink 4. 9-10: Drink 5. 11-12: Drink 6. |
 | ☐ | Nat One | `core.nat-one` | challenge | Roll d20. A 1: finish your drink. Else drink 3. | 1d20 — 1-1: Finish your drink. 2-20: Drink 3. |
 | ☐ | Nat Twenty | `core.nat-twenty` | challenge | Roll d20. A 20: give 8. Else drink 2. | 1d20 — 1-19: Drink 2. 20-20: Give 8. |
 | ☐ | Close Call | `core.close-call` | challenge | Roll d20. 1–5: drink 5. 16–20: give 5. Else nothing. | 1d20 — 1-5: Drink 5. 6-15: Nothing happens. 16-20: Give 5. |
 | ☐ | Skyscraper | `core.skyscraper` | challenge | Roll d20. A 20: give 10. A 1: drink 10. Else drink 2. | 1d20 — 1-1: Drink 10. 2-19: Drink 2. 20-20: Give 10. |
 | ☐ | Overdrive | `core.overdrive` | challenge | Roll 4d6. Even total: give 6. Odd total: drink 6. | 4d6 — 4-24: Give 6. 5-23: Drink 6. |
-| ☐ | I Don't Know Shit | `core.i-dont-know-shit` | challenge | Admit something basic you don't understand. Everyone drinks 2. |  |
-| ☐ | Almost Lost My Cool | `core.almost-lost-my-cool` | challenge | If someone here is mad, calm them and give 3. Else rage and drink 3. |  |
-| ☐ | What an Idiot | `core.what-an-idiot` | challenge | Call someone an idiot. They finish their drink. |  |
-| ☐ | Get Good | `core.get-good` | challenge | Insult someone's skills. They prove you wrong or drink 3. |  |
-| ☐ | It's Gotta Go | `core.its-gotta-go` | challenge | Finish your drink. |  |
 | ☐ | Accent Off | `core.accent-off` | challenge | Everyone talks in an accent. First to laugh drinks 2. |  |
 | ☐ | Loud and Proud | `core.loud-and-proud` | challenge | Say your next sentence too loud. If it lands, give 2. |  |
 | ☐ | Useless Fact | `core.useless-fact` | challenge | Share an impressive useless fact. If nobody reacts, drink 2. |  |
@@ -129,17 +118,15 @@ the Review column is intentionally blank so you can mark it up.
 
 ## The House deck (`house`)
 
-102 cards · 32 sip · 15 group · 14 category · 29 challenge · 12 rule · 19 dice
+94 cards · 29 sip · 15 group · 14 category · 27 challenge · 9 rule · 15 dice
 
 | Review | Title | ID | Cat | Rules | Dice |
 | --- | --- | --- | --- | --- | --- |
 | ☐ | California Sober | `house.sheet-004` | sip | Get pitted and smoke something, then drink 1d6 water. Else, take a shot. | 1d6 — Drink {total} water. |
 | ☐ | The Game Giveth | `house.sheet-006` | sip | Give 3 drinks. If "The Game Taketh" was already played, multiply by 1d6. |  |
 | ☐ | The Game Taketh | `house.sheet-007` | sip | Take 3 drinks. If "The Game Giveth" was already played, multiply by 1d6. |  |
-| ☐ | Ursaring | `house.sheet-016` | sip | Give 13 and apologize |  |
 | ☐ | Never Have I Ever | `house.sheet-026` | sip | Drink if you've been to Mexico |  |
 | ☐ | Michael Mouse | `house.sheet-027` | sip | How many distinct Disney parks have you been to? Drink that many |  |
-| ☐ | No take, Give | `house.sheet-028` | sip | Give d6 drinks | 1d6 — Give {total}. |
 | ☐ | Batrick | `house.sheet-031` | sip | Take a (rabies) shot |  |
 | ☐ | Same | `house.sheet-036` | sip | You called Same, give d6 | 1d6 — Give {total}. |
 | ☐ | Same | `house.sheet-037` | sip | You didn't call Same, take d6 | 1d6 — Drink {total}. |
@@ -147,7 +134,6 @@ the Review column is intentionally blank so you can mark it up.
 | ☐ | Drink, bitch | `house.sheet-045` | sip | If you drank last card, drink again, bitch |  |
 | ☐ | Never Have I Ever | `house.sheet-050` | sip | Drink if you've flown First Class |  |
 | ☐ | The Cino | `house.sheet-051` | sip | Drink if you've lost money in the casino |  |
-| ☐ | Whinnie the Pooh | `house.sheet-054` | sip | Pooh-bear 1d6 drinks | 1d6 — Drink {total}. |
 | ☐ | Could ya just | `house.sheet-055` | sip | Drink 1 |  |
 | ☐ | Bu-bu-buff.. | `house.sheet-059` | sip | Drink 1d6 for almost getting buffaloed | 1d6 — Drink {total}. |
 | ☐ | Straight to jail | `house.sheet-063` | sip | Finish your drink |  |
@@ -198,12 +184,10 @@ the Review column is intentionally blank so you can mark it up.
 | ☐ | Fetch | `house.sheet-008` | challenge | Get something from outside in under 30 seconds or drink 1d20 | 1d20 — Drink {total}. |
 | ☐ | Steve's Beans | `house.sheet-009` | challenge | Text Steve and tell them his beans are good. Else drink 2d6 | 2d6 — Drink {total}. |
 | ☐ | Drink at Ron | `house.sheet-011` | challenge | If Ron is there, drink at him. Else, call and drink at him. Else else, drink 2 |  |
-| ☐ | Maddy Booty | `house.sheet-012` | challenge | Roll 1d20. You drink until the group counts to it, or you finish your drink. | 1d20 — Drink until the group counts to {total}, or finish your drink. |
 | ☐ | Medusa | `house.sheet-014` | challenge | The first person you make eye contact with must get stoned. |  |
 | ☐ | Send Help | `house.sheet-017` | challenge | Convince someone to drink 1. Else, take a shot. |  |
 | ☐ | Headache Simulator | `house.sheet-023` | challenge | Wear Becca's glasses for a round. Else drink 2d6 | 2d6 — Drink {total}. |
 | ☐ | FMK | `house.sheet-029` | challenge | Blink 182, Green Day, Weezer |  |
-| ☐ | Pet that dog | `house.sheet-042` | challenge | Better pet any dog in the room, or take 1d6 | 1d6 — Drink {total}. |
 | ☐ | Fiend | `house.sheet-046` | challenge | Pop in a fresh zyn, velo, nic pouch |  |
 | ☐ | Battery Life | `house.sheet-047` | challenge | Closest guess to your phone's battery gives 2 drinks |  |
 | ☐ | Rock, Paper, Scissors | `house.sheet-048` | challenge | Challenge a player, loser drinks 1d6 | 1d6 — Drink {total}. |
@@ -225,12 +209,9 @@ the Review column is intentionally blank so you can mark it up.
 | ☐ | Opinions | `house.sheet-104` | challenge | Give your most Joe/Becca opinion |  |
 | ☐ | Caveman | `house.sheet-010` | rule | You can only grunt until your next turn |  |
 | ☐ | Mr Freeze | `house.sheet-015` | rule | Anyone you touch can't move or talk until you stop touching them |  |
-| ☐ | Wench | `house.sheet-024` | rule | You are the drink wench until your next turn |  |
 | ☐ | Potty Mouth | `house.sheet-030` | rule | No more cursing for the rest of the game. Drink when you fuck up. |  |
 | ☐ | Rawr XD | `house.sheet-032` | rule | You have to use T-Rex arms until your next turn |  |
 | ☐ | This Sucks | `house.sheet-039` | rule | Buffalo switches hands for the rest of the game |  |
-| ☐ | Pokemon | `house.sheet-040` | rule | Speak only your first name until your next turn |  |
-| ☐ | Abra like a Slut | `house.sheet-053` | rule | Reverse the turn order for the rest of the game |  |
 | ☐ | Goof Dog | `house.sheet-091` | rule | Keep your eyes as open as possible until your next turn |  |
 | ☐ | Da Rulez | `house.sheet-097` | rule | Until your next turn, you can't use your hands to drink |  |
 | ☐ | Da Rulez | `house.sheet-099` | rule | Until your next turn, the next person to say "beer" drinks |  |
@@ -261,7 +242,7 @@ the Review column is intentionally blank so you can mark it up.
 
 ## Pokémon night (`pokemon`)
 
-134 cards · 23 sip · 27 group · 5 category · 53 challenge · 26 rule · 26 dice
+135 cards · 23 sip · 27 group · 5 category · 54 challenge · 26 rule · 27 dice
 
 | Review | Title | ID | Cat | Rules | Dice |
 | --- | --- | --- | --- | --- | --- |
@@ -373,6 +354,7 @@ the Review column is intentionally blank so you can mark it up.
 | ☐ | Brawly | `pokemon.brawly` | challenge | Brawly wants a high five. They may hit as hard as they can. Drink for every high five. |  |
 | ☐ | Erika | `pokemon.erika` | challenge | Erika's grass battle! Roll d6. 1-3: stun spore; drink 2. 4-6: mega drain; finish your drink. | 1d6 — 1-3: Stun Spore. Drink 2. 4-6: Mega Drain. Finish your drink. |
 | ☐ | Sootopolis | `pokemon.sootopolis` | challenge | Sootopolis Gym! Roll d6. Even: chug a glass of water. Odd: chug your drink to completion. | 1d6 — 1-5: Chug your drink to completion. 2-6: Chug a glass of water. |
+| ☐ | Pokémon League | `pokemon.league` | challenge | Eight badges! The whole table takes on the Champion. Roll d20. | 1d20 — 1-5: The Champion sweeps. Everyone finishes their drink. 6-12: A close fight. Everyone drinks 3. 13-19: Victory! Hand out 5 drinks while everyone toasts you. 20-20: Hall of Fame. Make a rule for the rest of the game. |
 | ☐ | Lickitung | `pokemon.lickitung` | rule | Lickitung used Lick! Give 2 and keep your tongue out until your next turn. |  |
 | ☐ | Team Magma | `pokemon.team-magma` | rule | Team Magma recruited you! If you're on Team Magma, make a rule for the rest of the game. Otherwise, drink 7. |  |
 | ☐ | Team Aqua | `pokemon.team-aqua` | rule | Team Aqua recruited you! If you're on Team Aqua, make a rule for the rest of the game. Otherwise, drink 7. |  |
@@ -399,6 +381,355 @@ the Review column is intentionally blank so you can mark it up.
 | ☐ | Mawile | `pokemon.mawile` | rule | Mawile used Vicegrip! Until your next turn, grab a player and squeeze them. Drink 4 and apologize. |  |
 | ☐ | Relicanth | `pokemon.relicanth` | rule | Relicanth used Dive! Kneel under the table until your next turn. Surface early: drink 2. |  |
 | ☐ | Norman | `pokemon.norman` | rule | Norman's gym! Call another player daddy for the rest of the game. Drink 4, or drink 8 to keep your dignity. |  |
+
+## Cabin weekend (`cabin`)
+
+85 cards · 22 sip · 11 group · 0 category · 34 challenge · 18 rule · 23 dice
+
+| Review | Title | ID | Cat | Rules | Dice |
+| --- | --- | --- | --- | --- | --- |
+| ☐ | Fuck You In Particular | `cabin.fuck-you` | sip | Roll d6. Drink 10 minus your roll. | 1d6 — 1-1: Drink 9. 2-2: Drink 8. 3-3: Drink 7. 4-4: Drink 6. 5-5: Drink 5. 6-6: Drink 4. |
+| ☐ | For Safety | `cabin.for-safety` | sip | Make your next drink a water or something hydrating. |  |
+| ☐ | International Eric | `cabin.international-eric` | sip | Take a shot of liquor. You like it now. |  |
+| ☐ | Drinks On Me | `cabin.drinks-on-me` | sip | Get someone a fresh drink. They pay you something. You both drink 1. |  |
+| ☐ | Ride the Bus | `cabin.ride-the-bus` | sip | You picked a suit and you're totally wrong. Drink 4. |  |
+| ☐ | Atlanta Airport | `cabin.atlanta-airport` | sip | These planes are sus. Roll d6 and drink that many. | 1d6 — Drink {total}. |
+| ☐ | Going the Distance | `cabin.going-the-distance` | sip | Give 1 for every hour it took you to get here. Idle time doesn't count. |  |
+| ☐ | Bartender Greg | `cabin.bartender-greg` | sip | Hit on someone. Roll d6. You both drink that many. | 1d6 — You both drink {total}. |
+| ☐ | Allegiant Airlines | `cabin.allegiant-airlines` | sip | Cheap as fuck until it's not. Roll d6 and give that many. | 1d6 — Give {total}. |
+| ☐ | Soooo It's Thursday | `cabin.soooo-thursday` | sip | Give 3 to someone to calm their nerves. |  |
+| ☐ | Get Natured | `cabin.get-natured` | sip | Go outside and drink 1 out there. |  |
+| ☐ | How Many Holes? | `cabin.how-many-holes` | sip | Give 1 for every drink you've finished tonight, plus 1. |  |
+| ☐ | Miller Mike | `cabin.miller-mike` | sip | The group picks your next full drink. No complaints. |  |
+| ☐ | Lance | `cabin.lance` | sip | The dragon champion. He's dragon his nuts across your face. Drink 4. |  |
+| ☐ | Michigan | `cabin.michigan` | sip | Drink 3 from an ice-cold drink and explain how it's not even cold. |  |
+| ☐ | Yoink! | `cabin.yoink` | sip | Pick someone. Roll d6. They drink that many. | 1d6 — They drink {total}. |
+| ☐ | God's Chosen | `cabin.gods-chosen` | sip | Had COVID? Drink 3. Never had it? Give 3. |  |
+| ☐ | Do Not Cum | `cabin.do-not-cum` | sip | Roll d6. Cum. Drink that many. | 1d6 — Drink {total}. |
+| ☐ | Mustard Tiger | `cabin.mustard-tiger` | sip | Drink as much as whoever has drunk the most this game. |  |
+| ☐ | Ursaring | `cabin.ursaring` | sip | Give 13 and apologize |  |
+| ☐ | No take, Give | `cabin.no-take-give` | sip | Give d6 drinks | 1d6 — Give {total}. |
+| ☐ | Whinnie the Pooh | `cabin.whinnie-the-pooh` | sip | Pooh-bear 1d6 drinks | 1d6 — Drink {total}. |
+| ☐ | Thanos Snap | `cabin.thanos-snap` | group | Pick half the table. Everyone you didn't pick drinks 2. |  |
+| ☐ | Corporate Meeting | `cabin.corporate-meeting` | group | This could have been an email. Anyone working tomorrow drinks 3. |  |
+| ☐ | Café d'Époque | `cabin.cafe-depoque` | group | Everyone here is a total skank. Now you are too. Hit on someone; you both drink 2. |  |
+| ☐ | Neighbors | `cabin.neighbors` | group | Anyone not sleeping under your roof tonight drinks 1. |  |
+| ☐ | Comradery | `cabin.comradery` | group | Make up a table cheer. Everyone shouts it, then drinks 2. |  |
+| ☐ | 85.21% Birthday | `cabin.birthday` | group | Pick someone. You both drink 85.21% of a drink of your choosing. |  |
+| ☐ | Team Speech | `cabin.team-speech` | group | Clockwise from you, build a speech one word per person. Then everyone drinks 1. |  |
+| ☐ | Someone Call 9-1 | `cabin.someone-call-911` | group | Everyone drinks 1 for every injury on this trip so far. |  |
+| ☐ | Final Showdown | `cabin.final-showdown` | group | Play Thunderstruck. Anyone who finishes 2 drinks before it ends gives 5. |  |
+| ☐ | Medium Rare Chicken | `cabin.medium-rare-chicken` | group | Everyone drinks 2 for every player who has thrown up this trip. |  |
+| ☐ | Ski Team | `cabin.ski-team` | group | Skier? Skiers drink 2. Snowboarder? Snowboarders drink 2. Neither? Drink 4 and grow up. |  |
+| ☐ | Smooth Brain | `cabin.smooth-brain` | challenge | Tell a story about a time you were REAL dumb. Drink 2. |  |
+| ☐ | FaceTime Trivia | `cabin.facetime-trivia` | challenge | The group asks you trivia. Wrong: drink 2 and nobody talks to you until your next turn. |  |
+| ☐ | County Commissioner | `cabin.county-commissioner` | challenge | Campaign to be in charge. Drink 1 per player who wouldn't vote for you. |  |
+| ☐ | Drunken Clam | `cabin.drunken-clam` | challenge | How the fuck did this get here? Roll d6. 1: drink 1. Else finish your drink. | 1d6 — 1-1: Drink 1. 2-6: Blindsided. Finish your drink. |
+| ☐ | Mint Chev | `cabin.mint-chev` | challenge | Crush a full beer and leave the can on the table. Else roll d6 and drink. | 1d6 — 1-3: Drink 1. 4-6: Drink 2. |
+| ☐ | I Don't Know Shit | `cabin.i-dont-know-shit` | challenge | Tell the group something you embarrassingly don't understand. Everyone drinks 2. |  |
+| ☐ | Dafuq Did I Just Hear? | `cabin.dafuq` | challenge | You just admitted to loving Lance. Drink until the group is happy. |  |
+| ☐ | Alakazam | `cabin.alakazam` | challenge | Pick someone. Spoon them and you both drink 3. |  |
+| ☐ | Voltorb | `cabin.voltorb` | challenge | Roll d6. Pick that many players to finish their drinks. | 1d6 — Pick {total} players to finish their drinks. |
+| ☐ | Ow Scratchies | `cabin.ow-scratchies` | challenge | Show the group a scar and explain it. Everyone drinks 2 in pain. |  |
+| ☐ | Chaud | `cabin.chaud` | challenge | Microwave your drink. |  |
+| ☐ | That's Two Beers | `cabin.thats-two-beers` | challenge | Give out 24 drinks. |  |
+| ☐ | Guess I'll Die | `cabin.guess-ill-die` | challenge | Roll 2d6. Doubles: finish your drink. Else drink 2. | 2d6 — 2-12: Drink 2. |
+| ☐ | We're Not That Drunk | `cabin.not-that-drunk` | challenge | Pound a full drink, then take another card now. |  |
+| ☐ | Cave Herpes | `cabin.cave-herpes` | challenge | Roll d6. 4–5: you escape and give 2. Anything else: you're stuck, drink 2. | 1d6 — 1-3: Stuck in the cave. Drink 2. 4-5: You escape. Give 2. 6-6: Stuck in the cave. Drink 2. |
+| ☐ | 4th Meal | `cabin.fourth-meal` | challenge | Fly to Ireland and get a tattoo right now. Else roll d6 and drink. | 1d6 — 1-3: Drink 1. 4-6: Drink 2. |
+| ☐ | Wisconsin | `cabin.wisconsin` | challenge | The real mitten state. Roll d6. Drink 7 minus your roll. From Wisconsin? Give it. | 1d6 — 1-1: Drink 6. From Wisconsin? Give 6. 2-2: Drink 5. From Wisconsin? Give 5. 3-3: Drink 4. From Wisconsin? Give 4. 4-4: Drink 3. From Wisconsin? Give 3. 5-5: Drink 2. From Wisconsin? Give 2. 6-6: Drink 1. From Wisconsin? Give 1. |
+| ☐ | Samesies | `cabin.samesies` | challenge | Roll 2d6. Doubles: give the total. Else drink half. | 2d6 — 2-2: Drink 1. 3-4: Drink 2. 5-6: Drink 3. 7-8: Drink 4. 9-10: Drink 5. 11-12: Drink 6. |
+| ☐ | Numbers | `cabin.numbers` | challenge | Drink for every number that exists, or until the group is happy. |  |
+| ☐ | King of the Hill | `cabin.king-of-the-hill` | challenge | Roll d6. A 6: everyone else drinks 2. Anything else: drink 2. | 1d6 — 1-5: Drink 2. 6-6: King of the Hill. Everyone else drinks 2. |
+| ☐ | I Can't Believe This | `cabin.cant-believe-this` | challenge | Pour out someone's drink. They get a fresh one and drink 2. |  |
+| ☐ | Silly Salmon | `cabin.silly-salmon` | challenge | Flop on the floor like a fish. Drink 1. |  |
+| ☐ | Florida | `cabin.florida` | challenge | Tell everyone how nice Florida is. Roll d6 and drink half, warm. From Florida? Give it. | 1d6 — 1-2: Drink 1, warm. From Florida? Give 1. 3-4: Drink 2, warm. From Florida? Give 2. 5-6: Drink 3, warm. From Florida? Give 3. |
+| ☐ | Almost Lost My Cool | `cabin.almost-lost-my-cool` | challenge | If someone here is mad, calm them and give 3. Else rage and drink 3. |  |
+| ☐ | Crypto | `cabin.crypto` | challenge | Roll d6. Odd: drink your roll. Even: give it. | 1d6 — 1-5: Drink {total}. 2-6: Give {total}. |
+| ☐ | What an Idiot | `cabin.what-an-idiot` | challenge | Make someone finish their drink. |  |
+| ☐ | I'm Sorry Baby | `cabin.im-sorry-baby` | challenge | Roll d6. 1: you're a nobody, drink 4. 2–4: smoochie-smoochie, drink 2. 5–6: give 3. | 1d6 — 1-1: You're a nobody. Drink 4. 2-4: Smoochie-smoochie. Drink 2. 5-6: The night closes in. Give 3. |
+| ☐ | Son of a Bitch, I'm In | `cabin.son-of-a-bitch` | challenge | Anyone can offer you a drink and an amount. Accept and you both drink it. |  |
+| ☐ | Get Good | `cabin.get-good` | challenge | Insult someone's skills. They prove you wrong or drink 3. |  |
+| ☐ | What Is? Give | `cabin.what-is-give` | challenge | Have someone get you the drink they have. Roll d6. You both drink your roll minus 3. | 1d6 — 1-3: Nobody drinks. 4-4: You both drink 1. 5-5: You both drink 2. 6-6: You both drink 3. |
+| ☐ | Kadabra | `cabin.kadabra` | challenge | Abra's dumbass brother. Swap seats with anyone. |  |
+| ☐ | It's Gotta Go | `cabin.its-gotta-go` | challenge | Finish your drink. |  |
+| ☐ | Maddy Booty | `cabin.maddy-booty` | challenge | Roll 1d20. You drink until the group counts to it, or you finish your drink. | 1d20 — Drink until the group counts to {total}, or finish your drink. |
+| ☐ | Pet that dog | `cabin.pet-that-dog` | challenge | Better pet any dog in the room, or take 1d6 | 1d6 — Drink {total}. |
+| ☐ | Bitch Babe | `cabin.bitch-babe` | rule | Give 2. Until your next turn, call your left neighbor babe and everyone else bitch. |  |
+| ☐ | Freddie's Run | `cabin.freddies-run` | rule | Until your next turn, fetch anything anyone asks for. Refuse: drink 3. |  |
+| ☐ | I'm the Captain Now | `cabin.im-the-captain-now` | rule | Reverse the turn order for the rest of the game, then take another card now. |  |
+| ☐ | Spirit Airlines | `cabin.spirit-airlines` | rule | Drink 3. Until your next turn, any 1 rolled counts as 0. |  |
+| ☐ | Stonks | `cabin.stonks` | rule | Smoke something if you're cool. Until your next turn, you're immune to drinks. |  |
+| ☐ | Asshole | `cabin.asshole` | rule | Until your next turn, do whatever anyone tells you. |  |
+| ☐ | Children's Cabin | `cabin.childrens-cabin` | rule | Get absolutely stoned, or drink 1 whenever anyone draws until your next turn. |  |
+| ☐ | Like I Said | `cabin.like-i-said` | rule | Drink 2. Until your next turn, mimic the next player. |  |
+| ☐ | Steve's Spyder Beanie | `cabin.steves-beanie` | rule | Until your next turn, send every drink given to you back to the sender. |  |
+| ☐ | Deez Nuts | `cabin.deez-nuts` | rule | You are Deez for the rest of the game. Fall for a deez nuts joke: drink 3. |  |
+| ☐ | Ohio | `cabin.ohio` | rule | That sucks. Drink 2 and wear something stupid until your next turn. |  |
+| ☐ | Part of the Crew | `cabin.part-of-the-crew` | rule | Pick up to 3 crew. Until your next turn, when one of you drinks, all of you drink. |  |
+| ☐ | Dream Team | `cabin.dream-team` | rule | Until your next turn, you may split your drinks with anyone beside you. |  |
+| ☐ | President | `cabin.president` | rule | Until your next turn, give anyone orders. Refuse: drink 2. |  |
+| ☐ | 3rd World Christmas | `cabin.christmas` | rule | Give someone a gift. They wear or use it for the rest of the game. |  |
+| ☐ | Wench | `cabin.wench` | rule | You are the drink wench until your next turn |  |
+| ☐ | Pokemon | `cabin.first-name-only` | rule | Speak only your first name until your next turn |  |
+| ☐ | Abra like a Slut | `cabin.abra-like-a-slut` | rule | Reverse the turn order for the rest of the game |  |
+
+## Most Likely To (`likely`)
+
+250 cards · 0 sip · 250 group · 0 category · 0 challenge · 0 rule · 0 dice
+
+| Review | Title | ID | Cat | Rules | Dice |
+| --- | --- | --- | --- | --- | --- |
+| ☐ | Most Likely To | `likely.001` | group | Text their ex tonight. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.002` | group | Fall asleep first tonight. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.003` | group | Lose their phone before the night ends. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.004` | group | Start a fight with a bouncer. Point on three: most votes drinks 3. |  |
+| ☐ | Most Likely To | `likely.005` | group | Order a round nobody asked for. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.006` | group | Cry at the bar for no reason. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.007` | group | Wake up somewhere they don't recognize. Point on three: most votes drinks 3. |  |
+| ☐ | Most Likely To | `likely.008` | group | Drunk-buy something expensive online. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.009` | group | Get kicked out of a bar. Point on three: most votes drinks 3. |  |
+| ☐ | Most Likely To | `likely.010` | group | Lose a shoe on a night out. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.011` | group | Make best friends in the bathroom line. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.012` | group | Say "one more" and mean six. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.013` | group | Pee somewhere they absolutely shouldn't. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.014` | group | Show up to brunch still drunk. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.015` | group | Shotgun a beer at a wedding. Point on three: most votes takes a shot. |  |
+| ☐ | Most Likely To | `likely.016` | group | Give a toast nobody asked for. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.017` | group | Puke and rally. Point on three: most votes drinks 3. |  |
+| ☐ | Most Likely To | `likely.018` | group | Grab the karaoke mic uninvited. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.019` | group | Leave their card at the bar. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.020` | group | Drunk-text the group chat a paragraph. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.021` | group | Fall down the stairs and call it a bit. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.022` | group | Hit the drive-through at 3 a.m.. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.023` | group | Start drinking before noon on vacation. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.024` | group | Forget a conversation they started. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.025` | group | Tip 50% because they love the bartender. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.026` | group | Go swimming fully clothed. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.027` | group | Try to fight a goose. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.028` | group | Swear they're "not even that drunk". Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.029` | group | Still be awake at 4 a.m.. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.030` | group | Need to be carried home. Point on three: most votes finishes their drink. |  |
+| ☐ | Most Likely To | `likely.031` | group | Lie about how many drinks they've had. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.032` | group | Order the most expensive shot on the menu. Point on three: most votes takes a shot. |  |
+| ☐ | Most Likely To | `likely.033` | group | Dance on a table. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.034` | group | Get cut off by a bartender. Point on three: most votes drinks 3. |  |
+| ☐ | Most Likely To | `likely.035` | group | Become best friends with the DJ. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.036` | group | Call their mom drunk. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.037` | group | Sneak alcohol into a movie theater. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.038` | group | Mix three liquors in one cup. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.039` | group | Show up to a party empty-handed. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.040` | group | Start a drunk heart-to-heart. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.041` | group | Kiss a stranger at midnight. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.042` | group | Start a conga line. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.043` | group | End up at an afterparty with strangers. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.044` | group | Nap at a party and wake up for round two. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.045` | group | Order pizza to the bar. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.046` | group | Get a tattoo on a dare. Point on three: most votes drinks 3. |  |
+| ☐ | Most Likely To | `likely.047` | group | Throw up in an Uber. Point on three: most votes drinks 3. |  |
+| ☐ | Most Likely To | `likely.048` | group | Insist on one more bar. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.049` | group | Be the last one to leave every party. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.050` | group | Lose their friends and find new ones. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.051` | group | Lock themselves out of the house. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.052` | group | Get scammed online. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.053` | group | Text the person they were talking about. Point on three: most votes drinks 3. |  |
+| ☐ | Most Likely To | `likely.054` | group | Reply-all to the whole company. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.055` | group | Get lost with the GPS on. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.056` | group | Miss a flight. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.057` | group | Go to the wrong airport. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.058` | group | Believe a fake headline. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.059` | group | Pay for something that's free. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.060` | group | Lose rock-paper-scissors to a child. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.061` | group | Call a teacher "mom". Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.062` | group | Get sunburned on a cloudy day. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.063` | group | Wear a shirt inside out all day. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.064` | group | Walk into a glass door. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.065` | group | Wave back at someone who wasn't waving. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.066` | group | Get hurt opening a bag of chips. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.067` | group | Push a pull door. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.068` | group | Like a three-year-old photo by accident. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.069` | group | Join a pyramid scheme. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.070` | group | Get a parking ticket in their own driveway. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.071` | group | Burn water. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.072` | group | Send a screenshot to the person in it. Point on three: most votes drinks 3. |  |
+| ☐ | Most Likely To | `likely.073` | group | Microwave something metal. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.074` | group | Forget their own phone number. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.075` | group | Lose their wallet twice on one trip. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.076` | group | Trip over absolutely nothing. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.077` | group | Set the kitchen on fire. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.078` | group | Fall for an obvious prank. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.079` | group | Get stuck in a revolving door. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.080` | group | Put the wrong fuel in a car. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.081` | group | Butt-dial their boss. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.082` | group | Laugh at a funeral. Point on three: most votes drinks 3. |  |
+| ☐ | Most Likely To | `likely.083` | group | Forget the name of someone they just met. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.084` | group | Say "you too" when the waiter says enjoy. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.085` | group | Fake-laugh at a joke they didn't get. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.086` | group | Get caught talking to themselves. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.087` | group | Sing the wrong lyrics with full confidence. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.088` | group | Leave the house in slippers by accident. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.089` | group | Search for the keys in their hand. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.090` | group | Get their head stuck in something. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.091` | group | Send a text meant for someone else. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.092` | group | Get caught stalking someone's Instagram. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.093` | group | Wear socks with sandals unironically. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.094` | group | Get locked in a bathroom. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.095` | group | Show up on the wrong day. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.096` | group | Forget why they walked into a room. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.097` | group | Lose a fight with a vending machine. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.098` | group | Go live on social media by accident. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.099` | group | Lose their car in a parking garage. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.100` | group | Call 911 by accident. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.101` | group | Eat an entire pizza alone. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.102` | group | Forget what they were saying mid-sentence. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.103` | group | Rewatch the same show for the tenth time. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.104` | group | Believe in aliens with their whole chest. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.105` | group | Spend 20 minutes choosing a snack. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.106` | group | Have a deep conversation with a dog. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.107` | group | Order delivery twice in one night. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.108` | group | Laugh at nothing for five straight minutes. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.109` | group | Start a conspiracy podcast. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.110` | group | Put the milk in the cupboard. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.111` | group | Pitch a genius business idea at 2 a.m.. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.112` | group | Get paranoid about a cop who isn't there. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.113` | group | Watch nature documentaries for fun. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.114` | group | Buy crystals and mean it. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.115` | group | Take three hours to get ready. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.116` | group | Get obsessed with a new hobby for a month. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.117` | group | Reply "lol" to a serious text. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.118` | group | Eat cereal for dinner. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.119` | group | Explain the universe to a bartender. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.120` | group | Name their houseplants. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.121` | group | Get distracted by a bird mid-argument. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.122` | group | Say "bro, what if…" the most. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.123` | group | Play one album all night. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.124` | group | Fall asleep during a movie they picked. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.125` | group | Eat something off the floor. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.126` | group | Own a bong with a name. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.127` | group | Raid someone else's fridge uninvited. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.128` | group | Think they can talk to animals. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.129` | group | Forget their own birthday. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.130` | group | Order half the menu at a drive-through. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.131` | group | Marry someone they met on vacation. Point on three: most votes drinks 3. |  |
+| ☐ | Most Likely To | `likely.132` | group | Get back with their ex. Point on three: most votes drinks 3. |  |
+| ☐ | Most Likely To | `likely.133` | group | Fall in love on a dating app in a week. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.134` | group | Date two people at once. Point on three: most votes drinks 3. |  |
+| ☐ | Most Likely To | `likely.135` | group | Get caught sneaking out of someone's place. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.136` | group | Have a secret OnlyFans. Point on three: most votes drinks 3. |  |
+| ☐ | Most Likely To | `likely.137` | group | Send a risky photo to the wrong person. Point on three: most votes takes a shot. |  |
+| ☐ | Most Likely To | `likely.138` | group | Hook up with a coworker. Point on three: most votes drinks 3. |  |
+| ☐ | Most Likely To | `likely.139` | group | Slide into a celebrity's DMs. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.140` | group | Get married in Vegas. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.141` | group | Have a crush on someone in this room. Point on three: most votes takes a shot. |  |
+| ☐ | Most Likely To | `likely.142` | group | Ghost someone after a great date. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.143` | group | Have the weirdest search history. Point on three: most votes drinks 3. |  |
+| ☐ | Most Likely To | `likely.144` | group | Keep a dating app open just to look. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.145` | group | Write a love letter to a celebrity. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.146` | group | Propose in public. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.147` | group | Cry at a romcom. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.148` | group | Plan the wedding before the second date. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.149` | group | Get walked in on. Point on three: most votes drinks 3. |  |
+| ☐ | Most Likely To | `likely.150` | group | Flirt their way out of a ticket. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.151` | group | Have a secret second phone. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.152` | group | Date someone twice their age. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.153` | group | Match with a friend's ex. Point on three: most votes drinks 3. |  |
+| ☐ | Most Likely To | `likely.154` | group | Have a celebrity hall pass ready. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.155` | group | Be the first one here to get married. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.156` | group | Be the last one here to get married. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.157` | group | Elope without telling anyone. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.158` | group | Make out in a public bathroom. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.159` | group | Have had a crush on a cartoon character. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.160` | group | Tattoo a partner's name on themselves. Point on three: most votes drinks 3. |  |
+| ☐ | Most Likely To | `likely.161` | group | Send a "you up?" text this weekend. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.162` | group | Hook up at a wedding. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.163` | group | Date someone just for their dog. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.164` | group | Get caught skinny-dipping. Point on three: most votes drinks 3. |  |
+| ☐ | Most Likely To | `likely.165` | group | Fall for the bartender. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.166` | group | Kiss someone in this room tonight. Point on three: most votes takes a shot. |  |
+| ☐ | Most Likely To | `likely.167` | group | Still have their ex's hoodie. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.168` | group | Fake a phone call to escape a date. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.169` | group | Get a lap dance at a bachelor party. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.170` | group | Have a type nobody understands. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.171` | group | Become famous. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.172` | group | Go to jail. Point on three: most votes drinks 3. |  |
+| ☐ | Most Likely To | `likely.173` | group | Win the lottery and lose it all. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.174` | group | Become a millionaire. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.175` | group | Move to another country on a whim. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.176` | group | End up on reality TV. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.177` | group | Start a cult. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.178` | group | Start a business that actually works. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.179` | group | Get canceled online. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.180` | group | Go viral for the wrong reason. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.181` | group | Live to 100. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.182` | group | Get abducted by aliens. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.183` | group | Survive a zombie apocalypse. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.184` | group | Die first in a horror movie. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.185` | group | Run for office. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.186` | group | Write a memoir nobody asked for. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.187` | group | End up on the news. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.188` | group | Quit their job dramatically. Point on three: most votes drinks 3. |  |
+| ☐ | Most Likely To | `likely.189` | group | Have ten kids. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.190` | group | Retire first. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.191` | group | Become a crazy cat person. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.192` | group | Run a marathon. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.193` | group | Adopt a pet on a whim. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.194` | group | Get arrested at a protest. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.195` | group | Own a boat they can't afford. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.196` | group | Move back in with their parents. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.197` | group | Become an influencer. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.198` | group | Win a hot dog eating contest. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.199` | group | End up in witness protection. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.200` | group | Buy a timeshare. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.201` | group | Get a DUI on a lawn mower. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.202` | group | Open a bar. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.203` | group | Star in a commercial. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.204` | group | Become a landlord everyone hates. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.205` | group | Follow a band on tour. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.206` | group | Live in a van by choice. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.207` | group | Show up on a true crime show. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.208` | group | Fake their own death. Point on three: most votes drinks 3. |  |
+| ☐ | Most Likely To | `likely.209` | group | Get rich on crypto, then lose it. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.210` | group | Get a face tattoo at 50. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.211` | group | Be late to their own wedding. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.212` | group | Be the group therapist. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.213` | group | Start drama and act surprised. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.214` | group | Know everyone's secrets. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.215` | group | Leak a secret by accident. Point on three: most votes drinks 3. |  |
+| ☐ | Most Likely To | `likely.216` | group | Cancel plans last minute. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.217` | group | Plan the whole trip and get no thanks. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.218` | group | Forget to pay you back. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.219` | group | Eat the last slice without asking. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.220` | group | Hog the aux. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.221` | group | Take 200 selfies on one trip. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.222` | group | Overpack for a weekend. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.223` | group | Get lost on a group hike. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.224` | group | Complain all trip and have the best time. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.225` | group | Read the group chat and never reply. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.226` | group | Send a five-minute voice memo. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.227` | group | Start a fight in the group chat. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.228` | group | Change the plan at the last second. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.229` | group | Become the main character on vacation. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.230` | group | Make a spreadsheet for the trip. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.231` | group | Fall asleep in the car every time. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.232` | group | Pick the worst restaurant. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.233` | group | Argue with the GPS. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.234` | group | Steal a souvenir from a hotel. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.235` | group | Leave the party without saying goodbye. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.236` | group | Win every argument by yelling. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.237` | group | Talk their way into a VIP section. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.238` | group | Lie on their resume. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.239` | group | Cheat at board games. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.240` | group | Take a game way too seriously. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.241` | group | Flip the board when they lose. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.242` | group | Blame the dice for losing. Point on three: most votes drinks 3. |  |
+| ☐ | Most Likely To | `likely.243` | group | Read the rules and still not get it. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.244` | group | Keep score when nobody asked. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.245` | group | Bring a lucky charm to game night. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.246` | group | Be the reason we can't go back somewhere. Point on three: most votes drinks 3. |  |
+| ☐ | Most Likely To | `likely.247` | group | Get banned from a restaurant. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.248` | group | Have a secret talent nobody knows. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.249` | group | Survive on gas station food for a week. Point on three: most votes drinks 2. |  |
+| ☐ | Most Likely To | `likely.250` | group | Be talking about this game tomorrow. Point on three: most votes finishes their drink. |  |
 
 ## Notes for review
 

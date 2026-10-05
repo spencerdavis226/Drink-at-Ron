@@ -1,5 +1,9 @@
 import { useState } from "react";
-import { MODE_LIMITS, type Preferences } from "../app/persistence";
+import {
+  MODE_LIMITS,
+  type DeckChoice,
+  type Preferences,
+} from "../app/persistence";
 import type { PackDefinition } from "../game/types";
 import { Button, DeckChoices, Modal, PackTile } from "../components/UI";
 import { PackLogo } from "../components/PackMarks";
@@ -21,7 +25,25 @@ export function Setup({
   );
   const cardCount = new Set(selected.flatMap((pack) => pack.cardIds)).size;
   const limit = MODE_LIMITS[prefs.choice];
+  const questPack = prefs.choice === "quest" ? prefs.config.quest : undefined;
+  const chooseLength = (choice: DeckChoice) => {
+    const { quest: _quest, ...config } = prefs.config;
+    onChange({ ...prefs, choice, config });
+  };
+  // A quest mode plays its own pack, plus whatever else is selected.
+  const chooseQuest = (id: string) =>
+    onChange({
+      choice: "quest",
+      config: {
+        ...prefs.config,
+        quest: id,
+        packIds: packs
+          .filter((p) => p.id === id || prefs.config.packIds.includes(p.id))
+          .map((p) => p.id),
+      },
+    });
   const toggle = (id: string) => {
+    if (id === questPack) return;
     const next = new Set(prefs.config.packIds);
     if (next.has(id)) next.delete(id);
     else next.add(id);
@@ -46,10 +68,27 @@ export function Setup({
         <div className="section-label">
           <h2>How long?</h2>
         </div>
-        <DeckChoices
-          value={prefs.choice}
-          onChange={(choice) => onChange({ ...prefs, choice })}
-        />
+        <DeckChoices value={prefs.choice} onChange={chooseLength} />
+        <div className="lengths quest-modes" role="group" aria-label="Modes">
+          {packs
+            .filter((pack) => pack.quest)
+            .map((pack) => (
+              <Button
+                variant="choice"
+                className="quest-mode"
+                key={pack.id}
+                aria-label={`${pack.quest!.mode}, ${pack.quest!.summary}`}
+                aria-pressed={pack.id === questPack}
+                onClick={() => chooseQuest(pack.id)}
+              >
+                <PackLogo pack={pack} decorative />
+                <span>
+                  <strong>{pack.quest!.mode}</strong>
+                  <small>{pack.quest!.summary}</small>
+                </span>
+              </Button>
+            ))}
+        </div>
       </div>
       <div className="setup-section setup-packs">
         <div className="section-label">
@@ -96,6 +135,7 @@ export function Setup({
                 key={pack.id}
                 pack={pack}
                 selected={selected.includes(pack)}
+                locked={pack.id === questPack}
                 onToggle={() => toggle(pack.id)}
               />
             ))}

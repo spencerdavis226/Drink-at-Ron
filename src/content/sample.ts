@@ -17,12 +17,6 @@ export const sampleCards: CardDefinition[] = [
   card("bad-influence", "Bad Influence", "sip", "Pick someone. Both drink 2."),
   card("last-call", "Last Call", "group", "Everyone drinks 2."),
   card(
-    "you-specifically",
-    "Fuck You In Particular",
-    "sip",
-    "Pick someone. They drink 6.",
-  ),
-  card(
     "cheap-date",
     "Cheap Date",
     "group",
@@ -52,12 +46,6 @@ export const sampleCards: CardDefinition[] = [
     "Financial Genius",
     "sip",
     "Crypto owners drink 2. Everyone else gives 2.",
-  ),
-  card(
-    "smooth-brain",
-    "Smooth Brain",
-    "challenge",
-    "Admit something dumb you believed. Drink 2.",
   ),
   card(
     "would-you",
@@ -137,13 +125,6 @@ export const sampleCards: CardDefinition[] = [
       doubles: "Give {total}.",
       outcomes: [{ min: 2, max: 12, instruction: "Drink 3." }],
     },
-  ),
-  card(
-    "two-beers-math",
-    "That's Two Beers",
-    "challenge",
-    "Roll 4d6. Give the total.",
-    roll(4, 6, "Give {total}."),
   ),
   card(
     "snake-eyes",

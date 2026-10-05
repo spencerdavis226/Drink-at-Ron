@@ -2,6 +2,7 @@ import type {
   CardDefinition,
   GameConfig,
   PackDefinition,
+  QuestState,
   SessionState,
 } from "./types";
 export type Random = () => number;
@@ -21,6 +22,40 @@ export function shuffle(
   }
   return next;
 }
+/**
+ * Spread a quest's cards through its run: move enough of them into the draws
+ * before the run's last one that the goal is met and the finale still lands
+ * in time. The rest of the shuffle is untouched.
+ */
+export function paceQuest(
+  order: string[],
+  cards: CardDefinition[],
+  quest: QuestState | undefined,
+  random: Random = Math.random,
+): string[] {
+  if (!quest) return order;
+  const next = [...order];
+  const window = Math.min(quest.length - 1, next.length);
+  const tagged = new Set(
+    cards.filter((c) => c.quest === quest.packId).map((c) => c.id),
+  );
+  const spots = (from: number, to: number, want: boolean) => {
+    const found = [];
+    for (let i = from; i < to; i++)
+      if (tagged.has(next[i]) === want) found.push(i);
+    return found;
+  };
+  let short = quest.goal - spots(0, window, true).length;
+  while (short-- > 0) {
+    const out = spots(window, next.length, true);
+    const into = spots(0, window, false);
+    if (!out.length || !into.length) break;
+    const a = out[Math.floor(random() * out.length)],
+      b = into[Math.floor(random() * into.length)];
+    [next[a], next[b]] = [next[b], next[a]];
+  }
+  return next;
+}
 export function validConfig(c: GameConfig): boolean {
   return (
     !!c &&
@@ -29,7 +64,11 @@ export function validConfig(c: GameConfig): boolean {
     c.packIds.every((id) => typeof id === "string") &&
     new Set(c.packIds).size === c.packIds.length &&
     (c.limit === null ||
-      (Number.isInteger(c.limit) && c.limit >= 1 && c.limit <= 500))
+      (Number.isInteger(c.limit) && c.limit >= 1 && c.limit <= 500)) &&
+    (c.quest === undefined ||
+      (typeof c.quest === "string" &&
+        c.packIds.includes(c.quest) &&
+        c.limit === null))
   );
 }
 export function createSession(
@@ -53,12 +92,33 @@ export function createSession(
     .filter((c) => selected.has(c.id))
     .map((c) => structuredClone(c));
   if (!cards.length) throw new Error("This deck has no cards.");
+  let quest: QuestState | undefined;
+  if (config.quest) {
+    const rules = packs.find((p) => p.id === config.quest)?.quest;
+    const finale = catalog.find((c) => c.id === rules?.finaleId);
+    if (!rules || !finale) throw new Error("This pack has no quest.");
+    const { label, goal, length } = rules;
+    quest = {
+      packId: config.quest,
+      label,
+      goal,
+      length,
+      count: 0,
+      due: false,
+      finale: structuredClone(finale),
+    };
+  }
   return {
     version: 2,
     config: { ...config, packIds: [...config.packIds] },
     cards,
-    order: shuffle(
-      cards.map((c) => c.id),
+    order: paceQuest(
+      shuffle(
+        cards.map((c) => c.id),
+        random,
+      ),
+      cards,
+      quest,
       random,
     ),
     position: 0,
@@ -68,10 +128,21 @@ export function createSession(
     previousId: null,
     roll: null,
     previousRoll: null,
+    ...(quest ? { quest } : {}),
   };
 }
+/** The quest's finale is dealt between deck cards and takes no position. */
 export function currentCard(s: SessionState) {
-  return s.cards.find((c) => c.id === s.order[s.position])!;
+  return s.quest?.due
+    ? s.quest.finale
+    : s.cards.find((c) => c.id === s.order[s.position])!;
+}
+/** A deck card or the quest finale, for history such as the previous card. */
+export function findCard(s: SessionState, id: string | null) {
+  return (
+    s.cards.find((c) => c.id === id) ??
+    (s.quest?.finale.id === id ? s.quest.finale : undefined)
+  );
 }
 /** A revealed choice card whose option has not been picked yet. */
 export function awaitingChoice(s: SessionState) {
@@ -95,9 +166,11 @@ export function skipRoll(
 }
 function discard(s: SessionState, random: Random): SessionState {
   const history = { previousRoll: s.roll, roll: null };
+  const card = currentCard(s);
   const discarded = s.discarded + 1,
-    previousId = currentCard(s).id;
-  if (s.config.limit !== null && discarded === s.config.limit)
+    previousId = card.id;
+  // A quest mode ends when its finale is put aside; a finite game at its limit.
+  if (s.quest?.due || (s.config.limit !== null && discarded === s.config.limit))
     return {
       ...s,
       previousRoll: s.roll,
@@ -105,6 +178,10 @@ function discard(s: SessionState, random: Random): SessionState {
       discarded,
       previousId,
     };
+  if (s.quest && card.quest === s.quest.packId) {
+    const count = s.quest.count + 1;
+    s = { ...s, quest: { ...s.quest, count, due: count >= s.quest.goal } };
+  }
   if (s.position + 1 === s.order.length)
     return {
       ...s,
@@ -134,8 +211,13 @@ export function replaySession(
     ...s,
     config: { ...s.config, packIds: [...s.config.packIds] },
     cards: s.cards.map((c) => structuredClone(c)),
-    order: shuffle(
-      s.cards.map((c) => c.id),
+    order: paceQuest(
+      shuffle(
+        s.cards.map((c) => c.id),
+        random,
+      ),
+      s.cards,
+      s.quest,
       random,
     ),
     position: 0,
@@ -145,5 +227,15 @@ export function replaySession(
     previousId: null,
     roll: null,
     previousRoll: null,
+    ...(s.quest
+      ? {
+          quest: {
+            ...s.quest,
+            finale: structuredClone(s.quest.finale),
+            count: 0,
+            due: false,
+          },
+        }
+      : {}),
   };
 }

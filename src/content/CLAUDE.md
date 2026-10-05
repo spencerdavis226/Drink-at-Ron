@@ -4,10 +4,16 @@ Read `docs/AUTHORING.md` and `docs/CARD_VOICE_REFERENCE.md` before editing. Card
 
 | File | Pack | Cards |
 | --- | --- | --- |
-| `sample.ts`, `classics.ts`, `standard-expansion.ts` | `core` | 116 |
-| `custom.ts` | `house` (sheet rows, verbatim) and four `vip.sheet-*` | 102 |
+| `sample.ts`, `classics.ts`, `standard-expansion.ts` | `core` | 105 |
+| `custom.ts` | `house` (sheet rows, verbatim; its 8 CABIIN rows go to Cabin as `cabinSheetCards`) and four `vip.sheet-*` | 94 |
 | `vip.ts` (+ the four in `custom.ts`) | `vip` | 16 |
 | `pokemon.ts` | `pokemon` | 134 |
+| `cabin.ts` (+ the 8 CABIIN sheet rows from `custom.ts`) | `cabin` | 85 |
+| `likely.ts` | `likely` (vote cards, IDs `likely.NNN` by list position) | 250 |
+
+`catalog.ts` aggregates everything for tests, scripts and the workshop only. The app imports `manifest.generated.ts` (run `npm run content:manifest` after changing packs or card IDs; the build does it too and a test catches a stale file) and loads card text through `loaders.ts`, one lazy chunk per content module. A new pack needs a loader entry. Never import a content module statically from app code; the budget check fails the build if card text reaches the initial chunk.
+
+Pack quests are game modes: a pack may declare `quest: { mode, summary, label, goal, length, finaleId }` (see `docs/AUTHORING.md`). The finale is a card in the module but not in `cardIds`; cards tagged `quest: "<packId>"` advance the meter. Pokémon: 15 gym cards, goal 8 within 40 draws, finale `pokemon.league`. No card may belong to two packs.
 
 Rules enforced by `npm run build` (`scripts/validate-content.ts`) and unit tests:
 

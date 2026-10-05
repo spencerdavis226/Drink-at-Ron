@@ -1,5 +1,5 @@
 import type { PackDefinition } from "../game/types";
-import { packs } from "../content/catalog";
+import { packs } from "../content/manifest.generated";
 /** Cosmetic identity comes from the installed catalog, never changes the saved draw order. */
 export function cardPacks(
   cardId: string,

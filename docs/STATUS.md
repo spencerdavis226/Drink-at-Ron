@@ -1,6 +1,112 @@
 # Current state and implementation plan
 
-Updated 2026-10-04. **Single authoritative handoff.** Read `AGENTS.md` first. Older handoffs are in `docs/STATUS_ARCHIVE.md` (reference only). Direct user instructions win.
+Updated 2026-10-05. **Single authoritative handoff.** Read `AGENTS.md` first. Older handoffs are in `docs/STATUS_ARCHIVE.md` (reference only). Direct user instructions win.
+
+## Pokémon League mode; House and Cabin share nothing (2026-10-05, on branch `cabin-weekend-pack`, PR #3, not on `main`)
+
+**Request.** Make Pokémon its own mode beside Short/Long/Infinite (forcing the Pokémon pack on, plain modes can still include Pokémon cards). The 8 CABIIN rows of the house sheet belong to Cabin only, not shared.
+
+**Decision (recommended to and accepted from the owner's framing).** A quest is a game mode, not something that warps every game containing the pack. Pokémon League: holds the Pokémon pack on (others can join), no card limit, 8 gyms spread through the first 40 draws, the eighth badge deals the League, and putting the League aside ends the game (runs of about 30 to 40 cards). In Short/Long/Infinite the gym cards are ordinary cards: no meter, no reordering.
+
+**Change.** `PackQuest` gains `mode`, `summary`, `length`; `GameConfig.quest` (pack id; requires the pack selected and `limit: null`); `SessionState.quest` (single, optional; replaces `quests`). Engine: the quest exists only when `config.quest` is set; `paceQuest` spreads `goal` tagged cards through the first `length` draws (new games and replays); the finale completes the game; the "meter starts over" path and `finalesShown` are gone. `parseSession`: quest present iff `config.quest`, completion is "limit reached" or "finale put aside". Setup (`Setup.tsx`): one wide choice per quest pack under the lengths (pack mark, mode, summary); choosing it adds and locks the pack (`PackTile locked`, `aria-disabled`); choosing a length clears it. Preferences persist `choice: "quest"` with `config.quest`. `QuestMeters` became `QuestMeter`.
+
+**House/Cabin.** `custom.ts` now splits the restored sheet: `houseCards` (94) and `cabinSheetCards` (rows 12, 16, 24, 28, 40, 42, 53, 54 as `cabin.maddy-booty`, `cabin.ursaring`, `cabin.wench`, `cabin.no-take-give`, `cabin.first-name-only`, `cabin.pet-that-dog`, `cabin.abra-like-a-slut`, `cabin.whinnie-the-pooh`, wording unchanged). Cabin is 85 cards with no shared IDs; the Cabin loader no longer pulls House. A unit test fails if any card is in two packs.
+
+**Verified.** `npm test` 118 passed; typecheck clean; build and budgets passed (86.1 KiB initial, not capped); full production E2E Chromium 86/87, the one failure being `dice.spec.ts:93`, a pre-existing test bug now fixed (it required a bold amount, but the d20 card's 1 and 20 read "Take a shot."/"Give a shot.", so it failed on about 1 roll in 10; 40/40 after the fix); update flow passed; workshop 12/12; `quest.spec.ts` covers the setup mode (pressed state, locked pack, meter at 0/8, saved config) and that a plain mode with Pokémon has no meter. Screenshot at 320×568: the mode row fits; Play sits just below the fold on that smallest phone, as the setup screen scrolls.
+
+**Not verified.** WebKit locally, devices, the run length at the table.
+
+**Gym spreading kept (owner, 2026-10-05).** Owner asked why gyms are not simply shuffled through the whole deck. By chance alone the 8th of 15 gyms lands near draw 8(N+1)/16: about 68 with Pokémon only (134 cards), 120 with Core added, 342 with all six packs. The 40-draw spread keeps a run night-sized whatever the pack mix; the owner chose to keep it. Alternatives on file: spread through ~30% of the deck capped at 60, or a run-length choice (quick ~25 / normal ~40 / epic ~70) under the mode.
+
+## Leaner tests, no initial-JS cap, eight Pokémon badges (2026-10-05, on branch `cabin-weekend-pack`, PR #3, not on `main`)
+
+**Request.** Remove unnecessary tests and the 100 KiB limit; make the Pokémon quest all 8 badges.
+
+**Budget.** `check-budget.ts` no longer caps initial JS (owner decision); it still reports it (85.9 KiB gzip), keeps the lazy (200 KiB), runtime (3 MiB) and image (500 KiB) limits, and still fails the build if card text reaches the initial chunk. AGENTS.md updated.
+
+**Tests trimmed.** The workshop every-card sweep (5 viewports × every card × normal and enlarged) now runs a 34-card stress set (`tests/workshop/stress-set.ts`: 12 longest rules, 6 longest titles, every choice card, the 3 dice cards with most dice, quest finales, first card of each pack). Title fit checks distinct titles of 12+ characters (152, was 685 per pass); the wide-letter test still covers short titles. The sweep's pack-mark check now expects every pack containing a shared card (Cabin weekend shares House rows; the old single-mark check would have failed since that pack existed) and polls for the marks. The isolation test now snapshots storage after the app has mounted (it raced the app's first settings save). The workshop can preview a quest finale (marks its quest due). Release smoke still runs in Chromium and WebKit: headless Linux WebKit has no WebGL, so the dice-render checks only really run in Chromium. Full E2E and workshop stay manual-only in CI, as before.
+
+**Eight badges.** `pokemon` quest goal 8; League copy "Eight badges!". By chance alone a Short Pokémon-only game would reach 8 gyms 0.5% of the time (Long 33%; with Core mixed in 0% and 1.5%), so `paceQuests` (engine) now moves enough tagged cards into the draws before a finite game's last one; replays are paced too; endless games are untouched. A 30-card game with Pokémon therefore always contains at least 8 gym cards in its first 29 draws.
+
+**Verified.** `npm test` 121 passed (new: pacing in `tests/quest.test.ts`, eight-badge Short game across 40 seeds in `tests/workshop.test.ts`); typecheck clean; build and budgets passed; full production E2E Chromium 86/86; workshop (title fit, stress sweep at 5 viewports, card review, isolation, viewport, overlay) 12/12 twice in about 3.5 min, Chromium. `dice-texture.spec.ts` still fails identically on the baseline build in this container (older Chromium), not run in the timings above.
+
+**Not verified.** WebKit locally (CI runs the release smoke in WebKit), any device, how an 8-gym Short game feels at the table.
+
+## Per-pack card loading, pack quests, Pokémon badge quest (2026-10-05, on branch `cabin-weekend-pack`, PR #3, not on `main`)
+
+**Request.** Owner approved steps 1 to 3 of the suggested order: load each pack's cards separately, ship Most Likely To as plain vote cards (already done), then Feature A (shared progress and a finale) with the Pokémon badge quest as the first user.
+
+**Per-pack loading (replaces the single lazy catalog from the entry below).** The app imports `src/content/manifest.generated.ts` (pack metadata and card IDs only, about 4 KiB gzip), generated by `scripts/pack-manifest.ts` (`npm run content:manifest`, also the first step of `npm run build`; `tests/manifest.test.ts` fails if it is stale). `src/content/loaders.ts` has one dynamic-import loader per pack; `main.tsx` warms the selected packs while setup is open and loads them on Play (synchronously when already warmed, else async with a "Couldn't load the cards" notice on failure). The first render waits for no card text at all, and a resumed game uses its save snapshot. `registry.ts` is gone. `check-budget.ts` now also fails the build if any card's first sentence (case-insensitive) appears in the initial chunk; verified by temporarily importing `likely.ts` into `main.tsx` (build failed: `likely.001`). Initial JS 85.6 KiB gzip, lazy 172.0 KiB (each pack its own chunk, 0.8 to 6.6 KiB).
+
+**Feature A: pack quests.** Types `PackQuest` (pack: label, goal, finaleId), `CardDefinition.quest` (pack id), `QuestState` and optional `SessionState.quests` (no schema version change; saves without it load as before). Engine: `createSession` starts a meter for each selected quest pack whose finale was loaded; putting aside a tagged card adds one; at the goal the finale becomes `currentCard` (dealt between deck cards, no deck position used); putting the finale aside resets the meter and counts it in `shown`; `replaySession` resets. `findCard` and `finalesShown` keep history and the save invariants honest (`discarded = cycle × cards + position + finales shown`). `parseSession` validates quest state (pack selected, counts in range, `due` iff at goal, at most one due, finale not a deck card). `validateCatalog` requires at least `goal` tagged cards and a finale outside `cardIds`. UI: `src/components/QuestMeters.tsx` in the top row's free left slot (pack mark, label, count; gold glow when the finale is in play).
+
+**Pokémon badge quest.** 15 gym cards tagged; goal 4 (a Short Pokémon-only game draws about 3.4 gyms, Long about 6.7; 8 would rarely trigger); finale `pokemon.league` (d20: Champion sweeps / close fight / victory / Hall of Fame). Catalog 685 cards, 684 in the deck pool.
+
+**Tests.** `tests/quest.test.ts` (9: meter start, counting, finale dealing and rolling, reset and repeat, completion on the finale, replay, tampered saves, catalog validation, missing finale); `tests/manifest.test.ts` (3); `tests/browser/quest.spec.ts` (`@release` at 320 and 390 px: meter fills, glows, deals the League, survives reload; plus no meter without a quest pack). Browser specs that read the save right after tapping Play now wait for the play screen first (start can be async).
+
+**Verified.** `npm test` 117 passed; typecheck clean; Pages-path build and budgets passed; full production E2E Chromium only (local `chromium-1194`; WebKit not installed here) 86/86, twice; update flow passed. Screenshots at 320 and 390 px checked by eye: meter fits beside the medallion.
+
+**Not verified.** WebKit, the workshop sweep, any device. Quest balance (goal 4) is untested with people.
+
+## Most Likely To pack and lazy card catalog (2026-10-05, on branch `cabin-weekend-pack`, PR #3, not on `main`)
+
+**Request.** A Drunk Stoned or Stupid style pack of 250 standalone "most likely to" vote cards (no Drunk/Stoned/Stupid tagging), researched from public lists; record every pack/mechanic idea from the design discussion (below, "Ideas backlog") for the owner to pick from later.
+
+**Lazy catalog.** Card text had become the bulk of the initial chunk (98.0 of 100 KiB gzip after Cabin weekend). `src/content/catalog.ts` is now a lazy chunk: it installs itself into `src/content/registry.ts` on import; `main.tsx` calls `loadCatalog()` at boot and renders only after it resolves (it is fetched alongside the art the first render already waits for, and is not subject to the 4 s art cap, because there is no fallback without cards). The workshop entry points also await it. `presentation/packs.ts` and `app/persistence.ts` read `catalog()`; `validateCatalog` moved to `src/content/validate.ts` (re-exported from `catalog.ts`). No session schema or storage change. Result: **80.4 KiB initial** + 169.6 KiB lazy gzip (lazy limit 200 KiB; the catalog chunk is 21.1 KiB gzip, so roughly 30 KiB of lazy headroom remains for packs and features).
+
+**Most Likely To.** `src/content/likely.ts`: pack `likely`, 250 `likely.NNN` cards, all `group`, title "Most Likely To", rules "<Prompt>. Point on three: most votes drinks 2." (payout varies on some prompts: 3, a shot, or finish the drink). Prompts are original, grouped as nights out, embarrassing, stoned, spicy, the future, and the group; reviewed against public "most likely to" lists for range (page fetches were blocked by this environment's network policy, so only search snippets were read). Logo `public/art/packs/likely.svg` (game-icons `delapouite/human-target`). Catalog 684 cards, 6 packs.
+
+**Tests.** New unit test for the pack's shape; total 684; `secondary.spec.ts`/`game.spec.ts` expect 6 packs and 684 cards with all selected; `title-fit.spec.ts` timeout 180 s → 360 s for the larger catalog (no assertion changed).
+
+**Verified.** `npm test` 105 passed; typecheck clean; Pages-path build and budgets passed; full production E2E **Chromium only** (local `chromium-1194` via a temporary config; WebKit not installed here) 83/83; update flow passed (same local Chromium); workshop suite minus the every-card sweep: title fit passed (2/2), `dice-texture.spec.ts` fails identically on the baseline build in this container (older Chromium text metrics), 5 others passed.
+
+**Not verified.** WebKit, the every-card workshop sweep, any device, first launch on a slow connection with the extra catalog request (the first render now also waits for the catalog chunk; it is precached by the service worker after the first visit).
+
+**Next.** Owner reviews Cabin weekend and Most Likely To copy; merge PR #3 to deploy. Then pick from the ideas backlog.
+
+## Ideas backlog (2026-10-05, owner to choose; nothing here is approved)
+
+The owner's goal: packs that change how the game plays, not just add cards. Today a pack cannot, because every card must finish on its own and the app keeps no state between cards. The platform features below would let a pack bring a mechanic.
+
+**Platform features (enablers)**
+- **A. Shared table progress + finale.** One table-wide meter on screen (badges, rooms cleared, a filling cup) and a forced final card at the end of Short/Long. No player names. Optional session field, so no migration.
+- **B. Optional player roster.** Names at setup, skippable. Unlocks whose-turn display, recorded votes, per-player stats, end-of-game awards, classes/roles. Needs a session schema version with migration (v2 + v1 migration must stay working).
+- **C. Active rules tray.** Lasting rules stay visible with who drew them and when they expire. Clean with B; with only a player count, expiry by draw count.
+- **D. New card types.** Secret cards (hold to peek before passing), timer cards (hidden fuse while the phone is passed), push-your-luck dice (roll again or stop; breaks the one-roll-per-card rule).
+
+**Pack ideas**
+- **Most Likely To awards (needs B).** Record each vote; end of game crowns the most-voted per theme (the Drunk Stoned or Stupid payoff). The shipped pack is the standalone version.
+- **Pokémon badge quest (needs A).** The table is one trainer; gym cards award badges (x/8); 8 badges unlock the Elite Four, then the Champion as the final card; a Pokémon Center card is a water break. Mostly tagging existing cards.
+- **Dungeon crawl / D&D (needs A, later B).** Shared party HP; failed d20 checks cost HP; 0 HP wipes the party (everyone finishes their drink); clearing rooms raises party level (easier rolls); a boss is always the final card; one-use loot (Shield ignores a drink, Potion hands your drink off). With B: classes (Barbarian drinks and gives double, Bard sings to skip, Rogue steals, Cleric gives water). Core already has Nat One/Nat Twenty/Critical Failure/Dungeon Master/Mimic Chest, so plain D&D cards alone would duplicate Core.
+- **Paranoia (needs D, secret cards).** A question goes privately to one player, who answers aloud with someone's name; that person can drink 2 to learn the question.
+- **Spyfall / Werewolf (needs D).** Everyone peeks at a role once at setup (one spy or werewolf); accusation cards through the game.
+- **Assassin / secret missions (needs D).** Private mission per player at the start ("get Ron to say 'literally'"); completing one gives a big pour. Runs in the background of any pack.
+- **Hot Potato / Exploding Kittens bomb (needs D, timer).** A bomb card starts a hidden fuse; pass the phone; holder at the boom drinks. Sound only (iOS Safari has no vibration).
+- **Push-your-luck dice (needs D).** Farkle / Pass the Pigs / blackjack: roll, bank or roll again; bust drinks the pot.
+- **King's Cup cup (needs A).** Each King adds to a shared drink; the 4th King drinks it.
+- **Mario Party bonus awards (needs B).** End-of-game awards: most drinks given, most votes, unluckiest roller.
+- **Fluxx rule changers (needs C).** Cards that rewrite rules and sit in the tray.
+- **Travel/airport pack.** Considered; overlaps House (Spirit Airlines, Never Have I Ever countries) and Cabin weekend.
+
+**Suggested order:** per-pack loading (done) → vote pack (done) → A + Pokémon badge quest (done, 2026-10-05) → dungeon crawl (reuses quests; would add a finale at the end of a finite game and loot) → B + rules tray + awards → secret and timer card packs.
+
+**Owner decisions (2026-10-05).** Initial-JS cap removed; workshop sweeps trimmed to a stress set (see the entry at the top).
+
+## Cabin weekend pack from CABIIN 2.0 (2026-10-05, local only, not committed)
+
+**Request.** Owner asked for a new pack built from as much of the CABIIN 2.0 sheet (`reference/cabiin-2/`, 96 spaces plus the legend) as fits the Drink at Ron rules, with the CABIIN-born Core cards moved into it, and lore-dependent spaces dropped if they don't stand alone.
+
+**Change.** New `src/content/cabin.ts`: pack `cabin`, "Cabin weekend", 77 `cabin.*` cards (22 sip, 11 group, 34 challenge, 18 rule; 19 dice, 2 of them `choice` cards: `cabin.mint-chev`, `cabin.fourth-meal`) plus 8 House rows shared by ID, untouched (`house.sheet-012/016/024/028/040/042/053/054`), 85 in the pack. Logo `public/art/packs/cabin.svg` (game-icons `delapouite/forest-camp`, background removed). Registered last in `catalog.ts`; category motifs in `imprint.ts`.
+- **Moved from Core** (old `core.*` IDs retired, recreated as `cabin.*`): Smooth Brain, I Don't Know Shit, That's Two Beers, Samesies, Almost Lost My Cool, What an Idiot, For Safety, It's Gotta Go, Get Good, Fuck You In Particular, Thanos Snap. Three were restored toward the CABIIN wording: Fuck You In Particular is "Roll d6. Drink 10 minus your roll" (was "Pick someone. They drink 6"), Thanos Snap makes the *unpicked* half drink, That's Two Beers is "Give out 24 drinks" (Core's 4d6 version is gone; House `sheet-003` still has 4d6). Core is now 105 cards; saved games keep their snapshot, and retired `core.*` IDs keep the Core mark via the prefix rule in `presentation/packs.ts`.
+- **Translation rules used.** Teams became the drawing player or a home-state call-out (Florida, Michigan, Wisconsin, Ohio, Ski Team). Board movement and skipped turns became pours; multi-round effects last until the drawer's next turn. d6/3 and d6−3 are written out per roll. Guess I'll Die uses 2d6 doubles because the engine's `doubles` means *all* dice match (3d6 "any two match" would need an engine change).
+- **Left out.** Legend (#45) and Group Effort (board scaffolding); Pipe Bomb, That's My Boyd, Gengar (guess-the-roll); I'm Gonna Cum, Another One, Do Better, Mike Bet (depend on another card); SS Allure, Too Soon O'Conner, Hot Dog Water (need backstory); Abra (covered by the shared House row and the Pokémon pack).
+- **Tests and specs.** `tests/workshop.test.ts` Core counts (105; 16/22/9/43/15; 36 dice), total 434, and a new Cabin composition test; `tests/dice.test.ts` choice-card list; `dice.spec.ts` four-dice test now sources `house.sheet-003`; `secondary.spec.ts` and `game.spec.ts` expect 5 packs, 434 cards with all selected, 207 for Core + House. Counts updated in AGENTS.md, CLAUDE.md, README, GAME_DESIGN, AUTHORING, PLAYTEST, DEVICE_CHECKLIST, `src/content/CLAUDE.md`. `npm run cards:review` regenerated.
+
+**Verified.** `npm test` 104 passed; typecheck clean; no Cabin card hits the long-copy review flag; Pages-path build and budgets passed (2624 KiB runtime; **98.0 KiB of 100 KiB initial gzip**, card data is in the initial chunk, so roughly one more pack this size would breach it); full production E2E in **Chromium only** (pre-installed `chromium-1194` through a temporary config, because the pinned Playwright wants `1243` and WebKit is not installed in this container): 82 passed, 1 failed under load (`dice.spec.ts:93`) that then passed 3/3 isolated. Two `game.spec.ts` keyboard tests (`:220`, `:620`) failed intermittently in this container and fail identically on the untouched baseline build. Workshop `title-fit.spec.ts` passed (Chromium).
+
+**Not verified.** WebKit; the update flow; the full workshop sweep; any device. Card copy has not been reviewed by the owner or played.
+
+**Next.** Owner reviews the Cabin cards (`docs/CARD_REVIEW.md`, pack `cabin`), then commit and push to `main` on approval (push deploys).
 
 ## Update offer survives an early takeover; update check hardened (2026-10-04, pushed as `aeb84dd`; CI run `37244462749` passed and deployed)
 

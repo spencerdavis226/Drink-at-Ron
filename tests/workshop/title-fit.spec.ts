@@ -4,7 +4,13 @@ import { cards } from "../../src/content/catalog";
 test("every authored title fits the two-line band at supported card widths", async ({
   page,
 }) => {
-  // Six complete catalog passes now cover all 368 cards in each browser.
+  // Only distinct titles of 12+ characters can fill the two-line band; the
+  // wide-letter test below covers the worst case for shorter ones.
+  const titled = [
+    ...new Map(
+      cards.filter((c) => c.title.length >= 12).map((c) => [c.title, c]),
+    ).values(),
+  ];
   test.setTimeout(180000);
   await page.setViewportSize({ width: 1200, height: 900 });
   await page.goto("/docs/studies/front-typography-2026-09-22/");
@@ -19,7 +25,7 @@ test("every authored title fits the two-line band at supported card widths", asy
     await page.getByLabel("Card width").selectOption(String(width));
     for (const large of [false, true]) {
       await page.getByLabel("Enlarged title").setChecked(large);
-      for (const card of cards) {
+      for (const card of titled) {
         await page.getByLabel("Title sample").selectOption(card.id);
         await expect(page.locator(".study-title h2")).toHaveText(card.title);
         const fit = await page.locator(".preview-card").evaluate((el) => {

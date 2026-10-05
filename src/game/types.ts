@@ -33,6 +33,37 @@ export interface CardDefinition {
   category: Category;
   artwork: string;
   dice?: DiceDefinition;
+  /** The id of the pack whose quest meter this card advances when it is put
+   * aside (a gym battle earns a badge). */
+  quest?: string;
+}
+/** A pack's game mode: a table-wide meter that, on reaching its goal, deals
+ * the finale, and the game ends when the finale is put aside. The finale is
+ * authored with the pack's cards but is not in `cardIds`, so it never enters
+ * the shuffle. */
+export interface PackQuest {
+  /** The mode's name on the setup screen, e.g. "Pokémon League". */
+  mode: string;
+  /** One short line under the mode's name. */
+  summary: string;
+  /** The meter's label, e.g. "Badges". */
+  label: string;
+  goal: number;
+  /** The quest's cards are spread through this many draws, so the finale is
+   * dealt by then. */
+  length: number;
+  finaleId: string;
+}
+/** A quest's progress in one game. `due` means the finale is the card in
+ * play (or the next one drawn). */
+export interface QuestState {
+  packId: string;
+  label: string;
+  goal: number;
+  length: number;
+  count: number;
+  due: boolean;
+  finale: CardDefinition;
 }
 export interface PackDefinition {
   version: 1;
@@ -43,11 +74,15 @@ export interface PackDefinition {
   artwork?: string;
   /** One single-colour silhouette; the app tints it wherever it appears. */
   logo?: string;
+  quest?: PackQuest;
 }
 export interface GameConfig {
   version: 1;
   packIds: string[];
   limit: number | null;
+  /** A quest mode: the id of the selected pack whose quest runs the game.
+   * The game has no card limit; it ends on the quest's finale. */
+  quest?: string;
 }
 export interface SessionState {
   version: 2;
@@ -61,4 +96,6 @@ export interface SessionState {
   discarded: number;
   phase: "hidden" | "revealed" | "complete";
   previousId: string | null;
+  /** Present only in a quest mode; older saves omit it. */
+  quest?: QuestState;
 }

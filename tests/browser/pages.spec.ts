@@ -98,6 +98,7 @@ test("a Home Screen web app hides Install but keeps the in-game menu", async ({
     page.getByRole("button", { name: "Play", exact: true }),
   ).toBeVisible();
   await page.getByRole("button", { name: "Play", exact: true }).click();
+  await expect(page.locator(".progress")).toBeVisible();
   await expect(
     page.getByRole("button", { name: "Open game menu" }),
   ).toBeVisible();
@@ -149,7 +150,9 @@ test("Play keeps a themed fallback if its painted border has not loaded", async 
   expect(style.background).toContain("linear-gradient");
   expect(style.radius).toBeGreaterThanOrEqual(10);
   await play.click();
-  await expect(page.getByRole("button", { name: "Open game menu" })).toBeVisible();
+  await expect(
+    page.getByRole("button", { name: "Open game menu" }),
+  ).toBeVisible();
 });
 
 test("Core logo matches selection, card, pause legend and previous card", async ({
@@ -165,6 +168,7 @@ test("Core logo matches selection, card, pause legend and previous card", async 
   ).toHaveAttribute("data-seal", /art\/packs\/core.svg$/);
   await page.getByRole("button", { name: "Done" }).click();
   await page.getByRole("button", { name: "Play", exact: true }).click();
+  await expect(page.locator(".progress")).toBeVisible();
   await seedPlain(page);
   await page.getByRole("button", { name: "Reveal card", exact: true }).click();
   await expect(page.locator(".card-stage")).not.toHaveClass(/flip|settle|deal/);

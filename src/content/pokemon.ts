@@ -10,9 +10,35 @@ import { cardFactory, roll, rollTable } from "./author";
 // slaps and rough dares are not softened. The source sheet is kept raw at
 // reference/pokemon_board_spaces.json; never rewrite it to match this file.
 // Keep IDs stable: active sessions snapshot their text and order.
+//
+// Pokémon League mode: gym cards earn the table a badge when they are put
+// aside, the eighth badge deals the Pokémon League, and beating it ends the
+// game. Eight of the fifteen gyms are spread through the first 40 draws
+// (`paceQuest` in the engine), so a run lasts about 30 to 40 cards. In the
+// Short, Long and Infinite modes these are ordinary cards.
 const card = cardFactory("pokemon");
 
-export const pokemonCards: CardDefinition[] = [
+const gyms = new Set(
+  [
+    "gym-battle",
+    "misty",
+    "chuck",
+    "pryce",
+    "clair",
+    "flannery",
+    "winona",
+    "tate-liza",
+    "brawly",
+    "norman",
+    "viridian",
+    "erika",
+    "sootopolis",
+    "bugsy",
+    "jasmine",
+  ].map((id) => `pokemon.${id}`),
+);
+
+const deck: CardDefinition[] = [
   // --- Wild encounters (straight prompts) ----------------------------------
   card(
     "mareep",
@@ -100,12 +126,7 @@ export const pokemonCards: CardDefinition[] = [
     "sip",
     "Diglett used Dig! Dig deep and finish your drink.",
   ),
-  card(
-    "poliwag",
-    "Poliwag",
-    "sip",
-    "Poliwag used Hydro Pump! Shotgun a beer.",
-  ),
+  card("poliwag", "Poliwag", "sip", "Poliwag used Hydro Pump! Shotgun a beer."),
   card(
     "electabuzz",
     "Electabuzz",
@@ -356,7 +377,12 @@ export const pokemonCards: CardDefinition[] = [
     "Clair's dragons! Drink 2, then roll d6. Odd: drink 4 more. Even: safe.",
     rollTable(1, 6, [
       { min: 1, max: 5, step: 2, instruction: "Drink 4 more." },
-      { min: 2, max: 6, step: 2, instruction: "Safe. The dragon is impressed." },
+      {
+        min: 2,
+        max: 6,
+        step: 2,
+        instruction: "Safe. The dragon is impressed.",
+      },
     ]),
   ),
   card(
@@ -846,7 +872,12 @@ export const pokemonCards: CardDefinition[] = [
     "challenge",
     "Pelipper used Stockpile! Mix a splash of everyone's drink. Roll d6. Even: swallow it. Odd: choose who drinks it.",
     rollTable(1, 6, [
-      { min: 1, max: 5, step: 2, instruction: "Spit Up! Choose who drinks it." },
+      {
+        min: 1,
+        max: 5,
+        step: 2,
+        instruction: "Spit Up! Choose who drinks it.",
+      },
       { min: 2, max: 6, step: 2, instruction: "Swallow it." },
     ]),
   ),
@@ -926,7 +957,12 @@ export const pokemonCards: CardDefinition[] = [
     "challenge",
     "Sootopolis Gym! Roll d6. Even: chug a glass of water. Odd: chug your drink to completion.",
     rollTable(1, 6, [
-      { min: 1, max: 5, step: 2, instruction: "Chug your drink to completion." },
+      {
+        min: 1,
+        max: 5,
+        step: 2,
+        instruction: "Chug your drink to completion.",
+      },
       { min: 2, max: 6, step: 2, instruction: "Chug a glass of water." },
     ]),
   ),
@@ -944,6 +980,38 @@ export const pokemonCards: CardDefinition[] = [
   ),
 ];
 
+// The quest finale: dealt when the table earns its fourth badge, never
+// shuffled into the deck.
+const league = card(
+  "league",
+  "Pokémon League",
+  "challenge",
+  "Eight badges! The whole table takes on the Champion. Roll d20.",
+  rollTable(1, 20, [
+    {
+      min: 1,
+      max: 5,
+      instruction: "The Champion sweeps. Everyone finishes their drink.",
+    },
+    { min: 6, max: 12, instruction: "A close fight. Everyone drinks 3." },
+    {
+      min: 13,
+      max: 19,
+      instruction: "Victory! Hand out 5 drinks while everyone toasts you.",
+    },
+    {
+      min: 20,
+      max: 20,
+      instruction: "Hall of Fame. Make a rule for the rest of the game.",
+    },
+  ]),
+);
+
+export const pokemonCards: CardDefinition[] = [
+  ...deck.map((c) => (gyms.has(c.id) ? { ...c, quest: "pokemon" } : c)),
+  league,
+];
+
 export const pokemonPack: PackDefinition = {
   version: 1,
   id: "pokemon",
@@ -951,5 +1019,13 @@ export const pokemonPack: PackDefinition = {
   title: "Pokémon night",
   description:
     "A whole region of wild encounters, gym battles, catches, and rivals. The board stayed home; the dice came along.",
-  cardIds: pokemonCards.map((card) => card.id),
+  cardIds: deck.map((card) => card.id),
+  quest: {
+    mode: "Pokémon League",
+    summary: "Earn 8 badges",
+    label: "Badges",
+    goal: 8,
+    length: 40,
+    finaleId: league.id,
+  },
 };

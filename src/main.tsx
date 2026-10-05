@@ -1,7 +1,8 @@
 import React, { useEffect, useState, type CSSProperties } from "react";
 import { createRoot } from "react-dom/client";
 import { useRegisterSW } from "virtual:pwa-register/react";
-import { cards, packs } from "./content/catalog";
+import { packs } from "./content/manifest.generated";
+import { loadedPackCards, loadPackCards } from "./content/loaders";
 import { createSession, replaySession } from "./game/engine";
 import {
   loadPreferences,
@@ -25,6 +26,7 @@ import { Completion } from "./screens/Completion";
 import { GameDialogs, type DialogName } from "./screens/GameDialogs";
 import { useWakeLock } from "./app/wakeLock";
 import { PortraitGate } from "./components/PortraitGate";
+import { QuestMeter } from "./components/QuestMeter";
 import "./style.css";
 import "./presentation/theme.css";
 import "./presentation/card-front.css";
@@ -61,7 +63,9 @@ function App() {
     [updateReady, setUpdateReady] = useState(false),
     [modal, setModal] = useState<DialogName>(null),
     [standalone, setStandalone] = useState(isStandaloneApp),
-    [hidden, setHidden] = useState(document.hidden);
+    [hidden, setHidden] = useState(document.hidden),
+    [starting, setStarting] = useState(false),
+    [loadFailed, setLoadFailed] = useState(false);
   const { controller, session, outgoing, motion, transition, finishingRoll } =
     usePresentation(
       () =>
@@ -167,18 +171,32 @@ function App() {
       document.removeEventListener("visibilitychange", onVisibility);
     };
   }, []);
+  // Warm the selected packs' card chunks while setup is open, so Play starts
+  // from memory. Card text never blocks the first screen.
+  useEffect(() => {
+    if (!display) void loadPackCards(prefs.config.packIds).catch(() => {});
+  }, [display, prefs.config.packIds]);
   const start = () => {
     const packIds = prefs.config.packIds.filter((id) =>
       packs.some((pack) => pack.id === id),
     );
-    if (!packIds.length) return;
+    if (!packIds.length || starting) return;
+    const { quest, ...rest } = prefs.config;
     const config = {
-      ...prefs.config,
+      ...rest,
       packIds,
       limit: MODE_LIMITS[prefs.choice],
+      ...(prefs.choice === "quest" && quest ? { quest } : {}),
     };
     setPrefs({ ...prefs, config });
-    controller.start(createSession(config, cards, packs));
+    const ready = loadedPackCards(packIds);
+    if (ready) return controller.start(createSession(config, ready, packs));
+    setStarting(true);
+    setLoadFailed(false);
+    loadPackCards(packIds)
+      .then((cards) => controller.start(createSession(config, cards, packs)))
+      .catch(() => setLoadFailed(true))
+      .finally(() => setStarting(false));
   };
   const finish = (id: number) => controller.finish(id);
   const styles = Object.fromEntries(
@@ -200,8 +218,9 @@ function App() {
           <header className="topbar">
             {active ? (
               <>
-                {/* One row of table furniture: the count on a brass
-                    medallion, the menu on a matching stud. */}
+                {/* One row of table furniture: a pack quest's meter, the
+                    count on a brass medallion, the menu on a matching stud. */}
+                <QuestMeter session={display} />
                 <div
                   className="progress"
                   role="img"
@@ -243,6 +262,11 @@ function App() {
         {notice && (
           <Notice>
             Saving is unavailable. This game may not survive closing the app.
+          </Notice>
+        )}
+        {loadFailed && !display && (
+          <Notice>
+            Couldn’t load the cards. Check the connection and try again.
           </Notice>
         )}
         {corrupt ? (
