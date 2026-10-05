@@ -2,7 +2,7 @@ import { test, expect, type Page } from "@playwright/test";
 import { createSession } from "../../src/game/engine";
 import { rollDice } from "../../src/game/dice";
 import { cards, packs } from "../../src/content/catalog";
-const key = "drink-at-ron.session.v1";
+const key = "side-quest.session.v1";
 const cheers = cards.find((c) => c.id === "core.cheers-idiots")!;
 const diceCard = cards.find((c) => c.dice)!;
 function sessionFor(
@@ -331,7 +331,7 @@ test("rapid taps during a reveal commit one action", async ({ page }) => {
   await expect(page.locator(".progress")).toContainText("1 /");
   const saved = await page.evaluate(
     (key) => JSON.parse(localStorage.getItem(key)!),
-    "drink-at-ron.session.v1",
+    "side-quest.session.v1",
   );
   expect(saved.discarded).toBe(0);
   expect(saved.phase).toBe("revealed");
@@ -354,7 +354,7 @@ test("dragging an overflowing title scrubs instead of discarding", async ({
   await expect(page.locator(".card-stage")).not.toHaveClass(/discard/);
   const saved = await page.evaluate(
     (key) => JSON.parse(localStorage.getItem(key)!),
-    "drink-at-ron.session.v1",
+    "side-quest.session.v1",
   );
   expect(saved.discarded).toBe(0);
   expect(saved.phase).toBe("revealed");

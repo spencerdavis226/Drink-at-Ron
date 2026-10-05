@@ -1,7 +1,7 @@
 import { test, expect, type Page } from "@playwright/test";
 import { createSession } from "../../src/game/engine";
 import { cards, packs } from "../../src/content/catalog";
-const key = "drink-at-ron.session.v1";
+const key = "side-quest.session.v1";
 const diceCard = cards.find((c) => c.dice)!;
 async function seedDice(page: Page) {
   const session = createSession(

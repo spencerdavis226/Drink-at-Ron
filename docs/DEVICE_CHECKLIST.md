@@ -49,5 +49,5 @@ Automated evidence is recorded in `docs/studies/README.md`. Keep the following p
 
 - [ ] Approve the short, long, and temporary-rule front studies on an iPhone and iPad.
 - [ ] Play Short (30 cards from the 105-card Core deck) using the playtest record, then sample more cards in Infinite with the House deck. Engine tests cover the full shuffle cycle.
-- [ ] Verify the published `/Drink-at-Ron/` URL, Home Screen installation, offline relaunch, and updates on iOS.
+- [ ] Verify the published `/side-quest/` URL, Home Screen installation, offline relaunch, and updates on iOS.
 - [ ] Evaluate the approved frame and live title sharpness, scrolling with enlarged text, and flip smoothness on physical devices.

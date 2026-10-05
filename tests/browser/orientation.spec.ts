@@ -2,7 +2,7 @@ import { test, expect } from "@playwright/test";
 import { createSession } from "../../src/game/engine";
 import { cards, packs } from "../../src/content/catalog";
 
-const saveKey = "drink-at-ron.session.v1";
+const saveKey = "side-quest.session.v1";
 
 test("@release mobile landscape blocks play without changing the saved game", async ({
   page,

@@ -28,7 +28,7 @@ pack,id,title,category,rules,dice,review
 "core","core.elders","Respect Your Elders","group","Oldest player drinks 2. You owe them this.","",""
 "core","core.youth","Youth Is Wasted","group","Youngest player drinks 2. Youth is wasted on them.","",""
 "core","core.tallest","Big Friendly Giant","group","Tallest player drinks 2.","",""
-"core","core.new-blood","New Blood","group","First time Drink-at-Ron players drink 13. Get absolutely fucked.","",""
+"core","core.new-blood","New Blood","group","First time Side Quest players drink 13. Get absolutely fucked.","",""
 "core","core.late-arrival","Fashionably Late","group","Last to arrive drinks 2. Sinner.","",""
 "core","core.couples","Couples Drink","group","Couples drink 2. Singles give 2 and sulk.","",""
 "core","core.birthday","Birthday Month","group","Your birthday this month? Drink 2. Everyone else toasts you.","",""

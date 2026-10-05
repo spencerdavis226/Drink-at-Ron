@@ -8,7 +8,7 @@ import {
 import { returnToCard, rollDice } from "../../src/game/dice";
 import type { SessionState } from "../../src/game/types";
 import { cards, packs } from "../../src/content/catalog";
-const key = "drink-at-ron.session.v1";
+const key = "side-quest.session.v1";
 
 // A Pokémon League game one badge short, with a gym leader without dice
 // (Jasmine) revealed.
@@ -74,7 +74,9 @@ for (const width of [320, 390])
     await expect(meter).toHaveAccessibleName("Legendary");
     await expect(meter).toHaveClass(/due/);
     const stageBanner = page.locator(".stage-banner");
-    await expect(stageBanner).toHaveText(/Pokémon League\s*A Legendary appears/);
+    await expect(stageBanner).toHaveText(
+      /Pokémon League\s*A Legendary appears/,
+    );
     await expect(stageBanner).toHaveClass(/banner-pearl/);
     await page.screenshot({ path: info.outputPath(`banner-${width}.png`) });
     await page.getByRole("button", { name: "Reveal card" }).click();

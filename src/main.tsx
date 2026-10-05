@@ -7,6 +7,7 @@ import { createSession, questRecord, replaySession } from "./game/engine";
 import {
   loadPreferences,
   loadSession,
+  migrateStorageKeys,
   MODE_LIMITS,
   requestPersistence,
   save,
@@ -31,6 +32,7 @@ import { StageBanner } from "./components/StageBanner";
 import "./style.css";
 import "./presentation/theme.css";
 import "./presentation/card-front.css";
+migrateStorageKeys();
 function isStandaloneApp() {
   return (
     window.matchMedia("(display-mode: standalone)").matches ||

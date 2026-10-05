@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test";
 import { cards } from "../../src/content/catalog";
 
-const storageKey = "drink-at-ron.card-review.v1";
+const storageKey = "side-quest.card-review.v1";
 const total = cards.length;
 
 test("card review autosaves decisions and exports a Codex handoff", async ({

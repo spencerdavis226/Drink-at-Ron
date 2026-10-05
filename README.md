@@ -2,7 +2,9 @@
 
 A portrait-first party card game for one shared iPhone or iPad. Choose packs and a deck length, tap to reveal, then tap to discard. No accounts, backend, or paid services.
 
-Side Quest was called Drink at Ron (a riff on Drink-O-Tron) until 2026-10-05. The repository, the `/Drink-at-Ron/` URL, the `drink-at-ron.*` storage keys, and the raw files in `reference/` keep the old name on purpose: changing them would break installed copies and saved games, or alter supplied sources.
+Live at https://spencerdavis226.github.io/side-quest/.
+
+Side Quest was called Drink at Ron (a riff on Drink-O-Tron) until 2026-10-05. Saves and settings stored under the old `drink-at-ron.*` keys move to the new keys on first launch. The raw files in `reference/` and the supplied House card "Drink at Ron" keep the old name on purpose: they are supplied sources.
 
 See the authoritative [current status, execution plan, and portable handoff](docs/STATUS.md). Agents should read [AGENTS.md](AGENTS.md) first.
 
@@ -28,10 +30,10 @@ The Vite development server does not install a service worker. Offline play requ
 
 ```sh
 npm test
-BASE_PATH=/Drink-at-Ron/ npm run build
+BASE_PATH=/side-quest/ npm run build
 npx playwright install chromium webkit
-CI=1 BASE_PATH=/Drink-at-Ron/ TEST_PORT=4398 npm run test:release
-BASE_PATH=/Drink-at-Ron/ npm run test:update
+CI=1 BASE_PATH=/side-quest/ TEST_PORT=4398 npm run test:release
+BASE_PATH=/side-quest/ npm run test:update
 ```
 
 The release smoke suite exercises the main flow, pack selection, card reading and scrolling, dice, and Pages assets in Chromium and WebKit. Run `npm run test:e2e` and `npm run test:workshop` for exhaustive browser/card checks when needed; they are not required on every publish. Installed Safari Home Screen behavior still needs the [physical-device checklist](docs/DEVICE_CHECKLIST.md).

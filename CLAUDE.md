@@ -6,7 +6,7 @@ AGENTS.md (imported above) holds the binding constraints and commands; `docs/STA
 
 ## What this is
 
-**Side Quest** (formerly Drink at Ron; see README for what keeps the old name): a pass-the-phone drinking-card game, a Vite + React 19 + TypeScript PWA hosted on GitHub Pages (`/Drink-at-Ron/`). Target platform: **iPhone and iPad, Safari, added to the Home Screen** so it behaves like a native app (standalone, offline, one-handed, table-distance reading). Desktop is for development only. Judge every change against: iOS Safari/WebKit, standalone display mode, offline, safe areas, and 2:3 card legibility.
+**Side Quest** (formerly Drink at Ron, a riff on Drink-O-Tron; see README for what keeps the old name): a pass-the-phone drinking-card game, a Vite + React 19 + TypeScript PWA hosted on GitHub Pages (`/side-quest/`). Target platform: **iPhone and iPad, Safari, added to the Home Screen** so it behaves like a native app (standalone, offline, one-handed, table-distance reading). Desktop is for development only. Judge every change against: iOS Safari/WebKit, standalone display mode, offline, safe areas, and 2:3 card legibility.
 
 ## Map
 
