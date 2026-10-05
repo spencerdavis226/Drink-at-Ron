@@ -82,12 +82,13 @@ test("@release the pack count stays readable with every pack selected", async ({
     "VIP night",
     "Pokémon night",
     "Cabin weekend",
+    "Most Likely To",
   ])
     await dialog.getByRole("button", { name, exact: true }).click();
   await dialog.getByRole("button", { name: "Done" }).click();
   const row = page.locator(".pack-selector");
-  await expect(row.locator(".pack-logo")).toHaveCount(5);
-  const count = row.getByText("434 cards");
+  await expect(row.locator(".pack-logo")).toHaveCount(6);
+  const count = row.getByText("684 cards");
   await expect(count).toBeVisible();
   expect(
     await count.evaluate((el) => {

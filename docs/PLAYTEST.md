@@ -41,7 +41,7 @@ Status: **prepared, no results recorded.** Kit prepared 2026-09-21 at commit `3e
 
 ## Copy and pack decisions (need user approval)
 
-- **Pack names/copy.** `The Core deck` (generated main deck, 116), `The House deck` (supplied sheet, 102), `VIP night` (16), `Pokémon night` (board sheets, 134), `Cabin weekend` (CABIIN 2.0, 85). Keep, or rename?
+- **Pack names/copy.** `The Core deck` (generated main deck, 116), `The House deck` (supplied sheet, 102), `VIP night` (16), `Pokémon night` (board sheets, 134), `Cabin weekend` (CABIIN 2.0, 85), `Most Likely To` (250). Keep, or rename?
 - **Dice cards.** Every roll now resolves to one exact instruction in the engine. Check the odds/evens, doubles, and per-die cards on the phone; note any result you would read differently.
 - **`VIP night` name/copy.** Keep, or rename? The pack mark is `art/packs/vip.svg`.
 - **Card wording.** The sample text is supplied as-is, including the crude language. Note any line you want changed; unchanged concepts keep their IDs, unrelated replacements get new IDs. Discuss balance after observing the expanded deck; keep IDs stable for copy edits.
@@ -51,7 +51,7 @@ Status: **prepared, no results recorded.** Kit prepared 2026-09-21 at commit `3e
 
 Add rows or annotate the sheet below. Mark each card: `fine`, `confusing`, `skipped`, or `remove`.
 
-Use the generated [card review sheet](CARD_REVIEW.md) or [CSV](card-review.csv) to record per-card observations for all 434 cards (105 Core, 102 House, 16 VIP, 134 Pokémon, 77 Cabin). Keep this file for session findings and decisions. The House IDs include their source sheet row numbers for comparison.
+Use the generated [card review sheet](CARD_REVIEW.md) or [CSV](card-review.csv) to record per-card observations for all 684 cards (105 Core, 102 House, 16 VIP, 134 Pokémon, 77 Cabin, 250 Most Likely To). Keep this file for session findings and decisions. The House IDs include their source sheet row numbers for comparison.
 
 ## Device checks
 

@@ -1,7 +1,7 @@
 import React, { useEffect, useState, type CSSProperties } from "react";
 import { createRoot } from "react-dom/client";
 import { useRegisterSW } from "virtual:pwa-register/react";
-import { cards, packs } from "./content/catalog";
+import { catalog, loadCatalog } from "./content/registry";
 import { createSession, replaySession } from "./game/engine";
 import {
   loadPreferences,
@@ -53,6 +53,7 @@ if ("serviceWorker" in navigator) {
   });
 }
 function App() {
+  const { cards, packs } = catalog();
   const [loaded] = useState(loadSession),
     [corrupt, setCorrupt] = useState(loaded.corrupt),
     [notice, setNotice] = useState(loaded.unavailable),
@@ -326,28 +327,31 @@ const renderApp = () =>
     </React.StrictMode>,
   );
 if (import.meta.env.DEV && params.get("preview") === "1") {
-  void import("./workshop/Preview").then(({ default: Preview }) =>
-    root.render(
-      <React.StrictMode>
-        <Preview />
-      </React.StrictMode>,
-    ),
+  void Promise.all([import("./workshop/Preview"), loadCatalog()]).then(
+    ([{ default: Preview }]) =>
+      root.render(
+        <React.StrictMode>
+          <Preview />
+        </React.StrictMode>,
+      ),
   );
 } else if (import.meta.env.DEV && params.get("review") === "1") {
-  void import("./workshop/CardReview").then(({ default: CardReview }) =>
-    root.render(
-      <React.StrictMode>
-        <CardReview />
-      </React.StrictMode>,
-    ),
+  void Promise.all([import("./workshop/CardReview"), loadCatalog()]).then(
+    ([{ default: CardReview }]) =>
+      root.render(
+        <React.StrictMode>
+          <CardReview />
+        </React.StrictMode>,
+      ),
   );
 } else if (import.meta.env.DEV && params.get("workshop") === "1") {
-  void import("./workshop/Workshop").then(({ default: Workshop }) =>
-    root.render(
-      <React.StrictMode>
-        <Workshop />
-      </React.StrictMode>,
-    ),
+  void Promise.all([import("./workshop/Workshop"), loadCatalog()]).then(
+    ([{ default: Workshop }]) =>
+      root.render(
+        <React.StrictMode>
+          <Workshop />
+        </React.StrictMode>,
+      ),
   );
 } else {
   // The painted surfaces are CSS images, which WebKit only discovers once the
@@ -370,8 +374,13 @@ if (import.meta.env.DEV && params.get("preview") === "1") {
   // A dead connection must not strand the app on bare wood; the themed
   // fallbacks take over after the cap.
   const cap = new Promise((resolve) => window.setTimeout(resolve, 4000));
+  // The card catalog is a lazy chunk fetched alongside the art. Unlike the
+  // art it has no fallback, so the first render always waits for it.
+  const content = loadCatalog();
   void Promise.race([
     Promise.all([...firstScreen.map(preloadUrl), ...fonts]),
     cap,
-  ]).then(renderApp);
+  ])
+    .then(() => content)
+    .then(renderApp);
 }

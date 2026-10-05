@@ -1,10 +1,10 @@
 import type { PackDefinition } from "../game/types";
-import { packs } from "../content/catalog";
+import { catalog as installed } from "../content/registry";
 /** Cosmetic identity comes from the installed catalog, never changes the saved draw order. */
 export function cardPacks(
   cardId: string,
   selected?: readonly string[],
-  catalog: readonly PackDefinition[] = packs,
+  catalog: readonly PackDefinition[] = installed().packs,
 ) {
   return catalog.filter(
     (pack) =>
@@ -13,5 +13,5 @@ export function cardPacks(
   );
 }
 export function selectedPacks(ids: readonly string[]) {
-  return packs.filter((pack) => ids.includes(pack.id));
+  return installed().packs.filter((pack) => ids.includes(pack.id));
 }

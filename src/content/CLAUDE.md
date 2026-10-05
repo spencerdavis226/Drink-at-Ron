@@ -9,6 +9,9 @@ Read `docs/AUTHORING.md` and `docs/CARD_VOICE_REFERENCE.md` before editing. Card
 | `vip.ts` (+ the four in `custom.ts`) | `vip` | 16 |
 | `pokemon.ts` | `pokemon` | 134 |
 | `cabin.ts` (+ 8 House rows shared by ID) | `cabin` | 77 own, 85 in the pack |
+| `likely.ts` | `likely` (vote cards, IDs `likely.NNN` by list position) | 250 |
+
+`catalog.ts` is a lazy chunk in production. App code reads it through `registry.ts` (`catalog()` after `loadCatalog()`); never import `catalog.ts` statically from `src/` outside the workshop, or the card text returns to the initial bundle budget.
 
 Rules enforced by `npm run build` (`scripts/validate-content.ts`) and unit tests:
 

@@ -42,7 +42,7 @@ test("each supplied sheet row lands in the House deck and VIP night", () => {
   expect(vip.cardIds.slice(-4)).toEqual(
     [3, 4, 5, 6].map((row) => `vip.sheet-${String(row).padStart(3, "0")}`),
   );
-  expect(cards).toHaveLength(434); // 105 core + 102 house + 16 vip + 134 Pokémon + 77 cabin
+  expect(cards).toHaveLength(684); // 105 core + 102 house + 16 vip + 134 Pokémon + 77 cabin + 250 likely
 });
 
 test("Cabin weekend owns its CABIIN cards and shares a few House rows", () => {
@@ -60,5 +60,19 @@ test("Cabin weekend owns its CABIIN cards and shares a few House rows", () => {
   for (const id of ["smooth-brain", "samesies", "thanos-snap", "for-safety"]) {
     expect(core.cardIds).not.toContain(`core.${id}`);
     expect(own).toContain(`cabin.${id}`);
+  }
+});
+
+test("Most Likely To is 250 standalone vote cards", () => {
+  const likely = packs.find((p) => p.id === "likely")!;
+  const voteCards = cards.filter((c) => likely.cardIds.includes(c.id));
+  expect(voteCards).toHaveLength(250);
+  for (const card of voteCards) {
+    expect(card.title).toBe("Most Likely To");
+    expect(card.category).toBe("group");
+    expect(card.dice).toBeUndefined();
+    expect(card.rules).toMatch(
+      /Point on three: most votes (drinks [23]|finishes their drink|takes a shot)\.$/,
+    );
   }
 });

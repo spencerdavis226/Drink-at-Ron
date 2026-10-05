@@ -1,4 +1,5 @@
-import { packs, validateCatalog } from "../content/catalog";
+import { catalog } from "../content/registry";
+import { validateCatalog } from "../content/validate";
 import { validateRoll } from "../game/dice";
 import { validConfig } from "../game/engine";
 import type { GameConfig, SessionState } from "../game/types";
@@ -20,6 +21,7 @@ export const defaults: Preferences = {
 };
 /** Keep only installed packs; never let a stale selection empty the deck. */
 const knownPackIds = (ids: readonly string[]) => {
+  const { packs } = catalog();
   const known = packs.map((pack) => pack.id).filter((id) => ids.includes(id));
   return known.length ? known : [packs[0].id];
 };
