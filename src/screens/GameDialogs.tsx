@@ -3,10 +3,12 @@ import type { SessionState } from "../game/types";
 import { Button, Modal } from "../components/UI";
 import { PackLogo } from "../components/PackMarks";
 import { selectedPacks } from "../presentation/packs";
-import { findCard } from "../game/engine";
+import { findCard, questRecord } from "../game/engine";
+import { QuestRecord } from "../components/QuestRecord";
 import { CardFrame } from "../components/Cards";
 import { theme } from "../presentation/theme";
-export type DialogName = "menu" | "previous" | "end" | "install" | null;
+export type DialogName =
+  "menu" | "previous" | "end" | "install" | "badges" | null;
 // Unmount just after the shared exit animation finishes. The timer is the
 // bounded fallback, so a missing/again-changing animation can never strand the
 // dialog open.
@@ -113,6 +115,18 @@ export function GameDialogs({
           packIds={session.config.packIds}
           card={findCard(session, session.previousId)!}
         />
+        <Button onClick={() => setModal(null)}>Back to game</Button>
+      </Modal>
+    );
+  const record = session && questRecord(session);
+  if (displayed === "badges" && record)
+    return (
+      <Modal
+        title={record.label}
+        onClose={() => setModal(null)}
+        exiting={exiting}
+      >
+        <QuestRecord record={record} />
         <Button onClick={() => setModal(null)}>Back to game</Button>
       </Modal>
     );

@@ -38,11 +38,19 @@ export interface CardDefinition {
   quest?: string;
   /** A short gold ribbon on the card face, e.g. "Gym Leader · Boulder Badge". */
   ribbon?: string;
+  /** The ribbon's finish; gold when absent. The League gives each finale
+   * stage its own: pearl Legendaries, violet Elite Four, crimson Champions. */
+  ribbonTone?: RibbonTone;
 }
+export const RIBBON_TONES = ["pearl", "violet", "crimson"] as const;
+export type RibbonTone = (typeof RIBBON_TONES)[number];
 /** One stage of a quest's finale: `pick` cards drawn at random from
  * `cardIds` when the game starts (e.g. the Elite Four: 4 of 9). */
 export interface QuestStage {
   label: string;
+  /** The banner line that sweeps across the table as the stage begins, e.g.
+   * "A Legendary appears". Display only; never saved. */
+  intro?: string;
   pick: number;
   cardIds: string[];
 }

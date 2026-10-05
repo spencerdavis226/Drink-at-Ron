@@ -4,6 +4,7 @@ import {
   createSession,
   currentCard,
   finaleStage,
+  questRecord,
   replaySession,
   validConfig,
 } from "../src/game/engine";
@@ -149,6 +150,7 @@ describe("quest mode", () => {
     expect(currentCard(s).id).toBe(rival);
     expect(finaleStage(s.quest!)).toEqual({
       label: "Rival",
+      stage: 0,
       index: 0,
       size: 1,
     });
@@ -171,6 +173,77 @@ describe("quest mode", () => {
     expect(s.previousId).toBe("quest.boss");
     expect(s.discarded).toBe(4);
     roundTrip(s);
+  });
+
+  it("records the run without spoiling the finale picks still to come", () => {
+    const at = (s: SessionState) => {
+      const r = questRecord(s)!;
+      return {
+        earned: r.earned.map((c) => c.id),
+        stages: r.stages.map((stage) => stage.cards.map((c) => c.id)),
+        won: r.won,
+      };
+    };
+    let s = gymsFirst();
+    expect(at(s)).toEqual({ earned: [], stages: [[], []], won: false });
+    // A revealed gym is not earned until it is put aside.
+    s = advance(s, rng);
+    expect(at(s).earned).toEqual([]);
+    s = draw(draw(gymsFirst()));
+    const [rival] = s.quest!.finale;
+    expect(at(s)).toEqual({
+      earned: ["quest.gym-a", "quest.gym-b"],
+      stages: [[], []],
+      won: false,
+    });
+    s = draw(s);
+    expect(at(s).stages).toEqual([[rival], []]);
+    s = advance(s, rng);
+    s = advance(returnToCard(rollDice(s, rng)), rng);
+    expect(s.phase).toBe("complete");
+    expect(at(s)).toMatchObject({
+      stages: [[rival], ["quest.boss"]],
+      won: true,
+    });
+    // A game without a quest has no record.
+    const plainGame = createSession(
+      { version: 1, packIds: ["quest"], limit: 30 },
+      catalog,
+      [pack],
+      rng,
+    );
+    expect(questRecord(plainGame)).toBeNull();
+  });
+
+  it("a ribbon's tone needs the ribbon and a known finish", () => {
+    const ribboned = plain("toned", { ribbon: "Rival", ribbonTone: "violet" });
+    expect(() => validateCatalog([...catalog, ribboned], [])).not.toThrow();
+    for (const bad of [
+      plain("toned", { ribbonTone: "violet" }),
+      plain("toned", {
+        ribbon: "Rival",
+        ribbonTone: "teal" as unknown as "violet",
+      }),
+    ])
+      expect(() => validateCatalog([...catalog, bad], [])).toThrow(
+        "Invalid ribbon tone",
+      );
+    const intro = (value: unknown) =>
+      validateCatalog(catalog, [
+        {
+          ...pack,
+          quest: {
+            ...pack.quest!,
+            finale: [
+              { ...pack.quest!.finale[0], intro: value as string },
+              pack.quest!.finale[1],
+            ],
+          },
+        },
+      ]);
+    expect(() => intro("A rival appears")).not.toThrow();
+    expect(() => intro(" ")).toThrow("Invalid quest");
+    expect(() => intro("x".repeat(29))).toThrow("Invalid quest");
   });
 
   it("a card outside the quest leaves the meter alone", () => {

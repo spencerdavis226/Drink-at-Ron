@@ -5,8 +5,17 @@ import { PackLogo } from "./PackMarks";
 
 /** A quest mode's table-wide meter, in the play screen's top row: the goal's
  * progress (Badges 3/8), then the finale stage in play (Elite Four 2/4, or
- * VS for a single card). It glows through the finale. */
-export function QuestMeter({ session }: { session: SessionState }) {
+ * VS for a single card). It glows through the finale, and a tap opens the
+ * badge case. */
+export function QuestMeter({
+  session,
+  disabled,
+  onOpen,
+}: {
+  session: SessionState;
+  disabled: boolean;
+  onOpen: () => void;
+}) {
   const quest = session.quest;
   if (!quest) return null;
   const pack = packs.find((p) => p.id === quest.packId);
@@ -24,10 +33,18 @@ export function QuestMeter({ session }: { session: SessionState }) {
     : `${label}: ${quest.count} of ${quest.goal}`;
   return (
     <div className="quest-meters">
-      <div
+      <button
+        type="button"
         className={`quest-meter${quest.due ? " due" : ""}`}
-        role="img"
         aria-label={spoken}
+        aria-haspopup="dialog"
+        disabled={disabled}
+        // Safari does not focus a tapped button; the dialog restores focus to
+        // the opener, so take it here (as Button does).
+        onClick={(event) => {
+          event.currentTarget.focus();
+          onOpen();
+        }}
       >
         {pack && <PackLogo pack={pack} decorative />}
         <span>
@@ -40,7 +57,7 @@ export function QuestMeter({ session }: { session: SessionState }) {
             {count}
           </strong>
         </span>
-      </div>
+      </button>
     </div>
   );
 }

@@ -105,7 +105,7 @@ export function CardFace({
   }, [resolved, card.id]);
   return (
     <div
-      className={`study-face${card.ribbon ? " has-ribbon" : ""}`}
+      className={`study-face${card.ribbon ? ` has-ribbon tone-${card.ribbonTone ?? "gold"}` : ""}`}
       // A drag anywhere on the face (rules or an enlarged title) must scroll or
       // scrub, never activate the card action. A stationary tap still passes.
       onPointerDown={(event) => {

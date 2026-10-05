@@ -406,6 +406,43 @@
 .has-ribbon .study-rules {
   padding-top: max(4px, 0.9cqw);
 }
+/* Each League finale stage has its own finish, so the table can tell a
+   Legendary from the Elite Four from the Champion at a glance. Gold (above)
+   stays the gym leaders'. The title follows the ribbon's colour. */
+.tone-pearl .card-ribbon {
+  background: linear-gradient(180deg, #fbf7ee 0%, #d9d6e6 50%, #a7b7c9 100%);
+  color: #2b2c40;
+}
+.tone-violet .card-ribbon {
+  background: linear-gradient(180deg, #a98bd9 0%, #6b47a8 55%, #432a72 100%);
+  color: #fbefff;
+  text-shadow: 0 1px 0 #1d0d36;
+}
+.tone-crimson .card-ribbon {
+  background: linear-gradient(180deg, #d9534a 0%, #a3231f 55%, #6a1210 100%);
+  color: #ffe6a6;
+  text-shadow: 0 1px 0 #3b0605;
+  box-shadow:
+    inset 0 1px #ffd98a99,
+    inset 0 -1px #ffd98a66,
+    0 0 0 1px #e5b65a;
+}
+.has-ribbon.tone-pearl .study-title h2 {
+  color: #f4f1ff;
+  text-shadow:
+    0 1px 0 #1d2033,
+    0 0 10px rgb(196 214 255 / 0.55);
+}
+.has-ribbon.tone-violet .study-title h2 {
+  color: #e2cdff;
+  text-shadow: 0 1px 0 #1d0d36;
+}
+.has-ribbon.tone-crimson .study-title h2 {
+  color: #ffd27a;
+  text-shadow:
+    0 1px 0 #3b0605,
+    0 0 12px rgb(255 120 80 / 0.5);
+}
 @media (prefers-reduced-motion: reduce) {
   .face .card-ribbon::after {
     animation: none;

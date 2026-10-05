@@ -412,6 +412,7 @@ export const packs: PackDefinition[] = [
       finale: [
         {
           label: "Legendary",
+          intro: "A Legendary appears",
           pick: 1,
           cardIds: [
             "pokemon.legendary-articuno",
@@ -426,6 +427,7 @@ export const packs: PackDefinition[] = [
         },
         {
           label: "Elite Four",
+          intro: "The Elite Four await",
           pick: 4,
           cardIds: [
             "pokemon.elite-lorelei",
@@ -441,6 +443,7 @@ export const packs: PackDefinition[] = [
         },
         {
           label: "Champion",
+          intro: "The Champion awaits",
           pick: 1,
           cardIds: [
             "pokemon.league-champion-blue",

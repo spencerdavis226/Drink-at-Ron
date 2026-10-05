@@ -3,7 +3,7 @@ import { createRoot } from "react-dom/client";
 import { useRegisterSW } from "virtual:pwa-register/react";
 import { packs } from "./content/manifest.generated";
 import { loadedPackCards, loadPackCards } from "./content/loaders";
-import { createSession, replaySession } from "./game/engine";
+import { createSession, questRecord, replaySession } from "./game/engine";
 import {
   loadPreferences,
   loadSession,
@@ -27,6 +27,7 @@ import { GameDialogs, type DialogName } from "./screens/GameDialogs";
 import { useWakeLock } from "./app/wakeLock";
 import { PortraitGate } from "./components/PortraitGate";
 import { QuestMeter } from "./components/QuestMeter";
+import { StageBanner } from "./components/StageBanner";
 import "./style.css";
 import "./presentation/theme.css";
 import "./presentation/card-front.css";
@@ -220,7 +221,11 @@ function App() {
               <>
                 {/* One row of table furniture: a pack quest's meter, the
                     count on a brass medallion, the menu on a matching stud. */}
-                <QuestMeter session={display} />
+                <QuestMeter
+                  session={display}
+                  disabled={!!motion}
+                  onOpen={() => setModal("badges")}
+                />
                 <div
                   className="progress"
                   role="img"
@@ -296,22 +301,29 @@ function App() {
         ) : display.phase === "complete" ? (
           <Completion
             count={display.discarded}
+            record={questRecord(display)}
+            mode={
+              packs.find((p) => p.id === display.quest?.packId)?.quest?.mode
+            }
             celebrate={motion === "complete"}
             onReplay={() => controller.start(replaySession(display))}
             onSetup={() => controller.clear()}
             onFinish={() => finish(transition)}
           />
         ) : (
-          <Play
-            session={display}
-            motion={motion}
-            transition={transition}
-            finishingRoll={finishingRoll}
-            onTap={() => controller.tap()}
-            onChoose={(option) => controller.choose(option)}
-            onRevealRoll={() => controller.revealRoll()}
-            onFinish={finish}
-          />
+          <>
+            <Play
+              session={display}
+              motion={motion}
+              transition={transition}
+              finishingRoll={finishingRoll}
+              onTap={() => controller.tap()}
+              onChoose={(option) => controller.choose(option)}
+              onRevealRoll={() => controller.revealRoll()}
+              onFinish={finish}
+            />
+            <StageBanner session={display} />
+          </>
         )}
         {!active && !motion && updateReady && (
           <Button
