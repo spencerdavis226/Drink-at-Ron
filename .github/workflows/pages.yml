@@ -15,7 +15,9 @@ concurrency:
   group: pages-${{ github.ref }}
   cancel-in-progress: true
 env:
-  BASE_PATH: /side-quest/
+  # Pages serves a project site at /<repository name>/, so the base follows
+  # the repository name and survives a rename.
+  BASE_PATH: /${{ github.event.repository.name }}/
   VITE_RELEASE_ID: ${{ github.sha }}
 jobs:
   build:

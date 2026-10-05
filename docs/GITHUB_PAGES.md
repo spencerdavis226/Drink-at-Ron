@@ -19,7 +19,7 @@ BASE_PATH=/side-quest/ CI=1 TEST_PORT=4398 npm run test:release
 BASE_PATH=/side-quest/ npm run test:update
 ```
 
-`TEST_PORT=4183` can select an unused production-test port. CI never attaches to an existing server. Local development uses `/`; production uses `/side-quest/`. All public screens remain at that base URL. Changing the repository name or adding a custom domain requires updating the workflow base path and retesting manifest scope and installation identity.
+`TEST_PORT=4183` can select an unused production-test port. CI never attaches to an existing server. Local development uses `/`; production uses `/side-quest/`. All public screens remain at that base URL. The workflow derives the base path from the repository name, so a rename needs no workflow change (local commands in the docs still name `/side-quest/`). A custom domain serves from `/`, so it needs `BASE_PATH: /` and a retest of manifest scope and installation identity.
 
 The normal PR/main workflow uses the tagged Chromium/WebKit release smoke suite, unit tests, Pages build/budgets, and two-build update check. To run the full production browser suite and every-card workshop sweeps, manually dispatch the same workflow with `full_validation` enabled. Those longer checks are for layout/engine work and dedicated card review, not routine publication. A passing smoke suite is a scoped release gate; report any known full-suite failure separately.
 

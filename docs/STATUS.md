@@ -8,7 +8,7 @@ Updated 2026-10-05. **Single authoritative handoff.** Read `AGENTS.md` first. Ol
 
 **Change.**
 - App: manifest `name`/`short_name` "Side Quest", description "The main quest can wait." (`vite.config.ts`); `<title>` and `apple-mobile-web-app-title` (`index.html`); setup wordmark "Side / Quest"; non-quest completion screen gains a "Side quest complete" kicker above "To good company."; Core card New Blood says "First time Side Quest players"; dice colorset label; package name `side-quest`.
-- URL: `BASE_PATH=/side-quest/` in the workflow and every doc/command. The repository must be renamed to `side-quest` **before** this merges, or the deploy serves assets from a path that does not exist.
+- URL: the workflow derives `BASE_PATH` from the repository name (`/${{ github.event.repository.name }}/`), so the build matches wherever Pages serves it, before or after the rename. Docs and local commands use `/side-quest/`.
 - Storage: keys are now `side-quest.session.v1` / `side-quest.settings.v1` / `side-quest.card-review.v1`. `migrateStorageKeys` (persistence, called first in `main.tsx`) moves the old `drink-at-ron.*` session and settings once (new key wins; old key removed only after a successful copy); the workshop review reads its old key as a fallback. Covered by `tests/storage-keys.test.ts` and a browser test that resumes a game saved under the old key; the legacy-settings browser test now seeds the old key too.
 - Docs: README, AGENTS, CLAUDE files, GITHUB_PAGES, DEVICE_CHECKLIST, card review export.
 
