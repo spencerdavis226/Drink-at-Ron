@@ -13,8 +13,9 @@ test("seeded workshop preserves the pool and reproduces order", () => {
 test("Core composition matches the trimmed content brief", () => {
   const core = packs.find((p) => p.id === "core")!;
   const coreCards = cards.filter((c) => core.cardIds.includes(c.id));
-  // Sample set (34), trimmed classics (45), trimmed standard expansion (37).
-  expect(coreCards).toHaveLength(116);
+  // Sample set (31), trimmed classics (45), trimmed standard expansion (29);
+  // the CABIIN-born cards moved to Cabin weekend.
+  expect(coreCards).toHaveLength(105);
   expect(
     Object.fromEntries(
       ["sip", "group", "category", "challenge", "rule"].map((c) => [
@@ -22,8 +23,8 @@ test("Core composition matches the trimmed content brief", () => {
         coreCards.filter((card) => card.category === c).length,
       ]),
     ),
-  ).toEqual({ sip: 18, group: 23, category: 9, challenge: 51, rule: 15 });
-  expect(coreCards.filter((c) => c.dice)).toHaveLength(38);
+  ).toEqual({ sip: 16, group: 22, category: 9, challenge: 43, rule: 15 });
+  expect(coreCards.filter((c) => c.dice)).toHaveLength(36);
 });
 
 test("each supplied sheet row lands in the House deck and VIP night", () => {
@@ -41,5 +42,23 @@ test("each supplied sheet row lands in the House deck and VIP night", () => {
   expect(vip.cardIds.slice(-4)).toEqual(
     [3, 4, 5, 6].map((row) => `vip.sheet-${String(row).padStart(3, "0")}`),
   );
-  expect(cards).toHaveLength(368); // 116 core + 102 house + 16 vip + 134 Pokémon
+  expect(cards).toHaveLength(434); // 105 core + 102 house + 16 vip + 134 Pokémon + 77 cabin
+});
+
+test("Cabin weekend owns its CABIIN cards and shares a few House rows", () => {
+  const cabin = packs.find((p) => p.id === "cabin")!;
+  const own = cabin.cardIds.filter((id) => id.startsWith("cabin."));
+  const shared = cabin.cardIds.filter((id) => !id.startsWith("cabin."));
+  expect(own).toHaveLength(77);
+  expect(shared).toEqual(
+    [12, 16, 24, 28, 40, 42, 53, 54].map(
+      (row) => `house.sheet-${String(row).padStart(3, "0")}`,
+    ),
+  );
+  // Moved, not duplicated: Core no longer carries the CABIIN-born cards.
+  const core = packs.find((p) => p.id === "core")!;
+  for (const id of ["smooth-brain", "samesies", "thanos-snap", "for-safety"]) {
+    expect(core.cardIds).not.toContain(`core.${id}`);
+    expect(own).toContain(`cabin.${id}`);
+  }
 });

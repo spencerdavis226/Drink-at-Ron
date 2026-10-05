@@ -1,19 +1,18 @@
 # Card review sheet
 
-Generated 2026-10-04 by `npm run cards:review`. Do not edit by hand — edit the
+Generated 2026-10-05 by `npm run cards:review`. Do not edit by hand — edit the
 source modules under `src/content` and regenerate. Each row is one card;
 the Review column is intentionally blank so you can mark it up.
 
 ## The Core deck (`core`)
 
-116 cards · 18 sip · 23 group · 9 category · 51 challenge · 15 rule · 38 dice
+105 cards · 16 sip · 22 group · 9 category · 43 challenge · 15 rule · 36 dice
 
 | Review | Title | ID | Cat | Rules | Dice |
 | --- | --- | --- | --- | --- | --- |
 | ☐ | House Special | `core.house-special` | sip | Drink 3. |  |
 | ☐ | Bar Tab | `core.bar-tab` | sip | Give 3. |  |
 | ☐ | Bad Influence | `core.bad-influence` | sip | Pick someone. Both drink 2. |  |
-| ☐ | Fuck You In Particular | `core.you-specifically` | sip | Pick someone. They drink 6. |  |
 | ☐ | U Up? | `core.bad-text` | sip | Anyone who sent a regrettable late-night text drinks 3. |  |
 | ☐ | Corporate Wellness | `core.fake-sick` | sip | Anyone who faked sick to skip work drinks 3. |  |
 | ☐ | Financial Genius | `core.crypto-bro` | sip | Crypto owners drink 2. Everyone else gives 2. |  |
@@ -27,7 +26,6 @@ the Review column is intentionally blank so you can mark it up.
 | ☐ | Empty the Tank | `core.empty-the-tank` | sip | Roll d6. Drink your roll. The die knows what you did. | 1d6 — Drink {total}. |
 | ☐ | Loose Change | `core.loose-change` | sip | Roll d6. Give that many, split between two people. | 1d6 — Give {total}, split between two people. |
 | ☐ | Big Spender | `core.big-spender` | sip | Roll 2d6. Give the total. Announce it like it's charity. | 2d6 — Give {total}. |
-| ☐ | For Safety | `core.for-safety` | sip | Your next drink is water. Announce it like a heroic choice. |  |
 | ☐ | Last Call | `core.last-call` | group | Everyone drinks 2. |  |
 | ☐ | Cheap Date | `core.cheap-date` | group | Cheapest drink at the table drinks 3. |  |
 | ☐ | Big Money | `core.baller` | group | Priciest drink at the table gives 4. |  |
@@ -50,7 +48,6 @@ the Review column is intentionally blank so you can mark it up.
 | ☐ | Round for the Table | `core.round-for-the-table` | group | Roll d6. Everyone drinks your roll. You just watch. | 1d6 — Everyone but you drinks {total}. |
 | ☐ | Group Roll | `core.group-roll` | group | Roll d20. 10+: everyone gives you 1. Else everyone drinks 1. | 1d20 — 1-9: Everyone drinks 1. 10-20: Everyone gives you 1. |
 | ☐ | Committee | `core.committee` | group | Roll d6. Point at that many people. Each drinks 1. | 1d6 — Point at {total} players to drink 1 each. |
-| ☐ | Thanos Snap | `core.thanos-snap` | group | Pick half the table. Everyone picked drinks 2. |  |
 | ☐ | Categories | `core.categories` | category | Pick a category. First repeat or blank drinks 3. |  |
 | ☐ | Rhyme Time | `core.rhyme-time` | category | Pick a word. First bad rhyme drinks 3. |  |
 | ☐ | Rock Paper Drink | `core.rock-paper-drink` | category | Challenge someone. Loser drinks 3. |  |
@@ -60,14 +57,12 @@ the Review column is intentionally blank so you can mark it up.
 | ☐ | Ex-Cuses | `core.ex-cuses` | category | Name an ex. First repeat, blank or cringe drinks 3. |  |
 | ☐ | Cheap Beers | `core.cheap-beers` | category | Name cheap beers. First repeat or blank drinks 3. |  |
 | ☐ | Creepy Crawlies | `core.creepy-crawlies` | category | Name bugs. First repeat or blank drinks 3. |  |
-| ☐ | Smooth Brain | `core.smooth-brain` | challenge | Admit something dumb you believed. Drink 2. |  |
 | ☐ | Dice Tax | `core.dice-tax` | challenge | Roll d6. Drink half, round up. | 1d6 — 1-2: Drink 1. 3-4: Drink 2. 5-6: Drink 3. |
 | ☐ | Give a Shit | `core.give-a-shit` | challenge | Roll d6. Give that many. | 1d6 — Give {total}. |
 | ☐ | Fuckin' Math | `core.fuckin-math` | challenge | Roll d6. Drink 7 minus your roll. | 1d6 — 1-1: Drink 6. 2-2: Drink 5. 3-3: Drink 4. 4-4: Drink 3. 5-5: Drink 2. 6-6: Drink 1. |
 | ☐ | Pathetic | `core.low-roller` | challenge | Roll d6. 1–2: drink 4. Else give 2. | 1d6 — 1-2: Drink 4. 3-6: Give 2. |
 | ☐ | Big Dick Energy | `core.high-roller` | challenge | Roll d6. 5–6: give 5. Else drink 2. | 1d6 — 1-4: Drink 2. 5-6: Give 5. |
 | ☐ | Same Shit | `core.same-shit` | challenge | Roll 2d6. Doubles: give total. Else drink 3. | 2d6 — 2-12: Drink 3. |
-| ☐ | That's Two Beers | `core.two-beers-math` | challenge | Roll 4d6. Give the total. | 4d6 — Give {total}. |
 | ☐ | Snake Eyes | `core.snake-eyes` | challenge | Roll 2d6. Double 1s: drink 11. Else give 3. | 2d6 — 2-2: Drink 11. 3-12: Give 3. |
 | ☐ | Lucky Bastard | `core.lucky-bastard` | challenge | Roll 2d6. 9+: give 5. Under 9: drink 3. | 2d6 — 2-8: Drink 3. 9-12: Give 5. |
 | ☐ | Fuck Around & Find Out | `core.fuck-around` | challenge | Roll d20. 1: take a shot. 20: give a shot. Else drink 2. | 1d20 — 1-1: Take a shot. 2-19: Drink 2. 20-20: Give a shot. |
@@ -93,17 +88,11 @@ the Review column is intentionally blank so you can mark it up.
 | ☐ | Dice Debt | `core.dice-debt` | challenge | Roll d6. Drink 7 minus your roll. Show your work. | 1d6 — 1-1: Drink 6. 2-2: Drink 5. 3-3: Drink 4. 4-4: Drink 3. 5-5: Drink 2. 6-6: Drink 1. |
 | ☐ | Lucky Sevens | `core.lucky-sevens` | challenge | Roll 2d6. A 7: give 7. Doubles: drink 4. Else drink 2. | 2d6 — 2-6: Drink 2. 7-7: Give 7. 8-12: Drink 2. |
 | ☐ | Boxcars | `core.boxcars` | challenge | Roll 2d6. Double 6s: everyone else drinks 4. | 2d6 — 2-11: Nothing happens. 12-12: Everyone else drinks 4. |
-| ☐ | Samesies | `core.samesies` | challenge | Roll 2d6. Doubles: give the total. Else drink half. | 2d6 — 2-2: Drink 1. 3-4: Drink 2. 5-6: Drink 3. 7-8: Drink 4. 9-10: Drink 5. 11-12: Drink 6. |
 | ☐ | Nat One | `core.nat-one` | challenge | Roll d20. A 1: finish your drink. Else drink 3. | 1d20 — 1-1: Finish your drink. 2-20: Drink 3. |
 | ☐ | Nat Twenty | `core.nat-twenty` | challenge | Roll d20. A 20: give 8. Else drink 2. | 1d20 — 1-19: Drink 2. 20-20: Give 8. |
 | ☐ | Close Call | `core.close-call` | challenge | Roll d20. 1–5: drink 5. 16–20: give 5. Else nothing. | 1d20 — 1-5: Drink 5. 6-15: Nothing happens. 16-20: Give 5. |
 | ☐ | Skyscraper | `core.skyscraper` | challenge | Roll d20. A 20: give 10. A 1: drink 10. Else drink 2. | 1d20 — 1-1: Drink 10. 2-19: Drink 2. 20-20: Give 10. |
 | ☐ | Overdrive | `core.overdrive` | challenge | Roll 4d6. Even total: give 6. Odd total: drink 6. | 4d6 — 4-24: Give 6. 5-23: Drink 6. |
-| ☐ | I Don't Know Shit | `core.i-dont-know-shit` | challenge | Admit something basic you don't understand. Everyone drinks 2. |  |
-| ☐ | Almost Lost My Cool | `core.almost-lost-my-cool` | challenge | If someone here is mad, calm them and give 3. Else rage and drink 3. |  |
-| ☐ | What an Idiot | `core.what-an-idiot` | challenge | Call someone an idiot. They finish their drink. |  |
-| ☐ | Get Good | `core.get-good` | challenge | Insult someone's skills. They prove you wrong or drink 3. |  |
-| ☐ | It's Gotta Go | `core.its-gotta-go` | challenge | Finish your drink. |  |
 | ☐ | Accent Off | `core.accent-off` | challenge | Everyone talks in an accent. First to laugh drinks 2. |  |
 | ☐ | Loud and Proud | `core.loud-and-proud` | challenge | Say your next sentence too loud. If it lands, give 2. |  |
 | ☐ | Useless Fact | `core.useless-fact` | challenge | Share an impressive useless fact. If nobody reacts, drink 2. |  |
@@ -399,6 +388,98 @@ the Review column is intentionally blank so you can mark it up.
 | ☐ | Mawile | `pokemon.mawile` | rule | Mawile used Vicegrip! Until your next turn, grab a player and squeeze them. Drink 4 and apologize. |  |
 | ☐ | Relicanth | `pokemon.relicanth` | rule | Relicanth used Dive! Kneel under the table until your next turn. Surface early: drink 2. |  |
 | ☐ | Norman | `pokemon.norman` | rule | Norman's gym! Call another player daddy for the rest of the game. Drink 4, or drink 8 to keep your dignity. |  |
+
+## Cabin weekend (`cabin`)
+
+85 cards · 22 sip · 11 group · 0 category · 34 challenge · 18 rule · 23 dice
+
+| Review | Title | ID | Cat | Rules | Dice |
+| --- | --- | --- | --- | --- | --- |
+| ☐ | Ursaring | `house.sheet-016` | sip | Give 13 and apologize |  |
+| ☐ | No take, Give | `house.sheet-028` | sip | Give d6 drinks | 1d6 — Give {total}. |
+| ☐ | Whinnie the Pooh | `house.sheet-054` | sip | Pooh-bear 1d6 drinks | 1d6 — Drink {total}. |
+| ☐ | Fuck You In Particular | `cabin.fuck-you` | sip | Roll d6. Drink 10 minus your roll. | 1d6 — 1-1: Drink 9. 2-2: Drink 8. 3-3: Drink 7. 4-4: Drink 6. 5-5: Drink 5. 6-6: Drink 4. |
+| ☐ | For Safety | `cabin.for-safety` | sip | Make your next drink a water or something hydrating. |  |
+| ☐ | International Eric | `cabin.international-eric` | sip | Take a shot of liquor. You like it now. |  |
+| ☐ | Drinks On Me | `cabin.drinks-on-me` | sip | Get someone a fresh drink. They pay you something. You both drink 1. |  |
+| ☐ | Ride the Bus | `cabin.ride-the-bus` | sip | You picked a suit and you're totally wrong. Drink 4. |  |
+| ☐ | Atlanta Airport | `cabin.atlanta-airport` | sip | These planes are sus. Roll d6 and drink that many. | 1d6 — Drink {total}. |
+| ☐ | Going the Distance | `cabin.going-the-distance` | sip | Give 1 for every hour it took you to get here. Idle time doesn't count. |  |
+| ☐ | Bartender Greg | `cabin.bartender-greg` | sip | Hit on someone. Roll d6. You both drink that many. | 1d6 — You both drink {total}. |
+| ☐ | Allegiant Airlines | `cabin.allegiant-airlines` | sip | Cheap as fuck until it's not. Roll d6 and give that many. | 1d6 — Give {total}. |
+| ☐ | Soooo It's Thursday | `cabin.soooo-thursday` | sip | Give 3 to someone to calm their nerves. |  |
+| ☐ | Get Natured | `cabin.get-natured` | sip | Go outside and drink 1 out there. |  |
+| ☐ | How Many Holes? | `cabin.how-many-holes` | sip | Give 1 for every drink you've finished tonight, plus 1. |  |
+| ☐ | Miller Mike | `cabin.miller-mike` | sip | The group picks your next full drink. No complaints. |  |
+| ☐ | Lance | `cabin.lance` | sip | The dragon champion. He's dragon his nuts across your face. Drink 4. |  |
+| ☐ | Michigan | `cabin.michigan` | sip | Drink 3 from an ice-cold drink and explain how it's not even cold. |  |
+| ☐ | Yoink! | `cabin.yoink` | sip | Pick someone. Roll d6. They drink that many. | 1d6 — They drink {total}. |
+| ☐ | God's Chosen | `cabin.gods-chosen` | sip | Had COVID? Drink 3. Never had it? Give 3. |  |
+| ☐ | Do Not Cum | `cabin.do-not-cum` | sip | Roll d6. Cum. Drink that many. | 1d6 — Drink {total}. |
+| ☐ | Mustard Tiger | `cabin.mustard-tiger` | sip | Drink as much as whoever has drunk the most this game. |  |
+| ☐ | Thanos Snap | `cabin.thanos-snap` | group | Pick half the table. Everyone you didn't pick drinks 2. |  |
+| ☐ | Corporate Meeting | `cabin.corporate-meeting` | group | This could have been an email. Anyone working tomorrow drinks 3. |  |
+| ☐ | Café d'Époque | `cabin.cafe-depoque` | group | Everyone here is a total skank. Now you are too. Hit on someone; you both drink 2. |  |
+| ☐ | Neighbors | `cabin.neighbors` | group | Anyone not sleeping under your roof tonight drinks 1. |  |
+| ☐ | Comradery | `cabin.comradery` | group | Make up a table cheer. Everyone shouts it, then drinks 2. |  |
+| ☐ | 85.21% Birthday | `cabin.birthday` | group | Pick someone. You both drink 85.21% of a drink of your choosing. |  |
+| ☐ | Team Speech | `cabin.team-speech` | group | Clockwise from you, build a speech one word per person. Then everyone drinks 1. |  |
+| ☐ | Someone Call 9-1 | `cabin.someone-call-911` | group | Everyone drinks 1 for every injury on this trip so far. |  |
+| ☐ | Final Showdown | `cabin.final-showdown` | group | Play Thunderstruck. Anyone who finishes 2 drinks before it ends gives 5. |  |
+| ☐ | Medium Rare Chicken | `cabin.medium-rare-chicken` | group | Everyone drinks 2 for every player who has thrown up this trip. |  |
+| ☐ | Ski Team | `cabin.ski-team` | group | Skier? Skiers drink 2. Snowboarder? Snowboarders drink 2. Neither? Drink 4 and grow up. |  |
+| ☐ | Maddy Booty | `house.sheet-012` | challenge | Roll 1d20. You drink until the group counts to it, or you finish your drink. | 1d20 — Drink until the group counts to {total}, or finish your drink. |
+| ☐ | Pet that dog | `house.sheet-042` | challenge | Better pet any dog in the room, or take 1d6 | 1d6 — Drink {total}. |
+| ☐ | Smooth Brain | `cabin.smooth-brain` | challenge | Tell a story about a time you were REAL dumb. Drink 2. |  |
+| ☐ | FaceTime Trivia | `cabin.facetime-trivia` | challenge | The group asks you trivia. Wrong: drink 2 and nobody talks to you until your next turn. |  |
+| ☐ | County Commissioner | `cabin.county-commissioner` | challenge | Campaign to be in charge. Drink 1 per player who wouldn't vote for you. |  |
+| ☐ | Drunken Clam | `cabin.drunken-clam` | challenge | How the fuck did this get here? Roll d6. 1: drink 1. Else finish your drink. | 1d6 — 1-1: Drink 1. 2-6: Blindsided. Finish your drink. |
+| ☐ | Mint Chev | `cabin.mint-chev` | challenge | Crush a full beer and leave the can on the table. Else roll d6 and drink. | 1d6 — 1-3: Drink 1. 4-6: Drink 2. |
+| ☐ | I Don't Know Shit | `cabin.i-dont-know-shit` | challenge | Tell the group something you embarrassingly don't understand. Everyone drinks 2. |  |
+| ☐ | Dafuq Did I Just Hear? | `cabin.dafuq` | challenge | You just admitted to loving Lance. Drink until the group is happy. |  |
+| ☐ | Alakazam | `cabin.alakazam` | challenge | Pick someone. Spoon them and you both drink 3. |  |
+| ☐ | Voltorb | `cabin.voltorb` | challenge | Roll d6. Pick that many players to finish their drinks. | 1d6 — Pick {total} players to finish their drinks. |
+| ☐ | Ow Scratchies | `cabin.ow-scratchies` | challenge | Show the group a scar and explain it. Everyone drinks 2 in pain. |  |
+| ☐ | Chaud | `cabin.chaud` | challenge | Microwave your drink. |  |
+| ☐ | That's Two Beers | `cabin.thats-two-beers` | challenge | Give out 24 drinks. |  |
+| ☐ | Guess I'll Die | `cabin.guess-ill-die` | challenge | Roll 2d6. Doubles: finish your drink. Else drink 2. | 2d6 — 2-12: Drink 2. |
+| ☐ | We're Not That Drunk | `cabin.not-that-drunk` | challenge | Pound a full drink, then take another card now. |  |
+| ☐ | Cave Herpes | `cabin.cave-herpes` | challenge | Roll d6. 4–5: you escape and give 2. Anything else: you're stuck, drink 2. | 1d6 — 1-3: Stuck in the cave. Drink 2. 4-5: You escape. Give 2. 6-6: Stuck in the cave. Drink 2. |
+| ☐ | 4th Meal | `cabin.fourth-meal` | challenge | Fly to Ireland and get a tattoo right now. Else roll d6 and drink. | 1d6 — 1-3: Drink 1. 4-6: Drink 2. |
+| ☐ | Wisconsin | `cabin.wisconsin` | challenge | The real mitten state. Roll d6. Drink 7 minus your roll. From Wisconsin? Give it. | 1d6 — 1-1: Drink 6. From Wisconsin? Give 6. 2-2: Drink 5. From Wisconsin? Give 5. 3-3: Drink 4. From Wisconsin? Give 4. 4-4: Drink 3. From Wisconsin? Give 3. 5-5: Drink 2. From Wisconsin? Give 2. 6-6: Drink 1. From Wisconsin? Give 1. |
+| ☐ | Samesies | `cabin.samesies` | challenge | Roll 2d6. Doubles: give the total. Else drink half. | 2d6 — 2-2: Drink 1. 3-4: Drink 2. 5-6: Drink 3. 7-8: Drink 4. 9-10: Drink 5. 11-12: Drink 6. |
+| ☐ | Numbers | `cabin.numbers` | challenge | Drink for every number that exists, or until the group is happy. |  |
+| ☐ | King of the Hill | `cabin.king-of-the-hill` | challenge | Roll d6. A 6: everyone else drinks 2. Anything else: drink 2. | 1d6 — 1-5: Drink 2. 6-6: King of the Hill. Everyone else drinks 2. |
+| ☐ | I Can't Believe This | `cabin.cant-believe-this` | challenge | Pour out someone's drink. They get a fresh one and drink 2. |  |
+| ☐ | Silly Salmon | `cabin.silly-salmon` | challenge | Flop on the floor like a fish. Drink 1. |  |
+| ☐ | Florida | `cabin.florida` | challenge | Tell everyone how nice Florida is. Roll d6 and drink half, warm. From Florida? Give it. | 1d6 — 1-2: Drink 1, warm. From Florida? Give 1. 3-4: Drink 2, warm. From Florida? Give 2. 5-6: Drink 3, warm. From Florida? Give 3. |
+| ☐ | Almost Lost My Cool | `cabin.almost-lost-my-cool` | challenge | If someone here is mad, calm them and give 3. Else rage and drink 3. |  |
+| ☐ | Crypto | `cabin.crypto` | challenge | Roll d6. Odd: drink your roll. Even: give it. | 1d6 — 1-5: Drink {total}. 2-6: Give {total}. |
+| ☐ | What an Idiot | `cabin.what-an-idiot` | challenge | Make someone finish their drink. |  |
+| ☐ | I'm Sorry Baby | `cabin.im-sorry-baby` | challenge | Roll d6. 1: you're a nobody, drink 4. 2–4: smoochie-smoochie, drink 2. 5–6: give 3. | 1d6 — 1-1: You're a nobody. Drink 4. 2-4: Smoochie-smoochie. Drink 2. 5-6: The night closes in. Give 3. |
+| ☐ | Son of a Bitch, I'm In | `cabin.son-of-a-bitch` | challenge | Anyone can offer you a drink and an amount. Accept and you both drink it. |  |
+| ☐ | Get Good | `cabin.get-good` | challenge | Insult someone's skills. They prove you wrong or drink 3. |  |
+| ☐ | What Is? Give | `cabin.what-is-give` | challenge | Have someone get you the drink they have. Roll d6. You both drink your roll minus 3. | 1d6 — 1-3: Nobody drinks. 4-4: You both drink 1. 5-5: You both drink 2. 6-6: You both drink 3. |
+| ☐ | Kadabra | `cabin.kadabra` | challenge | Abra's dumbass brother. Swap seats with anyone. |  |
+| ☐ | It's Gotta Go | `cabin.its-gotta-go` | challenge | Finish your drink. |  |
+| ☐ | Wench | `house.sheet-024` | rule | You are the drink wench until your next turn |  |
+| ☐ | Pokemon | `house.sheet-040` | rule | Speak only your first name until your next turn |  |
+| ☐ | Abra like a Slut | `house.sheet-053` | rule | Reverse the turn order for the rest of the game |  |
+| ☐ | Bitch Babe | `cabin.bitch-babe` | rule | Give 2. Until your next turn, call your left neighbor babe and everyone else bitch. |  |
+| ☐ | Freddie's Run | `cabin.freddies-run` | rule | Until your next turn, fetch anything anyone asks for. Refuse: drink 3. |  |
+| ☐ | I'm the Captain Now | `cabin.im-the-captain-now` | rule | Reverse the turn order for the rest of the game, then take another card now. |  |
+| ☐ | Spirit Airlines | `cabin.spirit-airlines` | rule | Drink 3. Until your next turn, any 1 rolled counts as 0. |  |
+| ☐ | Stonks | `cabin.stonks` | rule | Smoke something if you're cool. Until your next turn, you're immune to drinks. |  |
+| ☐ | Asshole | `cabin.asshole` | rule | Until your next turn, do whatever anyone tells you. |  |
+| ☐ | Children's Cabin | `cabin.childrens-cabin` | rule | Get absolutely stoned, or drink 1 whenever anyone draws until your next turn. |  |
+| ☐ | Like I Said | `cabin.like-i-said` | rule | Drink 2. Until your next turn, mimic the next player. |  |
+| ☐ | Steve's Spyder Beanie | `cabin.steves-beanie` | rule | Until your next turn, send every drink given to you back to the sender. |  |
+| ☐ | Deez Nuts | `cabin.deez-nuts` | rule | You are Deez for the rest of the game. Fall for a deez nuts joke: drink 3. |  |
+| ☐ | Ohio | `cabin.ohio` | rule | That sucks. Drink 2 and wear something stupid until your next turn. |  |
+| ☐ | Part of the Crew | `cabin.part-of-the-crew` | rule | Pick up to 3 crew. Until your next turn, when one of you drinks, all of you drink. |  |
+| ☐ | Dream Team | `cabin.dream-team` | rule | Until your next turn, you may split your drinks with anyone beside you. |  |
+| ☐ | President | `cabin.president` | rule | Until your next turn, give anyone orders. Refuse: drink 2. |  |
+| ☐ | 3rd World Christmas | `cabin.christmas` | rule | Give someone a gift. They wear or use it for the rest of the game. |  |
 
 ## Notes for review
 

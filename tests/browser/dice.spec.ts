@@ -463,7 +463,7 @@ for (const viewport of [
     }, info) => {
       test.skip(!(await webgl(page)), "WebGL unavailable");
       await page.setViewportSize(viewport);
-      const source = cards.find((c) => c.id === "core.two-beers-math")!;
+      const source = cards.find((c) => c.id === "house.sheet-003")!;
       const card = {
         ...source,
         rules: "Roll 4d6. Give the total.",

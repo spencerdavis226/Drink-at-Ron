@@ -3,23 +3,26 @@ import { coreCards, samplePack } from "./sample";
 import { houseCards, housePack } from "./custom";
 import { vipCards, vipPack } from "./vip";
 import { pokemonCards, pokemonPack } from "./pokemon";
+import { cabinCards, cabinPack } from "./cabin";
 import type { CardDefinition, PackDefinition } from "../game/types";
 
-// The runtime catalog. Four opt-in packs: the generated main deck, the
-// supplied Sheet1 house deck (verbatim), VIP night, and the Pokémon
-// board-sheet translation. Card content is provided sample material and is
-// expected to change.
+// The runtime catalog. Five opt-in packs: the generated main deck, the
+// supplied Sheet1 house deck (verbatim), VIP night, the Pokémon board-sheet
+// translation, and Cabin weekend (the CABIIN 2.0 board game, off the
+// board). Card content is provided sample material and is expected to change.
 export const cards: CardDefinition[] = [
   ...coreCards,
   ...houseCards,
   ...vipCards,
   ...pokemonCards,
+  ...cabinCards,
 ];
 export const packs: PackDefinition[] = [
   samplePack,
   housePack,
   vipPack,
   pokemonPack,
+  cabinPack,
 ];
 
 export function validateCatalog(cs: CardDefinition[], ps: PackDefinition[]) {

@@ -77,12 +77,17 @@ test("@release the pack count stays readable with every pack selected", async ({
   await page.goto("./");
   await page.getByRole("button", { name: "Choose packs" }).click();
   const dialog = page.getByRole("dialog");
-  for (const name of ["The House deck", "VIP night", "Pokémon night"])
+  for (const name of [
+    "The House deck",
+    "VIP night",
+    "Pokémon night",
+    "Cabin weekend",
+  ])
     await dialog.getByRole("button", { name, exact: true }).click();
   await dialog.getByRole("button", { name: "Done" }).click();
   const row = page.locator(".pack-selector");
-  await expect(row.locator(".pack-logo")).toHaveCount(4);
-  const count = row.getByText("368 cards");
+  await expect(row.locator(".pack-logo")).toHaveCount(5);
+  const count = row.getByText("434 cards");
   await expect(count).toBeVisible();
   expect(
     await count.evaluate((el) => {
@@ -117,7 +122,7 @@ test("@release House and VIP are selectable add-ons and Core can be deselected",
     key,
   );
   expect(session.config.packIds).toEqual(["core", "house"]);
-  expect(session.cards).toHaveLength(218);
+  expect(session.cards).toHaveLength(207);
   expect(
     session.cards.some((card: { id: string }) => card.id === "house.sheet-091"),
   ).toBe(true);

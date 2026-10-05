@@ -1,6 +1,7 @@
 import { standardExpansionCards } from "./standard-expansion";
 import { houseCards, customVipCards } from "./custom";
 import { pokemonCards } from "./pokemon";
+import { cabinCards } from "./cabin";
 
 /**
  * Card imprint content: which icon and paper tint a card carries.
@@ -71,6 +72,9 @@ export const imprintAssignments: Record<string, ImprintAssignment> = {
   ),
   ...Object.fromEntries(
     pokemonCards.map((card) => [card.id, expansionMotifs[card.category]]),
+  ),
+  ...Object.fromEntries(
+    cabinCards.map((card) => [card.id, expansionMotifs[card.category]]),
   ),
   "core.house-special": { icon: "lorc/beer-stein", tint: "amber" },
   "core.bar-tab": { icon: "delapouite/coins-pile", tint: "sepia" },

@@ -4,10 +4,11 @@ Read `docs/AUTHORING.md` and `docs/CARD_VOICE_REFERENCE.md` before editing. Card
 
 | File | Pack | Cards |
 | --- | --- | --- |
-| `sample.ts`, `classics.ts`, `standard-expansion.ts` | `core` | 116 |
+| `sample.ts`, `classics.ts`, `standard-expansion.ts` | `core` | 105 |
 | `custom.ts` | `house` (sheet rows, verbatim) and four `vip.sheet-*` | 102 |
 | `vip.ts` (+ the four in `custom.ts`) | `vip` | 16 |
 | `pokemon.ts` | `pokemon` | 134 |
+| `cabin.ts` (+ 8 House rows shared by ID) | `cabin` | 77 own, 85 in the pack |
 
 Rules enforced by `npm run build` (`scripts/validate-content.ts`) and unit tests:
 

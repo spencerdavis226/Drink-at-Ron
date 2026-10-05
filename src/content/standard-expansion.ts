@@ -99,26 +99,6 @@ const drafts: Draft[] = [
       { min: 12, max: 12, instruction: "Everyone else drinks 4." },
     ]),
   ],
-  [
-    "samesies",
-    "Samesies",
-    "challenge",
-    "Roll 2d6. Doubles: give the total. Else drink half.",
-    {
-      version: 1,
-      count: 2,
-      sides: 6,
-      doubles: "Give {total}.",
-      outcomes: [
-        { min: 2, max: 2, instruction: "Drink 1." },
-        { min: 3, max: 4, instruction: "Drink 2." },
-        { min: 5, max: 6, instruction: "Drink 3." },
-        { min: 7, max: 8, instruction: "Drink 4." },
-        { min: 9, max: 10, instruction: "Drink 5." },
-        { min: 11, max: 12, instruction: "Drink 6." },
-      ],
-    },
-  ],
 
   // --- Dice: d20 drama ------------------------------------------------------
   [
@@ -210,48 +190,6 @@ const drafts: Draft[] = [
   ],
 
   // --- Callouts: blunt, personal, specific ----------------------------------
-  [
-    "i-dont-know-shit",
-    "I Don't Know Shit",
-    "challenge",
-    "Admit something basic you don't understand. Everyone drinks 2.",
-  ],
-  [
-    "almost-lost-my-cool",
-    "Almost Lost My Cool",
-    "challenge",
-    "If someone here is mad, calm them and give 3. Else rage and drink 3.",
-  ],
-  [
-    "what-an-idiot",
-    "What an Idiot",
-    "challenge",
-    "Call someone an idiot. They finish their drink.",
-  ],
-  [
-    "get-good",
-    "Get Good",
-    "challenge",
-    "Insult someone's skills. They prove you wrong or drink 3.",
-  ],
-  [
-    "for-safety",
-    "For Safety",
-    "sip",
-    "Your next drink is water. Announce it like a heroic choice.",
-  ],
-  [
-    "its-gotta-go",
-    "It's Gotta Go",
-    "challenge",
-    "Finish your drink.",
-  ],
-  [
-    "thanos-snap",
-    "Thanos Snap",
-    "group",
-    "Pick half the table. Everyone picked drinks 2.",
-  ],
   [
     "accent-off",
     "Accent Off",
