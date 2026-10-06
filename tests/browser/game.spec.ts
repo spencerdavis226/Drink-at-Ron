@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test";
 import type { CardDefinition } from "../../src/game/types";
-const key = "drink-at-ron.session.v1";
+const key = "side-quest.session.v1";
 async function ready(page: import("@playwright/test").Page) {
   await expect(page.locator(".card-stage")).not.toHaveClass(
     /flip|discard|settle|deal/,
@@ -529,6 +529,7 @@ test("legacy audio and atmosphere preferences are ignored and toggles are gone",
   page,
 }) => {
   await page.goto("./");
+  // Seeded under the pre-rename key, so this also covers its migration.
   await page.evaluate(() =>
     localStorage.setItem(
       "drink-at-ron.settings.v1",
@@ -638,4 +639,30 @@ test("readable fallback when artwork fails and keyboard focus returns", async ({
   await expect(
     page.getByRole("button", { name: "Open game menu" }),
   ).toBeFocused();
+});
+
+test("a game saved before the rename to Side Quest resumes", async ({
+  page,
+}) => {
+  await page.goto("./");
+  await page.getByRole("button", { name: "Play", exact: true }).click();
+  await expect(page.locator(".progress")).toBeVisible();
+  const saved = await page.evaluate((k) => {
+    const raw = localStorage.getItem(k)!;
+    localStorage.removeItem(k);
+    localStorage.setItem("drink-at-ron.session.v1", raw);
+    return JSON.parse(raw);
+  }, key);
+  await page.reload();
+  await expect(page.locator(".progress")).toBeVisible();
+  const moved = await page.evaluate(
+    (k) => ({
+      session: JSON.parse(localStorage.getItem(k)!),
+      legacy: localStorage.getItem("drink-at-ron.session.v1"),
+    }),
+    key,
+  );
+  expect(moved.legacy).toBeNull();
+  expect(moved.session.order).toEqual(saved.order);
+  expect(moved.session.position).toBe(saved.position);
 });

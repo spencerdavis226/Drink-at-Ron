@@ -1,4 +1,4 @@
-# Drink at Ron — current visual design standards
+# Side Quest — current visual design standards
 
 Updated 2026-09-25 for free-landing dice and tap-to-finish. **The current-state sections here are normative; older studies and generation prompts below are archival when they conflict.** Implementation tasks and priorities live only in [STATUS.md](STATUS.md).
 

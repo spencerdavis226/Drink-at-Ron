@@ -1,6 +1,6 @@
 # src/app — persistence
 
-`persistence.ts` is the only code that reads or writes localStorage (session key `drink-at-ron.session.v1`, preferences `drink-at-ron.settings.v1`). Keep both keys.
+`persistence.ts` is the only code that reads or writes localStorage (session key `side-quest.session.v1`, preferences `side-quest.settings.v1`). Keep both keys. `migrateStorageKeys` (called first in `main.tsx`) moves the pre-rename `drink-at-ron.*` keys once; keep it so old installs keep their saves.
 
 - `parseSession` migrates v1 → v2 and rejects anything inconsistent (order, counts, history, dice progress). A rejected save becomes the "This save lost its place" recovery screen, so be conservative about adding new invariants: a false positive destroys a real game.
 - Every state change writes the whole session (card snapshot included: about 27 KB for Core, about 84 KB with all packs) synchronously. `save()` returns false when storage is unavailable; the UI shows a notice instead of crashing.

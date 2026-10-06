@@ -4,7 +4,8 @@ import { packCardIds } from "../game/engine";
 import { workshopCards as cards, workshopPacks as packs } from "./session";
 import "./card-review.css";
 
-const STORAGE_KEY = "drink-at-ron.card-review.v1";
+const STORAGE_KEY = "side-quest.card-review.v1";
+const LEGACY_STORAGE_KEY = "drink-at-ron.card-review.v1";
 type DecisionStatus = "approved" | "change" | "denied";
 type Decision = {
   status: DecisionStatus;
@@ -17,7 +18,11 @@ type Decisions = Record<string, Decision>;
 
 function readDecisions(): Decisions {
   try {
-    const parsed = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? "{}");
+    const parsed = JSON.parse(
+      localStorage.getItem(STORAGE_KEY) ??
+        localStorage.getItem(LEGACY_STORAGE_KEY) ??
+        "{}",
+    );
     if (!parsed || typeof parsed !== "object" || Array.isArray(parsed))
       return {};
     return Object.fromEntries(
@@ -44,7 +49,7 @@ function handoffMarkdown(decisions: Decisions) {
     reviewed.filter((card) => decisions[card.id].status === status).length;
   const field = (value: string | undefined) => JSON.stringify(value ?? "");
   const lines = [
-    "# Drink at Ron card review handoff",
+    "# Side Quest card review handoff",
     "",
     `Generated: ${new Date().toISOString()}`,
     `Catalog: ${cards.length} cards`,
@@ -247,7 +252,7 @@ export default function CardReview() {
             type="button"
             onClick={() =>
               download(
-                `drink-at-ron-card-review-${new Date().toISOString().slice(0, 10)}.md`,
+                `side-quest-card-review-${new Date().toISOString().slice(0, 10)}.md`,
                 handoffMarkdown(decisions),
                 "text/markdown",
               )
@@ -259,7 +264,7 @@ export default function CardReview() {
             type="button"
             onClick={() =>
               download(
-                `drink-at-ron-card-review-backup-${new Date().toISOString().slice(0, 10)}.json`,
+                `side-quest-card-review-backup-${new Date().toISOString().slice(0, 10)}.json`,
                 JSON.stringify(exportData(), null, 2),
                 "application/json",
               )

@@ -2,7 +2,7 @@ import { test, expect, type Page } from "@playwright/test";
 import sharp from "sharp";
 import { createSession, advance } from "../../src/game/engine";
 import { cards, packs } from "../../src/content/catalog";
-const key = "drink-at-ron.session.v1";
+const key = "side-quest.session.v1";
 const core = packs.find((p) => p.id === "core")!;
 const house = packs.find((p) => p.id === "house")!;
 const vip = packs.find((p) => p.id === "vip")!;

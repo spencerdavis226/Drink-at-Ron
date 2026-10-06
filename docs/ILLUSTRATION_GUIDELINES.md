@@ -1,4 +1,4 @@
-# Drink at Ron — illustration creation guidelines
+# Side Quest — illustration creation guidelines
 
 These rules govern every future card illustration. They supersede the rejected dwarf study and any earlier directions to imitate a particular game's characters. The approved card back remains the reference for craftsmanship and palette; illustrations need their own original visual identity.
 

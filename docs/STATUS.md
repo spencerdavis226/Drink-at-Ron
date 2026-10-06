@@ -2,6 +2,22 @@
 
 Updated 2026-10-05. **Single authoritative handoff.** Read `AGENTS.md` first. Older handoffs are in `docs/STATUS_ARCHIVE.md` (reference only). Direct user instructions win.
 
+## Rename to Side Quest (2026-10-05, branch `side-quest-rename`, PR #6, not on `main`)
+
+**Request.** Owner renamed the app from Drink at Ron to Side Quest and wants it comprehensive: app, repo, URL and storage.
+
+**Change.**
+- App: manifest `name`/`short_name` "Side Quest", description "The main quest can wait." (`vite.config.ts`); `<title>` and `apple-mobile-web-app-title` (`index.html`); setup wordmark "Side / Quest"; non-quest completion screen gains a "Side quest complete" kicker above "To good company."; Core card New Blood says "First time Side Quest players"; dice colorset label; package name `side-quest`.
+- URL: the workflow derives `BASE_PATH` from the repository name (`/${{ github.event.repository.name }}/`), so the build matches wherever Pages serves it, before or after the rename. Docs and local commands use `/side-quest/`.
+- Storage: keys are now `side-quest.session.v1` / `side-quest.settings.v1` / `side-quest.card-review.v1`. `migrateStorageKeys` (persistence, called first in `main.tsx`) moves the old `drink-at-ron.*` session and settings once (new key wins; old key removed only after a successful copy); the workshop review reads its old key as a fallback. Covered by `tests/storage-keys.test.ts` and a browser test that resumes a game saved under the old key; the legacy-settings browser test now seeds the old key too.
+- Docs: README, AGENTS, CLAUDE files, GITHUB_PAGES, DEVICE_CHECKLIST, card review export.
+
+**Kept on purpose.** `reference/` raw sources (incl. `Drink at Ron - Sheet1.csv`); the supplied House card "Drink at Ron" (`house.sheet-011`, verbatim); history in `STATUS_ARCHIVE.md` and `docs/studies`. Icons, card back and tankard art are unchanged; a Side Quest emblem is a separate art task.
+
+**Consequences.** GitHub redirects the old repository URL for git, but not the Pages URL: `/Drink-at-Ron/` stops serving once renamed. Installed Home Screen copies keep running their cached old build offline and stop updating; remove and re-add from `/side-quest/`. An iOS Home Screen app has its own storage, so a game in progress in an old install does not move to the new one.
+
+**Next.** Owner renames the repo, then merges; reinstall on devices; optional redirect stub at the old path; optional emblem art.
+
 ## League immersion, phase 1: tiered ribbons, stage banners, badge case, Hall of Fame (2026-10-05, branch `league-immersion`, not on `main`)
 
 **Request.** Start the immersion roadmap (below) with the items that need no art and no rule change.

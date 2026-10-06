@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test";
 import { cards } from "../../src/content/catalog";
 
-const storageKey = "drink-at-ron.card-review.v1";
+const storageKey = "side-quest.card-review.v1";
 const total = cards.length;
 
 test("card review autosaves decisions and exports a Codex handoff", async ({
@@ -45,7 +45,7 @@ test("card review autosaves decisions and exports a Codex handoff", async ({
   const download = page.waitForEvent("download");
   await page.getByRole("button", { name: "Download handoff" }).click();
   const file = await download;
-  expect(file.suggestedFilename()).toMatch(/^drink-at-ron-card-review-.*\.md$/);
+  expect(file.suggestedFilename()).toMatch(/^side-quest-card-review-.*\.md$/);
   const contents = await (await file.createReadStream()).toArray();
   const handoff = Buffer.concat(contents).toString("utf8");
   expect(handoff).toContain("### core.bar-tab");

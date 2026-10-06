@@ -3,8 +3,30 @@ import { validateCatalog } from "../content/validate";
 import { validateRoll } from "../game/dice";
 import { currentCard, findCard, validConfig } from "../game/engine";
 import type { GameConfig, SessionState } from "../game/types";
-export const SAVE_KEY = "drink-at-ron.session.v1";
-export const SETTINGS_KEY = "drink-at-ron.settings.v1";
+export const SAVE_KEY = "side-quest.session.v1";
+export const SETTINGS_KEY = "side-quest.settings.v1";
+/** Keys from before the rename to Side Quest, mapped to their new names. */
+export const LEGACY_KEYS: Record<string, string> = {
+  "drink-at-ron.session.v1": SAVE_KEY,
+  "drink-at-ron.settings.v1": SETTINGS_KEY,
+};
+type KeyStore = Pick<Storage, "getItem" | "setItem" | "removeItem">;
+/** Moves a pre-rename save and settings to the new keys, once. A value
+ * already under a new key wins; an old key is removed only after its value
+ * is safely copied. Runs before anything reads storage. */
+export function migrateStorageKeys(storage?: KeyStore) {
+  try {
+    const store = storage ?? localStorage;
+    for (const [from, to] of Object.entries(LEGACY_KEYS)) {
+      const value = store.getItem(from);
+      if (value === null) continue;
+      if (store.getItem(to) === null) store.setItem(to, value);
+      store.removeItem(from);
+    }
+  } catch {
+    // Storage unavailable or full: the old keys stay for the next launch.
+  }
+}
 /** A length, or a pack's quest mode (`config.quest` names the pack). */
 export type DeckChoice = "short" | "long" | "infinite" | "quest";
 export const MODE_LIMITS: Record<DeckChoice, number | null> = {

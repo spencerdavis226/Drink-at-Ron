@@ -2,7 +2,7 @@ import { test, expect, devices, type Page } from "@playwright/test";
 import { createSession } from "../../src/game/engine";
 import { diceResultText } from "../../src/presentation/dice/result-text";
 import { cards, packs } from "../../src/content/catalog";
-const key = "drink-at-ron.session.v1";
+const key = "side-quest.session.v1";
 const webgl = (page: Page) =>
   page.evaluate(() => {
     const canvas = document.createElement("canvas");

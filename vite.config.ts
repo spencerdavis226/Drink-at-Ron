@@ -16,9 +16,9 @@ export default defineConfig({
       includeAssets: ["apple-touch-icon.png", "art/*.svg"],
       manifest: {
         id: base,
-        name: "Drink at Ron",
-        short_name: "Drink at Ron",
-        description: "A little luck. A good crowd. One more card.",
+        name: "Side Quest",
+        short_name: "Side Quest",
+        description: "The main quest can wait.",
         start_url: base,
         scope: base,
         display: "standalone",

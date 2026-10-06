@@ -98,7 +98,7 @@ async function forceUpdate(page: Page) {
 const release = (page: Page) =>
   page.locator("html").getAttribute("data-release");
 const stored = (page: Page) =>
-  page.evaluate(() => localStorage.getItem("drink-at-ron.session.v1"));
+  page.evaluate(() => localStorage.getItem("side-quest.session.v1"));
 const settled = (page: Page) =>
   // The first render is held until the art decodes, so "no motion class" is
   // only meaningful once the table itself exists.
@@ -129,7 +129,7 @@ try {
   ];
   await page.evaluate(
     (session) =>
-      localStorage.setItem("drink-at-ron.session.v1", JSON.stringify(session)),
+      localStorage.setItem("side-quest.session.v1", JSON.stringify(session)),
     legacyCustom,
   );
   await page.reload();

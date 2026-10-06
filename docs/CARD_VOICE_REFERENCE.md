@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Use this as creative context whenever suggesting, drafting, or reviewing cards for Drink at Ron. The source is Spencer's earlier CABIIN 2.0 board game card set. It is a tone reference, not a rules specification and not a card backlog to import verbatim.
+Use this as creative context whenever suggesting, drafting, or reviewing cards for Side Quest. The source is Spencer's earlier CABIIN 2.0 board game card set. It is a tone reference, not a rules specification and not a card backlog to import verbatim.
 
 ## Source material in the repo
 
@@ -28,7 +28,7 @@ Treat every card in the source as reference material rather than an instruction 
 
 Representative tonal examples from CABIIN include “Smooth Brain,” “Corporate Meeting,” “I Don't Know Shit About Fuck,” “For Safety,” “Almost Lost My Cool There,” “Freddie's Run,” and “Mosby.” These names illustrate the range; they are not automatically approved Drink at Ron cards.
 
-## Translation into Drink at Ron
+## Translation into Side Quest
 
 When proposing a new card, aim for this shape:
 

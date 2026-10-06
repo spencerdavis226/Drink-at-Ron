@@ -1,4 +1,4 @@
-# Drink at Ron — agent entry point
+# Side Quest — agent entry point
 
 Read `docs/STATUS.md` before planning or editing. It is the single current handoff (evidence, approved constraints, next task); it supersedes historical plans/study notes, and direct user instructions take precedence. Update it in place at handoff with changed files, commit, verification, risks, and next task — do not add competing plan documents.
 
@@ -6,7 +6,7 @@ Read `docs/STATUS.md` before planning or editing. It is the single current hando
 
 - Work on `main` (the only active branch; every push to it deploys). Preserve HEAD and all untracked work; never discard work in progress.
 - Work on one assigned task at a time; do not repeat completed milestones or replace the stack on your own.
-- Keep the pure engine (`src/game`) and saved outcomes independent of rendering. Preserve session schema v2 + v1 migration and the `drink-at-ron.session.v1` storage key; rendering changes must not force a migration.
+- Keep the pure engine (`src/game`) and saved outcomes independent of rendering. Preserve session schema v2 + v1 migration and the `side-quest.session.v1` storage key (pre-rename `drink-at-ron.*` keys are moved by `migrateStorageKeys`; keep that path); rendering changes must not force a migration.
 - Preserve the approved painted frame and constant 2:3 outer ratio (front/back/Previous Card agree). Stationary taps must keep working while long rules stay scrollable.
 - Keep assets local and GitHub Pages/offline compatible — no CDN or runtime services.
 - `reference/` holds raw user-supplied sources (CABIIN sheet, house Sheet1 CSV, sample deck JSON). Keep them exactly as supplied and out of `src/` and the bundle; replace with a newer supplied file and rerun the matching `npm run *:reference` parse instead of editing them to match shipping content.
@@ -18,17 +18,17 @@ Read `docs/STATUS.md` before planning or editing. It is the single current hando
 npm run dev            # vite on 127.0.0.1; no service worker — offline needs a production build/preview
 npm run dev:phone      # vite on 0.0.0.0; open the printed Network URL from a phone on the same Wi-Fi (HTTP: no service worker/offline)
 npm test               # vitest; only tests/**/*.test.ts (unit)
-BASE_PATH=/Drink-at-Ron/ npm run build    # validate-content -> tsc -b -> vite -> check-budget
+BASE_PATH=/side-quest/ npm run build    # validate-content -> tsc -b -> vite -> check-budget
 npx playwright install chromium webkit
-CI=1 BASE_PATH=/Drink-at-Ron/ TEST_PORT=4398 npm run test:e2e -- --workers=2
-CI=1 BASE_PATH=/Drink-at-Ron/ TEST_PORT=4398 npm run test:release -- --workers=2
-BASE_PATH=/Drink-at-Ron/ npm run test:update   # two-build update/PWA flow
+CI=1 BASE_PATH=/side-quest/ TEST_PORT=4398 npm run test:e2e -- --workers=2
+CI=1 BASE_PATH=/side-quest/ TEST_PORT=4398 npm run test:release -- --workers=2
+BASE_PATH=/side-quest/ npm run test:update   # two-build update/PWA flow
 npm run test:workshop  # dev server on :5175
 ```
 
 - Playwright specs (`*.spec.ts`) are not run by `npm test`. E2E serves `dist` through `npm run preview`; build first. Locally `reuseExistingServer` is on, so a stale preview on the default `:4173` will silently serve an old build — set `TEST_PORT`.
 - `?workshop=1` and `npm run test:workshop` use the dev server, not `dist`; workshop code must never reach production.
-- CI (`.github/workflows/pages.yml`) runs unit tests -> build -> the tagged Chromium/WebKit release smoke suite -> update test, builds with `BASE_PATH=/Drink-at-Ron/`, and deploys `dist` to Pages only from `main`. Full production E2E and exhaustive workshop sweeps remain available through a manual workflow dispatch with `full_validation` enabled. Run them after layout/engine changes or for a dedicated card review, not on every publish.
+- CI (`.github/workflows/pages.yml`) runs unit tests -> build -> the tagged Chromium/WebKit release smoke suite -> update test, builds with `BASE_PATH=/side-quest/`, and deploys `dist` to Pages only from `main`. Full production E2E and exhaustive workshop sweeps remain available through a manual workflow dispatch with `full_validation` enabled. Run them after layout/engine changes or for a dedicated card review, not on every publish.
 
 ## Budgets and dice prototype
 
