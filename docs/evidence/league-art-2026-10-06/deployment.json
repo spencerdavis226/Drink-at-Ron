@@ -1,0 +1,33 @@
+{
+  "date": "2026-10-06T13:46:29.743Z",
+  "commit": "3ba70d7a507a2e940d4ff89847b7368d87899c55",
+  "ci": "https://github.com/spencerdavis226/side-quest/actions/runs/37472711502",
+  "deployment": "success",
+  "liveUrl": "https://spencerdavis226.github.io/side-quest/",
+  "chromium": {
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "emblemDecoded": true,
+    "assetsHTTP200": 31,
+    "pageErrors": []
+  },
+  "limitations": "Does not establish physical iOS or installed Home Screen behavior; Ancient pair stays review-only.",
+  "ciResults": {
+    "unitPassed": 126,
+    "releasePassed": 40,
+    "releaseFlakyPassedOnRetry": 2,
+    "releaseFlakes": [
+      "webkit dice.spec.ts:98",
+      "webkit dice.spec.ts:192"
+    ],
+    "updatePassed": true,
+    "budgets": {
+      "runtimeKiB": 2991,
+      "initialGzipKiB": 89.1,
+      "lazyGzipKiB": 174.2,
+      "precacheEntries": 74
+    }
+  }
+}

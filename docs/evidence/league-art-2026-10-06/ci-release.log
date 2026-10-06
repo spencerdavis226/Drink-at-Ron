@@ -1,0 +1,267 @@
+build	Run npm ci	﻿2026-10-06T13:41:02.7500749Z ##[group]Run npm ci
+build	Run npm ci	2026-10-06T13:41:02.7501075Z ^[[36;1mnpm ci^[[0m
+build	Run npm ci	2026-10-06T13:41:02.7763985Z shell: /usr/bin/bash -e {0}
+build	Run npm ci	2026-10-06T13:41:02.7764361Z env:
+build	Run npm ci	2026-10-06T13:41:02.7764626Z   BASE_PATH: /side-quest/
+build	Run npm ci	2026-10-06T13:41:02.7765029Z   VITE_RELEASE_ID: 3ba70d7a507a2e940d4ff89847b7368d87899c55
+build	Run npm ci	2026-10-06T13:41:02.7765472Z ##[endgroup]
+build	Run npm ci	2026-10-06T13:41:07.6769913Z npm warn deprecated glob@11.1.0: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
+build	Run npm ci	2026-10-06T13:41:09.4758003Z
+build	Run npm ci	2026-10-06T13:41:09.4759357Z added 395 packages, and audited 396 packages in 7s
+build	Run npm ci	2026-10-06T13:41:09.4760593Z
+build	Run npm ci	2026-10-06T13:41:09.4761229Z 113 packages are looking for funding
+build	Run npm ci	2026-10-06T13:41:09.4761840Z   run `npm fund` for details
+build	Run npm ci	2026-10-06T13:41:09.4799108Z
+build	Run npm ci	2026-10-06T13:41:09.4800073Z 4 vulnerabilities (1 low, 1 moderate, 2 high)
+build	Run npm ci	2026-10-06T13:41:09.4800591Z
+build	Run npm ci	2026-10-06T13:41:09.4800986Z To address all issues, run:
+build	Run npm ci	2026-10-06T13:41:09.4801537Z   npm audit fix
+build	Run npm ci	2026-10-06T13:41:09.4801807Z
+build	Run npm ci	2026-10-06T13:41:09.4802049Z Run `npm audit` for details.
+build	Run npm test	﻿2026-10-06T13:42:01.9337575Z ##[group]Run npm test
+build	Run npm test	2026-10-06T13:42:01.9337878Z ^[[36;1mnpm test^[[0m
+build	Run npm test	2026-10-06T13:42:01.9402264Z shell: /usr/bin/bash -e {0}
+build	Run npm test	2026-10-06T13:42:01.9402560Z env:
+build	Run npm test	2026-10-06T13:42:01.9402775Z   BASE_PATH: /side-quest/
+build	Run npm test	2026-10-06T13:42:01.9403103Z   VITE_RELEASE_ID: 3ba70d7a507a2e940d4ff89847b7368d87899c55
+build	Run npm test	2026-10-06T13:42:01.9403447Z ##[endgroup]
+build	Run npm test	2026-10-06T13:42:02.0536318Z
+build	Run npm test	2026-10-06T13:42:02.0536795Z > side-quest@0.1.0 test
+build	Run npm test	2026-10-06T13:42:02.0537190Z > vitest run
+build	Run npm test	2026-10-06T13:42:02.0537351Z
+build	Run npm test	2026-10-06T13:42:02.3651518Z
+build	Run npm test	2026-10-06T13:42:02.3653261Z ^[[1m^[[30m^[[46m RUN ^[[49m^[[39m^[[22m ^[[36mv4.1.11 ^[[39m^[[90m/home/runner/work/side-quest/side-quest^[[39m
+build	Run npm test	2026-10-06T13:42:02.3654146Z
+build	Run npm test	2026-10-06T13:42:02.8676537Z  ^[[32m✓^[[39m tests/quest.test.ts ^[[2m(^[[22m^[[2m13 tests^[[22m^[[2m)^[[22m^[[32m 33^[[2mms^[[22m^[[39m
+build	Run npm test	2026-10-06T13:42:02.9820463Z  ^[[32m✓^[[39m tests/dice.test.ts ^[[2m(^[[22m^[[2m43 tests^[[22m^[[2m)^[[22m^[[32m 143^[[2mms^[[22m^[[39m
+build	Run npm test	2026-10-06T13:42:03.0285480Z  ^[[32m✓^[[39m tests/workshop.test.ts ^[[2m(^[[22m^[[2m6 tests^[[22m^[[2m)^[[22m^[[32m 192^[[2mms^[[22m^[[39m
+build	Run npm test	2026-10-06T13:42:03.2581258Z  ^[[32m✓^[[39m tests/presentation.test.ts ^[[2m(^[[22m^[[2m8 tests^[[22m^[[2m)^[[22m^[[32m 21^[[2mms^[[22m^[[39m
+build	Run npm test	2026-10-06T13:42:03.3899922Z  ^[[32m✓^[[39m tests/imprint.test.ts ^[[2m(^[[22m^[[2m8 tests^[[22m^[[2m)^[[22m^[[32m 87^[[2mms^[[22m^[[39m
+build	Run npm test	2026-10-06T13:42:03.4801560Z  ^[[32m✓^[[39m tests/dice-result-text.test.ts ^[[2m(^[[22m^[[2m5 tests^[[22m^[[2m)^[[22m^[[32m 8^[[2mms^[[22m^[[39m
+build	Run npm test	2026-10-06T13:42:03.6663142Z  ^[[32m✓^[[39m tests/artwork.test.ts ^[[2m(^[[22m^[[2m4 tests^[[22m^[[2m)^[[22m^[[32m 55^[[2mms^[[22m^[[39m
+build	Run npm test	2026-10-06T13:42:03.7417993Z  ^[[32m✓^[[39m tests/card-logic.test.ts ^[[2m(^[[22m^[[2m2 tests^[[22m^[[2m)^[[22m^[[32m 40^[[2mms^[[22m^[[39m
+build	Run npm test	2026-10-06T13:42:03.8424365Z  ^[[32m✓^[[39m tests/storage-keys.test.ts ^[[2m(^[[22m^[[2m4 tests^[[22m^[[2m)^[[22m^[[32m 8^[[2mms^[[22m^[[39m
+build	Run npm test	2026-10-06T13:42:03.9612459Z  ^[[32m✓^[[39m tests/engine.test.ts ^[[2m(^[[22m^[[2m24 tests^[[22m^[[2m)^[[22m^[[33m 870^[[2mms^[[22m^[[39m
+build	Run npm test	2026-10-06T13:42:03.9635768Z      ^[[33m^[[2m✓^[[22m^[[39m finishes exactly 500 cards after dismissal ^[[33m 572^[[2mms^[[22m^[[39m
+build	Run npm test	2026-10-06T13:42:04.0773336Z  ^[[32m✓^[[39m tests/vip-pack.test.ts ^[[2m(^[[22m^[[2m3 tests^[[22m^[[2m)^[[22m^[[32m 9^[[2mms^[[22m^[[39m
+build	Run npm test	2026-10-06T13:42:04.1495567Z  ^[[32m✓^[[39m tests/pack-identity.test.ts ^[[2m(^[[22m^[[2m3 tests^[[22m^[[2m)^[[22m^[[32m 5^[[2mms^[[22m^[[39m
+build	Run npm test	2026-10-06T13:42:04.2115450Z  ^[[32m✓^[[39m tests/manifest.test.ts ^[[2m(^[[22m^[[2m3 tests^[[22m^[[2m)^[[22m^[[32m 187^[[2mms^[[22m^[[39m
+build	Run npm test	2026-10-06T13:42:04.2143527Z
+build	Run npm test	2026-10-06T13:42:04.2148490Z ^[[2m Test Files ^[[22m ^[[1m^[[32m13 passed^[[39m^[[22m^[[90m (13)^[[39m
+build	Run npm test	2026-10-06T13:42:04.2149680Z ^[[2m      Tests ^[[22m ^[[1m^[[32m126 passed^[[39m^[[22m^[[90m (126)^[[39m
+build	Run npm test	2026-10-06T13:42:04.2150395Z ^[[2m   Start at ^[[22m 13:42:02
+build	Run npm test	2026-10-06T13:42:04.2152120Z ^[[2m   Duration ^[[22m 1.84s^[[2m (transform 754ms, setup 0ms, import 1.49s, tests 1.66s, environment 2ms)^[[22m
+build	Run npm test	2026-10-06T13:42:04.2153428Z
+build	Run npm run build	﻿2026-10-06T13:42:04.2454177Z ##[group]Run npm run build
+build	Run npm run build	2026-10-06T13:42:04.2454486Z ^[[36;1mnpm run build^[[0m
+build	Run npm run build	2026-10-06T13:42:04.2517865Z shell: /usr/bin/bash -e {0}
+build	Run npm run build	2026-10-06T13:42:04.2518127Z env:
+build	Run npm run build	2026-10-06T13:42:04.2518332Z   BASE_PATH: /side-quest/
+build	Run npm run build	2026-10-06T13:42:04.2518647Z   VITE_RELEASE_ID: 3ba70d7a507a2e940d4ff89847b7368d87899c55
+build	Run npm run build	2026-10-06T13:42:04.2518972Z ##[endgroup]
+build	Run npm run build	2026-10-06T13:42:04.3541766Z
+build	Run npm run build	2026-10-06T13:42:04.3542054Z > side-quest@0.1.0 build
+build	Run npm run build	2026-10-06T13:42:04.3542886Z > tsx scripts/pack-manifest.ts && tsx scripts/validate-content.ts && tsc -b && vite build && tsx scripts/check-budget.ts
+build	Run npm run build	2026-10-06T13:42:04.3543387Z
+build	Run npm run build	2026-10-06T13:42:05.0402316Z Wrote src/content/manifest.generated.ts (6 packs).
+build	Run npm run build	2026-10-06T13:42:05.3138572Z Review long card rule (116 characters, 22 words): house.sheet-060
+build	Run npm run build	2026-10-06T13:42:05.3140525Z Review long card rule (87 characters, 19 words): house.sheet-093
+build	Run npm run build	2026-10-06T13:42:05.3141459Z Review long card rule (92 characters, 16 words): house.sheet-096
+build	Run npm run build	2026-10-06T13:42:05.3150535Z Review long card rule (99 characters, 18 words): pokemon.hoothoot
+build	Run npm run build	2026-10-06T13:42:05.3151672Z Review long card rule (96 characters, 17 words): pokemon.castform
+build	Run npm run build	2026-10-06T13:42:05.3152567Z Review long card rule (96 characters, 17 words): pokemon.may
+build	Run npm run build	2026-10-06T13:42:05.3153474Z Review long card rule (108 characters, 21 words): pokemon.team-magma
+build	Run npm run build	2026-10-06T13:42:05.3154442Z Review long card rule (106 characters, 21 words): pokemon.team-aqua
+build	Run npm run build	2026-10-06T13:42:05.3155394Z Review long card rule (97 characters, 17 words): pokemon.bug-contest
+build	Run npm run build	2026-10-06T13:42:05.3156351Z Review long card rule (94 characters, 19 words): pokemon.safari-zone
+build	Run npm run build	2026-10-06T13:42:05.3157294Z Review long card rule (97 characters, 17 words): pokemon.missingno
+build	Run npm run build	2026-10-06T13:42:05.3158190Z Review long card rule (93 characters, 16 words): pokemon.aipom
+build	Run npm run build	2026-10-06T13:42:05.3159074Z Review long card rule (98 characters, 19 words): pokemon.skarmory
+build	Run npm run build	2026-10-06T13:42:05.3160199Z Review long card rule (91 characters, 16 words): pokemon.tropius
+build	Run npm run build	2026-10-06T13:42:05.3161130Z Review long card rule (97 characters, 18 words): pokemon.lapras
+build	Run npm run build	2026-10-06T13:42:05.3162014Z Review long card rule (99 characters, 19 words): pokemon.geodude
+build	Run npm run build	2026-10-06T13:42:05.3162916Z Review long card rule (112 characters, 22 words): pokemon.wartortle
+build	Run npm run build	2026-10-06T13:42:05.3163832Z Review long card rule (91 characters, 16 words): pokemon.clefairy
+build	Run npm run build	2026-10-06T13:42:05.3164736Z Review long card rule (107 characters, 18 words): pokemon.sudowoodo
+build	Run npm run build	2026-10-06T13:42:05.3165631Z Review long card rule (93 characters, 18 words): pokemon.whismur
+build	Run npm run build	2026-10-06T13:42:05.3166559Z Review long card rule (92 characters, 17 words): pokemon.plusle-minun
+build	Run npm run build	2026-10-06T13:42:05.3167531Z Review long card rule (98 characters, 20 words): pokemon.contest-hall
+build	Run npm run build	2026-10-06T13:42:05.3168445Z Review long card rule (93 characters, 15 words): pokemon.spoink
+build	Run npm run build	2026-10-06T13:42:05.3169334Z Review long card rule (99 characters, 16 words): pokemon.seaking
+build	Run npm run build	2026-10-06T13:42:05.3170420Z Review long card rule (115 characters, 22 words): pokemon.spheal
+build	Run npm run build	2026-10-06T13:42:05.3171611Z Review long card rule (97 characters, 17 words): pokemon.claydol
+build	Run npm run build	2026-10-06T13:42:05.3172492Z Review long card rule (91 characters, 16 words): pokemon.grimer
+build	Run npm run build	2026-10-06T13:42:05.3173390Z Review long card rule (112 characters, 19 words): pokemon.pelipper
+build	Run npm run build	2026-10-06T13:42:05.3174296Z Review long card rule (107 characters, 21 words): pokemon.barboach
+build	Run npm run build	2026-10-06T13:42:05.3175171Z Review long card rule (98 characters, 17 words): pokemon.mawile
+build	Run npm run build	2026-10-06T13:42:05.3176096Z Review long card rule (87 characters, 19 words): pokemon.gym-norman
+build	Run npm run build	2026-10-06T13:42:05.3177045Z Review long card rule (91 characters, 18 words): pokemon.gym-tate-liza
+build	Run npm run build	2026-10-06T13:42:05.3178346Z Validated 714 cards in 6 pack(s), 40 imprint icons.
+build	Run npm run build	2026-10-06T13:42:08.8870310Z ^[[36mvite v6.4.3 ^[[32mbuilding for production...^[[36m^[[39m
+build	Run npm run build	2026-10-06T13:42:08.9715021Z transforming...
+build	Run npm run build	2026-10-06T13:42:10.8542729Z ^[[32m✓^[[39m 80 modules transformed.
+build	Run npm run build	2026-10-06T13:42:11.0329961Z rendering chunks...
+build	Run npm run build	2026-10-06T13:42:11.1715174Z computing gzip size...
+build	Run npm run build	2026-10-06T13:42:11.1906945Z ^[[2mdist/^[[22m^[[32mmanifest.webmanifest                        ^[[39m^[[1m^[[2m  0.50 kB^[[22m^[[1m^[[22m
+build	Run npm run build	2026-10-06T13:42:11.1908288Z ^[[2mdist/^[[22m^[[32mindex.html                                  ^[[39m^[[1m^[[2m  1.91 kB^[[22m^[[1m^[[22m^[[2m │ gzip:   0.70 kB^[[22m
+build	Run npm run build	2026-10-06T13:42:11.1910272Z ^[[2mdist/^[[22m^[[2massets/^[[22m^[[32mornate-teal-frame-COEilB8O.webp      ^[[39m^[[1m^[[2m232.78 kB^[[22m^[[1m^[[22m
+build	Run npm run build	2026-10-06T13:42:11.1911757Z ^[[2mdist/^[[22m^[[2massets/^[[22m^[[35mFullScreenDice-BzlAxSXQ.css          ^[[39m^[[1m^[[2m  0.87 kB^[[22m^[[1m^[[22m^[[2m │ gzip:   0.46 kB^[[22m
+build	Run npm run build	2026-10-06T13:42:11.1912772Z ^[[33m
+build	Run npm run build	2026-10-06T13:42:11.1913190Z (!) Some chunks are larger than 500 kB after minification. Consider:
+build	Run npm run build	2026-10-06T13:42:11.1913694Z - Using dynamic import() to code-split the application
+build	Run npm run build	2026-10-06T13:42:11.1914542Z - Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+build	Run npm run build	2026-10-06T13:42:11.1915500Z - Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.^[[39m
+build	Run npm run build	2026-10-06T13:42:11.1916964Z ^[[2mdist/^[[22m^[[2massets/^[[22m^[[35mindex-DLWQajy7.css                   ^[[39m^[[1m^[[2m 37.69 kB^[[22m^[[1m^[[22m^[[2m │ gzip:   9.73 kB^[[22m
+build	Run npm run build	2026-10-06T13:42:11.1918003Z ^[[2mdist/^[[22m^[[2massets/^[[22m^[[36mauthor-CoESBjYv.js                   ^[[39m^[[1m^[[2m  0.34 kB^[[22m^[[1m^[[22m^[[2m │ gzip:   0.23 kB^[[22m
+build	Run npm run build	2026-10-06T13:42:11.1919004Z ^[[2mdist/^[[22m^[[2massets/^[[22m^[[36mvip-8ig3J2XA.js                      ^[[39m^[[1m^[[2m  1.89 kB^[[22m^[[1m^[[22m^[[2m │ gzip:   0.84 kB^[[22m
+build	Run npm run build	2026-10-06T13:42:11.1920179Z ^[[2mdist/^[[22m^[[2massets/^[[22m^[[36mFullScreenDice-Ceq2YgIm.js           ^[[39m^[[1m^[[2m  4.59 kB^[[22m^[[1m^[[22m^[[2m │ gzip:   1.72 kB^[[22m
+build	Run npm run build	2026-10-06T13:42:11.1921221Z ^[[2mdist/^[[22m^[[2massets/^[[22m^[[36mworkbox-window.prod.es5-BBnX5xw4.js  ^[[39m^[[1m^[[2m  5.75 kB^[[22m^[[1m^[[22m^[[2m │ gzip:   2.36 kB^[[22m
+build	Run npm run build	2026-10-06T13:42:11.1922243Z ^[[2mdist/^[[22m^[[2massets/^[[22m^[[36mlikely-RpCoCxus.js                   ^[[39m^[[1m^[[2m  9.04 kB^[[22m^[[1m^[[22m^[[2m │ gzip:   3.80 kB^[[22m
+build	Run npm run build	2026-10-06T13:42:11.1923264Z ^[[2mdist/^[[22m^[[2massets/^[[22m^[[36mcustom-Cn-pKKfD.js                   ^[[39m^[[1m^[[2m 10.36 kB^[[22m^[[1m^[[22m^[[2m │ gzip:   3.74 kB^[[22m
+build	Run npm run build	2026-10-06T13:42:11.1924234Z ^[[2mdist/^[[22m^[[2massets/^[[22m^[[36mcabin-s8uabTW4.js                    ^[[39m^[[1m^[[2m 10.96 kB^[[22m^[[1m^[[22m^[[2m │ gzip:   4.00 kB^[[22m
+build	Run npm run build	2026-10-06T13:42:11.1925191Z ^[[2mdist/^[[22m^[[2massets/^[[22m^[[36msample-DTgl4bHY.js                   ^[[39m^[[1m^[[2m 12.93 kB^[[22m^[[1m^[[22m^[[2m │ gzip:   4.28 kB^[[22m
+build	Run npm run build	2026-10-06T13:42:11.1926150Z ^[[2mdist/^[[22m^[[2massets/^[[22m^[[36mpokemon-nh52P9--.js                  ^[[39m^[[1m^[[2m 26.55 kB^[[22m^[[1m^[[22m^[[2m │ gzip:   9.01 kB^[[22m
+build	Run npm run build	2026-10-06T13:42:11.1927108Z ^[[2mdist/^[[22m^[[2massets/^[[22m^[[36mindex-CKiAdMm3.js                    ^[[39m^[[1m^[[2m289.14 kB^[[22m^[[1m^[[22m^[[2m │ gzip:  91.29 kB^[[22m
+build	Run npm run build	2026-10-06T13:42:11.1928062Z ^[[2mdist/^[[22m^[[2massets/^[[22m^[[36mlibrary-BQSAjMAr.js                  ^[[39m^[[1m^[[33m560.78 kB^[[39m^[[22m^[[2m │ gzip: 148.44 kB^[[22m
+build	Run npm run build	2026-10-06T13:42:11.1928991Z ^[[32m✓ built in 2.27s^[[39m
+build	Run npm run build	2026-10-06T13:42:12.8214704Z
+build	Run npm run build	2026-10-06T13:42:12.8215601Z ^[[36mPWA v1.3.0^[[39m
+build	Run npm run build	2026-10-06T13:42:12.8216396Z mode      ^[[35mgenerateSW^[[39m
+build	Run npm run build	2026-10-06T13:42:12.8217510Z precache  ^[[32m74 entries^[[39m ^[[2m(2970.27 KiB)^[[22m
+build	Run npm run build	2026-10-06T13:42:12.8218225Z files generated
+build	Run npm run build	2026-10-06T13:42:12.8218788Z   ^[[2mdist/sw.js^[[22m
+build	Run npm run build	2026-10-06T13:42:12.8219645Z   ^[[2mdist/workbox-9c191d2f.js^[[22m
+build	Run npm run build	2026-10-06T13:42:13.2221167Z Budgets passed: 2991 KiB runtime; 89.1 KiB gzip initial + 174.2 KiB gzip lazy JavaScript. Workshop excluded.
+build	Run npm run test:release	﻿2026-10-06T13:42:13.2483640Z ##[group]Run npm run test:release
+build	Run npm run test:release	2026-10-06T13:42:13.2484229Z ^[[36;1mnpm run test:release^[[0m
+build	Run npm run test:release	2026-10-06T13:42:13.2573552Z shell: /usr/bin/bash -e {0}
+build	Run npm run test:release	2026-10-06T13:42:13.2574003Z env:
+build	Run npm run test:release	2026-10-06T13:42:13.2574359Z   BASE_PATH: /side-quest/
+build	Run npm run test:release	2026-10-06T13:42:13.2574917Z   VITE_RELEASE_ID: 3ba70d7a507a2e940d4ff89847b7368d87899c55
+build	Run npm run test:release	2026-10-06T13:42:13.2575569Z ##[endgroup]
+build	Run npm run test:release	2026-10-06T13:42:13.3579174Z
+build	Run npm run test:release	2026-10-06T13:42:13.3579533Z > side-quest@0.1.0 test:release
+build	Run npm run test:release	2026-10-06T13:42:13.3580525Z > playwright test --grep @release
+build	Run npm run test:release	2026-10-06T13:42:13.3580786Z
+build	Run npm run test:release	2026-10-06T13:42:15.0546691Z
+build	Run npm run test:release	2026-10-06T13:42:15.0547563Z Running 42 tests using 2 workers
+build	Run npm run test:release	2026-10-06T13:44:59.8474009Z ······················××±±··················
+build	Run npm run test:release	2026-10-06T13:44:59.8481520Z
+build	Run npm run test:release	2026-10-06T13:44:59.8492112Z   1) [webkit] › tests/browser/dice.spec.ts:98:1 › @release a restored unrolled dice card rolls by tapping the card
+build	Run npm run test:release	2026-10-06T13:44:59.8492595Z
+build	Run npm run test:release	2026-10-06T13:44:59.8492762Z     Test timeout of 30000ms exceeded.
+build	Run npm run test:release	2026-10-06T13:44:59.8492966Z
+build	Run npm run test:release	2026-10-06T13:44:59.8493255Z     Error: expect(locator).toHaveAttribute(expected) failed
+build	Run npm run test:release	2026-10-06T13:44:59.8493520Z
+build	Run npm run test:release	2026-10-06T13:44:59.8493654Z     Locator: locator('.roll-stage')
+build	Run npm run test:release	2026-10-06T13:44:59.8493967Z     Expected pattern: /^settled:/
+build	Run npm run test:release	2026-10-06T13:44:59.8494454Z     Error: element(s) not found
+build	Run npm run test:release	2026-10-06T13:44:59.8494667Z
+build	Run npm run test:release	2026-10-06T13:44:59.8494758Z     Call log:
+build	Run npm run test:release	2026-10-06T13:44:59.8495162Z       - Expect "toHaveAttribute" locator('.roll-stage') with timeout 15000ms
+build	Run npm run test:release	2026-10-06T13:44:59.8495619Z       - waiting for locator('.roll-stage')
+build	Run npm run test:release	2026-10-06T13:44:59.8497678Z         3 × locator resolved to <div class="roll-stage" data-stop-reason="" data-roll-ms="2054" id="dice-stage-_r_0_" data-startup-ms="333" data-face-values="4,6" data-renderer="revealing" data-landed-bounds="[[56.320399914173436,294.69523258803014,136.6958643646326,372.04722936241967],[30.043004392916686,136.42269345367853,131.00479666055344,239.3629649368832]]">…</div>
+build	Run npm run test:release	2026-10-06T13:44:59.8499132Z           - unexpected value "revealing"
+build	Run npm run test:release	2026-10-06T13:44:59.8499728Z       - Test timeout of 30000ms exceeded.
+build	Run npm run test:release	2026-10-06T13:44:59.8499939Z
+build	Run npm run test:release	2026-10-06T13:44:59.8499946Z
+build	Run npm run test:release	2026-10-06T13:44:59.8500169Z       104 |   await expect(cta).toHaveAccessibleName(/^Roll /);
+build	Run npm run test:release	2026-10-06T13:44:59.8500563Z       105 |   await cta.click();
+build	Run npm run test:release	2026-10-06T13:44:59.8500963Z     > 106 |   await expect(page.locator(".roll-stage")).toHaveAttribute(
+build	Run npm run test:release	2026-10-06T13:44:59.8501418Z           |                                             ^
+build	Run npm run test:release	2026-10-06T13:44:59.8501769Z       107 |     "data-renderer",
+build	Run npm run test:release	2026-10-06T13:44:59.8502029Z       108 |     /^settled:/,
+build	Run npm run test:release	2026-10-06T13:44:59.8502293Z       109 |     { timeout: 15000 },
+build	Run npm run test:release	2026-10-06T13:44:59.8502741Z         at /home/runner/work/side-quest/side-quest/tests/browser/dice.spec.ts:106:45
+build	Run npm run test:release	2026-10-06T13:44:59.8503076Z
+build	Run npm run test:release	2026-10-06T13:44:59.8503576Z     Error Context: test-results/game/dice--release-a-restored-u-9147c-d-rolls-by-tapping-the-card-webkit/error-context.md
+build	Run npm run test:release	2026-10-06T13:44:59.8504111Z
+build	Run npm run test:release	2026-10-06T13:44:59.8504563Z     attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+build	Run npm run test:release	2026-10-06T13:44:59.8505327Z     test-results/game/dice--release-a-restored-u-9147c-d-rolls-by-tapping-the-card-webkit/trace.zip
+build	Run npm run test:release	2026-10-06T13:44:59.8505850Z     Usage:
+build	Run npm run test:release	2026-10-06T13:44:59.8505962Z
+build	Run npm run test:release	2026-10-06T13:44:59.8506454Z         npx playwright show-trace test-results/game/dice--release-a-restored-u-9147c-d-rolls-by-tapping-the-card-webkit/trace.zip
+build	Run npm run test:release	2026-10-06T13:44:59.8507269Z
+build	Run npm run test:release	2026-10-06T13:44:59.8507634Z     ────────────────────────────────────────────────────────────────────────────────────────────────
+build	Run npm run test:release	2026-10-06T13:44:59.8507927Z
+build	Run npm run test:release	2026-10-06T13:44:59.8508454Z   2) [webkit] › tests/browser/dice.spec.ts:192:1 › @release a second tap finishes the moving dice, then reveals the bold amount
+build	Run npm run test:release	2026-10-06T13:44:59.8508919Z
+build	Run npm run test:release	2026-10-06T13:44:59.8509119Z     Error: expect(locator).toHaveAttribute(expected) failed
+build	Run npm run test:release	2026-10-06T13:44:59.8509758Z
+build	Run npm run test:release	2026-10-06T13:44:59.8510006Z     Locator:  locator('.roll-stage')
+build	Run npm run test:release	2026-10-06T13:44:59.8510828Z     Expected: "5,1"
+build	Run npm run test:release	2026-10-06T13:44:59.8511223Z     Received: ""
+build	Run npm run test:release	2026-10-06T13:44:59.8511610Z     Timeout:  1800ms
+build	Run npm run test:release	2026-10-06T13:44:59.8511848Z
+build	Run npm run test:release	2026-10-06T13:44:59.8511973Z     Call log:
+build	Run npm run test:release	2026-10-06T13:44:59.8512755Z       - Expect "toHaveAttribute" locator('.roll-stage') with timeout 1800ms
+build	Run npm run test:release	2026-10-06T13:44:59.8513515Z       - waiting for locator('.roll-stage')
+build	Run npm run test:release	2026-10-06T13:44:59.8514713Z         15 × locator resolved to <div data-roll-ms="0" class="roll-stage" data-stop-reason="" id="dice-stage-_r_0_" data-startup-ms="188" data-renderer="rolling">…</div>
+build	Run npm run test:release	2026-10-06T13:44:59.8515451Z            - unexpected value "null"
+build	Run npm run test:release	2026-10-06T13:44:59.8515637Z
+build	Run npm run test:release	2026-10-06T13:44:59.8515643Z
+build	Run npm run test:release	2026-10-06T13:44:59.8515761Z       217 |   await tapCard();
+build	Run npm run test:release	2026-10-06T13:44:59.8516134Z       218 |   await expect(page.locator(".roll-layer")).toBeVisible();
+build	Run npm run test:release	2026-10-06T13:44:59.8516626Z     > 219 |   await expect(page.locator(".roll-stage")).toHaveAttribute(
+build	Run npm run test:release	2026-10-06T13:44:59.8517038Z           |                                             ^
+build	Run npm run test:release	2026-10-06T13:44:59.8517365Z       220 |     "data-face-values",
+build	Run npm run test:release	2026-10-06T13:44:59.8517690Z       221 |     committed.roll.values.join(","),
+build	Run npm run test:release	2026-10-06T13:44:59.8518011Z       222 |     { timeout: 1800 },
+build	Run npm run test:release	2026-10-06T13:44:59.8518440Z         at /home/runner/work/side-quest/side-quest/tests/browser/dice.spec.ts:219:45
+build	Run npm run test:release	2026-10-06T13:44:59.8518776Z
+build	Run npm run test:release	2026-10-06T13:44:59.8519263Z     Error Context: test-results/game/dice--release-a-second-tap-beebc-hen-reveals-the-bold-amount-webkit/error-context.md
+build	Run npm run test:release	2026-10-06T13:44:59.8520047Z
+build	Run npm run test:release	2026-10-06T13:44:59.8520478Z     attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+build	Run npm run test:release	2026-10-06T13:44:59.8521253Z     test-results/game/dice--release-a-second-tap-beebc-hen-reveals-the-bold-amount-webkit/trace.zip
+build	Run npm run test:release	2026-10-06T13:44:59.8521770Z     Usage:
+build	Run npm run test:release	2026-10-06T13:44:59.8521880Z
+build	Run npm run test:release	2026-10-06T13:44:59.8522379Z         npx playwright show-trace test-results/game/dice--release-a-second-tap-beebc-hen-reveals-the-bold-amount-webkit/trace.zip
+build	Run npm run test:release	2026-10-06T13:44:59.8522923Z
+build	Run npm run test:release	2026-10-06T13:44:59.8523280Z     ────────────────────────────────────────────────────────────────────────────────────────────────
+build	Run npm run test:release	2026-10-06T13:44:59.8523571Z
+build	Run npm run test:release	2026-10-06T13:44:59.8523650Z   2 flaky
+build	Run npm run test:release	2026-10-06T13:44:59.8524229Z     [webkit] › tests/browser/dice.spec.ts:98:1 › @release a restored unrolled dice card rolls by tapping the card
+build	Run npm run test:release	2026-10-06T13:44:59.8525358Z     [webkit] › tests/browser/dice.spec.ts:192:1 › @release a second tap finishes the moving dice, then reveals the bold amount
+build	Run npm run test:release	2026-10-06T13:44:59.8525899Z   40 passed (2.8m)
+build	Run npm run test:update	﻿2026-10-06T13:44:59.8714445Z ##[group]Run npm run test:update
+build	Run npm run test:update	2026-10-06T13:44:59.8714776Z ^[[36;1mnpm run test:update^[[0m
+build	Run npm run test:update	2026-10-06T13:44:59.8777251Z shell: /usr/bin/bash -e {0}
+build	Run npm run test:update	2026-10-06T13:44:59.8777537Z env:
+build	Run npm run test:update	2026-10-06T13:44:59.8777753Z   BASE_PATH: /side-quest/
+build	Run npm run test:update	2026-10-06T13:44:59.8778074Z   VITE_RELEASE_ID: 3ba70d7a507a2e940d4ff89847b7368d87899c55
+build	Run npm run test:update	2026-10-06T13:44:59.8778421Z ##[endgroup]
+build	Run npm run test:update	2026-10-06T13:44:59.9802977Z
+build	Run npm run test:update	2026-10-06T13:44:59.9803366Z > side-quest@0.1.0 test:update
+build	Run npm run test:update	2026-10-06T13:44:59.9803809Z > tsx scripts/check-update.ts
+build	Run npm run test:update	2026-10-06T13:44:59.9804035Z
+build	Run npm run test:update	2026-10-06T13:45:13.3652876Z Update flow passed: no mid-game reload, a refresh serves the latest, and the between-games update keeps the save.
+deploy	Deploy	﻿2026-10-06T13:45:25.2102542Z ##[group]Run actions/deploy-pages@v4
+deploy	Deploy	2026-10-06T13:45:25.2103248Z with:
+deploy	Deploy	2026-10-06T13:45:25.2108674Z   token: ***
+deploy	Deploy	2026-10-06T13:45:25.2109142Z   timeout: 600000
+deploy	Deploy	2026-10-06T13:45:25.2109622Z   error_count: 10
+deploy	Deploy	2026-10-06T13:45:25.2110140Z   reporting_interval: 5000
+deploy	Deploy	2026-10-06T13:45:25.2110721Z   artifact_name: github-pages
+deploy	Deploy	2026-10-06T13:45:25.2111295Z   preview: false
+deploy	Deploy	2026-10-06T13:45:25.2111776Z env:
+deploy	Deploy	2026-10-06T13:45:25.2112233Z   BASE_PATH: /side-quest/
+deploy	Deploy	2026-10-06T13:45:25.2112906Z   VITE_RELEASE_ID: 3ba70d7a507a2e940d4ff89847b7368d87899c55
+deploy	Deploy	2026-10-06T13:45:25.2113728Z   GITHUB_PAGES: true
+deploy	Deploy	2026-10-06T13:45:25.2114221Z ##[endgroup]
+deploy	Deploy	2026-10-06T13:45:25.3364933Z (node:1979) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+deploy	Deploy	2026-10-06T13:45:25.3366889Z (Use `node --trace-deprecation ...` to show where the warning was created)
+deploy	Deploy	2026-10-06T13:45:25.5527772Z Fetching artifact metadata for "github-pages" in this workflow run
+deploy	Deploy	2026-10-06T13:45:25.7853263Z Found 2 artifact(s)
+deploy	Deploy	2026-10-06T13:45:25.7862501Z Creating Pages deployment with payload:
+deploy	Deploy	2026-10-06T13:45:25.7862890Z {
+deploy	Deploy	2026-10-06T13:45:25.7863167Z 	"artifact_id": 11416714639,
+deploy	Deploy	2026-10-06T13:45:25.7863769Z 	"pages_build_version": "3ba70d7a507a2e940d4ff89847b7368d87899c55",
+deploy	Deploy	2026-10-06T13:45:25.7902065Z 	"oidc_token": "***"
+deploy	Deploy	2026-10-06T13:45:25.7902407Z }
+deploy	Deploy	2026-10-06T13:45:26.7519211Z Created deployment for 3ba70d7a507a2e940d4ff89847b7368d87899c55, ID: 3ba70d7a507a2e940d4ff89847b7368d87899c55
+deploy	Deploy	2026-10-06T13:45:31.7534860Z Getting Pages deployment status...
+deploy	Deploy	2026-10-06T13:45:32.0620535Z Current status: deployment_queued
+deploy	Deploy	2026-10-06T13:45:37.0623977Z Getting Pages deployment status...
+deploy	Deploy	2026-10-06T13:45:37.4204450Z Current status: syncing_files
+deploy	Deploy	2026-10-06T13:45:42.4207340Z Getting Pages deployment status...
+deploy	Deploy	2026-10-06T13:45:42.7300055Z Reported success!
