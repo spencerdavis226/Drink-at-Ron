@@ -304,6 +304,7 @@ function App() {
           <Completion
             count={display.discarded}
             record={questRecord(display)}
+            league={display.quest?.packId === "pokemon"}
             mode={
               packs.find((p) => p.id === display.quest?.packId)?.quest?.mode
             }

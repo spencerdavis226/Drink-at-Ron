@@ -126,7 +126,10 @@ export function GameDialogs({
         onClose={() => setModal(null)}
         exiting={exiting}
       >
-        <QuestRecord record={record} />
+        <QuestRecord
+          record={record}
+          league={session?.quest?.packId === "pokemon"}
+        />
         <Button onClick={() => setModal(null)}>Back to game</Button>
       </Modal>
     );

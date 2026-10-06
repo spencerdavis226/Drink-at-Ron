@@ -1,0 +1,283 @@
+[
+  {
+    "id": "boulder",
+    "source": "badges/boulder-v1.png",
+    "output": "public/art/badges/boulder.webp",
+    "width": 128,
+    "height": 128,
+    "quality": 76,
+    "prompt": "Use case: stylized-concept. Asset: Boulder badge for a tavern card game's League badge case, readable at 32 pixels. Generate ONE original enamelled brass pin, straight-on orthographic view: a thick faceted octagonal cut slate-grey stone with a narrow hammered aged-brass rim, slate-grey enamel, simple broad facets, restrained gold highlights. Hand-painted game inventory art, slightly worn, warm upper-left candlelight, crisp dark silhouette. Centered at 84 percent of a square canvas with 8 percent clear margin. Genuine transparent background, no ground or cast shadow beyond the pin, no text, letters, numbers, logo or watermark. No official game badge design."
+  },
+  {
+    "id": "cascade",
+    "source": "badges/cascade-v1.png",
+    "output": "public/art/badges/cascade.webp",
+    "width": 128,
+    "height": 128,
+    "quality": 76,
+    "prompt": "Use case: stylized-concept. Single original enamelled brass pin for a tavern card game's League badge case, readable at 32 pixels. Straight-on orthographic view, hand-painted game inventory art, slightly worn, thin hammered aged-brass rim, crisp dark outline and broad simple shapes. Restrained upper-left candlelight highlight. Subject centered at 84 percent of a square canvas with 8 percent clear margin. Genuine transparent background. No ground, detached shadow, text, letters, numbers, logos or watermark. Do not copy official badge art. Shape and motif: a single falling water droplet, sky-blue enamel and one broad white highlight."
+  },
+  {
+    "id": "thunder",
+    "source": "badges/thunder-v2.png",
+    "output": "public/art/badges/thunder.webp",
+    "width": 128,
+    "height": 128,
+    "quality": 76,
+    "prompt": "Use case: precise-object-edit. Edit target: the supplied Thunder sunburst/lightning enamel badge. Change only the framing: reconstruct the entire pointed upper ray and place the COMPLETE badge centered with at least 10 percent clear transparent margin on every side. Nothing may touch or cross the canvas edges. Preserve its hand-painted worn gold, amber enamel, jagged lightning bolt, sunburst geometry, upper-left light, dark crisp outline and square canvas. Genuine transparent background, no letters or text or extra objects.",
+    "originalPrompt": "Use case: stylized-concept. Single original enamelled brass pin for a tavern card game's League badge case, readable at 32 pixels. Straight-on orthographic view, hand-painted game inventory art, slightly worn, thin hammered aged-brass rim, crisp dark outline and broad simple shapes. Restrained upper-left candlelight highlight. Subject centered at 84 percent of a square canvas with 8 percent clear margin. Genuine transparent background. No ground, detached shadow, text, letters, numbers, logos or watermark. Do not copy official badge art. Shape and motif: a sunburst enclosing one bold jagged lightning bolt, gold and amber enamel.",
+    "review": "v1 clipped its upper ray; v2 reconstructs it and leaves clear margins"
+  },
+  {
+    "id": "rainbow",
+    "source": "badges/rainbow-v1.png",
+    "output": "public/art/badges/rainbow.webp",
+    "width": 128,
+    "height": 128,
+    "quality": 76,
+    "prompt": "undefinedShape and motif: a four-petalled flower with broad green, red, yellow and violet enamel petals."
+  },
+  {
+    "id": "marsh",
+    "source": "badges/marsh-v1.png",
+    "output": "public/art/badges/marsh.webp",
+    "width": 128,
+    "height": 128,
+    "quality": 76,
+    "prompt": "undefinedShape and motif: two concentric thick golden rings, pale-yellow enamel and a small dark center opening."
+  },
+  {
+    "id": "soul",
+    "source": "badges/soul-v1.png",
+    "output": "public/art/badges/soul.webp",
+    "width": 128,
+    "height": 128,
+    "quality": 76,
+    "prompt": "undefinedShape and motif: a heart-shaped magenta and pink enamel cutout within a rounded square brass pin."
+  },
+  {
+    "id": "volcano",
+    "source": "badges/volcano-v1.png",
+    "output": "public/art/badges/volcano.webp",
+    "width": 128,
+    "height": 128,
+    "quality": 76,
+    "prompt": "undefinedShape and motif: one bold red-and-orange enamel flame rising from a dark volcanic cone."
+  },
+  {
+    "id": "earth",
+    "source": "badges/earth-v1.png",
+    "output": "public/art/badges/earth.webp",
+    "width": 128,
+    "height": 128,
+    "quality": 76,
+    "prompt": "Use case: stylized-concept. Single original enamelled brass pin for a tavern card game's League badge case, readable at 32 pixels. Straight-on orthographic view, hand-painted game inventory art, slightly worn, thin hammered aged-brass rim, crisp dark outline and broad simple shapes. Restrained upper-left candlelight highlight. Subject centered at 84 percent of a square canvas with 8 percent clear margin. Genuine transparent background. No ground, detached shadow, text, letters, numbers, logos or watermark. Do not copy official badge art. Shape and motif: a leaf-shaped jade-green enamel crest with three broad brass veins. Keep all extremities well inside the image; do not crop the pin."
+  },
+  {
+    "id": "zephyr",
+    "source": "badges/zephyr-v1.png",
+    "output": "public/art/badges/zephyr.webp",
+    "width": 128,
+    "height": 128,
+    "quality": 76,
+    "prompt": "Use case: stylized-concept. Single original enamelled brass pin for a tavern card game's League badge case, readable at 32 pixels. Straight-on orthographic view, hand-painted game inventory art, slightly worn, thin hammered aged-brass rim, crisp dark outline and broad simple shapes. Restrained upper-left candlelight highlight. Subject centered at 84 percent of a square canvas with 8 percent clear margin. Genuine transparent background. No ground, detached shadow, text, letters, numbers, logos or watermark. Do not copy official badge art. Shape and motif: a pair of swept silver-grey and white enamel wings, joined at their center. Keep all extremities well inside the image; do not crop the pin."
+  },
+  {
+    "id": "hive",
+    "source": "badges/hive-v1.png",
+    "output": "public/art/badges/hive.webp",
+    "width": 128,
+    "height": 128,
+    "quality": 76,
+    "prompt": "Use case: stylized-concept. Single original enamelled brass pin for a tavern card game's League badge case, readable at 32 pixels. Straight-on orthographic view, hand-painted game inventory art, slightly worn, thin hammered aged-brass rim, crisp dark outline and broad simple shapes. Restrained upper-left candlelight highlight. Subject centered at 84 percent of a square canvas with 8 percent clear margin. Genuine transparent background. No ground, detached shadow, text, letters, numbers, logos or watermark. Do not copy official badge art. Shape and motif: a domed red enamel ladybird-like shell with four bold black spots. Keep all extremities well inside the image; do not crop the pin."
+  },
+  {
+    "id": "plain",
+    "source": "badges/plain-v1.png",
+    "output": "public/art/badges/plain.webp",
+    "width": 128,
+    "height": 128,
+    "quality": 76,
+    "prompt": "Use case: stylized-concept. Single original enamelled brass pin for a tavern card game's League badge case, readable at 32 pixels. Straight-on orthographic view, hand-painted game inventory art, slightly worn, thin hammered aged-brass rim, crisp dark outline and broad simple shapes. Restrained upper-left candlelight highlight. Subject centered at 84 percent of a square canvas with 8 percent clear margin. Genuine transparent background. No ground, detached shadow, text, letters, numbers, logos or watermark. Do not copy official badge art. Shape and motif: a rounded pale-pink enamel rectangle with a cream cow-bell notch cut into its lower edge. Keep all extremities well inside the image; do not crop the pin."
+  },
+  {
+    "id": "fog",
+    "source": "badges/fog-v1.png",
+    "output": "public/art/badges/fog.webp",
+    "width": 128,
+    "height": 128,
+    "quality": 76,
+    "prompt": "Use case: stylized-concept. Single original enamelled brass pin for a tavern card game's League badge case, readable at 32 pixels. Straight-on orthographic view, hand-painted game inventory art, slightly worn, thin hammered aged-brass rim, crisp dark outline and broad simple shapes. Restrained upper-left candlelight highlight. Subject centered at 84 percent of a square canvas with 8 percent clear margin. Genuine transparent background. No ground, detached shadow, text, letters, numbers, logos or watermark. Do not copy official badge art. Shape and motif: a single lilac and grey ghostly swirl enclosed in a round brass ring. Slightly worn matte enamel, not a glossy product photo. All points complete with clear margin."
+  },
+  {
+    "id": "storm",
+    "source": "badges/storm-v1.png",
+    "output": "public/art/badges/storm.webp",
+    "width": 128,
+    "height": 128,
+    "quality": 76,
+    "prompt": "Use case: stylized-concept. Single original enamelled brass pin for a tavern card game's League badge case, readable at 32 pixels. Straight-on orthographic view, hand-painted game inventory art, slightly worn, thin hammered aged-brass rim, crisp dark outline and broad simple shapes. Restrained upper-left candlelight highlight. Subject centered at 84 percent of a square canvas with 8 percent clear margin. Genuine transparent background. No ground, detached shadow, text, letters, numbers, logos or watermark. Do not copy official badge art. Shape and motif: a brown-and-amber enamel clenched fist inside a simple brass ring. Slightly worn matte enamel, not a glossy product photo. All points complete with clear margin."
+  },
+  {
+    "id": "mineral",
+    "source": "badges/mineral-v1.png",
+    "output": "public/art/badges/mineral.webp",
+    "width": 128,
+    "height": 128,
+    "quality": 76,
+    "prompt": "Use case: stylized-concept. Single original enamelled brass pin for a tavern card game's League badge case, readable at 32 pixels. Straight-on orthographic view, hand-painted game inventory art, slightly worn, thin hammered aged-brass rim, crisp dark outline and broad simple shapes. Restrained upper-left candlelight highlight. Subject centered at 84 percent of a square canvas with 8 percent clear margin. Genuine transparent background. No ground, detached shadow, text, letters, numbers, logos or watermark. Do not copy official badge art. Shape and motif: a polished steel hexagonal nut, steel-grey enamel with silver facets and a hexagonal central hole. Slightly worn matte enamel, not a glossy product photo. All points complete with clear margin."
+  },
+  {
+    "id": "glacier",
+    "source": "badges/glacier-v1.png",
+    "output": "public/art/badges/glacier.webp",
+    "width": 128,
+    "height": 128,
+    "quality": 76,
+    "prompt": "Use case: stylized-concept. Single original enamelled brass pin for a tavern card game's League badge case, readable at 32 pixels. Straight-on orthographic view, hand-painted game inventory art, slightly worn, thin hammered aged-brass rim, crisp dark outline and broad simple shapes. Restrained upper-left candlelight highlight. Subject centered at 84 percent of a square canvas with 8 percent clear margin. Genuine transparent background. No ground, detached shadow, text, letters, numbers, logos or watermark. Do not copy official badge art. Shape and motif: a bold six-point ice crystal, ice-blue enamel and broad white highlights. Slightly worn matte enamel, not a glossy product photo. All points complete with clear margin."
+  },
+  {
+    "id": "rising",
+    "source": "badges/rising-v1.png",
+    "output": "public/art/badges/rising.webp",
+    "width": 128,
+    "height": 128,
+    "quality": 76,
+    "prompt": "Use case: stylized-concept. Single original enamelled brass pin for a tavern card game's League badge case, readable at 32 pixels. Straight-on orthographic view, hand-painted game inventory art, slightly worn, thin hammered aged-brass rim, crisp dark outline and broad simple shapes. Restrained upper-left candlelight highlight. Subject centered at 84 percent of a square canvas with 8 percent clear margin. Genuine transparent background. No ground, detached shadow, text, letters, numbers, logos or watermark. Do not copy official badge art. Shape and motif: a dragon's eye in a diamond-shaped navy enamel pin, one gold iris and brass rim. Slightly worn matte enamel, not a glossy product photo. All points complete with clear margin."
+  },
+  {
+    "id": "stone",
+    "source": "badges/stone-v1.png",
+    "output": "public/art/badges/stone.webp",
+    "width": 128,
+    "height": 128,
+    "quality": 76,
+    "prompt": "Use case: stylized-concept. Single original enamelled brass pin for a tavern card game's League badge case, readable at 32 pixels. Straight-on orthographic view, hand-painted game inventory art, slightly worn, thin hammered aged-brass rim, crisp dark outline and broad simple shapes. Restrained upper-left candlelight highlight. Subject centered at 84 percent of a square canvas with 8 percent clear margin. Genuine transparent background. No ground, detached shadow, text, letters, numbers, logos or watermark. Do not copy official badge art. Shape and motif: a brown stone geode cracked open to reveal broad amethyst-purple crystal facets, aged brass outline. Slightly worn matte enamel, not a glossy product photo. All points complete with clear margin."
+  },
+  {
+    "id": "knuckle",
+    "source": "badges/knuckle-v1.png",
+    "output": "public/art/badges/knuckle.webp",
+    "width": 128,
+    "height": 128,
+    "quality": 76,
+    "prompt": "Use case: stylized-concept. Single original enamelled brass pin for a tavern card game's League badge case, readable at 32 pixels. Straight-on orthographic view, hand-painted game inventory art, slightly worn, thin hammered aged-brass rim, crisp dark outline and broad simple shapes. Restrained upper-left candlelight highlight. Subject centered at 84 percent of a square canvas with 8 percent clear margin. Genuine transparent background. No ground, detached shadow, text, letters, numbers, logos or watermark. Do not copy official badge art. Shape and motif: one red enamel boxing glove seen from the side, cream cuff and brass rim. Slightly worn matte enamel, not a glossy product photo. All points complete with clear margin."
+  },
+  {
+    "id": "dynamo",
+    "source": "badges/dynamo-v1.png",
+    "output": "public/art/badges/dynamo.webp",
+    "width": 128,
+    "height": 128,
+    "quality": 76,
+    "prompt": "Use case: stylized-concept. Single original enamelled brass pin for a tavern card game's League badge case, readable at 32 pixels. Straight-on orthographic view, hand-painted game inventory art, slightly worn, thin hammered aged-brass rim, crisp dark outline and broad simple shapes. Restrained upper-left candlelight highlight. Subject centered at 84 percent of a square canvas with 8 percent clear margin. Genuine transparent background. No ground, detached shadow, text, letters, numbers, logos or watermark. Do not copy official badge art. Shape and motif: a yellow enamel gear with a single bold electric spark at its central hub, bronze rim. Slightly worn matte enamel, not a glossy product photo. All points complete with clear margin."
+  },
+  {
+    "id": "badge-case",
+    "source": "badge-case-v1.png",
+    "output": "public/art/badge-case.webp",
+    "width": 600,
+    "height": 400,
+    "quality": 72,
+    "prompt": "Use case: stylized-concept. Hand-painted game asset for a tavern-themed card game, slightly worn, warm candlelight from upper left. Aged hammered brass and gold, deep teal leather, dark walnut, cream parchment, rich muted color. No text, letters, numbers, logos or watermark. Original design. Genuine transparent background with complete unclipped subject. Asset: an EMPTY open hinged badge case, centered, landscape 3:2 canvas. Seen from slightly above but arranged nearly straight on to overlay badges in the app. Deep teal leather exterior, brass corners and clasp, dark velvet interior. Exactly EIGHT identical EMPTY circular recessed slots IN THE LOWER HALF: two straight rows of four, evenly spaced. Upper open lid is plain teal velvet. No badges or pins inside, no more slots. About 6 percent clear transparent margin."
+  },
+  {
+    "id": "legendary",
+    "source": "legendary-v1.png",
+    "output": "public/art/banners/legendary.webp",
+    "width": 768,
+    "height": 240,
+    "quality": 72,
+    "prompt": "Use case: stylized-concept. Hand-painted game asset for a tavern-themed card game, slightly worn, warm candlelight from upper left. Aged hammered brass and gold, deep teal leather, dark walnut, cream parchment, rich muted color. No text, letters, numbers, logos or watermark. Original design. Genuine transparent background with complete unclipped subject. Asset: wide horizontal cloth title banner, canvas ratio 3.2:1. Pearl-white cloth, swallow-tail ends, slight hanging curve, small brass end caps. Faint feather and lightning motifs ONLY at the two outer ends. Central 65 percent is a large flat calm unadorned light area for live dark text; no folds or ornaments across it. Transparent around the entire banner."
+  },
+  {
+    "id": "elite-four",
+    "source": "elite-four-v1.png",
+    "output": "public/art/banners/elite-four.webp",
+    "width": 768,
+    "height": 240,
+    "quality": 72,
+    "prompt": "Use case: stylized-concept. Hand-painted game asset for a tavern-themed card game, slightly worn, warm candlelight from upper left. Aged hammered brass and gold, deep teal leather, dark walnut, cream parchment, rich muted color. No text, letters, numbers, logos or watermark. Original design. Genuine transparent background with complete unclipped subject. Asset: wide horizontal cloth title banner, canvas ratio 3.2:1. Deep violet cloth, swallow-tail ends, slight hanging curve, brass end caps and exactly four small brass studs at each outer end. Central 65 percent is a large flat calm unadorned dark violet area for live cream text; no ornaments across it. Transparent around the entire banner."
+  },
+  {
+    "id": "champion",
+    "source": "champion-v1.png",
+    "output": "public/art/banners/champion.webp",
+    "width": 768,
+    "height": 240,
+    "quality": 72,
+    "prompt": "Use case: stylized-concept. Hand-painted game asset for a tavern-themed card game, slightly worn, warm candlelight from upper left. Aged hammered brass and gold, deep teal leather, dark walnut, cream parchment, rich muted color. No text, letters, numbers, logos or watermark. Original design. Genuine transparent background with complete unclipped subject. Asset: wide horizontal cloth title banner, canvas ratio 3.2:1. Crimson cloth, swallow-tail ends, slight hanging curve, heavy aged gold fringe along lower edge, small brass laurel at each outer end. Central 65 percent is a large flat calm unadorned dark crimson area for live cream text; no ornaments across it. Transparent around the entire banner."
+  },
+  {
+    "id": "heat",
+    "source": "badges/heat-v1.png",
+    "output": "public/art/badges/heat.webp",
+    "width": 128,
+    "height": 128,
+    "quality": 76,
+    "prompt": "Use case: stylized-concept. Single original enamelled brass pin for a tavern card game's League badge case, readable at 32 pixels. Straight-on orthographic view, hand-painted game inventory art, slightly worn, thin hammered aged-brass rim, crisp dark outline and broad simple shapes. Restrained upper-left candlelight highlight. Subject centered at 84 percent of a square canvas with 8 percent clear margin. Genuine transparent background. No ground, detached shadow, text, letters, numbers, logos or watermark. Do not copy official badge art. Shape and motif: one crimson-and-orange enamel flame inside a diamond-shaped brass frame. Slightly worn matte enamel, not a glossy product photo. All points complete with clear margin."
+  },
+  {
+    "id": "balance",
+    "source": "badges/balance-v1.png",
+    "output": "public/art/badges/balance.webp",
+    "width": 128,
+    "height": 128,
+    "quality": 76,
+    "prompt": "Use case: stylized-concept. Single original enamelled brass pin for a tavern card game's League badge case, readable at 32 pixels. Straight-on orthographic view, hand-painted game inventory art, slightly worn, thin hammered aged-brass rim, crisp dark outline and broad simple shapes. Restrained upper-left candlelight highlight. Subject centered at 84 percent of a square canvas with 8 percent clear margin. Genuine transparent background. No ground, detached shadow, text, letters, numbers, logos or watermark. Do not copy official badge art. Shape and motif: a symmetrical silver-enamel balance scale with two equal level pans, aged brass support. Slightly worn matte enamel, not a glossy product photo. All points complete with clear margin."
+  },
+  {
+    "id": "feather",
+    "source": "badges/feather-v1.png",
+    "output": "public/art/badges/feather.webp",
+    "width": 128,
+    "height": 128,
+    "quality": 76,
+    "prompt": "Use case: stylized-concept. Single original enamelled brass pin for a tavern card game's League badge case, readable at 32 pixels. Straight-on orthographic view, hand-painted game inventory art, slightly worn, thin hammered aged-brass rim, crisp dark outline and broad simple shapes. Restrained upper-left candlelight highlight. Subject centered at 84 percent of a square canvas with 8 percent clear margin. Genuine transparent background. No ground, detached shadow, text, letters, numbers, logos or watermark. Do not copy official badge art. Shape and motif: a single sweeping white enamel feather with a sky-blue edge and broad brass spine. Slightly worn matte enamel, not a glossy product photo. All points complete with clear margin."
+  },
+  {
+    "id": "mind",
+    "source": "badges/mind-v1.png",
+    "output": "public/art/badges/mind.webp",
+    "width": 128,
+    "height": 128,
+    "quality": 76,
+    "prompt": "Use case: stylized-concept. Single original enamelled brass pin for a tavern card game's League badge case, readable at 32 pixels. Straight-on orthographic view, hand-painted game inventory art, slightly worn, thin hammered aged-brass rim, crisp dark outline and broad simple shapes. Restrained upper-left candlelight highlight. Subject centered at 84 percent of a square canvas with 8 percent clear margin. Genuine transparent background. No ground, detached shadow, text, letters, numbers, logos or watermark. Do not copy official badge art. Shape and motif: two broad pink enamel crescent moons facing each other, joined by a small gold bridge. Slightly worn matte enamel, not a glossy product photo. All points complete with clear margin."
+  },
+  {
+    "id": "rain",
+    "source": "badges/rain-v1.png",
+    "output": "public/art/badges/rain.webp",
+    "width": 128,
+    "height": 128,
+    "quality": 76,
+    "prompt": "Use case: stylized-concept. Single original enamelled brass pin for a tavern card game's League badge case, readable at 32 pixels. Straight-on orthographic view, hand-painted game inventory art, slightly worn, thin hammered aged-brass rim, crisp dark outline and broad simple shapes. Restrained upper-left candlelight highlight. Subject centered at 84 percent of a square canvas with 8 percent clear margin. Genuine transparent background. No ground, detached shadow, text, letters, numbers, logos or watermark. Do not copy official badge art. Shape and motif: one deep-blue enamel rain drop hovering immediately over a broad teal wave crest, one combined brass pin. Slightly worn matte enamel, not a glossy product photo. All points complete with clear margin."
+  },
+  {
+    "id": "hall-of-fame",
+    "source": "hall-of-fame-v1.png",
+    "output": "public/art/hall-of-fame.webp",
+    "width": 600,
+    "height": 800,
+    "quality": 72,
+    "prompt": "Use case: stylized-concept. Asset: Hall of Fame completion backdrop for a hand-painted tavern card game. Opaque portrait scene at 3:4. A grand stone hall at night, tall warm braziers near the left and right edges, deep teal and crimson hanging banners at outer rafters, a raised dais with an EMPTY gilded frame centered in the upper half. Warm upper-left candlelight, aged brass and hammered gold, dark walnut and stone, rich muted colors, hand-painted brush texture. Few falling ember flecks confined near edges. Keep the middle third calm, dark, low contrast and empty so the app can overlay cream text and badges. No characters, words, letters, numerals, logos, official game insignia or watermark."
+  },
+  {
+    "id": "side-quest-emblem",
+    "source": "side-quest-emblem-v1.png",
+    "output": "public/art/side-quest-emblem.webp",
+    "width": 256,
+    "height": 256,
+    "quality": 72,
+    "prompt": "Use case: precise-object-edit. Edit target: the supplied hand-painted foaming wooden tankard. Make a Side Quest emblem by adding one bold painted RPG quest marker (!) hovering ABOVE the tankard, with visible breathing room between marker and foam. The exclamation point is dimensional hammered warm gold matching the tankard brass, with dark edges and warm upper-left light; it consists of one tapered upright stroke and one small separate round dot. This ! is the only symbol. Preserve the mug's wood, brass bands, teal medallion, handle, foam, angle and painted texture. Fit the complete tankard AND marker centered inside a square with clear margin; scale the mug down uniformly as needed to fit, without redesigning it. Genuine transparent background. No frame or background, no extra objects, no wordmark or letters, no watermark. Painted integrated art, no flat vector overlay."
+  },
+  {
+    "id": "league",
+    "source": "league-v1.png",
+    "output": "public/art/packs/league.svg",
+    "width": 256,
+    "height": 256,
+    "quality": 72,
+    "prompt": "Use case: logo-brand. Asset: Pokémon League mode emblem to trace into a single-color SVG silhouette for a tavern card game. A pure BLACK flat silhouette of one trophy cup with two generous handles, standing on a short plinth, with a separate bold four-point star just above the cup. Simple clean bold original shape that reads at 24 pixels. Handles have large clear transparent holes. Entire mark centered in a square with 8 percent empty margin. Genuinely transparent background. No shading, gradients, texture, grey, words, numbers, logos or watermark."
+  }
+]

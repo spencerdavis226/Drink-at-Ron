@@ -1,0 +1,73 @@
+
+> side-quest@0.1.0 build
+> tsx scripts/pack-manifest.ts && tsx scripts/validate-content.ts && tsc -b && vite build && tsx scripts/check-budget.ts
+
+Wrote src/content/manifest.generated.ts (6 packs).
+Review long card rule (116 characters, 22 words): house.sheet-060
+Review long card rule (87 characters, 19 words): house.sheet-093
+Review long card rule (92 characters, 16 words): house.sheet-096
+Review long card rule (99 characters, 18 words): pokemon.hoothoot
+Review long card rule (96 characters, 17 words): pokemon.castform
+Review long card rule (96 characters, 17 words): pokemon.may
+Review long card rule (108 characters, 21 words): pokemon.team-magma
+Review long card rule (106 characters, 21 words): pokemon.team-aqua
+Review long card rule (97 characters, 17 words): pokemon.bug-contest
+Review long card rule (94 characters, 19 words): pokemon.safari-zone
+Review long card rule (97 characters, 17 words): pokemon.missingno
+Review long card rule (93 characters, 16 words): pokemon.aipom
+Review long card rule (98 characters, 19 words): pokemon.skarmory
+Review long card rule (91 characters, 16 words): pokemon.tropius
+Review long card rule (97 characters, 18 words): pokemon.lapras
+Review long card rule (99 characters, 19 words): pokemon.geodude
+Review long card rule (112 characters, 22 words): pokemon.wartortle
+Review long card rule (91 characters, 16 words): pokemon.clefairy
+Review long card rule (107 characters, 18 words): pokemon.sudowoodo
+Review long card rule (93 characters, 18 words): pokemon.whismur
+Review long card rule (92 characters, 17 words): pokemon.plusle-minun
+Review long card rule (98 characters, 20 words): pokemon.contest-hall
+Review long card rule (93 characters, 15 words): pokemon.spoink
+Review long card rule (99 characters, 16 words): pokemon.seaking
+Review long card rule (115 characters, 22 words): pokemon.spheal
+Review long card rule (97 characters, 17 words): pokemon.claydol
+Review long card rule (91 characters, 16 words): pokemon.grimer
+Review long card rule (112 characters, 19 words): pokemon.pelipper
+Review long card rule (107 characters, 21 words): pokemon.barboach
+Review long card rule (98 characters, 17 words): pokemon.mawile
+Review long card rule (87 characters, 19 words): pokemon.gym-norman
+Review long card rule (91 characters, 18 words): pokemon.gym-tate-liza
+Validated 714 cards in 6 pack(s), 40 imprint icons.
+vite v6.4.3 building for production...
+transforming...
+✓ 80 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/manifest.webmanifest                          0.50 kB
+dist/index.html                                    1.91 kB │ gzip:   0.70 kB
+dist/assets/ornate-teal-frame-COEilB8O.webp      232.78 kB
+dist/assets/FullScreenDice-BzlAxSXQ.css            0.87 kB │ gzip:   0.46 kB
+dist/assets/index-DLWQajy7.css                    37.69 kB │ gzip:   9.73 kB
+dist/assets/author-CoESBjYv.js                     0.34 kB │ gzip:   0.23 kB
+dist/assets/vip-8ig3J2XA.js                        1.89 kB │ gzip:   0.85 kB
+dist/assets/FullScreenDice-D5iPC0HW.js             4.59 kB │ gzip:   1.72 kB
+dist/assets/workbox-window.prod.es5-BBnX5xw4.js    5.75 kB │ gzip:   2.36 kB
+dist/assets/likely-RpCoCxus.js                     9.04 kB │ gzip:   3.85 kB
+dist/assets/custom-Cn-pKKfD.js                    10.36 kB │ gzip:   3.78 kB
+dist/assets/cabin-s8uabTW4.js                     10.96 kB │ gzip:   4.02 kB
+dist/assets/sample-DTgl4bHY.js                    12.93 kB │ gzip:   4.31 kB
+dist/assets/pokemon-nh52P9--.js                   26.55 kB │ gzip:   9.04 kB
+dist/assets/index-JH5qkhFF.js                    289.11 kB │ gzip:  91.11 kB
+dist/assets/library-BQSAjMAr.js                  560.78 kB │ gzip: 147.42 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 944ms
+
+PWA v1.3.0
+mode      generateSW
+precache  76 entries (2971.73 KiB)
+files generated
+  dist/sw.js
+  dist/workbox-9c191d2f.js
+Budgets passed: 2992 KiB runtime; 89.0 KiB gzip initial + 173.4 KiB gzip lazy JavaScript. Workshop excluded.

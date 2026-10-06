@@ -1,0 +1,55 @@
+
+> side-quest@0.1.0 test:release
+> playwright test --grep @release --workers=1 --retries=0 --max-failures=1
+
+
+Running 42 tests using 1 worker
+
+(node:88781) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [chromium] › tests/browser/dialogs.spec.ts:169:1 › @release cancelling End game keeps the active session (1.6s)
+  ✓   2 [chromium] › tests/browser/dice.spec.ts:98:1 › @release a restored unrolled dice card rolls by tapping the card (3.3s)
+  ✓   3 [chromium] › tests/browser/dice.spec.ts:192:1 › @release a second tap finishes the moving dice, then reveals the bold amount (3.0s)
+  ✓   4 [chromium] › tests/browser/dice.spec.ts:580:3 › choice card offers both options on the card at 390x844 @release (5.6s)
+  ✓   5 [chromium] › tests/browser/dice.spec.ts:580:3 › choice card offers both options on the card at 375x548 @release (5.4s)
+  ✓   6 [chromium] › tests/browser/game.spec.ts:39:1 › @release legacy finite game, rapid taps, restore, previous card, replay and settings (6.4s)
+  ✓   7 [chromium] › tests/browser/game.spec.ts:356:1 › @release rules taps discard, while scrolling and cancelled gestures keep the card (619ms)
+  ✓   8 [chromium] › tests/browser/layout.spec.ts:37:1 › @release Core instructions fit at 390x844 with ratio, pack mark and no CTA occlusion (505ms)
+  ✓   9 [chromium] › tests/browser/layout.spec.ts:178:1 › @release the play screen fits a Safari tab at every phone height without scrolling (277ms)
+  ✓  10 [chromium] › tests/browser/layout.spec.ts:287:1 › @release the installed app lays out at the full screen height and never scrolls the root (956ms)
+  ✓  11 [chromium] › tests/browser/layout.spec.ts:360:1 › @release a short phone scrolls long rules with a visible overflow affordance (211ms)
+  ✓  12 [chromium] › tests/browser/orientation.spec.ts:7:1 › @release mobile landscape blocks play without changing the saved game (1.9s)
+  ✓  13 [chromium] › tests/browser/pages.spec.ts:22:1 › @release Pages manifest, assets and production exclusion (195ms)
+  ✓  14 [chromium] › tests/browser/pages.spec.ts:110:1 › @release first screen waits for its painted art and fonts (1.6s)
+  ✓  15 [chromium] › tests/browser/quest.spec.ts:45:3 › @release the badge meter fills and deals the League at 320px (2.4s)
+  ✓  16 [chromium] › tests/browser/quest.spec.ts:45:3 › @release the badge meter fills and deals the League at 390px (2.7s)
+  ✓  17 [chromium] › tests/browser/quest.spec.ts:99:1 › @release Pokémon League is a mode that holds its pack on (913ms)
+  ✓  18 [chromium] › tests/browser/quest.spec.ts:261:1 › @release beating the Champion opens the Hall of Fame (638ms)
+  ✓  19 [chromium] › tests/browser/secondary.spec.ts:73:1 › @release the pack count stays readable with every pack selected (623ms)
+  ✓  20 [chromium] › tests/browser/secondary.spec.ts:101:1 › @release House and VIP are selectable add-ons and Core can be deselected (544ms)
+  ✓  21 [chromium] › tests/browser/wakelock.spec.ts:3:1 › @release the screen stays awake only while a game is active (1.5s)
+(node:88826) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  22 [webkit] › tests/browser/dialogs.spec.ts:169:1 › @release cancelling End game keeps the active session (1.7s)
+  ✓  23 [webkit] › tests/browser/dice.spec.ts:98:1 › @release a restored unrolled dice card rolls by tapping the card (3.1s)
+  ✓  24 [webkit] › tests/browser/dice.spec.ts:192:1 › @release a second tap finishes the moving dice, then reveals the bold amount (3.0s)
+  ✓  25 [webkit] › tests/browser/dice.spec.ts:580:3 › choice card offers both options on the card at 390x844 @release (5.6s)
+  ✓  26 [webkit] › tests/browser/dice.spec.ts:580:3 › choice card offers both options on the card at 375x548 @release (5.6s)
+  ✓  27 [webkit] › tests/browser/game.spec.ts:39:1 › @release legacy finite game, rapid taps, restore, previous card, replay and settings (6.5s)
+  ✓  28 [webkit] › tests/browser/game.spec.ts:356:1 › @release rules taps discard, while scrolling and cancelled gestures keep the card (762ms)
+  ✓  29 [webkit] › tests/browser/layout.spec.ts:37:1 › @release Core instructions fit at 390x844 with ratio, pack mark and no CTA occlusion (613ms)
+  ✓  30 [webkit] › tests/browser/layout.spec.ts:178:1 › @release the play screen fits a Safari tab at every phone height without scrolling (463ms)
+  ✓  31 [webkit] › tests/browser/layout.spec.ts:287:1 › @release the installed app lays out at the full screen height and never scrolls the root (777ms)
+  ✓  32 [webkit] › tests/browser/layout.spec.ts:360:1 › @release a short phone scrolls long rules with a visible overflow affordance (388ms)
+  ✓  33 [webkit] › tests/browser/orientation.spec.ts:7:1 › @release mobile landscape blocks play without changing the saved game (2.1s)
+  ✓  34 [webkit] › tests/browser/pages.spec.ts:22:1 › @release Pages manifest, assets and production exclusion (384ms)
+  ✓  35 [webkit] › tests/browser/pages.spec.ts:110:1 › @release first screen waits for its painted art and fonts (1.8s)
+  ✓  36 [webkit] › tests/browser/quest.spec.ts:45:3 › @release the badge meter fills and deals the League at 320px (2.1s)
+  ✓  37 [webkit] › tests/browser/quest.spec.ts:45:3 › @release the badge meter fills and deals the League at 390px (2.3s)
+  ✓  38 [webkit] › tests/browser/quest.spec.ts:99:1 › @release Pokémon League is a mode that holds its pack on (958ms)
+  ✓  39 [webkit] › tests/browser/quest.spec.ts:261:1 › @release beating the Champion opens the Hall of Fame (633ms)
+  ✓  40 [webkit] › tests/browser/secondary.spec.ts:73:1 › @release the pack count stays readable with every pack selected (1.2s)
+  ✓  41 [webkit] › tests/browser/secondary.spec.ts:101:1 › @release House and VIP are selectable add-ons and Core can be deselected (888ms)
+  ✓  42 [webkit] › tests/browser/wakelock.spec.ts:3:1 › @release the screen stays awake only while a game is active (1.8s)
+
+  42 passed (1.4m)

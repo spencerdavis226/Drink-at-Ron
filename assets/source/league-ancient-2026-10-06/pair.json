@@ -1,0 +1,65 @@
+{
+  "name": "Ancient League pair",
+  "tool": "built-in image_gen",
+  "status": "Local review pair; production front/back unchanged",
+  "assets": {
+    "back": {
+      "source": "back-v2.png",
+      "output": "back-v2.webp",
+      "prompt": "Use case: precise-object-edit / stylized-concept.\nAsset: revised League card back for Side Quest, opaque portrait, exactly 2:3.\nInput image 1 is the BASE GAME card back and is the PRIMARY edit target, material reference and exact structural template. Input image 2 is the earlier trophy draft, provided only for context; follow image 1's craftsmanship and proportions more closely.\nRequest: turn the base back into an ancient relic card with the evocative engraved, archaeological, softly iridescent feel of the Ancient Mew promo. Keep it unmistakably part of this hand-painted tavern deck.\nLOCK: the base card's exact silhouette, frame thickness, dark walnut edge rails, corner plates, rivets, four side studs, central round medallion size/position, upper and lower hop-vine symmetry, warm upper-left light, painted brushwork, wear and dimensional hammered metal.\nChange the medallion's tankard into an ancient shallow-relief Mew figure: a small enigmatic long-tailed feline creature curled gracefully in profile, its tail making an elegant loop, carved/embossed into aged bronze as a pictographic sacred seal. A few restrained incised geometric rune-like pictographs may form a narrow ring within the medallion; decorative marks, no legible text.\nThe hop-vine scrollwork becomes subtly chiseled, weathered ceremonial engraving while retaining its location and readable silhouette. Keep dark wood clearly wood and deep teal leather clearly worn leather, with slight verdigris mineral patina.\nPalette: the base deep petrol teal, smoky walnut, candlelit aged brass/antique bronze; very faint muted dusty-rose/lavender iridescent enamel sheen in shallow engravings only. Low saturation, no neon, no rainbow foil glare. No trophy, no star trophy logo, no typography, words, numerals, watermark or scene illustration.\nFull card only, straight-on, fills the canvas, complete unclipped frame, no perspective, no mockup, no external background.",
+      "references": [
+        "public/art/card-back.webp",
+        "assets/source/league-2026-10-05/card-back-league-draft.webp"
+      ]
+    },
+    "front": {
+      "source": "front-v4.png",
+      "output": "front-v4.webp",
+      "prompt": "Edit ONLY the cream parchment SURFACE of this card front. The paper currently has an unwanted repeating diamond-shaped weave/crosshatch. Replace that surface texture with smooth, plain, softly aged NON-WOVEN parchment: subtle irregular cloudy warm ivory/cream tonal mottling and a few faint random age spots, no diagonal lines, diamonds, grid, lattice, embroidery, repeated pattern, embossing, illustration or symbols. Make it a calm easy-to-read blank writing area.\nPreserve ALL geometry and everything outside the paper EXACTLY: teal title recess, brass separator, central finial, top arch, engraved walnut rails, rose/violet corner inlays, metal hardware, border, lighting, colors, image size, scale and framing. Do not enlarge or shrink the paper, do not move any edge. Keep x12–88%, y32–87.5% entirely clean light parchment; x21–79%, y9.75–21.5% remains uninterrupted dark teal title space. Current separator finial position is correct, do not move it.\nExact 2:3 opaque full card, straight-on. No text or watermark. Single targeted texture cleanup only.",
+      "references": [
+        "front-v3.png"
+      ],
+      "iterations": [
+        {
+          "source": "front-v1.png",
+          "prompt": "Use case: precise-object-edit.\nAsset: matching ancient League card FRONT for Side Quest, opaque portrait EXACTLY 2:3.\nInput image 1 is the CURRENT APPROVED FRONT and the PRIMARY edit target and rigid geometry template. Input image 2 is the NEW ANCIENT MEW-INSPIRED BACK, a style/palette/material reference ONLY.\nCreate the front companion to image 2, retaining image 1's exact front layout. Keep the same hand-painted tavern materials, dark walnut edge rails, hammered aged brass corner hardware/rivets, teal leather header and plain cream parchment. Bring over image 2's weathered archaeological engraving and restrained oxidized petrol-teal, antique bronze, faint muted dusty-rose/lavender iridescent inlay on the decorative frame ONLY.\nNON-NEGOTIABLE GEOMETRY: do not move, stretch, enlarge or shrink any text zone or its framing. Copy image 1's top teal title recess and the curved gold separator EXACTLY at the same pixel-relative positions. Separator at the title/body divide near y=28 percent, middle stud and finial same size/location. Keep outer frame thickness and all corner/side stud positions identical to image 1.\nRIGID EMPTY TITLE SAFE RECTANGLE: x=21 through 79 percent, y=9.75 through 21.5 percent. Dark calm uniformly textured teal, no pictographs, objects, filigree, creature, engraving, seal, letters or symbols inside that rectangle.\nRIGID EMPTY BODY SAFE RECTANGLE: x=12 through 88 percent, y=32 through 87.5 percent. Entire large parchment shape must remain as in image 1, calm light warm cream with only subtle paper grain; NO pictures, pictographs, glyphs, borders, patterns, ghost images, watermarks or decorative marks inside this rectangle. Preserve additional blank parchment margin to about y=90 percent. Do NOT replace the rules area with stone, a medallion or a scene.\nAncient treatment limited to peripheral hop-vine metalwork, wood rails and corner plates, with small incised geometric pictographs in the metal/wood outside all safe areas. Same chiseled-leaf silhouettes and small rose/violet mineral inlay as image 2, upper-left warm light, convincing worn physical materials. No Mew portrait anywhere on the front; the creature belongs exclusively to the back. No generated text, logo, numbers or watermark.\nStraight-on entire card, no perspective or mockup; complete unclipped outer frame. Keep title/body areas completely empty for real live UI text.",
+          "review": "Title finial intrudes into fixed title box; repeating paper weave; rejected"
+        },
+        {
+          "source": "front-v2.png",
+          "prompt": "Use case: precise-object-edit. Asset: ancient League card front, final geometry repair.\nImage 1 is the ORIGINAL APPROVED FRONT, primary edit target and absolute geometry source. Image 2 is the first new front draft, a palette reference only; its title finial shifted and its paper got a diamond pattern, BOTH must be corrected. Image 3 is the accepted new ancient Mew-style back for materials/palette.\nStart from image 1. Make ONLY modest ancient-patina and dusty rose/violet enamel inlay edits to the existing brass corners, hop-vine edge decorations and outer walnut rails. Add a few small faint incised geometric pictographs on the narrow outside wood rails, away from all text. Preserve the original front's exact proportions, scale, framing, hardware placement and EMPTY text zones.\nCOPY image 1's large PLAIN warm cream paper panel without any crosshatch, diamond pattern, lattice, engraving, stamped motif, picture or watermark. Only natural irregular soft paper grain; no repeating pattern anywhere in the paper.\nCOPY image 1's teal header shape and curved separator. Its central finial MUST NOT extend ABOVE y=22.2 percent; retain the original top arch's lower edge at or ABOVE y=8.9 percent. The entire x=21 to 79 percent and y=9.75 to 21.5 percent title rectangle MUST contain uninterrupted calm dark teal leather with no objects or decorations. Keep original title font space, no reduction.\nThe entire x=12 to 88 percent and y=32 to 87.5 percent body rectangle stays completely plain cream parchment. The bottom finial remains below the paper's original text area; do not move it upward. Frame edge rail widths and all safe margins match image 1.\nKeep the full frame flush to the canvas exactly as image 1: NO extra teal strip, margin or background outside the bottom, top or sides. Exact 2:3 portrait, opaque, straight-on.\nMaterials/colors match image 3: original smoky walnut, deep oxidized petrol-teal leather, warm hammered antique bronze, extremely restrained rose/lavender mineral inlay at peripheral decorative corners. Warm upper-left hand-painted light. Do not redesign the frame. No words, numbers, generated text, creature portrait, logos or watermark.",
+          "review": "Peripheral glyphs added but title finial remains too high; rejected"
+        },
+        {
+          "source": "front-v3.png",
+          "prompt": "Edit this EXACT card-front image very conservatively. It must remain the same frame and the same rigid text layout.\nChange ONLY these peripheral details: add tiny muted rose/violet iridescent enamel facets to the EXISTING teal insets in the FOUR BRASS CORNER PLATES; engrave a few small ancient geometric pictographs into the narrow outer walnut SIDE RAILS. Make those marks feel like a weathered archaeological relic, subtle and hand-painted. Retain smoky walnut, deep teal leather and warm antique hammered brass, matching an ancient engraved Mew card back.\nEverything else stays unchanged. In particular preserve the current paper panel, its blank non-repeating natural paper grain, its outline and color; preserve the whole teal title panel, exact top arch, exact curved separator and its center finial; preserve all studs, border thickness, positions, scale and framing. Do not recreate or redesign those protected regions.\nThe EMPTY title region x21–79%, y9.75–21.5% must remain clear dark teal. The EMPTY rules region x12–88%, y32–87.5% must remain plain light cream. Center lower-title finial starts at y22.2%, below the text area; do not raise it. No new decoration within those rectangles, no repeating paper pattern or crosshatch, no pictures or text.\nThe reference is exactly 2:3 and the frame fills the entire image. Keep that exact 2:3 framing, no outside margin or added strip below the frame. Opaque straight-on card front, no letters, logos or watermark.",
+          "review": "Conservative edit from only the base front restores title clearance; parchment finish sent for refinement"
+        },
+        {
+          "source": "front-v4.png",
+          "prompt": "Edit ONLY the cream parchment SURFACE of this card front. The paper currently has an unwanted repeating diamond-shaped weave/crosshatch. Replace that surface texture with smooth, plain, softly aged NON-WOVEN parchment: subtle irregular cloudy warm ivory/cream tonal mottling and a few faint random age spots, no diagonal lines, diamonds, grid, lattice, embroidery, repeated pattern, embossing, illustration or symbols. Make it a calm easy-to-read blank writing area.\nPreserve ALL geometry and everything outside the paper EXACTLY: teal title recess, brass separator, central finial, top arch, engraved walnut rails, rose/violet corner inlays, metal hardware, border, lighting, colors, image size, scale and framing. Do not enlarge or shrink the paper, do not move any edge. Keep x12–88%, y32–87.5% entirely clean light parchment; x21–79%, y9.75–21.5% remains uninterrupted dark teal title space. Current separator finial position is correct, do not move it.\nExact 2:3 opaque full card, straight-on. No text or watermark. Single targeted texture cleanup only.",
+          "review": "Selected: retained corrected frame geometry, calmer paper surface"
+        }
+      ]
+    }
+  },
+  "width": 768,
+  "height": 1152,
+  "quality": 82,
+  "protectedTextBoxes": {
+    "title": {
+      "left": 0.21,
+      "right": 0.79,
+      "top": 0.0975,
+      "bottom": 0.215
+    },
+    "body": {
+      "left": 0.12,
+      "right": 0.88,
+      "top": 0.32,
+      "bottom": 0.875
+    }
+  },
+  "geometrySource": "src/presentation/card-front.css; current CSS remains unchanged",
+  "rebuild": "npx tsx scripts/ancient-league-art.ts"
+}

@@ -1,0 +1,231 @@
+{
+  "checked": "2026-10-06T13:13:43.548Z",
+  "runtimeAssets": [
+    {
+      "id": "boulder",
+      "path": "public/art/badges/boulder.webp",
+      "bytes": 4976
+    },
+    {
+      "id": "cascade",
+      "path": "public/art/badges/cascade.webp",
+      "bytes": 4392
+    },
+    {
+      "id": "thunder",
+      "path": "public/art/badges/thunder.webp",
+      "bytes": 6692
+    },
+    {
+      "id": "rainbow",
+      "path": "public/art/badges/rainbow.webp",
+      "bytes": 9354
+    },
+    {
+      "id": "marsh",
+      "path": "public/art/badges/marsh.webp",
+      "bytes": 5846
+    },
+    {
+      "id": "soul",
+      "path": "public/art/badges/soul.webp",
+      "bytes": 6434
+    },
+    {
+      "id": "volcano",
+      "path": "public/art/badges/volcano.webp",
+      "bytes": 6174
+    },
+    {
+      "id": "earth",
+      "path": "public/art/badges/earth.webp",
+      "bytes": 4932
+    },
+    {
+      "id": "zephyr",
+      "path": "public/art/badges/zephyr.webp",
+      "bytes": 6766
+    },
+    {
+      "id": "hive",
+      "path": "public/art/badges/hive.webp",
+      "bytes": 5646
+    },
+    {
+      "id": "plain",
+      "path": "public/art/badges/plain.webp",
+      "bytes": 4762
+    },
+    {
+      "id": "fog",
+      "path": "public/art/badges/fog.webp",
+      "bytes": 6666
+    },
+    {
+      "id": "storm",
+      "path": "public/art/badges/storm.webp",
+      "bytes": 8412
+    },
+    {
+      "id": "mineral",
+      "path": "public/art/badges/mineral.webp",
+      "bytes": 4402
+    },
+    {
+      "id": "glacier",
+      "path": "public/art/badges/glacier.webp",
+      "bytes": 7052
+    },
+    {
+      "id": "rising",
+      "path": "public/art/badges/rising.webp",
+      "bytes": 4978
+    },
+    {
+      "id": "stone",
+      "path": "public/art/badges/stone.webp",
+      "bytes": 6622
+    },
+    {
+      "id": "knuckle",
+      "path": "public/art/badges/knuckle.webp",
+      "bytes": 5216
+    },
+    {
+      "id": "dynamo",
+      "path": "public/art/badges/dynamo.webp",
+      "bytes": 5454
+    },
+    {
+      "id": "badge-case",
+      "path": "public/art/badge-case.webp",
+      "bytes": 30454
+    },
+    {
+      "id": "legendary",
+      "path": "public/art/banners/legendary.webp",
+      "bytes": 22320
+    },
+    {
+      "id": "elite-four",
+      "path": "public/art/banners/elite-four.webp",
+      "bytes": 17960
+    },
+    {
+      "id": "champion",
+      "path": "public/art/banners/champion.webp",
+      "bytes": 36744
+    },
+    {
+      "id": "heat",
+      "path": "public/art/badges/heat.webp",
+      "bytes": 4474
+    },
+    {
+      "id": "balance",
+      "path": "public/art/badges/balance.webp",
+      "bytes": 7320
+    },
+    {
+      "id": "feather",
+      "path": "public/art/badges/feather.webp",
+      "bytes": 5090
+    },
+    {
+      "id": "mind",
+      "path": "public/art/badges/mind.webp",
+      "bytes": 4520
+    },
+    {
+      "id": "rain",
+      "path": "public/art/badges/rain.webp",
+      "bytes": 6010
+    },
+    {
+      "id": "hall-of-fame",
+      "path": "public/art/hall-of-fame.webp",
+      "bytes": 51774
+    },
+    {
+      "id": "side-quest-emblem",
+      "path": "public/art/side-quest-emblem.webp",
+      "bytes": 10590
+    },
+    {
+      "id": "league",
+      "path": "public/art/packs/league.svg",
+      "bytes": 7383
+    }
+  ],
+  "badgeCount": 24,
+  "allSourcesAndPromptsPresent": true,
+  "displaySizesMatch": true,
+  "individualImageBudgetsPass": true,
+  "allRuntimeArtPrecached": true,
+  "ancientPair": {
+    "width": 768,
+    "height": 1152,
+    "reviewOnly": true,
+    "browsers": [
+      "Chromium",
+      "WebKit"
+    ],
+    "titleAndBodyBoxesUnchanged": true,
+    "longRulesScrollable": true
+  },
+  "productionCardSurfacesUnchanged": true,
+  "unchangedAgainstHead": [
+    "src/game",
+    "src/app",
+    "src/content",
+    "reference",
+    "public/art/card-back.webp",
+    "src/presentation/art/ornate-teal-frame.webp",
+    "public/art/tankard.webp",
+    "public/icon-192.png",
+    "public/icon-512.png",
+    "public/icon-maskable.png",
+    "public/apple-touch-icon.png"
+  ],
+  "preservedHead": "edd68caab5c94b469842c9d48a002271db4e4b3e",
+  "finalBuild": {
+    "runtimeKiB": 2992,
+    "initialGzipKiB": 89,
+    "lazyGzipKiB": 173.4,
+    "precacheEntries": 76,
+    "ordinaryBuildRestored": true
+  },
+  "finalRelease": {
+    "passed": 42,
+    "retries": 0
+  },
+  "finalWorkshopWebKit": {
+    "passed": 13,
+    "retries": 0
+  },
+  "updateFlow": {
+    "passed": true,
+    "savedGameRetained": true,
+    "noMidGameReload": true
+  },
+  "finalWebKitArt": {
+    "all24SavedBadgeIconsDecoded": true,
+    "viewports": [
+      320,
+      390,
+      1024
+    ],
+    "all3BannersReviewed": true
+  },
+  "finalE2E": {
+    "passed": 178,
+    "flakyPassedOnRetry": 1,
+    "intentionalWebKitOfflineSkips": 3,
+    "exitCode": 0,
+    "limitation": "WebKit setup reload can report Frame load interrupted; cause unproven; no assertions or timeouts changed"
+  },
+  "isolatedLayoutRepeat": {
+    "passed": 15,
+    "retries": 0
+  }
+}

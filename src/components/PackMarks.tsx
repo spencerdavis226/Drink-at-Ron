@@ -3,6 +3,18 @@ import type { PackDefinition } from "../game/types";
 import { asset } from "../presentation/theme";
 import { cardPacks } from "../presentation/packs";
 
+/** A mode mark, separate from the Pokémon pack's mark. */
+export function LeagueMark() {
+  const mark = asset("art/packs/league.svg");
+  return (
+    <span
+      className="league-mark"
+      aria-hidden="true"
+      style={{ maskImage: `url("${mark}")`, WebkitMaskImage: `url("${mark}")` }}
+    />
+  );
+}
+
 /** A pack's mark is one single-colour silhouette (`pack.logo`). It is painted
  * as a CSS mask, so every pack takes the same finish wherever it appears:
  * gilded on setup tiles and the pause legend, debossed in a card footer. */

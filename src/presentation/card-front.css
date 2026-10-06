@@ -379,6 +379,17 @@
 .card-ribbon span {
   position: relative;
 }
+.card-ribbon:has(.ribbon-badge) {
+  display: flex;
+  align-items: center;
+  gap: max(3px, 0.8cqw);
+  padding-block: max(2px, 0.4cqw);
+}
+.ribbon-badge {
+  width: max(16px, 3.7cqw);
+  height: max(16px, 3.7cqw);
+  object-fit: contain;
+}
 .card-ribbon::after {
   content: "";
   position: absolute;

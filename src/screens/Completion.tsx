@@ -1,5 +1,5 @@
 import { Button, Artwork } from "../components/UI";
-import { asset, theme } from "../presentation/theme";
+import { asset } from "../presentation/theme";
 import { QuestRecord } from "../components/QuestRecord";
 import type { questRecord } from "../game/engine";
 /** The end of a game: a toast to the table, or, when a quest mode's finale is
@@ -8,6 +8,7 @@ export function Completion({
   count,
   record,
   mode,
+  league = false,
   celebrate,
   onReplay,
   onSetup,
@@ -17,6 +18,7 @@ export function Completion({
   record: ReturnType<typeof questRecord>;
   /** The quest mode's name, e.g. "Pokémon League". */
   mode?: string;
+  league?: boolean;
   celebrate: boolean;
   onReplay: () => void;
   onSetup: () => void;
@@ -24,7 +26,7 @@ export function Completion({
 }) {
   return (
     <section
-      className={`complete${record?.won ? " hall-of-fame" : ""}${celebrate ? " celebrate" : ""}`}
+      className={`complete${record?.won ? ` hall-of-fame${league ? " painted-hall" : ""}` : ""}${celebrate ? " celebrate" : ""}`}
       onAnimationEnd={(e) => {
         if (e.target === e.currentTarget) onFinish();
       }}
@@ -37,11 +39,11 @@ export function Completion({
             <br />
             <em>Fame.</em>
           </h1>
-          <QuestRecord record={record} />
+          <QuestRecord record={record} league={league} />
         </>
       ) : (
         <>
-          <Artwork src={asset(theme.assets.tankard)} alt="" />
+          <Artwork src={asset("art/side-quest-emblem.webp")} alt="" />
           <p className="hall-kicker">Side quest complete</p>
           <h1>
             To good

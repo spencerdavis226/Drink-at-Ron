@@ -2,6 +2,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import type { CardDefinition, DiceRoll } from "../game/types";
 import { diceResultText } from "../presentation/dice/result-text";
 import { CardPackMarks } from "./PackMarks";
+import { badgeArt } from "../presentation/league-art";
 type Overflow = "none" | "top" | "bottom" | "both";
 export function CardFace({
   card,
@@ -40,6 +41,7 @@ export function CardFace({
   };
   // Keep the original rule until the dice have been dismissed.
   const resolved = !!roll?.returned;
+  const badge = badgeArt(card.id);
   useLayoutEffect(() => {
     const title = titleRef.current;
     const heading = title?.querySelector<HTMLElement>("h2");
@@ -148,6 +150,7 @@ export function CardFace({
       <div className="study-body">
         {card.ribbon && (
           <p className="card-ribbon">
+            {badge && <img className="ribbon-badge" src={badge} alt="" />}
             <span>{card.ribbon}</span>
           </p>
         )}

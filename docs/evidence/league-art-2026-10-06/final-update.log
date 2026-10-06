@@ -1,0 +1,5 @@
+
+> side-quest@0.1.0 test:update
+> tsx scripts/check-update.ts
+
+Update flow passed: no mid-game reload, a refresh serves the latest, and the between-games update keeps the save.

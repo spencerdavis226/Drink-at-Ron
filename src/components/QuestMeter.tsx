@@ -1,7 +1,8 @@
 import type { SessionState } from "../game/types";
-import { finaleStage } from "../game/engine";
+import { finaleStage, questRecord } from "../game/engine";
 import { packs } from "../content/manifest.generated";
-import { PackLogo } from "./PackMarks";
+import { PackLogo, LeagueMark } from "./PackMarks";
+import { badgeArt } from "../presentation/league-art";
 
 /** A quest mode's table-wide meter, in the play screen's top row: the goal's
  * progress (Badges 3/8), then the finale stage in play (Elite Four 2/4, or
@@ -31,6 +32,8 @@ export function QuestMeter({
       ? `${label}: ${stage.index + 1} of ${stage.size}`
       : label
     : `${label}: ${quest.count} of ${quest.goal}`;
+  const latest = questRecord(session)?.earned.at(-1);
+  const badge = !stage && latest ? badgeArt(latest.id) : undefined;
   return (
     <div className="quest-meters">
       <button
@@ -46,7 +49,15 @@ export function QuestMeter({
           onOpen();
         }}
       >
-        {pack && <PackLogo pack={pack} decorative />}
+        {quest.packId === "pokemon" ? (
+          badge ? (
+            <img className="meter-badge" src={badge} alt="" />
+          ) : (
+            <LeagueMark />
+          )
+        ) : (
+          pack && <PackLogo pack={pack} decorative />
+        )}
         <span>
           <small>{label}</small>
           {/* Keyed so each badge and each finale step replays the pop. */}

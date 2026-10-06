@@ -1,0 +1,55 @@
+
+> side-quest@0.1.0 test:e2e
+> playwright test --workers=1
+
+[WebServer] (node:90394) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 182 tests using 1 worker
+(node:90409) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+········chromium 0 startup ms 41
+·chromium 1 startup ms 27
+··roll ms 1596, 2198, 1533, 1879, 1681, 2579
+·····································································
+···········(node:90549) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+········webkit 0 startup ms 38
+·webkit 1 startup ms 25
+··roll ms 2125, 1654, 1606, 2404, 1655, 1579
+·····°···················°······°·······················×(node:90698) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+±
+·······················
+
+  1) [webkit] › tests/browser/motion.spec.ts:394:1 › hiding the tab stops the turn and resyncs the front on return
+
+    Error: page.reload: Frame load interrupted
+    Call log:
+      - waiting for navigation until "load"
+
+
+      29 |     { key, session },
+      30 |   );
+    > 31 |   await page.reload();
+         |              ^
+      32 |   // The first render waits for the screen's art, so it lands after load.
+      33 |   await page.locator("#root > *").first().waitFor({ state: "attached" });
+      34 | }
+        at seed (/Users/spencer/Documents/Dev/Side-Quest/tests/browser/motion.spec.ts:31:14)
+        at /Users/spencer/Documents/Dev/Side-Quest/tests/browser/motion.spec.ts:397:3
+
+    Error Context: test-results/game/motion-hiding-the-tab-stop-995a3-resyncs-the-front-on-return-webkit/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/game/motion-hiding-the-tab-stop-995a3-resyncs-the-front-on-return-webkit/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/game/motion-hiding-the-tab-stop-995a3-resyncs-the-front-on-return-webkit/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 flaky
+    [webkit] › tests/browser/motion.spec.ts:394:1 › hiding the tab stops the turn and resyncs the front on return
+  3 skipped
+  178 passed (5.4m)

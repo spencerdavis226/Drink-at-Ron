@@ -1,0 +1,54 @@
+
+> side-quest@0.1.0 test:e2e
+> playwright test --project=webkit --grep the play screen fits a Safari tab --workers=1 --retries=0 --repeat-each=15
+
+
+Running 15 tests using 1 worker
+
+(node:90074) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [webkit] › tests/browser/layout.spec.ts:178:1 › @release the play screen fits a Safari tab at every phone height without scrolling (679ms)
+(node:90087) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   2 [webkit] › tests/browser/layout.spec.ts:178:1 › @release the play screen fits a Safari tab at every phone height without scrolling (575ms)
+(node:90100) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   3 [webkit] › tests/browser/layout.spec.ts:178:1 › @release the play screen fits a Safari tab at every phone height without scrolling (557ms)
+(node:90114) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   4 [webkit] › tests/browser/layout.spec.ts:178:1 › @release the play screen fits a Safari tab at every phone height without scrolling (622ms)
+(node:90130) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   5 [webkit] › tests/browser/layout.spec.ts:178:1 › @release the play screen fits a Safari tab at every phone height without scrolling (638ms)
+(node:90145) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   6 [webkit] › tests/browser/layout.spec.ts:178:1 › @release the play screen fits a Safari tab at every phone height without scrolling (595ms)
+(node:90159) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   7 [webkit] › tests/browser/layout.spec.ts:178:1 › @release the play screen fits a Safari tab at every phone height without scrolling (594ms)
+(node:90172) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   8 [webkit] › tests/browser/layout.spec.ts:178:1 › @release the play screen fits a Safari tab at every phone height without scrolling (573ms)
+(node:90185) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   9 [webkit] › tests/browser/layout.spec.ts:178:1 › @release the play screen fits a Safari tab at every phone height without scrolling (623ms)
+(node:90199) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  10 [webkit] › tests/browser/layout.spec.ts:178:1 › @release the play screen fits a Safari tab at every phone height without scrolling (610ms)
+(node:90214) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  11 [webkit] › tests/browser/layout.spec.ts:178:1 › @release the play screen fits a Safari tab at every phone height without scrolling (596ms)
+(node:90229) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  12 [webkit] › tests/browser/layout.spec.ts:178:1 › @release the play screen fits a Safari tab at every phone height without scrolling (584ms)
+(node:90245) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  13 [webkit] › tests/browser/layout.spec.ts:178:1 › @release the play screen fits a Safari tab at every phone height without scrolling (574ms)
+(node:90258) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  14 [webkit] › tests/browser/layout.spec.ts:178:1 › @release the play screen fits a Safari tab at every phone height without scrolling (606ms)
+(node:90272) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  15 [webkit] › tests/browser/layout.spec.ts:178:1 › @release the play screen fits a Safari tab at every phone height without scrolling (582ms)
+
+  15 passed (18.7s)

@@ -6,7 +6,8 @@ import {
 } from "../app/persistence";
 import type { PackDefinition } from "../game/types";
 import { Button, DeckChoices, Modal, PackTile } from "../components/UI";
-import { PackLogo } from "../components/PackMarks";
+import { PackLogo, LeagueMark } from "../components/PackMarks";
+import { asset } from "../presentation/theme";
 
 export function Setup({
   prefs,
@@ -65,6 +66,11 @@ export function Setup({
   return (
     <section className="setup">
       <div className="intro">
+        <img
+          className="side-quest-emblem"
+          src={asset("art/side-quest-emblem.webp")}
+          alt=""
+        />
         <h1>
           Side
           <br />
@@ -88,7 +94,11 @@ export function Setup({
                 aria-pressed={pack.id === questPack}
                 onClick={() => chooseQuest(pack.id)}
               >
-                <PackLogo pack={pack} decorative />
+                {pack.id === "pokemon" ? (
+                  <LeagueMark />
+                ) : (
+                  <PackLogo pack={pack} decorative />
+                )}
                 <span>
                   <strong>{pack.quest!.mode}</strong>
                   <small>{pack.quest!.summary}</small>

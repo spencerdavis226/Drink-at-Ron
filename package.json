@@ -20,7 +20,8 @@
     "house:reference": "tsx scripts/house-reference.ts",
     "generate:icons": "tsx scripts/icons.ts",
     "test:workshop": "playwright test --config playwright.workshop.config.ts",
-    "test:update": "tsx scripts/check-update.ts"
+    "test:update": "tsx scripts/check-update.ts",
+    "art:league": "tsx scripts/league-art.ts"
   },
   "dependencies": {
     "@3d-dice/dice-box-threejs": "0.0.12",
