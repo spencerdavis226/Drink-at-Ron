@@ -17,10 +17,24 @@
   --chrome: #271c11;
   /* Top safe-area inset; a custom property so tests can pose an inset. */
   --top-safe: env(safe-area-inset-top, 0px);
+  --bottom-safe: env(safe-area-inset-bottom, 0px);
   /* Layout height and backdrop height. A browser tab uses the small/dynamic
      viewport; the installed app overrides both below. */
   --app-height: 100svh;
   --backdrop-height: 100dvh;
+}
+/* Keep browser chrome outside the game's scroll surface. Only overflowing
+   content inside #root (or a dialog/rules panel) may scroll. */
+html,
+body {
+  height: 100%;
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+#root {
+  height: var(--app-height);
+  overflow: hidden auto;
+  overscroll-behavior: none;
 }
 /* Installed iOS web app (black-translucent status bar). WebKit lays the page
    out one status-bar inset short of the screen (svh/dvh/100% all short) and
@@ -33,16 +47,9 @@ html.standalone {
   --app-height: 100lvh;
   --backdrop-height: 100lvh;
   height: 100lvh;
-  overflow: hidden;
 }
 html.standalone body {
   height: 100lvh;
-  overflow: hidden;
-}
-html.standalone #root {
-  height: 100lvh;
-  overflow: hidden auto;
-  overscroll-behavior: none;
 }
 * {
   box-sizing: border-box;
@@ -117,7 +124,7 @@ p {
   width: min(100%, 560px);
   margin: auto;
   padding: max(16px, var(--top-safe)) max(24px, env(safe-area-inset-right))
-    max(24px, env(safe-area-inset-bottom));
+    max(24px, var(--bottom-safe));
   min-height: var(--app-height);
 }
 .topbar {
@@ -129,37 +136,6 @@ p {
      of installed web apps, so controls stay below the inset where they are
      never rendered soft. Zero without a top inset (desktop, SE-sized phones). */
   margin-top: min(20px, var(--top-safe));
-}
-.install-button.icon-button {
-  margin-left: auto;
-  width: auto;
-  min-width: 108px;
-  height: 46px;
-  padding: 0 16px 0 13px;
-  grid-auto-flow: column;
-  gap: 8px;
-  border: 1px solid #3c6258;
-  border-radius: 13px;
-  color: #f0d29b;
-  background: linear-gradient(180deg, #2b5148 0%, #17332e 100%);
-  box-shadow:
-    inset 0 1px rgb(255 238 199 / 0.2),
-    inset 0 -1px rgb(4 14 12 / 0.75),
-    0 2px 0 #0e0a07,
-    0 5px 12px rgb(0 0 0 / 0.42);
-  font-size: 0.975rem;
-  letter-spacing: 0.02em;
-  text-shadow: 0 1px 1px rgb(0 0 0 / 0.7);
-  white-space: nowrap;
-}
-.install-button.icon-button:hover:not(:disabled) {
-  border-color: #52796e;
-  background: linear-gradient(180deg, #315c51 0%, #1a3933 100%);
-}
-.install-button.icon-button .ui-icon {
-  width: 21px;
-  height: 21px;
-  stroke-width: 1.8;
 }
 .icon-button {
   display: grid;
@@ -187,10 +163,6 @@ p {
   stroke-linecap: round;
   stroke-linejoin: round;
   vector-effect: non-scaling-stroke;
-}
-.install-button-label {
-  font-weight: 650;
-  line-height: 1;
 }
 .menu-icon {
   display: grid;
@@ -363,13 +335,8 @@ p {
      never scrolls. */
   --play-chrome: calc(
     max(16px, var(--top-safe)) + min(20px, var(--top-safe)) +
-      max(24px, env(safe-area-inset-bottom)) + 112px
+      max(24px, var(--bottom-safe)) + 112px
   );
-}
-/* The play screen is one fixed view: with the card fitted there is nothing to
-   scroll, so the page must not rubber-band either. Setup still scrolls. */
-html:has(.playing) {
-  overscroll-behavior: none;
 }
 .table {
   display: flex;
@@ -669,7 +636,7 @@ dialog p {
   .playing {
     --play-chrome: calc(
       max(26px, var(--top-safe)) + min(20px, var(--top-safe)) +
-        max(24px, env(safe-area-inset-bottom)) + 138px
+        max(24px, var(--bottom-safe)) + 138px
     );
   }
   .playing .table {

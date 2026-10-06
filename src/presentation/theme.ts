@@ -10,6 +10,7 @@ export const theme = {
     back: "art/card-back.webp",
     table: "art/table.webp",
     tankard: "art/tankard.webp",
+    titleCrest: "art/side-quest-title-crest.webp",
     button: "art/button.webp",
     panel: "art/panel.webp",
     bezel: "art/bezel.webp",

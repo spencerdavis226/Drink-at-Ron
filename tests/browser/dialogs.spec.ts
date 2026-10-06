@@ -30,7 +30,7 @@ test("dialog enter and exit share the motion tokens", async ({ page }) => {
     exit: getComputedStyle(el).getPropertyValue("--motion-dialog-exit").trim(),
   }));
   expect(tokens).toEqual({ enter: "220ms", exit: "180ms" });
-  await page.getByRole("button", { name: "Install app" }).click();
+  await page.getByRole("button", { name: "Add to Home Screen help" }).click();
   const dialog = page.locator("dialog[open]");
   await expect(dialog).toBeVisible();
   // Read the exit contract by toggling the class instead of racing the ~180ms
@@ -52,7 +52,7 @@ test("dialog enter and exit share the motion tokens", async ({ page }) => {
   await expect(page.getByRole("dialog")).toHaveCount(0);
 });
 
-test("install pill and dialog close icon are optically centered", async ({
+test("install information control and dialog close icon are optically centered", async ({
   page,
 }) => {
   for (const viewport of [
@@ -61,8 +61,10 @@ test("install pill and dialog close icon are optically centered", async ({
   ]) {
     await page.setViewportSize(viewport);
     await page.goto("./");
-    const install = page.getByRole("button", { name: "Install app" });
-    await expect(install).toContainText("Install");
+    const install = page.getByRole("button", {
+      name: "Add to Home Screen help",
+    });
+    await expect(install).toHaveText("");
     const target = await install.boundingBox();
     expect(target!.width).toBeGreaterThanOrEqual(44);
     expect(target!.height).toBeGreaterThanOrEqual(44);
@@ -73,9 +75,9 @@ test("install pill and dialog close icon are optically centered", async ({
         radius: parseFloat(style.borderRadius),
       };
     });
-    expect(installSurface.background).toContain("linear-gradient");
+    expect(installSurface.background).toBe("none");
     expect(installSurface.background).not.toContain("bezel.webp");
-    expect(installSurface.radius).toBeLessThan(target!.height / 2);
+    expect(installSurface.radius).toBeGreaterThanOrEqual(target!.height / 2);
     await install.click();
     const close = page.getByRole("button", { name: "Close" });
     expect(

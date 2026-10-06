@@ -621,7 +621,7 @@ test("offline uses local Grenze and painted controls", async ({
       .locator(".pack-logo-gilt"),
   ).toBeVisible();
   await page.getByRole("button", { name: "Done" }).click();
-  await page.getByRole("button", { name: "Install app" }).click();
+  await page.getByRole("button", { name: "Add to Home Screen help" }).click();
   await expect(page.getByText("Ready for offline play")).toBeVisible();
 });
 test("readable fallback when artwork fails and keyboard focus returns", async ({

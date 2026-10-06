@@ -145,7 +145,7 @@ test("the card is the only dice control and keeps a generous target", async ({
 });
 test("dialog copy sits on a quiet panel surface", async ({ page }) => {
   await page.goto("./");
-  await page.getByRole("button", { name: "Install app" }).click();
+  await page.getByRole("button", { name: "Add to Home Screen help" }).click();
   await page.locator("dialog[open]").waitFor();
   const surface = await page.locator("dialog[open]").evaluate((el) => {
     const style = getComputedStyle(el);

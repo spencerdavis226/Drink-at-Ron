@@ -90,7 +90,7 @@ test("a Home Screen web app hides Install but keeps the in-game menu", async ({
     });
   });
   await page.goto("./");
-  await expect(page.getByRole("button", { name: "Install app" })).toHaveCount(
+  await expect(page.getByRole("button", { name: "Add to Home Screen help" })).toHaveCount(
     0,
   );
   await expect(page.locator(".topbar")).toHaveCount(0);
@@ -102,7 +102,7 @@ test("a Home Screen web app hides Install but keeps the in-game menu", async ({
   await expect(
     page.getByRole("button", { name: "Open game menu" }),
   ).toBeVisible();
-  await expect(page.getByRole("button", { name: "Install app" })).toHaveCount(
+  await expect(page.getByRole("button", { name: "Add to Home Screen help" })).toHaveCount(
     0,
   );
 });

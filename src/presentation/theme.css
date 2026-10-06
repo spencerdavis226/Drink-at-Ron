@@ -197,25 +197,71 @@ dialog p,
   transform: translateY(1px);
 }
 .setup {
+  /* Density follows the usable area, including Safari's toolbars and notch,
+     rather than assuming the whole screen is available to the home page. */
+  --setup-height: calc(
+    var(--app-height) - max(16px, var(--top-safe)) -
+      max(24px, var(--bottom-safe))
+  );
   max-width: 480px;
+  container-type: inline-size;
   margin: 0 auto;
-  padding-top: clamp(8px, 3svh, 30px);
+  padding-top: clamp(4px, calc(var(--setup-height) * 0.012), 12px);
 }
 .setup .intro {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: clamp(14px, 4vw, 24px);
-  padding-bottom: clamp(26px, 5svh, 48px);
-}
-.setup .side-quest-emblem {
-  width: clamp(72px, 23vw, 112px);
-  height: auto;
-  flex: none;
-  filter: drop-shadow(0 6px 6px #0008);
+  padding-block: 8px clamp(14px, calc(var(--setup-height) * 0.035), 28px);
 }
 .setup .intro h1 {
-  font-size: clamp(4.1rem, 17vw, 6rem);
+  font-size: 0;
+  line-height: 0;
+  text-shadow: none;
+}
+.side-quest-title-crest {
+  display: block;
+  width: min(100%, calc(var(--setup-height) * 0.55), 440px);
+  height: auto;
+  margin-inline: auto;
+}
+.crest-fallback {
+  display: block;
+  font-size: clamp(36px, 14cqw, 62px);
+  line-height: 1;
+  padding-block: 20px;
+}
+.app:has(.setup) {
+  position: relative;
+}
+.install-info.icon-button {
+  position: absolute;
+  top: calc(max(16px, var(--top-safe)) + min(20px, var(--top-safe)));
+  right: max(16px, env(safe-area-inset-right));
+  z-index: 1;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  box-shadow: none;
+  color: #bea779;
+  flex: none;
+}
+.install-info .ui-icon {
+  width: 20px;
+  height: 20px;
+  stroke-width: 1.5;
+}
+.install-info.icon-button:focus-visible {
+  outline: 2px solid #e2bc72;
+  outline-offset: -4px;
+  filter: none;
+  transform: none;
+}
+.setup .lengths .choice[aria-pressed="true"] {
+  background: linear-gradient(145deg, #2d5046, #19332e);
+  border-color: #e6c078;
+  box-shadow:
+    inset 0 0 0 1px #d8ae5b55,
+    0 4px 8px #0007;
 }
 .league-mark,
 .meter-badge {
@@ -233,10 +279,27 @@ dialog p,
   object-fit: contain;
 }
 .setup .setup-section {
-  margin-bottom: clamp(24px, 4svh, 36px);
+  margin-bottom: clamp(8px, calc(var(--setup-height) * 0.022), 20px);
+}
+.setup .section-label {
+  margin-bottom: 8px;
+}
+.setup .lengths .choice {
+  min-height: clamp(56px, calc(var(--setup-height) * 0.115), 76px);
+}
+.setup .pack-selector {
+  min-height: clamp(56px, calc(var(--setup-height) * 0.115), 76px);
+  padding-block: 8px;
+}
+.setup .pack-selector strong {
+  line-height: 1.15;
+}
+.setup > .primary {
+  min-height: clamp(60px, calc(var(--setup-height) * 0.115), 68px);
 }
 .setup .section-label h2 {
   font-size: 1.45rem;
+  line-height: 1.2;
   color: #e9cc91;
 }
 .pack-selector {
@@ -285,26 +348,6 @@ dialog p,
 }
 .addon-list .pack-hint {
   margin-top: 8px;
-}
-@media (max-height: 620px) {
-  .setup .intro {
-    padding-bottom: 10px;
-  }
-  .setup .setup-section {
-    margin-bottom: 12px;
-  }
-  .setup .section-label {
-    margin-bottom: 8px;
-  }
-  .lengths .choice {
-    min-height: 66px;
-  }
-  .pack-selector {
-    min-height: 64px;
-  }
-  .setup > .primary {
-    min-height: 60px;
-  }
 }
 dialog {
   /* Quiet interior beneath body text; the painted frame keeps its richness. */

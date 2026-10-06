@@ -18,12 +18,14 @@ export function GameDialogs({
   setModal,
   session,
   offlineReady,
+  onHideInstallHelp,
   onEnd,
 }: {
   modal: DialogName;
   setModal: (modal: DialogName) => void;
   session: SessionState | null;
   offlineReady: boolean;
+  onHideInstallHelp: () => void;
   onEnd: () => void;
 }) {
   // Keep the last dialog mounted while it animates out, so pause states do not
@@ -51,7 +53,7 @@ export function GameDialogs({
   if (displayed === "install")
     return (
       <Modal
-        title="Install app"
+        title="Add to Home Screen"
         onClose={() => setModal(null)}
         exiting={exiting}
       >
@@ -71,6 +73,9 @@ export function GameDialogs({
               : "Preparing offline play…"}
         </p>
         <Button onClick={() => setModal(null)}>Got it</Button>
+        <Button variant="text-button" onClick={onHideInstallHelp}>
+          Already added — hide this hint
+        </Button>
       </Modal>
     );
   if (displayed === "menu")

@@ -1,0 +1,23 @@
+{
+  "prompt": "Use case: logo-brand, premium hand-painted fantasy tavern game title crest.\nAsset: final wide horizontal title-logo for the mobile browser game Side Quest, transparent cutout. Create one cohesive original AAA-quality illustrated logo, NOT a website screenshot.\nReference images are visual style references only: the painted tankard/quest marker and the game's walnut, dark teal leather and hammered antique brass card frame.\nText verbatim: \"Side Quest\". EXACT two words, with a clear space, large and immediately readable at a display width of 300px. Bespoke sculpted warm ivory-gold serif title lettering, not ordinary typeset text; broad strong letterforms, subtle bevels and carved painterly depth. Both words on ONE horizontal line, Quest with a modest lively tilt. Make the title dominate.\nIntegrate a small original frothy walnut-and-brass tankard and gold exclamation quest marker into the left end of a unified shallow crest, tied into the same carved frame as the text, not a separate floating sticker. Low, restrained dark teal leather backing with tasteful curved walnut/brass ends; a few subtle hop-vine accents. One warm light source from upper-left, contact shadows rather than glow. Polished authored silhouette and superb visual hierarchy; rich yet calm, no excessive ornament or sprawling scrollwork.\nComposition: wide shallow crest approximately 3.4:1 overall, centered, all edges and shadows complete, generous transparent margin, straight-on. Letters and tankard share the same lighting, material finish and painted style. The tankard must remain secondary to the wordmark.\nReal transparent background; no tabletop or scenery outside the crest, no surrounding rectangular image background. No subtitle, tagline, UI buttons, additional words, sparkle effects, watermark, tiny illegible engraving, unrelated emblems or copied game logos. Output only the crest.",
+  "source": "title-crest-v1.png",
+  "output": "public/art/side-quest-title-crest.webp",
+  "width": 768,
+  "quality": 84,
+  "padding": 8,
+  "generator": "built-in image_gen",
+  "transparent_background": true,
+  "style_references": [
+    "public/art/side-quest-emblem.webp",
+    "src/presentation/art/ornate-teal-frame.webp"
+  ],
+  "source_dimensions": {
+    "width": 2132,
+    "height": 737
+  },
+  "output_dimensions": {
+    "width": 768,
+    "height": 276
+  },
+  "output_bytes": 57386
+}

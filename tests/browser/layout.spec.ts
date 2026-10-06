@@ -175,6 +175,126 @@ test("Previous Card owns the same 2:3 geometry as gameplay", async ({
   expect(back!.y).toBeGreaterThanOrEqual(0);
   expect(back!.y + back!.height).toBeLessThanOrEqual(568);
 });
+test("@release home fits Safari's visible height without moving Install into the status bar", async ({
+  page,
+}) => {
+  // Match the owner's screenshot: League mode with Core, House, VIP and Pokémon.
+  await page.addInitScript(() => {
+    localStorage.setItem(
+      "side-quest.settings.v1",
+      JSON.stringify({
+        choice: "quest",
+        config: {
+          version: 1,
+          packIds: ["core", "house", "vip", "pokemon"],
+          limit: null,
+          quest: "pokemon",
+        },
+      }),
+    );
+  });
+  for (const [width, height, top, bottom] of [
+    [320, 548, 0, 0],
+    [375, 548, 0, 0],
+    [393, 635, 59, 34],
+    [393, 650, 59, 34],
+    [390, 844, 59, 34],
+    [768, 1024, 0, 0],
+  ]) {
+    await page.setViewportSize({ width, height });
+    await page.goto("./");
+    await expect(page.locator(".setup")).toBeVisible();
+    await expect(page.locator(".pack-selector")).toContainText("359 cards");
+    await page.evaluate(() => document.fonts.ready);
+    await page.addStyleTag({
+      content: `:root { --top-safe: ${top}px; --bottom-safe: ${bottom}px }`,
+    });
+    const branding = await page
+      .locator(".side-quest-title-crest")
+      .evaluate((element) => {
+        const image = element as HTMLImageElement;
+        const bounds = image.getBoundingClientRect();
+        const row = image.closest(".intro")!.getBoundingClientRect();
+        return {
+          decoded: image.complete && image.naturalWidth === 768,
+          inside: bounds.left >= row.left && bounds.right <= row.right + 1,
+          ratio: bounds.width / bounds.height,
+        };
+      });
+    expect(branding.decoded).toBe(true);
+    expect(branding.inside).toBe(true);
+    expect(branding.ratio).toBeCloseTo(768 / 276, 2);
+    const install = await page
+      .getByRole("button", { name: "Add to Home Screen help" })
+      .boundingBox();
+    const play = await page
+      .getByRole("button", { name: "Play", exact: true })
+      .boundingBox();
+    const at = `${width}×${height}, insets ${top}/${bottom}`;
+    expect(
+      install!.y,
+      `Install clears status icons at ${at}`,
+    ).toBeGreaterThanOrEqual(Math.max(16, top) + Math.min(20, top));
+    expect(
+      play!.y + play!.height,
+      `Play clears bottom chrome at ${at}`,
+    ).toBeLessThanOrEqual(height - Math.max(24, bottom) + 1);
+    const geometry = await page.evaluate(() => {
+      const root = document.querySelector("#root")!;
+      window.scrollTo(0, 100);
+      root.scrollTop = 100;
+      return {
+        page:
+          document.documentElement.scrollHeight -
+          document.documentElement.clientHeight,
+        root: root.scrollHeight - root.clientHeight,
+        horizontal: root.scrollWidth - root.clientWidth,
+        pageY: window.scrollY,
+        rootY: root.scrollTop,
+      };
+    });
+    expect(geometry, `no page or home scrolling at ${at}`).toEqual({
+      page: 0,
+      root: 0,
+      horizontal: 0,
+      pageY: 0,
+      rootY: 0,
+    });
+  }
+  await page.getByRole("button", { name: /^Choose packs/ }).click();
+  await expect(page.getByRole("dialog", { name: "Card packs" })).toBeVisible();
+  await page.getByRole("button", { name: "Done", exact: true }).click();
+  await expect(page.getByRole("dialog")).toHaveCount(0);
+  await page.getByRole("button", { name: "Add to Home Screen help" }).click();
+  await expect(page.getByRole("dialog")).toBeVisible();
+  await page.keyboard.press("Escape");
+  await expect(page.getByRole("dialog")).toHaveCount(0);
+  await page.getByRole("button", { name: "Play", exact: true }).click();
+  await expect(page.locator(".card-stage")).toBeVisible();
+});
+test("an enlarged home keeps Play reachable through its own scroller", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 320, height: 480 });
+  await page.goto("./");
+  await expect(page.locator(".setup")).toBeVisible();
+  // The compact header fits even this short screen at normal size. Enlarged
+  // text deliberately exercises the accessible overflow fallback.
+  await page.addStyleTag({ content: ":root { font-size: 28px }" });
+  const play = page.getByRole("button", { name: "Play", exact: true });
+  await play.scrollIntoViewIfNeeded();
+  const scrolled = await page.evaluate(() => ({
+    pageY: window.scrollY,
+    rootY: document.querySelector("#root")!.scrollTop,
+  }));
+  expect(scrolled.pageY).toBe(0);
+  expect(scrolled.rootY).toBeGreaterThan(0);
+  const bounds = (await play.boundingBox())!;
+  expect(bounds.y).toBeGreaterThanOrEqual(0);
+  expect(bounds.y + bounds.height).toBeLessThanOrEqual(480);
+  await play.click();
+  await expect(page.locator(".card-stage")).toBeVisible();
+});
 test("@release the play screen fits a Safari tab at every phone height without scrolling", async ({
   page,
 }) => {
@@ -224,7 +344,7 @@ test("an iOS top inset keeps topbar controls below the status-bar frost", async 
   // inset so the Home Screen layout is measurable.
   await page.addStyleTag({ content: ":root { --top-safe: 59px }" });
   const install = await page
-    .getByRole("button", { name: "Install app" })
+    .getByRole("button", { name: "Add to Home Screen help" })
     .boundingBox();
   expect(install, "Install control is laid out").not.toBeNull();
   // 59px inset + 20px clearance keeps the control out of the iOS 27 frost.

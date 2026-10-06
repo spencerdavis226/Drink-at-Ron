@@ -19,7 +19,12 @@ import { usePresentation } from "./presentation/usePresentation";
 import { theme } from "./presentation/theme";
 import { preloadUrl } from "./presentation/artwork";
 import { coreFrameSurfaces } from "./presentation/frame-surfaces";
-import { Button, IconButton, InstallIcon, Notice } from "./components/UI";
+import { Button, IconButton, Notice } from "./components/UI";
+import {
+  INSTALL_HELP_KEY,
+  isIOSSafari,
+  loadInstallHelpDismissed,
+} from "./app/install-help";
 import { Atmosphere } from "./components/Atmosphere";
 import { Setup } from "./screens/Setup";
 import { Play } from "./screens/Play";
@@ -66,6 +71,9 @@ function App() {
     [updateReady, setUpdateReady] = useState(false),
     [modal, setModal] = useState<DialogName>(null),
     [standalone, setStandalone] = useState(isStandaloneApp),
+    [installHelpDismissed, setInstallHelpDismissed] = useState(
+      loadInstallHelpDismissed,
+    ),
     [hidden, setHidden] = useState(document.hidden),
     [starting, setStarting] = useState(false),
     [loadFailed, setLoadFailed] = useState(false);
@@ -217,53 +225,56 @@ function App() {
         className={`${active ? "app playing" : "app"} ${hidden ? "suspended" : ""}`}
         style={styles}
       >
-        {(active || !standalone) && (
-          <header className="topbar">
-            {active ? (
-              <>
-                {/* One row of table furniture: a pack quest's meter, the
-                    count on a brass medallion, the menu on a matching stud. */}
-                <QuestMeter
-                  session={display}
-                  disabled={!!motion}
-                  onOpen={() => setModal("badges")}
-                />
-                <div
-                  className="progress"
-                  role="img"
-                  aria-label={`Card ${display.discarded + 1} of ${display.config.limit ?? "endless"}`}
-                >
-                  <strong>{display.discarded + 1}</strong>
-                  <span className="muted">
-                    {" "}
-                    / {display.config.limit ?? "∞"}
-                  </span>
-                </div>
-                <IconButton
-                  className="menu-button"
-                  label="Open game menu"
-                  disabled={!!motion}
-                  onClick={() => setModal("menu")}
-                >
-                  <span className="menu-icon" aria-hidden="true">
-                    <i />
-                    <i />
-                    <i />
-                  </span>
-                </IconButton>
-              </>
-            ) : (
-              <IconButton
-                className="install-button"
-                label="Install app"
-                onClick={() => setModal("install")}
+        {!display &&
+          !corrupt &&
+          !standalone &&
+          !installHelpDismissed &&
+          isIOSSafari(navigator) && (
+            <IconButton
+              className="install-info"
+              label="Add to Home Screen help"
+              onClick={() => setModal("install")}
+            >
+              <svg
+                className="ui-icon"
+                viewBox="0 0 24 24"
+                fill="none"
+                aria-hidden="true"
               >
-                <InstallIcon />
-                <span className="install-button-label" aria-hidden="true">
-                  Install
-                </span>
-              </IconButton>
-            )}
+                <circle cx="12" cy="12" r="9" />
+                <path d="M12 10.5v6M12 7.5h.01" />
+              </svg>
+            </IconButton>
+          )}
+        {active && (
+          <header className="topbar">
+            {/* One row of table furniture: a pack quest's meter, the
+                    count on a brass medallion, the menu on a matching stud. */}
+            <QuestMeter
+              session={display}
+              disabled={!!motion}
+              onOpen={() => setModal("badges")}
+            />
+            <div
+              className="progress"
+              role="img"
+              aria-label={`Card ${display.discarded + 1} of ${display.config.limit ?? "endless"}`}
+            >
+              <strong>{display.discarded + 1}</strong>
+              <span className="muted"> / {display.config.limit ?? "∞"}</span>
+            </div>
+            <IconButton
+              className="menu-button"
+              label="Open game menu"
+              disabled={!!motion}
+              onClick={() => setModal("menu")}
+            >
+              <span className="menu-icon" aria-hidden="true">
+                <i />
+                <i />
+                <i />
+              </span>
+            </IconButton>
           </header>
         )}
         {notice && (
@@ -342,6 +353,11 @@ function App() {
           setModal={setModal}
           session={session}
           offlineReady={offlineReady || cachedReady}
+          onHideInstallHelp={() => {
+            setInstallHelpDismissed(true);
+            save(INSTALL_HELP_KEY, true);
+            setModal(null);
+          }}
           onEnd={() => {
             // The brief dice-result reveal can start under the open menu;
             // settle it so a confirmed End game is never ignored.
@@ -402,7 +418,7 @@ if (import.meta.env.DEV && params.get("preview") === "1") {
   }
   const firstScreen: string[] = resuming
     ? [...Object.values(theme.assets), ...coreFrameSurfaces]
-    : [theme.assets.table, theme.assets.button];
+    : [theme.assets.table, theme.assets.button, theme.assets.titleCrest];
   const fonts = ["700 1em Grenze", "italic 600 1em Grenze"].map((font) =>
     document.fonts.load(font).catch(() => undefined),
   );

@@ -21,6 +21,7 @@ export function Setup({
   onStart: () => void;
 }) {
   const [packsOpen, setPacksOpen] = useState(false);
+  const [crestFailed, setCrestFailed] = useState(false);
   const selected = packs.filter((pack) =>
     prefs.config.packIds.includes(pack.id),
   );
@@ -66,15 +67,21 @@ export function Setup({
   return (
     <section className="setup">
       <div className="intro">
-        <img
-          className="side-quest-emblem"
-          src={asset("art/side-quest-emblem.webp")}
-          alt=""
-        />
         <h1>
-          Side
-          <br />
-          <em>Quest</em>
+          {crestFailed ? (
+            <span className="crest-fallback">
+              Side <em>Quest</em>
+            </span>
+          ) : (
+            <img
+              className="side-quest-title-crest"
+              src={asset("art/side-quest-title-crest.webp")}
+              width="768"
+              height="276"
+              alt="Side Quest"
+              onError={() => setCrestFailed(true)}
+            />
+          )}
         </h1>
       </div>
       <div className="setup-section">
