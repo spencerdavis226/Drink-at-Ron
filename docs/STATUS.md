@@ -2,7 +2,7 @@
 
 Updated 2026-10-05. **Single authoritative handoff.** Read `AGENTS.md` first. Older handoffs are in `docs/STATUS_ARCHIVE.md` (reference only). Direct user instructions win.
 
-## Rename to Side Quest (2026-10-05, branch `side-quest-rename`, PR #6, not on `main`)
+## Rename to Side Quest (2026-10-05, PR #6 merged as `a942e47`, deployed on `main`)
 
 **Request.** Owner renamed the app from Drink at Ron to Side Quest and wants it comprehensive: app, repo, URL and storage.
 
@@ -16,7 +16,25 @@ Updated 2026-10-05. **Single authoritative handoff.** Read `AGENTS.md` first. Ol
 
 **Consequences.** GitHub redirects the old repository URL for git, but not the Pages URL: `/Drink-at-Ron/` stops serving once renamed. Installed Home Screen copies keep running their cached old build offline and stop updating; remove and re-add from `/side-quest/`. An iOS Home Screen app has its own storage, so a game in progress in an old install does not move to the new one.
 
-**Next.** Owner renames the repo, then merges; reinstall on devices; optional redirect stub at the old path; optional emblem art.
+**Official transition (2026-10-05).** Owner explicitly authorized deployment and the Mac folder/repository transition. Renamed GitHub repository to `spencerdavis226/side-quest`, set origin to `https://github.com/spencerdavis226/side-quest.git`, marked PR #6 ready and merged its verified head `06c22ed4fd3481b18e56e58c524ac635f23282de` as `a942e47f5042f4168e7f8d920f7049913b58ee8b`. Pages run `37406116534` passed and deployed. Local checkout is back on `main`. Mac folder is now `/Users/spencer/Documents/Dev/Side-Quest`; `/Users/spencer/Documents/Dev/Drink-at-Ron` is a compatibility symlink to it so existing chats and saved project paths keep working. Codex's saved sidebar project still has the old label/path: the computer-use tool refused access to the Codex app, and no project-edit tool is available. Update that entry manually before retiring the compatibility link. Existing work was preserved; the temporary handoff stash was restored. Only `docs/STATUS.md` changed during this takeover, with no app behavior edits; the final documentation commit records this transition.
+
+**Local verification (Node 26.9.0, macOS).** `npm ci` completed. Browser plugin absent; used the existing Playwright suites. Production build and tests used `/side-quest/`:
+- `npm test`: 126/126 passed.
+- `BASE_PATH=/side-quest/ npm run build`: passed content validation, typecheck and budgets; 2672 KiB runtime, 88.2 KiB initial + 173.4 KiB lazy gzip JS. Manifest name/title is Side Quest; scope, start URL and ID are `/side-quest/`.
+- `CI=1 BASE_PATH=/side-quest/ TEST_PORT=4398 npm run test:e2e -- --workers=2`: 179 passed, 3 intentional WebKit offline skips, no retries.
+- `CI=1 BASE_PATH=/side-quest/ TEST_PORT=4399 npm run test:release -- --workers=2`: 41 passed, 1 flaky test passed on retry. WebKit `layout.spec.ts:37` failed at `page.reload()` with "Frame load interrupted". Isolated rerun with port 4401, `--grep 'Core instructions fit' --project=webkit --workers=1 --repeat-each=5 --retries=0`: 5/5 passed. Cause not established; do not describe this release run as wholly clean.
+- `CI=1 BASE_PATH=/side-quest/ TEST_PORT=4400 npm run test:update`: passed; no mid-game reload, latest release after refresh, save retained between games. This script selects its own ephemeral server port; `TEST_PORT` is not consumed.
+- `CI=1 BASE_PATH=/ TEST_PORT=5175 npm run test:workshop -- --workers=1`, run from the renamed folder: 26/26 passed in Chromium and emulated WebKit. The original two-worker run was interrupted and had recorded a WebKit iPad preview timeout (isolated rerun: 1/1 passed). A subsequent run started before the folder move was stopped after Vite lost its study-preview import paths and the title-fit test timed out; restarting Vite from the new folder resolved it. Workshop configuration fixes its server to port 5175. These earlier failures were not silently treated as passes.
+- Separate Chromium UI check at `http://127.0.0.1:4398/side-quest/`, 393×760: correct title, meaningful setup content and painted art/fonts, no framework overlay or console/page errors; Play opens the table. Screenshot evidence saved outside the repo in `/tmp/side-quest-setup.png` and `/tmp/side-quest-play.png`.
+
+**Published verification.** GitHub Pages run `37406116534` on Node 22: 126 unit tests passed, build/budgets passed (2672 KiB runtime, 88.4 KiB initial + 174.2 KiB lazy gzip JS), 42/42 Chromium/WebKit release checks passed without retries, update flow passed, deployment succeeded. Live Chromium check at `https://spencerdavis226.github.io/side-quest/`, 393×760: HTTP 200, title Side Quest, exact deployed release `a942e47f5042f4168e7f8d920f7049913b58ee8b`, painted art and local fonts served with HTTP 200, manifest name Side Quest and scope/start URL/ID `/side-quest/`, no page/console errors. After the worker took control, disabled network: reload and starting a game both passed with art intact. Evidence: `/tmp/side-quest-live.log`, `/tmp/side-quest-live-online.png`, `/tmp/side-quest-live-offline.png`. The documentation-only follow-up uses the same app source and standard deployment checks.
+
+**Risks / not verified.** Physical iPhone/iPad and Home Screen reinstall. Emulated WebKit is not physical iOS evidence. Hosting move and emblem art are not started. GitHub Pages still requires this repository to remain public under the current hosting arrangement.
+
+**Next.**
+1. Reinstall the Home Screen app from the new live URL and record physical-device checks in `docs/DEVICE_CHECKLIST.md`; old installed-app saves do not transfer. Manually update Codex's saved project label/folder to Side Quest and `/Users/spencer/Documents/Dev/Side-Quest`; retain the old-path symlink while existing chats depend on it.
+2. Separate hosting PR after owner confirms host and domain (likely Cloudflare Pages or Workers static assets): build at `/`, add revalidation headers for `sw.js` and `index.html` and immutable headers for hashed `/assets/*`, retain CI checks, remove the Pages deploy job, and update README/AGENTS/GITHUB_PAGES/STATUS. A new domain is a new origin: github.io saves do not carry over, and Home Screen devices need reinstalling.
+3. Optional painted Side Quest emblem: RPG "!" quest marker over the tankard; no flat vector overlay substitute.
 
 ## League immersion, phase 1: tiered ribbons, stage banners, badge case, Hall of Fame (2026-10-05, branch `league-immersion`, not on `main`)
 
